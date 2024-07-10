@@ -1,0 +1,107 @@
+
+entrenement jury:
+presentation power pont
+demo de votre projet
+
+cahier des charge 
+uml : diagramme de cas utilisation, diagramme de séquensence
+explication de la fonctionalite de le projet
+
+online.visual-paradigm.com 
+
+cas d'utilisation : diagramme de séquence
+
+cachier de charge:
+
+
+2. Objectifs du Projet
+Vente en ligne : Permettre aux utilisateurs d'acheter des produits en ligne.
+Gestion des utilisateurs : Permettre aux utilisateurs de s'inscrire, se connecter et gérer leurs profils.
+Gestion des commandes : Permettre aux utilisateurs de passer et suivre leurs commandes.
+Gestion des produits : Permettre aux administrateurs de gérer les produits disponibles à la vente
+
+3. Description des Fonctionnalités
+3.1 Fonctionnalités Utilisateur
+Inscription et Connexion :
+
+Les utilisateurs doivent pouvoir s'inscrire avec un email et un mot de passe.
+Les utilisateurs doivent pouvoir se connecter et se déconnecter.
+Profil Utilisateur :
+
+Les utilisateurs doivent pouvoir mettre à jour leurs informations personnelles.
+Les utilisateurs doivent pouvoir consulter leur historique de commandes.
+Parcourir et Rechercher des Produits :
+
+Les utilisateurs doivent pouvoir parcourir les produits par catégorie.
+Les utilisateurs doivent pouvoir rechercher des produits par mot-clé.
+Panier d'Achat :
+
+Les utilisateurs doivent pouvoir ajouter des produits à leur panier.
+Les utilisateurs doivent pouvoir modifier la quantité des articles dans leur panier.
+Les utilisateurs doivent pouvoir retirer des articles de leur panier.
+Commande :
+
+Les utilisateurs doivent pouvoir passer une commande à partir de leur panier.
+Les utilisateurs doivent pouvoir suivre le statut de leur commande.
+3.2 Fonctionnalités Administrateur
+Gestion des Produits :
+
+Les administrateurs doivent pouvoir ajouter, modifier et supprimer des produits.
+Les administrateurs doivent pouvoir gérer les stocks de produits.
+Gestion des Commandes :
+
+Les administrateurs doivent pouvoir voir toutes les commandes passées.
+Les administrateurs doivent pouvoir mettre à jour le statut des commandes.
+
+4. Spécifications Techniques
+4.1 Frontend
+Technologies :
+
+React.js pour le développement de l'interface utilisateur.
+Bootstrap pour le style et la mise en page.
+Pages :
+
+Page d'accueil
+Page de catalogue de produits
+Page de détails du produit
+Page de panier
+Page de paiement
+Page de profil utilisateur
+Page d'administration des produits
+Page d'administration des commandes
+4.2 Backend
+Technologies :
+
+Node.js avec Express.js pour le serveur web.
+MongoDB pour la base de données.
+API Endpoints :
+
+POST /api/auth/register : Inscription utilisateur.
+POST /api/auth/login : Connexion utilisateur.
+GET /api/products : Obtenir tous les produits.
+GET /api/products/:id : Obtenir un produit par ID.
+POST /api/cart : Ajouter un produit au panier.
+GET /api/cart : Obtenir les produits du panier.
+POST /api/order : Passer une commande.
+GET /api/order : Obtenir toutes les commandes (admin).
+GET /api/order/:id : Obtenir une commande par ID.
+PUT /api/order/:id : Mettre à jour le statut d'une commande (admin).
+4.3 Sécurité
+Utilisation de JWT (JSON Web Tokens) pour l'authentification des utilisateurs.
+Utilisation de bcrypt pour le hachage des mots de passe.
+
+
+
+
+
+
+
+
+
+la conception de mon projet:
+
+admin : ajouter des produit
+	gerer les utilisateur
+	supprimer des produits
+client : acheter des produit
+	 passer une commande
