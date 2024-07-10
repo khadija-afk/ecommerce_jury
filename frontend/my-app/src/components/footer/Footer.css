@@ -1,0 +1,21 @@
+/* Footer.css */
+.footer {
+    background-color: #343a40;
+    color: white;
+    text-align: center;
+    padding: 1rem 0;
+    position: relative;
+    bottom: 0;
+    width: 100%;
+}
+
+/* Assurez-vous que le conteneur principal prend toute la hauteur de la page */
+.main-container {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+.content {
+    flex: 1; /* Prend tout l'espace disponible pour pousser le footer en bas */
+}
