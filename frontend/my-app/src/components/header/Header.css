@@ -1,0 +1,31 @@
+/* Header.css */
+.header {
+    width: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1030;
+    box-shadow: 0 4px 2px -2px rgb(75, 74, 74);
+    background-color: #343a40;
+}
+
+.form-inline {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.form-control {
+    width: 400px; /* Ajustez cette valeur pour augmenter la longueur de la barre de recherche */
+    max-width: 100%; /* Assurez-vous qu'elle ne dépasse pas la largeur disponible */
+}
+
+.navbar-nav {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.btn-outline-success {
+    margin-left: 5px;
+}
