@@ -3,28 +3,28 @@ version: '3.8'
 services:
   backend:
     build:
-      context: ./backend_ecommerce
+      context: ./backend_ecommerce/backend_ecommerce
     container_name: backend
     ports:
       - "3001:3000"
     volumes:
-      - ./backend:/app
+      - ./backend_ecommerce/backend_ecommerce:/server
     environment:
       - NODE_ENV=${NODE_ENV}
       - DB_HOST=${DB_HOST}
       - DB_PORT=${DB_PORT}
       - DB_USER=${DB_USER}
-      - DB_PASSWORD=${DB_PASS}
+      - DB_PASSWORD=${DB_PASSWORD}
       - DB_NAME=${MYSQL_DATABASE}
 
   frontend:
     build:
-      context: ./frontend/my-app  # Assurez-vous que le chemin est correct
+      context: ./frontend/my-app
     container_name: frontend
     ports:
       - "3000:3000"
     volumes:
-      - ./frontend:/app
+      - ./frontend/my-app:/app
     environment:
       - NODE_ENV=${NODE_ENV}
 
@@ -45,7 +45,7 @@ services:
     image: phpmyadmin/phpmyadmin
     container_name: phpmyadmin
     environment:
-      PMA_HOST: ${DB_HOST}
+      PMA_HOST: db
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
     ports:
       - "8080:80"
