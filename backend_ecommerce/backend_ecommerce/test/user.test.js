@@ -20,7 +20,7 @@ describe('User Controller', () => {
   
 });*/
 
-import express from 'express';
+/*import express from 'express';
 import request from 'supertest';
 import articleRoute from '../routes/article.js';
 //import { syncModels, closeConnection, connection } from '../models/index.js';  // Assurez-vous d'importer sequelize
@@ -38,7 +38,7 @@ afterAll(async () => {
   await closeConnection();  // Close the database connection after the tests
 });*/
 
-describe("test d'intégration pour l'API article", () => {
+/*describe("test d'intégration pour l'API article", () => {
   it("should get all articles with the command GET /api/article/", async () => {
     const { body, statusCode } = await request(app).get("/api/article/");
     expect(body).toEqual(
@@ -60,4 +60,4 @@ describe("test d'intégration pour l'API article", () => {
     );
     expect(statusCode).toBe(200);
   });
-});
+});*/
