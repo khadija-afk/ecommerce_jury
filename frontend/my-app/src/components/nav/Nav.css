@@ -1,6 +1,7 @@
 /* src/components/Navbar/Navbar.css */
 .navbar {
     transition: all 0.4s;
+    z-index: 1000;
 }
 
 .navbar .nav-link {

@@ -1,0 +1,19 @@
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden; /* Éviter le défilement horizontal */
+}
+
+#root {
+    height: 100%;
+}
+
+.container {
+    padding-bottom: 50px; /* Assurez-vous qu'il y a suffisamment d'espace en bas */
+}
+
+.main {
+    min-height: 100vh; /* S'assurer que le contenu prend au moins toute la hauteur de la fenêtre */
+    overflow-y: auto; /* Permettre le défilement vertical */
+}
