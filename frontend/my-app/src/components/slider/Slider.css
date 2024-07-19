@@ -1,0 +1,43 @@
+/* Styles for the carousel */
+.carousel {
+  width: 100%;
+  height: auto;
+  max-width: 800px;
+  margin: 50px auto; /* Ajouter une marge supérieure pour éviter le chevauchement avec la barre de navigation */
+  border: 2px solid #ddd;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  position: relative;
+  z-index: 1; /* S'assurer que le carousel s'affiche au-dessus des autres éléments */
+}
+  
+  /* Styles for the carousel items */
+  .carousel-item {
+    height: 500px; /* Adjust this height as needed */
+  }
+  
+  .carousel-item img {
+    width: 100%;
+    height: 100%;
+    max-height: 500px;
+  }
+  
+  /* Styles for the carousel captions */
+  .carousel-caption {
+    background-color: rgba(0, 0, 0, 0.5);
+    border-radius: 5px;
+    padding: 10px;
+  }
+  
+  .carousel-caption h3 {
+    color: #fff;
+    font-size: 1.5em;
+    font-weight: bold;
+  }
+  
+  .carousel-caption p {
+    color: #ddd;
+    font-size: 1em;
+  }
+  
