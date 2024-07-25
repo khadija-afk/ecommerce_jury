@@ -23,8 +23,9 @@ services:
     container_name: frontend
     ports:
       - "3000:3000"
-    volumes:
-      - ./frontend/my-app:/app
+    # volumes:
+    #   - ./frontend/my-app:/app
+    #   - node_modules:/usr/src/app/node_modules
     environment:
       - NODE_ENV=${NODE_ENV}
 
@@ -52,3 +53,4 @@ services:
 
 volumes:
   mysql-data:
+  node_modules:
