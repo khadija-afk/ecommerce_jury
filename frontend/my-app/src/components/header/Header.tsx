@@ -5,8 +5,8 @@ import './Header.css';
 
 const Header = () => {
   return (
-    <header className='header'>
-      <Navbar expand="lg" bg='dark' variant='dark' collapseOnSelect>
+    <header >
+      <Navbar expand="lg" bg='white' variant='white' collapseOnSelect>
         <Container>
           <Navbar.Brand href="/">KenziShop</Navbar.Brand>
           <Navbar.Toggle aria-controls="basic-navbar-nav" />

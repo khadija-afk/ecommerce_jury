@@ -1,7 +1,10 @@
+
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState, AppDispatch } from '../../store';
 import { fetchArticles } from './articleSlice';
+import { Card, Button, Container, Row, Col } from 'react-bootstrap';
+import { Link } from 'react-router-dom';
 
 const ArticleList: React.FC = () => {
     const dispatch = useDispatch<AppDispatch>();
@@ -20,15 +23,31 @@ const ArticleList: React.FC = () => {
     if (articleStatus === 'loading') {
         content = <p>Loading...</p>;
     } else if (articleStatus === 'succeeded') {
-        content = articles.map(article => (
-            <div key={article.id}>
-                <h3>{article.name}</h3>
-                <p>{article.content}</p>
-                <p>{article.brand}</p>
-                <p>{article.price}</p>
-                <p>{article.stock}</p>
-            </div>
-        ));
+        content = (
+            <Container className="mt-4">
+                <Row>
+                    {articles.map(article => (
+                        <Col key={article.id} sm={12} md={6} lg={4} className='mb-4'>
+                            <Card style={{ width: '18rem' }}>
+                                <Card.Img variant="top" src={article.photo} alt={article.name} />
+                                <Card.Body>
+                                    <Card.Text>{article.name} {article.brand} {article.content} </Card.Text>
+                                    <Button variant="primary">
+                                        <Link to={`api/article/${article.id}`} style={{ color: 'white', textDecoration: 'none' }}>
+                                            Voir les détails
+                                        </Link>
+                                    </Button>
+                               
+                                    
+                            
+                                    
+                                </Card.Body>
+                            </Card>
+                        </Col>
+                    ))}
+                </Row>
+            </Container>
+        );
     } else if (articleStatus === 'failed') {
         content = <p>{error}</p>;
     }
@@ -42,3 +61,4 @@ const ArticleList: React.FC = () => {
 };
 
 export default ArticleList;
+

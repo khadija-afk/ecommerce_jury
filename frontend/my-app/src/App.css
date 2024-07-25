@@ -1,13 +1,10 @@
 
-
-
-
-
 #root {
   max-width: 1280px;
   margin: 0 auto;
   padding: 2rem;
   text-align: center;
+  
 }
 
 .logo {
@@ -45,3 +42,16 @@
 .read-the-docs {
   color: #888;
 }
+
+/* global.css */
+.navbar {
+  margin-bottom: 20px; /* Ajoute un espace sous la navbar */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Ajoute une ombre pour une meilleure distinction */
+}
+
+.body-content {
+  padding: 20px; /* Ajoute de l'espace autour du contenu du body */
+  background-color: #f8f9fa; /* Une couleur de fond pour différencier le body */
+  min-height: calc(100vh - 70px); /* Assure que le contenu prend toute la hauteur de la page, en soustrayant la hauteur de la navbar */
+}
+

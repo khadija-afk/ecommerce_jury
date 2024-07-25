@@ -2,7 +2,7 @@
 import { configureStore } from '@reduxjs/toolkit';
 import userReducer from './auth/inscription/userSlice';
 import authReducer from './auth/connexion/authSlice';
-import articleReducer from './features/article/articleSlice'; // Importez le reducer des articles
+import articleReducer from './features/article/articleSlice'; 
 import reviewReducer from './features/review/reviewSlice';
 
 
@@ -11,7 +11,7 @@ const store = configureStore({
     reducer: {
         user: userReducer,
         auth: authReducer,
-        articles: articleReducer, // Ajoutez le reducer des articles ici
+        articles: articleReducer, 
         reviews: reviewReducer,
     },
 });

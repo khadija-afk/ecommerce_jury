@@ -8,15 +8,35 @@ import reviewModel from './review.model.js';
 import cartModel from './cart.model.js';
 import cartItemModel from './cartItem.model.js';
 import paymentDetailModel from './paymentDetail.model.js';
+import dotenv from 'dotenv'
 
 // Nouvelle connexion à la DB
+/*dotenv.config();
+
+const connection = new Sequelize({
+  
+  dialect: 'mariadb',
+  autoReconnect:true,
+  useSSL:false,
+  allowPublicKeyRetrieval:false,
+  database: process.env.DB_NAME,
+  username: process.env.DB_USER,
+  password: process.env.DB_PASSWORD,
+  host: process.env.DB_HOST,
+  port: process.env.DB_PORT,
+  logging: console.log,
+  define: {
+    timestamps: false // Désactive les timestamps automatiques si vous n'en avez pas besoin
+  }
+});*/
 const connection = new Sequelize(
   'e_commerce', // Nom de la base de donnée
   'root', // identifiant Mysql
   '', // Mot de passe Mysql
   {
     host: 'localhost', // URL de mySQL
-    dialect: 'mysql'
+    dialect: 'mysql',
+    port: '3396'
   }
 );
 
@@ -91,12 +111,12 @@ CartItem.belongsTo(Cart, { foreignKey: 'cart_fk' });
 Article.hasMany(CartItem, { foreignKey: 'product_fk' });
 CartItem.belongsTo(Article, { foreignKey: 'product_fk' });
 
-/*const syncModels = async () => {
+const syncModels = async () => {
   try {
     // Synchroniser les modèles séparément
-    await User.sync();
+    await User.sync(/*{alter: true}*/);
     await Categorie.sync();
-    await Article.sync();
+    await Article.sync({alter: true});
     await Order.sync();
     await OrderItem.sync();
     await Review.sync();
@@ -108,7 +128,7 @@ CartItem.belongsTo(Article, { foreignKey: 'product_fk' });
   } catch (error) {
     console.error('Unable to synchronize the database:', error);
   }
-};*/
+};
 
 /*const closeConnection = async () => {
   try {
@@ -117,9 +137,9 @@ CartItem.belongsTo(Article, { foreignKey: 'product_fk' });
   } catch (error) {
     console.error('Error closing the database connection:', error);
   }
-};
+};*/
 
-syncModels();*/
+syncModels();
 
 
 
@@ -133,10 +153,9 @@ export {
   Cart,
   CartItem,
   PaymentDetail,
-  //syncModels,
-  //closeConnection,
-  //connection
+  syncModels,
+  connection
  
 };
 
-console.log("je suis dans la baranch dev")
+
