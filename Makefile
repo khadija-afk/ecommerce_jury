@@ -5,3 +5,6 @@ start-front:
 
 start-back:
 	docker-compose up --build -d backend
+
+start-all:
+	docker-compose up --build
