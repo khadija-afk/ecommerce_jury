@@ -7,14 +7,14 @@ services:
     container_name: backend
     ports:
       - "3001:3000"
-    volumes:
-      - ./backend_ecommerce/backend_ecommerce:/server
+    # volumes:
+    #   - ./backend_ecommerce/backend_ecommerce:/server
     environment:
       - NODE_ENV=${NODE_ENV}
       - DB_HOST=${DB_HOST}
       - DB_PORT=${DB_PORT}
       - DB_USER=${DB_USER}
-      - DB_PASSWORD=${DB_PASSWORD}
+      - DB_PASSWORD=${MYSQL_ROOT_PASSWORD}
       - DB_NAME=${MYSQL_DATABASE}
 
   frontend:
@@ -37,7 +37,8 @@ services:
     environment:
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
       MYSQL_DATABASE: ${MYSQL_DATABASE}
-      MYSQL_USER: ${MYSQL_USER}
+      # MYSQL_USER: ${MYSQL_USER}
+      # DB_PORT: ${DB_PORT}
       MYSQL_PASSWORD: ${MYSQL_PASSWORD}
     volumes:
       - mysql-data:/var/lib/mysql
@@ -49,7 +50,7 @@ services:
       PMA_HOST: db
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
     ports:
-      - "8080:80"
+      - "8085:80"
 
 volumes:
   mysql-data:
