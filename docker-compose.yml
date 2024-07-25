@@ -6,7 +6,7 @@ services:
       context: ./backend_ecommerce/backend_ecommerce
     container_name: backend
     ports:
-      - "3001:3000"
+      - "9090:9090"
     # volumes:
     #   - ./backend_ecommerce/backend_ecommerce:/server
     environment:
@@ -15,6 +15,7 @@ services:
       - DB_PORT=${DB_PORT}
       - DB_USER=${DB_USER}
       - DIALECT=${DIALECT}
+      - BACKEND_PORT=${BACKEND_PORT}
       - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
       - MYSQL_DATABASE=${MYSQL_DATABASE}
 
