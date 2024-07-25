@@ -27,12 +27,12 @@ const initialState: CategoryState = {
 };
 
 export const fetchCategories = createAsyncThunk('categories/fetchCategories', async () => {
-    const response = await axios.get('http://localhost:3030/api/categorie/');
+    const response = await axios.get('http://localhost:9090/api/categorie/');
     return response.data as Category[];
 });
 
 export const addCategory = createAsyncThunk('categories/addCategory', async (category: NewCategoryData) => {
-    const response = await axios.post('http://localhost:3030/api/categorie/', category);
+    const response = await axios.post('http://localhost:9090/api/categorie/', category);
     return response.data as Category;
 });
 

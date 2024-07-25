@@ -2,7 +2,7 @@ import { Article, User, Categorie } from '../models/index.js';
 
 export const add = async (req, res) => {
     try {
-        const { categorie_fk, name, content, brand, price, stock } = req.body;
+        const { categorie_fk, name, content, brand, price, stock, photo } = req.body;
         const user_fk = req.user.id; // Utiliser l'ID de l'utilisateur connecté
 
         // Vérifier si l'utilisateur existe
@@ -25,7 +25,8 @@ export const add = async (req, res) => {
             price,
             stock,
             user_fk,
-            categorie_fk
+            categorie_fk,
+            photo
         });
 
         // On renvoie le nouvel article avec un statut 201

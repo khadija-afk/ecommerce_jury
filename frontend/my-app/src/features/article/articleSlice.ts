@@ -1,5 +1,3 @@
-// src/features/article/articleSlice.ts
-
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 
@@ -24,6 +22,7 @@ interface Article {
     stock: number;
     user_fk: number;
     categorie_fk: number;
+    photo: string;
     createdAt: string;
     updatedAt: string;
 }
@@ -44,7 +43,7 @@ const initialState: ArticleState = {
 const token = localStorage.getItem('token');
 
 export const fetchArticles = createAsyncThunk('articles/fetchArticles', async () => {
-    const response = await axios.get('http://localhost:3300/api/article/', {
+    const response = await axios.get('http://localhost:9090/api/article/', {
         headers: {
             'Authorization': `Bearer ${token}`
         }
@@ -58,7 +57,7 @@ export const addArticle = createAsyncThunk('articles/addArticle', async (article
     });
 
     const token = localStorage.getItem('token');
-    const response = await instance.post('http://localhost:3300/api/article/', article, {
+    const response = await instance.post('http://localhost:9090/api/article/', article, {
         headers: {
             'Authorization': `Bearer ${token}`
         }
@@ -66,10 +65,23 @@ export const addArticle = createAsyncThunk('articles/addArticle', async (article
 
     return response.data as Article;
 });
+
 const articleSlice = createSlice({
     name: 'articles',
     initialState,
-    reducers: {},
+    reducers: {
+        FETCH_ARTICLE_START(state) {
+            state.status = 'loading';
+        },
+        FETCH_ARTICLE_SUCCEEDED(state, action) {
+            state.status = 'succeeded';
+            state.articles.push(action.payload);
+        },
+        FETCH_ARTICLE_FAILED(state, action) {
+            state.status = 'failed';
+            state.error = action.payload;
+        },
+    },
     extraReducers: (builder) => {
         builder
             .addCase(fetchArticles.pending, (state) => {
@@ -97,4 +109,5 @@ const articleSlice = createSlice({
     },
 });
 
+export const { FETCH_ARTICLE_START, FETCH_ARTICLE_SUCCEEDED, FETCH_ARTICLE_FAILED } = articleSlice.actions;
 export default articleSlice.reducer;

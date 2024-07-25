@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../../store';
 import { addArticle } from './articleSlice';
+import './AddArticle.css'
 
 const AddArticleForm: React.FC = () => {
     const dispatch = useDispatch<AppDispatch>();
@@ -16,7 +17,8 @@ const AddArticleForm: React.FC = () => {
         status: false,
         stock: 0,
         user_fk: user_fk || 0, // Initialiser avec l'ID de l'utilisateur connecté
-        categorie_fk: 0
+        categorie_fk: 0,
+        photo: ''
     });
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -30,33 +32,45 @@ const AddArticleForm: React.FC = () => {
     };
 
     return (
-        <form onSubmit={handleSubmit}>
+       <div>
+        <div className='container-fluid'>
+        <form onSubmit={handleSubmit} className="mx-auto mt-20">
             <div>
-                <label>Nom</label>
-                <input type="text" name="name" value={articleData.name} onChange={handleChange} />
+                <label htmlFor=''>Nom</label>
+                <input type="text" name="name" value={articleData.name} onChange={handleChange} className='form-control'/>
             </div>
             <div>
-                <label>Contenu</label>
-                <textarea name="content" value={articleData.content} onChange={handleChange}></textarea>
+                <label htmlFor=''>Contenu</label>
+                <textarea name="content" value={articleData.content} onChange={handleChange} className='form-control'></textarea>
             </div>
             <div>
-                <label>Marque</label>
-                <input type="text" name="brand" value={articleData.brand} onChange={handleChange} />
+                <label htmlFor=''>Marque</label>
+                <input type="text" name="brand" value={articleData.brand} onChange={handleChange} className='form-control'/>
             </div>
             <div>
-                <label>Prix</label>
-                <input type="number" name="price" value={articleData.price} onChange={handleChange} />
+                <label htmlFor=''>Prix</label>
+                <input type="number" name="price" value={articleData.price} onChange={handleChange} className='form-control'/>
             </div>
             <div>
-                <label>Stock</label>
-                <input type="number" name="stock" value={articleData.stock} onChange={handleChange} />
+                <label htmlFor=''>Stock</label>
+                <input type="number" name="stock" value={articleData.stock} onChange={handleChange} className='form-control'/>
             </div>
             <div>
-                <label>Categorie ID</label>
-                <input type="number" name="categorie_fk" value={articleData.categorie_fk} onChange={handleChange} />
+                <label htmlFor=''>Categorie ID</label>
+                <input type="number" name="categorie_fk" value={articleData.categorie_fk} onChange={handleChange} className='form-control'/>
             </div>
-            <button type="submit">Ajouter un article</button>
+            
+            <div>
+                <label htmlFor=''>photo</label>
+                <input type="text" name="photo" value={articleData.photo} onChange={handleChange} className='form-control'/>
+            </div>
+            <div>
+                <button className= 'btn btn-success btn-block mt-3'>Ajouter un article</button>
+            </div>
+            
         </form>
+        </div>
+        </div>
     );
 };
 

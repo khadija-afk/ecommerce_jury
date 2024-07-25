@@ -30,6 +30,11 @@ export default (connection, DataTypes) => {
                 type: DataTypes.INTEGER,
                 allowNull: false
             },
+            photo:{
+                type: DataTypes.STRING,
+                allowNull: false
+
+            },
             user_fk:{
                 type: DataTypes.INTEGER,
                 allowNull: false

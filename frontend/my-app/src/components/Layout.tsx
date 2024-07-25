@@ -1,7 +1,7 @@
 import React from 'react'
 
 import { Outlet } from 'react-router-dom';
-import { Container } from 'react-bootstrap'
+//import { Container } from 'react-bootstrap'
 
 
 import Header from './header/Header'
@@ -11,14 +11,16 @@ const Layout = () => {
   return (
     <>
     <Header/>
-    <main className='py-3'> 
-        <Container>
+    <section >
+       
+       <Outlet />
 
-            <Outlet />
+        
+    </section>
 
-        </Container>
-    </main>
     <Footer/>
+    
+    
     
     
     

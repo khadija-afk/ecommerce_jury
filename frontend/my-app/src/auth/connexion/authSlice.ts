@@ -30,10 +30,15 @@ export const signInUser = createAsyncThunk('auth/signInUser', async (credentials
     const instance  = axios.create({
         withCredentials: true
     })
-    const response = await instance.post('http://localhost:3300/api/user/sign', credentials);
+    const response = await instance.post('http://localhost:9090/api/user/sign', credentials);
     const token = response.data.token;
+    const user = response.data;
+    console.log(user)
+    console.log(response)
     localStorage.setItem('token', token);
+    localStorage.setItem('user', JSON.stringify(user));
     return response.data;
+    
 });
 
 const authSlice = createSlice({
@@ -42,6 +47,7 @@ const authSlice = createSlice({
     reducers: {
         signOut(state) {
             state.user = null;
+            
         }
     },
     extraReducers: (builder) => {

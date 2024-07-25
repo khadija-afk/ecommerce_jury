@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { AppDispatch, RootState } from '../../store';
 import { signInUser } from './authSlice';
-import './SignForm.css'; // Importation du fichier CSS
+import styles from  '../../index.module.css';
 
 const SignInForm: React.FC = () => {
     const dispatch = useDispatch<AppDispatch>();
@@ -35,22 +35,29 @@ const SignInForm: React.FC = () => {
     }, [authStatus, navigate]);
 
     return (
-        <div className="signin-form">
-            <h2>Connexion</h2>
-            <form onSubmit={handleSubmit}>
-                <div className="form-group">
-                    <label>Email</label>
-                    <input type="email" name="email" onChange={handleChange} />
+        <div className={styles.sign}>
+            <div className='container-fluid'>
+            <form onSubmit={handleSubmit} className="mx-auto mt-20">
+                <div>
+                    <h2>Connexion</h2>
                 </div>
-                <div className="form-group">
-                    <label>Mot de passe</label>
-                    <input type="password" name="password" onChange={handleChange} />
+                <div >
+                    <label htmlFor=''>Email</label>
+                    <input type="email" name="email" onChange={handleChange} className='form-control' />
                 </div>
-                <button type="submit">Se connecter</button>
+                <div >
+                    <label htmlFor=''>Mot de passe</label>
+                    <input type="password" name="password" onChange={handleChange} className='form-control' />
+                </div>
+                <div>
+                    <button className= 'btn btn-success btn-block mt-3' >Se connecter</button>
+                </div>
             </form>
             {authStatus === 'loading' && <p className="status-message loading">Chargement...</p>}
             {authStatus === 'succeeded' && <p className="status-message success">Connexion réussie!</p>}
             {authStatus === 'failed' && <p className="status-message error">{error}</p>}
+            
+            </div>
         </div>
     );
 };

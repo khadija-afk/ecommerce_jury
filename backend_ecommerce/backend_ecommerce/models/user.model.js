@@ -39,7 +39,13 @@ export default (connection, DataTypes) => {
             country: {
                 type: DataTypes.STRING,
                 allowNull: false
-            }
+            },
+            role: {
+                type:   DataTypes.ENUM,
+                values: ['admin', 'user'],
+                default: ['user'],
+                allowNull: false
+            },
         },
         { timestamps: true }
     );
