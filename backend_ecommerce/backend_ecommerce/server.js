@@ -22,9 +22,7 @@ const app = express()
 
 // PORT
 const PORT = env.port || 9090
-import dotenv from 'dotenv';
 
-dotenv.config();
 
 
 // MIDDLEWARE

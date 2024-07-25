@@ -10,8 +10,16 @@ import cartItemModel from './cartItem.model.js';
 import paymentDetailModel from './paymentDetail.model.js';
 import dotenv from 'dotenv'
 
+dotenv.config();
+const dbPort = process.env.DB_PORT;
+const dbHOST = process.env.DB_HOST;
+const MYSQL_DATABASE = process.env.MYSQL_DATABASE
+const DB_USER = process.env.DB_USER
+const MYSQL_ROOT_PASSWORD = process.env.MYSQL_ROOT_PASSWORD
+const DIALECT = process.env.DIALECT
+console.log('DB Port:', dbPort);
 // Nouvelle connexion à la DB
-/*dotenv.config();
+/*
 
 const connection = new Sequelize({
   
@@ -30,13 +38,13 @@ const connection = new Sequelize({
   }
 });*/
 const connection = new Sequelize(
-  'e_commerce', // Nom de la base de donnée
-  'root', // identifiant Mysql
-  '', // Mot de passe Mysql
+  MYSQL_DATABASE, // Nom de la base de donnée
+  DB_USER, // identifiant Mysql
+  MYSQL_ROOT_PASSWORD, // Mot de passe Mysql
   {
-    host: 'localhost', // URL de mySQL
-    dialect: 'mysql',
-    port: '3396'
+    host: dbHOST, // URL de mySQL
+    dialect: DIALECT,
+    port: dbPort,
   }
 );
 
