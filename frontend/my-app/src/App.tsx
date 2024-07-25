@@ -10,7 +10,7 @@ import AddCategoryForm from './features/category/AddCategoryForm';
 import AddReviewForm from './features/review/AddReviewForm';
 import Detail from './features/article/DetailArticle';
 import Panier from './pages/Panier';
-import HomePage from './pages/Home';
+import HomePage from './pages/home';
 import Layout from './components/Layout';
 
 // SERVICES
