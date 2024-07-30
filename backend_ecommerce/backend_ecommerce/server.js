@@ -30,7 +30,7 @@ app.use(express.json())
 app.use(cookieParser())
 // Configurer CORS pour autoriser toutes les requêtes
 app.use(cors({
-  origin: 'http://localhost:5173', // Votre frontend
+  origin: 'http://localhost:3000', // Votre frontend
   credentials: true
 }));
 
@@ -49,6 +49,6 @@ export { app }
 
 
 // LISTEN
-app.listen(PORT, () => {
+app.listen(PORT,  () => {
   console.log(`Listening at http://localhost:${PORT}`);
 })

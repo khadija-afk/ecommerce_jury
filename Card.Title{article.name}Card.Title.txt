@@ -1,0 +1,6 @@
+				    <Card.Title>{article.name}</Card.Title>
+                                    <Card.Text>{article.content}</Card.Text>
+                                    <Card.Text><strong>Brand:</strong> {article.brand}</Card.Text>
+                                    <Card.Text><strong>Price:</strong> ${article.price}</Card.Text>
+                                    <Card.Text><strong>Stock:</strong> {article.stock}</Card.Text>
+				    <Button variant="primary">ajouter au panier</Button>
