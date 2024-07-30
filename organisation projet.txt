@@ -1,0 +1,41 @@
+question et organisation de application:
+
+comment securiset tes donne? web token cors ajouter certifecat crfs https comment tu securiser ton application
+
+attque: xss
+attaque SQL
+CRSF comment je mettre en place : comment securiser comment securiser base de donne
+maquettage application:
+comment diff entre nosql et sql
+choix de la technologique: back + front
+
+test avant de coder
+deploiment
+arcgitecteur application Back: MVC back
+la securite 
+les test: unitaire, integration, de bout en bout
+MCD + cas d'utilisarion
+maquettage
+deploiment: CI/CD devops jenkins les tests 
+
+
+1: la conception de projet
+
+dictionnaire de donne apres MCD apes MLD
+
+MCD -> MLD , use case, les relation, entité ,  
+
+2: arcgitecteur application Back: MVC back + maquettage + les tests
+
+	comment securiset tes donne? web token cors ajouter certifecat crfs https comment tu securiser ton application
+
+	attque: xss
+	attaque SQL
+	CRSF comment je mettre en place : comment securiser comment securiser base de donne
+
+
+3: DEVOPS: docker, jenkins, AWS, jest: test unitaire 				sécurite: nginx, web token, HTTPS
+
+
+
+
