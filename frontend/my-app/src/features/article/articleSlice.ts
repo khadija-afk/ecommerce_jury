@@ -66,6 +66,33 @@ export const addArticle = createAsyncThunk('articles/addArticle', async (article
     return response.data as Article;
 });
 
+export const updateArticle = createAsyncThunk('articles/updateArticle', async (article: Article) => {
+    const instance = axios.create({
+      withCredentials: true
+    });
+  
+    const token = localStorage.getItem('token');
+    const response = await instance.put(`http://localhost:9090/api/article/${article.id}`, article, {
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    });
+
+    return response.data as Article;
+});
+
+export const deleteArticle = createAsyncThunk('articles/deleteArticle', async (id: number) => {
+    const token = localStorage.getItem('token');
+    await axios.delete(`http://localhost:9090/api/article/${id}`, {
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    });
+    return id;
+  });
+
+
+
 const articleSlice = createSlice({
     name: 'articles',
     initialState,
@@ -103,6 +130,17 @@ const articleSlice = createSlice({
                 state.articles.push(action.payload);
             })
             .addCase(addArticle.rejected, (state, action) => {
+                state.status = 'failed';
+                state.error = action.error.message || null;
+            })
+            .addCase(updateArticle.pending, (state) => {
+                state.status = 'loading';
+            })
+            .addCase(updateArticle.fulfilled, (state, action) => {
+                state.status = 'succeeded';
+                state.articles.push(action.payload);
+            })
+            .addCase(updateArticle.rejected, (state, action) => {
                 state.status = 'failed';
                 state.error = action.error.message || null;
             });
