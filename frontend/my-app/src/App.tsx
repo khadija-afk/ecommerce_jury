@@ -5,13 +5,14 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import RegisterForm from './auth/inscription/RegisterForm';
 import SignInForm from './auth/connexion/SignForm';
 import ArticleList from './features/article/ArticleList';
-import AddArticleForm from './features/article/AddArticleForm';
 import AddCategoryForm from './features/category/AddCategoryForm';
 import AddReviewForm from './features/review/AddReviewForm';
 import Detail from './features/article/DetailArticle';
 import Panier from './pages/Panier';
 import HomePage from './pages/home';
 import Layout from './components/Layout';
+import Users from './dashbord/user/Users';
+import Articles from './dashbord/article/Articles';
 
 // SERVICES
 import PublicRoute  from './utils/helpers/PublicRoute'
@@ -23,22 +24,32 @@ const App = () => {
     <Router>
       <Routes>
        
-          <Route path = '/' element = {<Layout/>}>
-          <Route index element={<HomePage />} /> {/* Route pour la page d'accueil */}
-          <Route element={<PublicRoute/>}>
-          <Route path="register" element={<RegisterForm />} />
-          <Route path="sign" element={<SignInForm />} />
-          </Route>
-          <Route path="article" element={<ArticleList />} />
-          <Route path="review/add" element={<AddReviewForm />} />
-          <Route path="api/article/:id" element={<Detail />} />
-          <Route path = "/panier" element = {<Panier />} />
-          <Route element={<PrivateRoute/>}>
-          <Route path="article/add" element={<AddArticleForm />} />
-          <Route path="category/add" element={<AddCategoryForm />} />
-          </Route>
+        <Route path = '/' element = {<Layout/>}>  {/* Nav pour les anonymous utilisateur */}
+
+          <Route element={<PublicRoute/>}>    {/* Route pour les utilisateur  */}
+
+            <Route index element={<HomePage />} /> 
+            <Route path="register" element={<RegisterForm />} />
+            <Route path="sign" element={<SignInForm />} />
+            <Route path="article" element={<ArticleList />} />
+            <Route path="review/add" element={<AddReviewForm />} />
+            <Route path="api/article/:id" element={<Detail />} />
+            <Route path = "/panier" element = {<Panier />} />
 
           </Route>
+
+        
+           
+           
+          <Route element={<PrivateRoute/>}>   {/* Route pour admin */}
+
+            <Route path="category/add" element={<AddCategoryForm />} />
+            <Route path="user" element={<Users />} />
+            <Route path="articles" element={<Articles />} />
+          
+          </Route>
+
+        </Route>
         
       </Routes>
     </Router>

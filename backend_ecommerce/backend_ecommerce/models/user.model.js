@@ -20,26 +20,7 @@ export default (connection, DataTypes) => {
                 type: DataTypes.STRING,
                 allowNull: false
             },
-            adresse: {
-                type: DataTypes.STRING,
-                allowNull: false
-            },
-            city: {
-                type: DataTypes.STRING,
-                allowNull: false
-            },
-            password: {
-                type: DataTypes.STRING,
-                allowNull: false
-            },
-            postale_code: {
-                type: DataTypes.STRING,
-                allowNull: false
-            },
-            country: {
-                type: DataTypes.STRING,
-                allowNull: false
-            },
+            
             role: {
                 type:   DataTypes.ENUM,
                 values: ['admin', 'user'],

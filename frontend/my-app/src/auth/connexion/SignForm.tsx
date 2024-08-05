@@ -30,7 +30,7 @@ const SignInForm: React.FC = () => {
 
     useEffect(() => {
         if (authStatus === 'succeeded') {
-            navigate('/article/add'); // Rediriger vers la page d'ajout d'article
+            navigate('/'); // Rediriger vers la page accuiel
         }
     }, [authStatus, navigate]);
 
