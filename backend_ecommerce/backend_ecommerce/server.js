@@ -2,6 +2,7 @@ import express from 'express'
 import { env } from './config.js'
 import cookieParser from 'cookie-parser'
 import cors from 'cors'
+import Stripe from 'stripe'
 
 // Connexion MySQL
 import './models/index.js'
@@ -15,6 +16,9 @@ import routerOrderItem from './routes/orderItem.js'
 import routerReview from './routes/review.js'
 import routerCart from './routes/cart.js'
 import routerCartItem from './routes/cartItem.js'
+import routerStripe from './routes/stripe.js'
+
+
 
 
 
@@ -43,6 +47,10 @@ app.use("/api/orderItem", routerOrderItem)
 app.use("/api/review", routerReview)
 app.use("/api/cart", routerCart)
 app.use("/api/cartItem", routerCartItem)
+app.use("/api/stripe", routerStripe)
+
+
+
 
 // Exporter l'application pour les tests
 export { app }

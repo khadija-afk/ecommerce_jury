@@ -35,6 +35,7 @@ const App = () => {
             <Route path="review/add" element={<AddReviewForm />} />
             <Route path="api/article/:id" element={<Detail />} />
             <Route path = "/panier" element = {<Panier />} />
+            
 
           </Route>
 

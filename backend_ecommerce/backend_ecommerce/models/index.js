@@ -122,7 +122,7 @@ CartItem.belongsTo(Article, { foreignKey: 'product_fk' });
 const syncModels = async () => {
   try {
     // Synchroniser les modèles séparément
-    await User.sync({alter: true});
+    await User.sync(/*{alter: true}*/);
     await Categorie.sync();
     await Article.sync({alter: true});
     await Order.sync();

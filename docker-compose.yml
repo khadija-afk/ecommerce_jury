@@ -19,6 +19,8 @@ services:
       - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
       - MYSQL_DATABASE=${MYSQL_DATABASE}
       - TOKEN=${TOKEN}
+      - SECRET_KEY=${SECRET_KEY}
+      - WEB_APP_URL= http://localhost:3000
 
   frontend:
     build:
