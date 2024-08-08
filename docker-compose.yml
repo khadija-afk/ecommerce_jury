@@ -21,6 +21,7 @@ services:
       - TOKEN=${TOKEN}
       - SECRET_KEY=${SECRET_KEY}
       - WEB_APP_URL= http://localhost:3000
+      - VITE_PUBLIC_KEY_STRIPE=${VITE_PUBLIC_KEY_STRIPE}
 
   frontend:
     build:
@@ -33,6 +34,7 @@ services:
       - ./frontend/my-app/package.json:/app/package.json
     environment:
       - NODE_ENV=${NODE_ENV}
+      - VITE_PUBLIC_KEY_STRIPE=${VITE_PUBLIC_KEY_STRIPE}
 
   db:
     image: mysql:5.7
