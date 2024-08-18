@@ -12,17 +12,26 @@ import { PanierProvider } from './utils/PanierContext';
 import { Elements } from '@stripe/react-stripe-js';
 import { loadStripe } from '@stripe/stripe-js';
 
+//admin
+import { Admin, Resource } from 'react-admin';
+import ArticleList from "./dashbord/article/Articles"
+import Users from './dashbord/user/Users';
+
 const stripePromise = loadStripe("pk_test_51Phom3EnHYhhKmcInexE46fzy9I8IPWmwGNlN3LWEAoZjTLCYtKelEVVuAr0Lf1dPc316bGFmxHZRdOevjfK4rT300mcydSb7T")
 
+const root = document.getElementById('root') as HTMLElement
 
-
-ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
+ReactDOM.createRoot(root).render(
   <React.StrictMode>
     <Provider store={store}>
      
       <PanierProvider>
       <Elements stripe={stripePromise}>
         <App />
+        <Admin>
+          <Resource name="articles" list={ArticleList} />
+          <Resource name="users" list={Users}  edit={Users} create={Users} />
+        </Admin>
       </Elements>
       </PanierProvider>
       

@@ -31,7 +31,8 @@ export const signInUser = createAsyncThunk('auth/signInUser', async (credentials
         withCredentials: true
     })
     const response = await instance.post('http://localhost:9090/api/user/sign', credentials);
-    const token = response.data.token;
+    const { token } = response.data;
+    console.log(token)
     const user = response.data;
     console.log(user)
     console.log(response)

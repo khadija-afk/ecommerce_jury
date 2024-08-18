@@ -5,4 +5,4 @@ const PublicRoute = () => {
   return user ?  <Navigate to="/" /> : <Outlet />;
 };
 
-export default PublicRoute;
+export default PublicRoute
