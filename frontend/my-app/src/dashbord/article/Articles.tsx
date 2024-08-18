@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchArticles } from '../../features/article/articleSlice';
+import { fetchArticles, deleteArticle } from '../../features/article/articleSlice';
 import {
   Container,
   Button,
@@ -19,7 +19,7 @@ import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import AddArticle from './AddArticle'; // Import du formulaire d'ajout d'article
 import UpdateArticle from './UpdateArticle'; // Import du formulaire de mise à jour d'article
-import axios from 'axios';
+import { List, Datagrid, TextField, DateField, EditButton } from 'react-admin';
 
 const Articles = () => {
   const dispatch = useDispatch();
@@ -45,19 +45,11 @@ const Articles = () => {
     setOpenUpdate(true);
   };
 
-  const handleDelete = async (id) => {
-    try {
-      const token = localStorage.getItem('token'); // Récupérer le jeton depuis le stockage local ou autre source
-      await axios.delete(`http://localhost:9090/api/article/${id}`, {
-        headers: {
-          'Authorization': `Bearer ${token}`
-        }
-      });
-      dispatch(fetchArticles()); // Assurez-vous que la mise à jour de la liste des articles est effectuée
-    } catch (error) {
-      console.error('Error deleting article:', error);
-    }
+  const handleDelete = (id: number) => {
+    dispatch(deleteArticle(id));
   };
+
+  
 
   return (
     <Container>
@@ -116,3 +108,13 @@ const Articles = () => {
 };
 
 export default Articles;
+export const ArticleList = () => (
+  <List>
+      <Datagrid>
+          <TextField source="id" />
+          <TextField source="name" />
+          <TextField source="content" />
+          <EditButton />
+      </Datagrid>
+  </List>
+);

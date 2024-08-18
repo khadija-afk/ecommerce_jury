@@ -41,6 +41,7 @@ const initialState: ArticleState = {
 
 // Get token from local storage
 const token = localStorage.getItem('token');
+console.log(token)
 
 export const fetchArticles = createAsyncThunk('articles/fetchArticles', async () => {
     const response = await axios.get('http://localhost:9090/api/article/', {
@@ -82,14 +83,20 @@ export const updateArticle = createAsyncThunk('articles/updateArticle', async (a
 });
 
 export const deleteArticle = createAsyncThunk('articles/deleteArticle', async (id: number) => {
+    const instance = axios.create({
+        withCredentials: true
+      });
     const token = localStorage.getItem('token');
-    await axios.delete(`http://localhost:9090/api/article/${id}`, {
-      headers: {
-        'Authorization': `Bearer ${token}`
-      }
+    const response = await instance.delete(`http://localhost:9090/api/article/${id}`, {
+        headers: {
+            'Authorization': `Bearer ${token}`
+          }
+
     });
+
     return id;
-  });
+});
+
 
 
 
@@ -141,6 +148,19 @@ const articleSlice = createSlice({
                 state.articles.push(action.payload);
             })
             .addCase(updateArticle.rejected, (state, action) => {
+                state.status = 'failed';
+                state.error = action.error.message || null;
+            })
+
+            .addCase(deleteArticle.pending, (state) => {
+                state.status = 'loading';
+            })
+            .addCase(deleteArticle.fulfilled, (state, action) => {
+                state.status = 'succeeded';
+                // Supprime l'article de l'état par son ID
+                state.articles = state.articles.filter(article => article.id !== action.payload);
+            })
+            .addCase(deleteArticle.rejected, (state, action) => {
                 state.status = 'failed';
                 state.error = action.error.message || null;
             });

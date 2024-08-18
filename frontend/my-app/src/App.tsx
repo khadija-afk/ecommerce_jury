@@ -15,12 +15,14 @@ import Users from './dashbord/user/Users';
 import Articles from './dashbord/article/Articles';
 import Success from './components/stripe/Successe';
 import Canceled from './components/stripe/Canceled';
+import Dashboard from './dashbord/page';
 
 // SERVICES
-import PublicRoute  from './utils/helpers/PublicRoute'
-import PrivateRoute from './utils/helpers/PrivateRoute'
+import PublicRoute  from './utils/helpers/PublicRoute';
+import PrivateRoute from './utils/helpers/PrivateRoute';
 
-
+// ADMIN
+import { Admin, Resource } from 'react-admin';
 
 const App = () => {
   return (
@@ -29,7 +31,7 @@ const App = () => {
        
         <Route path = '/' element = {<Layout/>}>  {/* Nav pour les anonymous utilisateur */}
 
-         {/*<Route element={<PublicRoute/>}>    {/* Route pour les utilisateur  */}
+         <Route element={<PublicRoute/>}>    {/* Route pour les utilisateur  */}
 
             <Route index element={<HomePage />} /> 
             <Route path="register" element={<RegisterForm />} />
@@ -40,26 +42,16 @@ const App = () => {
             <Route path = "/panier" element = {<Panier />} />
             <Route path = "/success" element = {<Success />} />
             <Route path = "/cancel" element = {<Canceled />} />
-
-            
-            
-            
-
           </Route>
 
-        
-           
-           
-          {/*<Route element={<PrivateRoute/>}>   {/* Route pour admin */}
-
+          </Route>
+            <Route element={<PrivateRoute/>}>   {/* Route pour admin */}
             <Route path="category/add" element={<AddCategoryForm />} />
             <Route path="user" element={<Users />} />
             <Route path="articles" element={<Articles />} />
-          
-          
 
-        
-        
+          </Route>
+
       </Routes>
     </Router>
   );
