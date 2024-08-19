@@ -28,10 +28,6 @@ ReactDOM.createRoot(root).render(
       <PanierProvider>
       <Elements stripe={stripePromise}>
         <App />
-        <Admin>
-          <Resource name="articles" list={ArticleList} />
-          <Resource name="users" list={Users}  edit={Users} create={Users} />
-        </Admin>
       </Elements>
       </PanierProvider>
       
