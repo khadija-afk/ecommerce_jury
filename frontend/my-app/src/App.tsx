@@ -16,6 +16,7 @@ import Articles from './dashbord/article/Articles';
 import Success from './components/stripe/Successe';
 import Canceled from './components/stripe/Canceled';
 import Dashboard from './dashbord/page';
+import Page from './dashbord/page';
 
 // SERVICES
 import PublicRoute  from './utils/helpers/PublicRoute';
@@ -49,6 +50,7 @@ const App = () => {
             <Route path="category/add" element={<AddCategoryForm />} />
             <Route path="user" element={<Users />} />
             <Route path="articles" element={<Articles />} />
+            <Route path="admin" element={<Page />} />
 
           </Route>
 
