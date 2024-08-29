@@ -17,7 +17,8 @@ import routerReview from './routes/review.js'
 import routerCart from './routes/cart.js'
 import routerCartItem from './routes/cartItem.js'
 import routerStripe from './routes/stripe.js'
-
+import routes from './routes/reset.js'
+import routLogout from './routes/logout.js'
 
 
 
@@ -48,6 +49,8 @@ app.use("/api/review", routerReview)
 app.use("/api/cart", routerCart)
 app.use("/api/cartItem", routerCartItem)
 app.use("/api/stripe", routerStripe)
+app.use("/api", routes);
+app.use("/api/Log", routLogout)
 
 
 

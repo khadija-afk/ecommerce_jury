@@ -2,86 +2,117 @@ import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../../store';
 import { registerUser, UserData } from './userSlice';
-import styles from '../../index.module.css'
+import { Button, TextField, Typography, Grid, Box, Container } from '@mui/material';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
+
+const defaultTheme = createTheme();
 
 const RegisterForm: React.FC = () => {
-    const dispatch = useDispatch<AppDispatch>();
-    const userStatus = useSelector((state: RootState) => state.user.status);
-    const error = useSelector((state: RootState) => state.user.error);
-    const user = useSelector((state: RootState) => state.user.user);
+  const dispatch = useDispatch<AppDispatch>();
+  const userStatus = useSelector((state: RootState) => state.user.status);
+  const error = useSelector((state: RootState) => state.user.error);
 
-    const [formData, setFormData] = useState<UserData>({
-        firstName: '',
-        lastName: '',
-        email: '',
-        password: '',
-        adresse: '',
-        city: '',
-        postale_code: '',
-        country: ''
+  const [formData, setFormData] = useState<UserData>({
+    firstName: '',
+    lastName: '',
+    email: '',
+    password: '',
+    role: 'user' // Ajout du champ rôle si nécessaire
+  });
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value
     });
+  };
 
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setFormData({
-            ...formData,
-            [e.target.name]: e.target.value
-        });
-    };
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    dispatch(registerUser(formData));
+  };
 
-    const handleSubmit = (e: React.FormEvent) => {
-        e.preventDefault();
-        dispatch(registerUser(formData));
-    };
-
-    return (
-        <div className={styles.registre}>
-            <div className='container-fluid'>
-            <form onSubmit={handleSubmit} className="mx-auto mt-20">
-                <div className=" text-3xl text-success">
-                    <h2>Veuillez vous inscrire</h2>
-                </div>
-                <div >
-                    <label htmlFor=''>Prénom</label>
-                    <input type="text" name="firstName" onChange={handleChange} value={formData.firstName} className='form-control'/>
-                </div>
-                <div >
-                    <label htmlFor=''>Nom</label>
-                    <input type="text" name="lastName" onChange={handleChange} value={formData.lastName} className='form-control'/>
-                </div>
-                <div >
-                    <label htmlFor=''>Email</label>
-                    <input type="email" name="email" onChange={handleChange} value={formData.email} className='form-control'/>
-                </div>
-                <div >
-                    <label htmlFor=''>Mot de passe</label>
-                    <input type="password" name="password" onChange={handleChange} value={formData.password} className='form-control'/>
-                </div>
-                <div >
-                    <label htmlFor=''>Adresse</label>
-                    <input type="text" name="adresse" onChange={handleChange} value={formData.adresse} className='form-control'/>
-                </div>
-                <div >
-                    <label htmlFor=''>Ville</label>
-                    <input type="text" name="city" onChange={handleChange} value={formData.city} className='form-control'/>
-                </div>
-                <div >
-                    <label htmlFor=''>Code postal</label>
-                    <input type="text" name="postale_code" onChange={handleChange} value={formData.postale_code} className='form-control'/>
-                </div>
-                <div >
-                    <label htmlFor=''>Pays</label>
-                    <input type="text" name="country" onChange={handleChange} value={formData.country} className='form-control'/>
-                </div>
-                <div>
-                    <button className= 'btn btn-success btn-block mt-3'>S'inscrire</button>
-                </div>
-            </form>
-            {userStatus === 'loading' && <p className="status-message loading">Chargement...</p>}
-            {userStatus === 'succeeded' && user && <p className="status-message success">Utilisateur créé avec succès!</p>}
-            {userStatus === 'failed' && <p className="status-message error">{error}</p>}
-            </div>
-        </div>
-    );
+  return (
+    <ThemeProvider theme={defaultTheme}>
+      <Container component="main" maxWidth="xs">
+        <Box sx={{ marginTop: 8, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+          <Typography component="h1" variant="h5">
+            Inscription
+          </Typography>
+          <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 3 }}>
+            <Grid container spacing={2}>
+              <Grid item xs={12} sm={6}>
+                <TextField
+                  autoComplete="given-name"
+                  name="firstName"
+                  required
+                  fullWidth
+                  id="firstName"
+                  label="Prénom"
+                  autoFocus
+                  onChange={handleChange}
+                  value={formData.firstName}
+                />
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                <TextField
+                  required
+                  fullWidth
+                  id="lastName"
+                  label="Nom"
+                  name="lastName"
+                  autoComplete="family-name"
+                  onChange={handleChange}
+                  value={formData.lastName}
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  required
+                  fullWidth
+                  id="email"
+                  label="Email Address"
+                  name="email"
+                  autoComplete="email"
+                  onChange={handleChange}
+                  value={formData.email}
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  required
+                  fullWidth
+                  name="password"
+                  label="Mot de passe"
+                  type="password"
+                  id="password"
+                  autoComplete="new-password"
+                  onChange={handleChange}
+                  value={formData.password}
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  fullWidth
+                  name="role"
+                  label="Rôle"
+                  id="role"
+                  onChange={handleChange}
+                  value={formData.role}
+                />
+              </Grid>
+            </Grid>
+            <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
+              S'inscrire
+            </Button>
+          </Box>
+          {userStatus === 'loading' && <Typography variant="body2" color="text.secondary">Chargement...</Typography>}
+          {userStatus === 'succeeded' && <Typography variant="body2" color="success.main">Utilisateur créé avec succès!</Typography>}
+          {userStatus === 'failed' && <Typography variant="body2" color="error.main">{error}</Typography>}
+        </Box>
+      </Container>
+    </ThemeProvider>
+  );
 };
 
 export default RegisterForm;

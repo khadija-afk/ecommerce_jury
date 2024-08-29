@@ -2,24 +2,21 @@ import React, { useEffect, useContext } from 'react';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import { useDispatch, useSelector } from 'react-redux';
+import { usePanier } from '../../utils/PanierContext';
 
 // CONTEXTE
-import { PanierContext } from '../../utils/PanierContext';
-
-// Importation des actions de Redux
 import * as ACTIONS from './articleSlice';
-
-// Importation de l'interface et du type pour les articles
 import { RootState, Article } from '../../types/Article';
 
-// URLS
+// Style
+import './DetailArticles.css'
+
 const URL = {
     GET_ONE_ARTICLE: (id: string) => `http://localhost:9090/api/article/${id}`
 };
 
 const DetailArticle: React.FC = () => {
-    const { addPanier } = useContext(PanierContext);
-
+    const { addPanier } = usePanier();
     const dispatch = useDispatch();
     const { id } = useParams<{ id: string }>();
     const articleId = Number(id);
@@ -47,6 +44,10 @@ const DetailArticle: React.FC = () => {
         fetchArticle();
     }, [id, dispatch]);
 
+    const handleAddToPanier = (article: Article) => {
+        addPanier(article);
+    };
+
     return (
         <div>
             {article && article.photo &&
@@ -72,7 +73,7 @@ const DetailArticle: React.FC = () => {
                         <h2>{article.name}</h2>
                         <p>{article.content}</p>
                         <p>{article.price} €</p>
-                        <button onClick={() => addPanier(article)}>AJOUTER</button>
+                        <button onClick={() => handleAddToPanier(article)}>AJOUTER</button>
                     </div>
                 </section>
             }

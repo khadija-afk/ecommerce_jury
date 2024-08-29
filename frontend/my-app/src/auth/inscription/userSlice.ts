@@ -7,10 +7,7 @@ interface UserData {
     lastName: string;
     email: string;
     password: string;
-    adresse: string;
-    city: string;
-    postale_code: string;
-    country: string;
+    role: string;
 }
 
 interface UserState {
