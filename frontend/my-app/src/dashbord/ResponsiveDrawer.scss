@@ -1,0 +1,15 @@
+/* ResponsiveDrawer.scss */
+
+/* Styles pour le Drawer */
+.drawerPaper {
+  box-sizing: border-box;
+  width: 240px;
+  background-color: black;  /* Couleur de fond du Drawer */
+  color: white;  /* Couleur du texte dans le Drawer */
+  transition: transform 0.3s ease;  /* Transition pour la transformation */
+}
+
+/* Classe pour appliquer une transformation */
+.drawerPaperTransform {
+  transform: translateX(-100%);  /* Déplacer le Drawer hors de l'écran */
+}

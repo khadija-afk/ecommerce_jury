@@ -7,6 +7,7 @@ import App from './App';
 import './index.css';
 import { PanierProvider } from './utils/PanierContext';
 
+
 //STRIPE
 
 import { Elements } from '@stripe/react-stripe-js';

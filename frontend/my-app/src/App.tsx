@@ -25,6 +25,9 @@ import PrivateRoute from './utils/helpers/PrivateRoute';
 // ADMIN
 import { Admin, Resource } from 'react-admin';
 
+//styles
+
+
 const App = () => {
   return (
     <Router>
@@ -32,11 +35,9 @@ const App = () => {
        
         <Route path = '/' element = {<Layout/>}>  {/* Nav pour les anonymous utilisateur */}
 
-         <Route element={<PublicRoute/>}>    {/* Route pour les utilisateur  */}
+         {/* <Route element={<PublicRoute/>}>    Route pour les utilisateur  */}
 
             <Route index element={<HomePage />} /> 
-            <Route path="register" element={<RegisterForm />} />
-            <Route path="sign" element={<SignInForm />} />
             <Route path="article" element={<ArticleList />} />
             <Route path="review/add" element={<AddReviewForm />} />
             <Route path="api/article/:id" element={<Detail />} />
@@ -45,14 +46,23 @@ const App = () => {
             <Route path = "/cancel" element = {<Canceled />} />
           </Route>
 
-          </Route>
-            <Route element={<PrivateRoute/>}>   {/* Route pour admin */}
+          {/* </Route> */}
+
+
+          {/* // connexion */}
+
+          <Route path="register" element={<RegisterForm />} />
+          <Route path="sign" element={<SignInForm />} />
+
+
+
+            {/* <Route element={<PrivateRoute/>}>   Route pour admin */}
             <Route path="category/add" element={<AddCategoryForm />} />
             <Route path="user" element={<Users />} />
             <Route path="articles" element={<Articles />} />
             <Route path="admin" element={<Page />} />
 
-          </Route>
+          {/* </Route> */}
 
       </Routes>
     </Router>

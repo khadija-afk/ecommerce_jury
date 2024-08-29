@@ -1,123 +1,135 @@
-import React, { createContext, useState, useEffect } from 'react'
+import React, { createContext, useState, useEffect, ReactNode, useContext } from 'react';
 import { debounce } from 'lodash';
 
-// Création du contexte PanierContext
-export const PanierContext = createContext()
+// Définition du type d'article
+interface Article {
+  id: number;
+  name: string;
+  price: number;
+  quantite: number;
+  // Ajoutez d'autres propriétés nécessaires
+}
 
-// Création du fournisseur de contexte PanierProvider
-export const PanierProvider = ({ children }) => {
-  // État pour suivre si les données sont en cours de chargement
-  const [isLoading, setIsLoading] = useState(false)
+// Définition du type du contexte
+interface PanierContextType {
+  panier: Article[];
+  totalPrice: number;
+  totalArticle: number;
+  addPanier: (product: Article) => void;
+  incremente: (index: number) => void;
+  decremente: (index: number) => void;
+  removeArticle: (index: number) => void;
+  priceArticleByQuantity: (price: number, quantity: number) => number;
+}
 
-  // État pour stocker les articles dans le panier
-  const [panier, setPanier] = useState([]);
-  // État pour stocker le prix total des articles dans le panier
+// Création du contexte
+export const PanierContext = createContext<PanierContextType | undefined>(undefined);
+
+// Création du hook personnalisé pour utiliser le PanierContext
+export const usePanier = () => {
+  const context = useContext(PanierContext);
+  if (!context) {
+    throw new Error('usePanier must be used within a PanierProvider');
+  }
+  return context;
+};
+
+// Création du fournisseur de contexte
+export const PanierProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
+  const [panier, setPanier] = useState<Article[]>([]);
   const [totalPrice, setTotalPrice] = useState(0);
 
-  // Effet pour charger le panier depuis le localStorage lorsque le composant est monté
+  // Charger le panier depuis le localStorage
   useEffect(() => {
     const loadPanier = async () => {
       try {
-        const panierJSON = await localStorage.getItem("panier");
-        if (panierJSON !== null) {
-          const panierStorage = JSON.parse(panierJSON);
-          setPanier(panierStorage);
+        const panierJSON = localStorage.getItem("panier");
+        if (panierJSON) {
+          setPanier(JSON.parse(panierJSON));
         }
       } catch (error) {
-        console.log(error);
+        console.error('Error loading panier:', error);
       }
     };
     loadPanier();
   }, []);
 
-  // Effet pour calculer et mettre à jour le prix total lorsque le panier change
+  // Mettre à jour le prix total lorsque le panier change
   useEffect(() => {
-    let total = 0;
-    panier.forEach(item => total += item.quantite * item.price) 
+    const total = panier.reduce((acc, item) => acc + item.quantite * item.price, 0);
     setTotalPrice(parseFloat(total.toFixed(2)));
   }, [panier]);
 
-  // Fonction debounce pour sauvegarder le panier dans le localStorage après une seconde
-  const savePanierToLocalStorage = debounce((nouveauPanier) => {
-    localStorage.setItem('panier', JSON.stringify(nouveauPanier))
-  }, 1000);  
+  // Fonction pour sauvegarder le panier dans le localStorage après un délai
+  const savePanierToLocalStorage = debounce((nouveauPanier: Article[]) => {
+    localStorage.setItem('panier', JSON.stringify(nouveauPanier));
+  }, 1000);
 
-  // Fonction pour calculer le nombre total d'articles dans le panier
-  const totalArticle = () => {
-    let totalArticle = 0;
-    panier.forEach(item => totalArticle += item.quantite);
-    return totalArticle;
-  }
+  // Fonction pour obtenir le nombre total d'articles dans le panier
+  const totalArticle = () => panier.reduce((acc, item) => acc + item.quantite, 0);
 
   // Fonction pour calculer le prix total d'un article en fonction de sa quantité
-  const priceArticleByQuantity = (price, quantity) => {
-    const result = price * quantity
-    return parseFloat(result.toFixed(2))
-  }
-
-  // Fonction pour incrémenter la quantité d'un article dans le panier
-  const incremente = (index) => {
-    const nouveauPanier = [...panier]
-    nouveauPanier[index].quantite++
-    setPanier(nouveauPanier)
-    savePanierToLocalStorage(nouveauPanier)
-  }
-
-  // Fonction pour décrémenter la quantité d'un article dans le panier
-  const decremente = (index) => {
-    const nouveauPanier = [...panier]
-    if(nouveauPanier[index].quantite > 1){
-      nouveauPanier[index].quantite--
-      setPanier(nouveauPanier)
-      savePanierToLocalStorage(nouveauPanier)
-    }
-  }
-
-  // Fonction pour supprimer un article du panier
-  const removeArticle = (index) => {
-    const nouveauPanier = [...panier]
-    nouveauPanier.splice(index, 1)
-    setPanier(nouveauPanier)
-    savePanierToLocalStorage(nouveauPanier)
-  }
+  const priceArticleByQuantity = (price: number, quantity: number) => parseFloat((price * quantity).toFixed(2));
 
   // Fonction pour ajouter un article au panier
-  const addPanier = async (product) => {
+  const addPanier = async (product: Article) => {
     try {
-      console.log(product)
-      // Récupérer le panier depuis le storage
-      const panier = await localStorage.getItem("panier");
-      let nouveauPanier = [];
+      const panierJSON = localStorage.getItem("panier");
+      let nouveauPanier: Article[] = panierJSON ? JSON.parse(panierJSON) : [];
   
-      if (panier !== null) {
-        // Si le panier existe déjà dans le storage, on le convertit en tableau d'objets
-        nouveauPanier = JSON.parse(panier);
-        // Vérifier si l'article sélectionné existe déjà dans le panier
-        const articleFinded = nouveauPanier.find(item => item.id == product.id);
+      const articleFinded = nouveauPanier.find(item => item.id === product.id);
   
-        // si l'article existe déjà, on augmente sa quantité de 1
-        if (articleFinded) {
-          articleFinded.quantite += 1;
-        } else {
-          // sinon on ajoute l'article dans le panier
-          nouveauPanier.push({ ...product, quantite: 1 });
-        }
+      if (articleFinded) {
+        articleFinded.quantite += 1;
       } else {
-        // sinon on ajoute l'article dans le panier
         nouveauPanier.push({ ...product, quantite: 1 });
       }
-      // Enregistrer le nouveau panier dans le storage grâce à setItem
-      savePanierToLocalStorage(nouveauPanier)
+  
       setPanier(nouveauPanier);
+      savePanierToLocalStorage(nouveauPanier);
     } catch (error) {
-      console.log(error);
+      console.error('Error adding item to panier:', error);
     }
-  }
+  };
+
+  // Fonction pour incrémenter la quantité d'un article dans le panier
+  const incremente = (index: number) => {
+    const nouveauPanier = [...panier];
+    nouveauPanier[index].quantite++;
+    setPanier(nouveauPanier);
+    savePanierToLocalStorage(nouveauPanier);
+  };
+
+  // Fonction pour décrémenter la quantité d'un article dans le panier
+  const decremente = (index: number) => {
+    const nouveauPanier = [...panier];
+    if (nouveauPanier[index].quantite > 1) {
+      nouveauPanier[index].quantite--;
+      setPanier(nouveauPanier);
+      savePanierToLocalStorage(nouveauPanier);
+    }
+  };
+
+  // Fonction pour supprimer un article du panier
+  const removeArticle = (index: number) => {
+    const nouveauPanier = panier.filter((_, i) => i !== index);
+    setPanier(nouveauPanier);
+    savePanierToLocalStorage(nouveauPanier);
+  };
 
   // Retour du fournisseur de contexte avec les valeurs et les enfants
   return (
-    <PanierContext.Provider value={{ incremente, decremente, addPanier, priceArticleByQuantity, totalArticle, panier, totalPrice, removeArticle }}>
+    <PanierContext.Provider value={{
+      panier,
+      totalPrice,
+      totalArticle,
+      addPanier,
+      incremente,
+      decremente,
+      removeArticle,
+      priceArticleByQuantity
+    }}>
       {children}
     </PanierContext.Provider>
-  )
-}
+  );
+};

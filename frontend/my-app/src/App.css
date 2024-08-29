@@ -55,3 +55,9 @@
   min-height: calc(100vh - 70px); /* Assure que le contenu prend toute la hauteur de la page, en soustrayant la hauteur de la navbar */
 }
 
+.drawerPaper {
+  background-color: rgb(19, 18, 18) !important;
+  color: white !important;
+  width: 240px !important;
+}
+
