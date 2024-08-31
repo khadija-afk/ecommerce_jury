@@ -7,8 +7,14 @@ services:
     container_name: backend
     ports:
       - "9090:9090"
-    # volumes:
-    #   - ./backend_ecommerce/backend_ecommerce:/server
+    volumes:
+      - ./backend_ecommerce/backend_ecommerce/config:/app/config
+      - ./backend_ecommerce/backend_ecommerce/models:/app/models
+      - ./backend_ecommerce/backend_ecommerce/migrations:/app/migrations
+      - ./backend_ecommerce/backend_ecommerce/seeders:/app/seeders
+      - ./backend_ecommerce/backend_ecommerce/controllers:/app/controllers
+      
+      
     environment:
       - NODE_ENV=${NODE_ENV}
       - DB_HOST=${DB_HOST}

@@ -6,7 +6,6 @@ import RegisterForm from './auth/inscription/RegisterForm';
 import SignInForm from './auth/connexion/SignForm';
 import ArticleList from './features/article/ArticleList';
 import AddCategoryForm from './features/category/AddCategoryForm';
-import AddReviewForm from './features/review/AddReviewForm';
 import Detail from './features/article/DetailArticle';
 import Panier from './pages/panier/Panier';
 import HomePage from './pages/home';
@@ -39,7 +38,6 @@ const App = () => {
 
             <Route index element={<HomePage />} /> 
             <Route path="article" element={<ArticleList />} />
-            <Route path="review/add" element={<AddReviewForm />} />
             <Route path="api/article/:id" element={<Detail />} />
             <Route path = "/panier" element = {<Panier />} />
             <Route path = "/success" element = {<Success />} />

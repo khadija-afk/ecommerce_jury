@@ -1,4 +1,4 @@
-import { OrderItem } from '../models/index.js';
+// import { OrderItem } from '../models/index.js';
 
 // Récupérer tous les articles de commande
 export const getAllOrderItems = async (req, res) => {

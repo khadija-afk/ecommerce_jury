@@ -1,4 +1,4 @@
-import React, { useEffect, useContext } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import { useDispatch, useSelector } from 'react-redux';
@@ -25,6 +25,14 @@ const DetailArticle: React.FC = () => {
         state.articles.articles.find(article => article.id === articleId)
     );
 
+    const [mainPhoto, setMainPhoto] = useState<string | null>(null);
+
+    useEffect(() => {
+        if (article && article.photo && article.photo.length > 0) {
+            setMainPhoto(article.photo[0]); // Initialiser la photo principale
+        }
+    }, [article]);
+
     useEffect(() => {
         const fetchArticle = async () => {
             dispatch(ACTIONS.FETCH_ARTICLE_START());
@@ -48,25 +56,32 @@ const DetailArticle: React.FC = () => {
         addPanier(article);
     };
 
+    const handleThumbnailClick = (photo: string) => {
+        setMainPhoto(photo);
+    };
+
     return (
         <div>
-            {article && article.photo &&
+            {article && mainPhoto && article.photo &&
                 <section className='bloc__detail'>
-                    <div>
-                        <img
-                            src={article.photo}
-                            width={400}
-                            alt={article.name}
-                        />
-                        <div>
-                            {article.pictures && article.pictures.slice(1).map((img, index) => (
+                    <div className="photo-container">
+                        <div className="thumbnails-container">
+                            {article.photo.map((img, index) => (
                                 <img
                                     key={index}
                                     src={img}
-                                    width={100}
+                                    className="thumbnail"
+                                    onClick={() => handleThumbnailClick(img)}
                                     alt={`${article.name} ${index}`}
                                 />
                             ))}
+                        </div>
+                        <div className="main-photo-container">
+                            <img
+                                src={mainPhoto}
+                                alt={article.name}
+                                className="main-photo"
+                            />
                         </div>
                     </div>
                     <div>
