@@ -1,4 +1,5 @@
 // controllers/reviewController.js
+import { Sequelize } from 'sequelize';
 import { Review } from '../models/index.js';
 
 // Get all reviews
@@ -72,3 +73,26 @@ export const deleteReview = async (req, res) => {
         res.status(500).json({ error: 'Server error while deleting review' });
     }
 };
+
+// Calculate average rating for a product
+export const getAverageRating = async (req, res) => {
+    try {
+        const productId = req.params.productId;
+        
+        const reviews = await Review.findAll({
+            where: { product_fk: productId },
+            attributes: [
+                [Sequelize.fn('AVG', Sequelize.col('rating')), 'averageRating']
+            ],
+            raw: true
+        });
+
+        const averageRating = reviews[0].averageRating;
+        
+        res.status(200).json({ averageRating: parseFloat(averageRating).toFixed(1) });
+    } catch (error) {
+        console.error('Error calculating average rating:', error);
+        res.status(500).json({ error: 'Server error while calculating average rating' });
+    }
+};
+

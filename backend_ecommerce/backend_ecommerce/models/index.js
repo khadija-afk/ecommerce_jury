@@ -3,11 +3,11 @@ import userModel from '../models/user.model.js';
 import articleModel from './article.model.js';
 import categorieModel from './catégories.model.js';
 import orderModel from './order.model.js';
-import orderItemModel from './orderItem.model.js';
 import reviewModel from './review.model.js';
-import cartModel from './cart.model.js';
-import cartItemModel from './cartItem.model.js';
-import paymentDetailModel from './paymentDetail.model.js';
+// import orderItemModel from './orderItem.model.js';
+// import cartModel from './cart.model.js';
+// import cartItemModel from './cartItem.model.js';
+// import paymentDetailModel from './paymentDetail.model.js';
 import dotenv from 'dotenv'
 
 dotenv.config();
@@ -18,25 +18,8 @@ const DB_USER = process.env.DB_USER
 const MYSQL_ROOT_PASSWORD = process.env.MYSQL_ROOT_PASSWORD
 const DIALECT = process.env.DIALECT
 console.log('DB Port:', dbPort);
-// Nouvelle connexion à la DB
-/*
 
-const connection = new Sequelize({
-  
-  dialect: 'mariadb',
-  autoReconnect:true,
-  useSSL:false,
-  allowPublicKeyRetrieval:false,
-  database: process.env.DB_NAME,
-  username: process.env.DB_USER,
-  password: process.env.DB_PASSWORD,
-  host: process.env.DB_HOST,
-  port: process.env.DB_PORT,
-  logging: console.log,
-  define: {
-    timestamps: false // Désactive les timestamps automatiques si vous n'en avez pas besoin
-  }
-});*/
+
 const connection = new Sequelize(
   MYSQL_DATABASE, // Nom de la base de donnée
   DB_USER, // identifiant Mysql
@@ -59,22 +42,22 @@ userModel(connection, Sequelize);
 articleModel(connection, Sequelize);
 categorieModel(connection, Sequelize);
 orderModel(connection, Sequelize);
-orderItemModel(connection, Sequelize);
 reviewModel(connection, Sequelize);
-cartModel(connection, Sequelize);
-cartItemModel(connection, Sequelize);
-paymentDetailModel(connection, Sequelize);
+// cartModel(connection, Sequelize);
+// cartItemModel(connection, Sequelize);
+// paymentDetailModel(connection, Sequelize);
+// orderItemModel(connection, Sequelize);
 
 const {
   User,
   Article,
   Categorie,
   Order,
-  OrderItem,
   Review,
-  Cart,
-  CartItem,
-  PaymentDetail
+  // Cart,
+  // CartItem,
+  // PaymentDetail,
+  // OrderItem,
 } = connection.models;
 
 // Définir les relations User Article
@@ -93,12 +76,12 @@ Order.belongsTo(User, { foreignKey: 'user_fk' });
 
 
 //Définir les relations entre Order et OrderItem
- Order.hasMany(OrderItem, { foreignKey: 'order_fk' });
- OrderItem.belongsTo(Order, { foreignKey: 'order_fk' });
+//  Order.hasMany(OrderItem, { foreignKey: 'order_fk' });
+//  OrderItem.belongsTo(Order, { foreignKey: 'order_fk' });
 
  // Définir les relations Article - OrderItem
-Article.hasMany(OrderItem, { foreignKey: 'product_fk' });
-OrderItem.belongsTo(Article, { foreignKey: 'product_fk' });
+// Article.hasMany(OrderItem, { foreignKey: 'product_fk' });
+// OrderItem.belongsTo(Article, { foreignKey: 'product_fk' });
 
 // Définir les relations User - Review
 User.hasMany(Review, { foreignKey: 'user_fk' });
@@ -109,28 +92,28 @@ Article.hasMany(Review, { foreignKey: 'product_fk' });
 Review.belongsTo(Article, { foreignKey: 'product_fk' });
 
 // Définir les relations User - Cart
-User.hasMany(Cart, { foreignKey: 'user_fk' });
-Cart.belongsTo(User, { foreignKey: 'user_fk' });
+// User.hasMany(Cart, { foreignKey: 'user_fk' });
+// Cart.belongsTo(User, { foreignKey: 'user_fk' });
 
 // Définir les relations CartItem-Cart et CartItem-Article
-Cart.hasMany(CartItem, { foreignKey: 'cart_fk' });
-CartItem.belongsTo(Cart, { foreignKey: 'cart_fk' });
+// Cart.hasMany(CartItem, { foreignKey: 'cart_fk' });
+// CartItem.belongsTo(Cart, { foreignKey: 'cart_fk' });
 
-Article.hasMany(CartItem, { foreignKey: 'product_fk' });
-CartItem.belongsTo(Article, { foreignKey: 'product_fk' });
+// Article.hasMany(CartItem, { foreignKey: 'product_fk' });
+// CartItem.belongsTo(Article, { foreignKey: 'product_fk' });
 
 const syncModels = async () => {
   try {
     // Synchroniser les modèles séparément
     await User.sync(/*{alter: true}*/);
     await Categorie.sync();
-    await Article.sync({alter: true});
+    await Article.sync();
     await Order.sync();
-    await OrderItem.sync();
-    await Review.sync();
-    await Cart.sync();
-    await CartItem.sync();
-    await PaymentDetail.sync();
+    await Review.sync({alter: true});
+    // await Cart.sync();
+    // await CartItem.sync();
+    // await PaymentDetail.sync();
+    // await OrderItem.sync();
 
     console.log('All models were synchronized successfully.');
   } catch (error) {
@@ -156,11 +139,11 @@ export {
   Article,
   Categorie,
   Order,
-  OrderItem,
   Review,
-  Cart,
-  CartItem,
-  PaymentDetail,
+  // Cart,
+  // CartItem,
+  // PaymentDetail,
+  // OrderItem,
   syncModels,
   connection
  

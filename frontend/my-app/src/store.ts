@@ -3,7 +3,7 @@ import { configureStore } from '@reduxjs/toolkit';
 import userReducer from './auth/inscription/userSlice';
 import authReducer from './auth/connexion/authSlice';
 import articleReducer from './features/article/articleSlice'; 
-import reviewReducer from './features/review/reviewSlice';
+
 
 
 
@@ -12,7 +12,6 @@ const store = configureStore({
         user: userReducer,
         auth: authReducer,
         articles: articleReducer, 
-        reviews: reviewReducer,
     },
 });
 

@@ -1,6 +1,6 @@
 import express from 'express';
 import { verifieToken } from '../auth.js';
-import { getAllReviews, getReviewById, createReview, updateReview, deleteReview } from '../controllers/review.controller.js';
+import { getAllReviews, getReviewById, createReview, updateReview, deleteReview,  getAverageRating } from '../controllers/review.controller.js';
 
 const router = express.Router();
 
@@ -18,5 +18,9 @@ router.put('/:id',verifieToken, updateReview);
 
 // Delete a review
 router.delete('/:id',verifieToken, deleteReview);
+
+// New route for getting the average rating
+
+router.get('/:productId/average', getAverageRating);
 
 export default router;

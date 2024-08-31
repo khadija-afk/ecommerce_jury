@@ -1,0 +1,92 @@
+.custom-card {
+    position: relative;
+    width: 100%;
+    height: 400px;
+    overflow: hidden;
+    cursor: pointer;
+}
+
+.custom-card-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease-in-out;
+}
+
+.custom-card-body {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: rgba(255, 255, 255, 0.8); /* Fond blanc avec une légère transparence */
+    color: #000; /* Couleur du texte noir */
+    text-align: center;
+    padding: 10px;
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out;
+}
+
+.custom-card:hover .custom-card-body {
+    opacity: 1;
+}
+
+.custom-card:hover .custom-card-img {
+    transform: scale(1.1);
+}
+
+.article-info {
+    text-align: center;
+    margin-top: 10px; /* Espace entre la carte et les informations */
+}
+
+.article-info h5 {
+    margin: 0;
+    font-size: 1.25rem;
+    font-weight: bold;
+}
+
+.article-info p {
+    margin: 5px 0;
+    font-size: 1rem;
+}
+
+.article-price {
+    font-weight: bold;
+    color: #28a745; /* Couleur pour le prix */
+}
+
+.article-rating .star {
+    color: #ccc; /* Couleur par défaut des étoiles */
+    font-size: 1.25rem;
+    margin: 0 2px;
+}
+
+.article-rating .star.filled {
+    color: #f5c518; /* Couleur des étoiles remplies */
+}
+
+.favorite-icon {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    width: 50px; /* Augmentation de la taille du cercle */
+    height: 50px;
+    background-color: white; /* Fond blanc */
+    border-radius: 50%; /* Cercle parfait */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* Optionnel : ombre pour un effet 3D */
+    cursor: pointer;
+    z-index: 10;
+}
+
+.favorite-icon span {
+    font-size: 28px; /* Augmente la taille du cœur */
+    color: grey; /* Couleur par défaut du cœur */
+    transition: color 0.3s ease;
+}
+
+.favorite-icon span.red {
+    color: red; /* Couleur rouge lorsque favori */
+}

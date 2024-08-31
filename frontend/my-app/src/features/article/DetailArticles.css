@@ -1,66 +1,39 @@
 .bloc__detail {
     display: flex;
     flex-direction: row;
-    margin: 20px;
-    padding: 20px;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    background-color: #f9f9f9;
 }
 
-.bloc__detail img {
-    border-radius: 8px;
+.photo-container {
+    display: flex;
 }
 
-.bloc__detail > div:first-of-type {
-    flex: 1;
+.thumbnails-container {
+    display: flex;
+    flex-direction: column;
     margin-right: 20px;
 }
 
-.bloc__detail > div:first-of-type img {
-    margin-bottom: 10px;
-    border: 1px solid #ddd;
-}
-
-.bloc__detail > div:first-of-type img:first-of-type {
-    max-width: 100%;
-    height: auto;
-}
-
-.bloc__detail > div:first-of-type div {
+.main-photo-container {
     display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
+    align-items: center;
+    justify-content: center;
 }
 
-.bloc__detail > div:last-of-type {
-    flex: 1;
+.main-photo {
+    width: 400px;
+    height: 400px;
+    object-fit: cover; /* This will make sure the image covers the whole area */
 }
 
-.bloc__detail h2 {
-    font-size: 24px;
-    color: #333;
+.thumbnail {
+    width: 100px;
+    height: 100px;
+    object-fit: cover; /* This ensures thumbnails also have a uniform size */
     margin-bottom: 10px;
-}
-
-.bloc__detail p {
-    font-size: 16px;
-    color: #666;
-    line-height: 1.5;
-    margin-bottom: 15px;
-}
-
-.bloc__detail button {
-    padding: 10px 20px;
-    font-size: 16px;
-    color: #fff;
-    background-color: #007bff;
-    border: none;
-    border-radius: 5px;
     cursor: pointer;
-    transition: background-color 0.3s ease;
 }
 
-.bloc__detail button:hover {
-    background-color: #0056b3;
+.thumbnail:hover {
+    border: 2px solid #007bff;
+    opacity: 0.8;
 }

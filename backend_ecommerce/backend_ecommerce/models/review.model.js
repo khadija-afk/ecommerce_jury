@@ -5,18 +5,18 @@ export default (connection, DataTypes) => {
             user_fk: {
                 type: DataTypes.INTEGER,
                 allowNull: false,
-                references: {
-                    model: 'users', // Name of the target model
-                    key: 'id' // Key in the target model that this refers to
-                }
+                // references: {
+                //     model: 'users', // Name of the target model
+                //     key: 'id' // Key in the target model that this refers to
+                // }
             },
             product_fk: {
                 type: DataTypes.INTEGER,
                 allowNull: false,
-                references: {
-                    model: 'articles', // Name of the target model
-                    key: 'id' // Key in the target model that this refers to
-                }
+                // references: {
+                //     model: 'articles', // Name of the target model
+                //     key: 'id' // Key in the target model that this refers to
+                // }
             },
             rating: {
                 type: DataTypes.INTEGER,

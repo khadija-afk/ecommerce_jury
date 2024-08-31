@@ -1,4 +1,4 @@
-import { Cart } from '../models/index.js';
+// import { Cart } from '../models/index.js';
 
 // Get cart by user ID
 export const getCartByUserId = async (req, res) => {
