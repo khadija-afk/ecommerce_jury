@@ -14,6 +14,8 @@ services:
       - ./backend_ecommerce/backend_ecommerce/seeders:/app/seeders
       - ./backend_ecommerce/backend_ecommerce/controllers:/app/controllers
       - ./backend_ecommerce/backend_ecommerce/utils:/app/utils
+      - ./backend_ecommerce/backend_ecommerce/swagger.js:/app/swagger.js
+      
       
       
     environment:

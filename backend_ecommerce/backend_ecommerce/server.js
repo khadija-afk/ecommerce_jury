@@ -1,5 +1,7 @@
 import express from 'express'
 import { env } from './config.js'
+import swaggerUi from 'swagger-ui-express'
+import swaggerDocs from './swagger.js'
 import cookieParser from 'cookie-parser'
 import cors from 'cors'
 import Stripe from 'stripe'
@@ -29,7 +31,8 @@ const app = express()
 const PORT = env.port
 
 
-
+// Swagger
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 // MIDDLEWARE
 app.use(express.json())
 app.use(cookieParser())
