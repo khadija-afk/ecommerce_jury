@@ -14,12 +14,13 @@ interface Article {
 interface PanierContextType {
   panier: Article[];
   totalPrice: number;
-  totalArticle: number;
+  totalArticle: () => number;
   addPanier: (product: Article) => void;
   incremente: (index: number) => void;
   decremente: (index: number) => void;
   removeArticle: (index: number) => void;
   priceArticleByQuantity: (price: number, quantity: number) => number;
+  setPanier: React.Dispatch<React.SetStateAction<Article[]>>; // Assurez-vous de l'inclure ici
 }
 
 // Création du contexte
@@ -54,11 +55,15 @@ export const PanierProvider: React.FC<{ children: ReactNode }> = ({ children }) 
     loadPanier();
   }, []);
 
-  // Mettre à jour le prix total lorsque le panier change
-  useEffect(() => {
-    const total = panier.reduce((acc, item) => acc + item.quantite * item.price, 0);
-    setTotalPrice(parseFloat(total.toFixed(2)));
-  }, [panier]);
+ // Calcul du prix total du panier
+useEffect(() => {
+  const total = panier.reduce((acc, item) => {
+    // Vérifiez si item.price est défini et est un nombre
+    const price = item.price ? parseFloat(item.price.toString()) : 0;
+    return acc + (price * item.quantite);
+  }, 0);
+  setTotalPrice(parseFloat(total.toFixed(2)));
+}, [panier]);
 
   // Fonction pour sauvegarder le panier dans le localStorage après un délai
   const savePanierToLocalStorage = debounce((nouveauPanier: Article[]) => {
@@ -127,7 +132,8 @@ export const PanierProvider: React.FC<{ children: ReactNode }> = ({ children }) 
       incremente,
       decremente,
       removeArticle,
-      priceArticleByQuantity
+      priceArticleByQuantity,
+      setPanier // Inclure ici
     }}>
       {children}
     </PanierContext.Provider>

@@ -16,13 +16,13 @@ import Success from './components/stripe/Successe';
 import Canceled from './components/stripe/Canceled';
 import Dashboard from './dashbord/page';
 import Page from './dashbord/page';
+import FavorisPage from './pages/favorie/Favorite';
 
 // SERVICES
 import PublicRoute  from './utils/helpers/PublicRoute';
 import PrivateRoute from './utils/helpers/PrivateRoute';
 
-// ADMIN
-import { Admin, Resource } from 'react-admin';
+
 
 //styles
 
@@ -42,6 +42,7 @@ const App = () => {
             <Route path = "/panier" element = {<Panier />} />
             <Route path = "/success" element = {<Success />} />
             <Route path = "/cancel" element = {<Canceled />} />
+            <Route path = "/favoris" element = {<FavorisPage/>} />
           </Route>
 
           {/* </Route> */}

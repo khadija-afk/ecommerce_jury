@@ -1,0 +1,36 @@
+.mini-navbar {
+  width: 100%;
+  background-color: #fff;
+  padding: 10px 20px;
+  display: flex;
+  align-items: center;
+  position: relative;
+  left: 180px; /* Déplace la MiniNavbar vers la droite */
+}
+
+
+
+
+.mini-navbar-list {
+  display: flex;
+  justify-content: flex-start; /* Aligner les éléments à gauche */
+  gap: 20px; /* Ajouter un espace de 20px entre chaque élément */
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+
+.mini-navbar-item {
+  font-size: 16px;
+}
+
+.mini-navbar-item a {
+  text-decoration: none;
+  color: black;
+  padding: 8px 16px;
+  transition: color 0.3s ease;
+}
+
+.mini-navbar-item a:hover {
+  color: rgb(192, 93, 93);
+}

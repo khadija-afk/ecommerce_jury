@@ -99,3 +99,22 @@ export const deleteById = async (req, res) => {
       console.log(error);
   }
 }
+
+export const checkAuth = async (req, res) => {
+  try {
+    const token = req.cookies.access_token; // Assurez-vous que le token est stocké dans les cookies
+    if (!token) return res.status(401).json({ message: "Access Denied, No Token Provided!" });
+
+    const verified = jwt.verify(token, env.token); // Vérifiez le token avec votre clé secrète
+    const user = await User.findByPk(verified.id); // Récupérez les informations de l'utilisateur à partir de la base de données
+
+    if (!user) return res.status(404).json({ message: "User not found!" });
+
+    const { password, ...other } = user.dataValues; // Évitez d'envoyer le mot de passe dans la réponse
+
+    res.status(200).json(other); // Renvoie les données utilisateur sans le mot de passe
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ error: "Internal Server Error", details: error.message });
+  }
+};

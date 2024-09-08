@@ -4,7 +4,7 @@
 const BASE_URL = 'http://localhost:9090/api';
 
 // Exporter les URLs pour différentes ressources de votre application
-export const URL = {
+const URL = {
     // URL pour les articles
     ARTICLES: `${BASE_URL}/article`,
     GET_ONE_ARTICLE: (id: string | number) => `${BASE_URL}/article/${id}`,
@@ -25,5 +25,11 @@ export const URL = {
     CATEGORIES: `${BASE_URL}/categories`,
     GET_ONE_CATEGORY: (id: string | number) => `${BASE_URL}/categories/${id}`,
 
+    // URL pour CartItem
+    CART_ITEMS: `${BASE_URL}/cartItem`,
+    POST_CART_ITEMS: `${BASE_URL}/cartItem/cart-items`,
+
     // Ajoutez ici d'autres URLs pour vos autres ressources si nécessaire
 };
+
+export default URL;

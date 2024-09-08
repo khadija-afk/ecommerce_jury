@@ -6,6 +6,7 @@ import { Card, Container, Row, Col } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import './ArticleListe.css';
 import { getAverageRating, Review } from '../../services/review/ReviewService';
+import { useFavoris } from '../../utils/FavorieContext';
 
 const ArticleList: React.FC = () => {
     const dispatch = useDispatch<AppDispatch>();
@@ -13,9 +14,10 @@ const ArticleList: React.FC = () => {
     const articleStatus = useSelector((state: RootState) => state.articles.status);
     const error = useSelector((state: RootState) => state.articles.error);
 
+    const { favorites, addFavorite, removeFavorite } = useFavoris(); // Utilisation du contexte des favoris
+
     const [ratings, setRatings] = useState<{ [key: number]: number }>({});
     const [reviews, setReviews] = useState<{ [key: number]: Review[] }>({});
-    const [favorites, setFavorites] = useState<{ [key: number]: boolean }>({});
 
     useEffect(() => {
         if (articleStatus === 'idle') {
@@ -35,11 +37,12 @@ const ArticleList: React.FC = () => {
         });
     }, [articleStatus, dispatch, articles]);
 
-    const handleFavoriteClick = (articleId: number) => {
-        setFavorites((prevFavorites) => ({
-            ...prevFavorites,
-            [articleId]: !prevFavorites[articleId], // Toggle the favorite status
-        }));
+    const handleFavoriteClick = (article: any) => {
+        if (favorites.some(fav => fav.id === article.id)) {
+            removeFavorite(article.id);
+        } else {
+            addFavorite(article); // Ajoute l'objet article complet aux favoris
+        }
     };
 
     let content;
@@ -53,8 +56,8 @@ const ArticleList: React.FC = () => {
                     {articles.map((article, index) => (
                         <Col key={`${article.id}-${index}`} sm={12} md={6} lg={4} className='mb-4'>
                             <Card className="custom-card">
-                                <div className="favorite-icon" onClick={() => handleFavoriteClick(article.id)}>
-                                    <span className={favorites[article.id] ? 'red' : ''}>♥</span>
+                                <div className="favorite-icon" onClick={() => handleFavoriteClick(article)}>
+                                    <span className={favorites.some(fav => fav.id === article.id) ? 'red' : ''}>♥</span>
                                 </div>
                                 {Array.isArray(article.photo) && article.photo.length > 0 ? (
                                     <Link to={`api/article/${article.id}`}>
@@ -105,7 +108,6 @@ const ArticleList: React.FC = () => {
 
     return (
         <section>
-            <h2>Articles</h2>
             {content}
         </section>
     );

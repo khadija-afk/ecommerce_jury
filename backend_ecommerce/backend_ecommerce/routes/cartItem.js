@@ -3,19 +3,19 @@ import { getAllCartItems, getCartItemById, addCartItem, updateCartItem, deleteCa
 
 const router = express.Router();
 
-// Récupérer tous les articles du panier
-router.get('/', getAllCartItems);
+// Récupérer tous les articles du panier (optionnel, mais utile pour la gestion globale du panier)
+router.get('/cart-items', getAllCartItems);
 
-// Récupérer un article du panier par son ID
-router.get('/:id', getCartItemById);
+// Récupérer un article spécifique du panier par son ID
+router.get('/cart-items/:id', getCartItemById);
 
 // Ajouter un nouvel article au panier
-router.post('/', addCartItem);
+router.post('/cart-items', addCartItem);
 
-// Mettre à jour un article du panier
-router.put('/:id', updateCartItem);
+// Mettre à jour un article du panier (par exemple, modifier la quantité)
+router.put('/cart-items/:id', updateCartItem);
 
 // Supprimer un article du panier
-router.delete('/:id', deleteCartItem);
+router.delete('/cart-items/:id', deleteCartItem);
 
 export default router;
