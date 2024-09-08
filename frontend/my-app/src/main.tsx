@@ -13,10 +13,8 @@ import { PanierProvider } from './utils/PanierContext';
 import { Elements } from '@stripe/react-stripe-js';
 import { loadStripe } from '@stripe/stripe-js';
 
-//admin
-import { Admin, Resource } from 'react-admin';
-import ArticleList from "./dashbord/article/Articles"
-import Users from './dashbord/user/Users';
+// FAVORIE
+import { FavorisProvider } from './utils/FavorieContext';
 
 const stripePromise = loadStripe("pk_test_51Phom3EnHYhhKmcInexE46fzy9I8IPWmwGNlN3LWEAoZjTLCYtKelEVVuAr0Lf1dPc316bGFmxHZRdOevjfK4rT300mcydSb7T")
 
@@ -27,9 +25,11 @@ ReactDOM.createRoot(root).render(
     <Provider store={store}>
      
       <PanierProvider>
-      <Elements stripe={stripePromise}>
-        <App />
-      </Elements>
+        <FavorisProvider>
+          <Elements stripe={stripePromise}>
+              <App />
+          </Elements>
+        </FavorisProvider>
       </PanierProvider>
       
     </Provider>

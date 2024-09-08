@@ -3,16 +3,9 @@ import { getCartByUserId, createCart, updateCartTotalAmount, deleteCart } from '
 
 const router = express.Router();
 
-// Get cart by user ID
-router.get('/:userId', getCartByUserId);
-
-// Create a new cart
-router.post('/:userId', createCart);
-
-// Update cart total amount
-router.put('/:userId', updateCartTotalAmount);
-
-// Delete a cart
-router.delete('/:userId', deleteCart);
+router.get('/cart/:userId', getCartByUserId); // Obtenir le panier d'un utilisateur
+router.post('/cart/:userId', createCart); // Créer un panier pour un utilisateur
+router.put('/cart/:userId', updateCartTotalAmount); // Mettre à jour le montant total du panier
+router.delete('/cart/:userId', deleteCart); // Supprimer le panier d'un utilisateur
 
 export default router;

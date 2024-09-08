@@ -13,6 +13,7 @@ services:
       - ./backend_ecommerce/backend_ecommerce/migrations:/app/migrations
       - ./backend_ecommerce/backend_ecommerce/seeders:/app/seeders
       - ./backend_ecommerce/backend_ecommerce/controllers:/app/controllers
+      - ./backend_ecommerce/backend_ecommerce/utils:/app/utils
       
       
     environment:

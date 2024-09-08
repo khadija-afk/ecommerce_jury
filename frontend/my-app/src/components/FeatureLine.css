@@ -1,0 +1,23 @@
+/* FeatureLine.css */
+.feature-line {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    background-color: white;
+    padding: 10px 0;
+    margin-top: 20px;
+  }
+  
+  .feature-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 14px;
+    color: black;
+  }
+  
+  .feature-icon {
+    font-size: 18px;
+    color: rgb(198, 102, 102);
+  }
+  

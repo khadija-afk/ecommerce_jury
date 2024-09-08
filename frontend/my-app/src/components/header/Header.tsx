@@ -1,20 +1,21 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { Navbar, Nav, Container, NavDropdown, Form, FormControl, Button, Badge } from 'react-bootstrap';
-import 'bootstrap-icons/font/bootstrap-icons.css'; // Assurez-vous d'avoir installé les icônes Bootstrap
 import './Header.css';
-import { PanierContext } from '../../utils/PanierContext'; // Importation du contexte
+import { PanierContext } from '../../utils/PanierContext';
+import { useFavoris } from '../../utils/FavorieContext';
 
-const Header = () => {
+const Header: React.FC = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const { totalArticle } = useContext(PanierContext); // Utilisation du contexte pour obtenir le nombre total d'articles
+  const { totalArticle } = useContext(PanierContext);
+  const { totalFavorites } = useFavoris();
 
   useEffect(() => {
-    // Fonction pour vérifier si l'utilisateur est connecté
+    console.log('Total favorites:', totalFavorites());
     const checkAuthStatus = async () => {
       try {
-        const response = await fetch('http://localhost:3000/check_auth', {
+        const response = await fetch('http://localhost:9090/api/user/check_auth', {
           method: 'GET',
-          credentials: 'include' // Inclure les cookies pour la requête
+          credentials: 'include' 
         });
 
         if (response.ok) {
@@ -35,14 +36,14 @@ const Header = () => {
     try {
       const response = await fetch('http://localhost:9090/api/Log/logout', {
         method: 'POST',
-        credentials: 'include' // Inclure les cookies pour la requête
+        credentials: 'include'
       });
 
       if (response.ok) {
         const data = await response.json();
-        console.log(data.message); // Affiche "Logout successful"
-        setIsLoggedIn(false); // Met à jour l'état de connexion
-        window.location.href = '/sign'; // Redirection vers la page de connexion
+        console.log(data.message);
+        setIsLoggedIn(false);
+        window.location.href = '/sign';
       } else {
         const error = await response.json();
         console.error('Logout error:', error.message);
@@ -89,14 +90,23 @@ const Header = () => {
                   </NavDropdown.Item>
                 </NavDropdown>
               )}
-              <Nav.Link href="/panier">
+
+              <Nav.Link href="/favoris" className="position-relative">
+                <i className='fas fa-heart'></i> {/* Icône de favoris */}
+                {totalFavorites() > 0 && (
+                  <Badge bg="danger" pill className="badge">
+                    {totalFavorites()}
+                  </Badge>
+                )}
+              </Nav.Link>
+
+              <Nav.Link href="/panier" className="position-relative">
                 <i className='fas fa-shopping-cart'></i>
                 {totalArticle() > 0 && (
-                  <Badge bg="danger" pill className="ms-2">
+                  <Badge bg="danger" pill className="badge">
                     {totalArticle()}
                   </Badge>
                 )}
-                {/* Panier */}
               </Nav.Link>
             </Nav>
           </Navbar.Collapse>

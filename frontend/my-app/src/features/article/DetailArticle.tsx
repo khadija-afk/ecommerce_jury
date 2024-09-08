@@ -3,17 +3,10 @@ import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import { useDispatch, useSelector } from 'react-redux';
 import { usePanier } from '../../utils/PanierContext';
-
-// CONTEXTE
 import * as ACTIONS from './articleSlice';
 import { RootState, Article } from '../../types/Article';
-
-// Style
-import './DetailArticles.css'
-
-const URL = {
-    GET_ONE_ARTICLE: (id: string) => `http://localhost:9090/api/article/${id}`
-};
+import './DetailArticles.css';
+import URL from '../../constants/Url';
 
 const DetailArticle: React.FC = () => {
     const { addPanier } = usePanier();
@@ -29,7 +22,7 @@ const DetailArticle: React.FC = () => {
 
     useEffect(() => {
         if (article && article.photo && article.photo.length > 0) {
-            setMainPhoto(article.photo[0]); // Initialiser la photo principale
+            setMainPhoto(article.photo[0]);
         }
     }, [article]);
 
@@ -52,8 +45,28 @@ const DetailArticle: React.FC = () => {
         fetchArticle();
     }, [id, dispatch]);
 
-    const handleAddToPanier = (article: Article) => {
-        addPanier(article);
+    const handleAddToPanier = async (article: Article) => {
+        try {
+            const userId = 33;  // Remplacez ceci par l'ID de l'utilisateur
+
+            // Ajouter l'article au backend
+            const response = await axios.post(URL.POST_CART_ITEMS, {
+                cart_fk: 15,  // Remplacez par l'ID du panier
+                product_fk: article.id,
+                quantity: 1
+            }, {
+                headers: {
+                    'Authorization': `Bearer ${localStorage.getItem('token')}`
+                }
+            });
+
+            // Ajouter l'article au contexte (local)
+            addPanier(article);
+
+            console.log('Article ajouté au panier:', response.data);
+        } catch (error) {
+            console.error('Erreur lors de l\'ajout de l\'article au panier :', error);
+        }
     };
 
     const handleThumbnailClick = (photo: string) => {

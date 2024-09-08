@@ -6,22 +6,26 @@ export default (connection, DataTypes) => {
                 type: DataTypes.INTEGER,
                 allowNull: false,
                 references: {
-                    model: 'carts', // Name of the target model
-                    key: 'id' // Key in the target model that this refers to
-                }
+                    model: 'Carts', // Assurez-vous que cela fait référence au modèle Cart
+                    key: 'id',
+                },
+                onDelete: 'CASCADE',
+                onUpdate: 'CASCADE',
             },
             product_fk: {
                 type: DataTypes.INTEGER,
                 allowNull: false,
                 references: {
-                    model: 'articles', // Name of the target model
-                    key: 'id' // Key in the target model that this refers to
-                }
+                    model: 'Articles', // Fait référence au modèle Article
+                    key: 'id',
+                },
+                onDelete: 'CASCADE',
+                onUpdate: 'CASCADE',
             },
             quantity: {
                 type: DataTypes.INTEGER,
-                allowNull: false
-            }
+                allowNull: false,
+            },
         },
         { timestamps: false }
     );

@@ -115,6 +115,9 @@ const articleSlice = createSlice({
             state.status = 'failed';
             state.error = action.payload;
         },
+        addToPanier: (state, action) => {
+            state.panier.push(action.payload);
+          },
     },
     extraReducers: (builder) => {
         builder

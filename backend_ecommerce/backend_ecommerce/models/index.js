@@ -4,28 +4,27 @@ import articleModel from './article.model.js';
 import categorieModel from './catégories.model.js';
 import orderModel from './order.model.js';
 import reviewModel from './review.model.js';
-// import orderItemModel from './orderItem.model.js';
-// import cartModel from './cart.model.js';
-// import cartItemModel from './cartItem.model.js';
-// import paymentDetailModel from './paymentDetail.model.js';
-import dotenv from 'dotenv'
+import cartModel from './cart.model.js';
+import cartItemModel from './cartItem.model.js';
+import dotenv from 'dotenv';
 
 dotenv.config();
+
 const dbPort = process.env.DB_PORT;
 const dbHOST = process.env.DB_HOST;
-const MYSQL_DATABASE = process.env.MYSQL_DATABASE
-const DB_USER = process.env.DB_USER
-const MYSQL_ROOT_PASSWORD = process.env.MYSQL_ROOT_PASSWORD
-const DIALECT = process.env.DIALECT
+const MYSQL_DATABASE = process.env.MYSQL_DATABASE;
+const DB_USER = process.env.DB_USER;
+const MYSQL_ROOT_PASSWORD = process.env.MYSQL_ROOT_PASSWORD;
+const DIALECT = process.env.DIALECT;
+
 console.log('DB Port:', dbPort);
 
-
 const connection = new Sequelize(
-  MYSQL_DATABASE, // Nom de la base de donnée
-  DB_USER, // identifiant Mysql
-  MYSQL_ROOT_PASSWORD, // Mot de passe Mysql
+  MYSQL_DATABASE, // Nom de la base de données
+  DB_USER, // Identifiant MySQL
+  MYSQL_ROOT_PASSWORD, // Mot de passe MySQL
   {
-    host: dbHOST, // URL de mySQL
+    host: dbHOST, // URL de MySQL
     dialect: DIALECT,
     port: dbPort,
   }
@@ -38,15 +37,14 @@ try {
   console.error('Unable to connect to the database:', error);
 }
 
+// Importation des modèles
 userModel(connection, Sequelize);
 articleModel(connection, Sequelize);
 categorieModel(connection, Sequelize);
 orderModel(connection, Sequelize);
 reviewModel(connection, Sequelize);
-// cartModel(connection, Sequelize);
-// cartItemModel(connection, Sequelize);
-// paymentDetailModel(connection, Sequelize);
-// orderItemModel(connection, Sequelize);
+cartModel(connection, Sequelize);
+cartItemModel(connection, Sequelize);
 
 const {
   User,
@@ -54,66 +52,51 @@ const {
   Categorie,
   Order,
   Review,
-  // Cart,
-  // CartItem,
-  // PaymentDetail,
-  // OrderItem,
+  Cart,
+  CartItem,
 } = connection.models;
 
-// Définir les relations User Article
+// Définir les relations User-Article
 User.hasMany(Article, { foreignKey: 'user_fk' });
 Article.belongsTo(User, { foreignKey: 'user_fk' });
 
-// Définir les relations Categorie Article
+// Définir les relations Categorie-Article
 Categorie.hasMany(Article, { foreignKey: 'categorie_fk' });
 Article.belongsTo(Categorie, { foreignKey: 'categorie_fk' });
 
-// Définir les relations Order User
+// Définir les relations Order-User
 User.hasMany(Order, { foreignKey: 'user_fk' });
 Order.belongsTo(User, { foreignKey: 'user_fk' });
 
-// Définir les relations supplémentaires si nécessaire
-
-
-//Définir les relations entre Order et OrderItem
-//  Order.hasMany(OrderItem, { foreignKey: 'order_fk' });
-//  OrderItem.belongsTo(Order, { foreignKey: 'order_fk' });
-
- // Définir les relations Article - OrderItem
-// Article.hasMany(OrderItem, { foreignKey: 'product_fk' });
-// OrderItem.belongsTo(Article, { foreignKey: 'product_fk' });
-
-// Définir les relations User - Review
+// Définir les relations User-Review
 User.hasMany(Review, { foreignKey: 'user_fk' });
 Review.belongsTo(User, { foreignKey: 'user_fk' });
 
-// Définir les relations Article - Review
+// Définir les relations Article-Review
 Article.hasMany(Review, { foreignKey: 'product_fk' });
 Review.belongsTo(Article, { foreignKey: 'product_fk' });
 
-// Définir les relations User - Cart
-// User.hasMany(Cart, { foreignKey: 'user_fk' });
-// Cart.belongsTo(User, { foreignKey: 'user_fk' });
+// Définir les relations User-Cart
+User.hasOne(Cart, { foreignKey: 'user_fk' });
+Cart.belongsTo(User, { foreignKey: 'user_fk' });
 
-// Définir les relations CartItem-Cart et CartItem-Article
-// Cart.hasMany(CartItem, { foreignKey: 'cart_fk' });
-// CartItem.belongsTo(Cart, { foreignKey: 'cart_fk' });
+// Cart -> CartItem association
+Cart.hasMany(CartItem, { foreignKey: 'cart_fk', as: 'cartItems' });
+CartItem.belongsTo(Cart, { foreignKey: 'cart_fk', as: 'Carts' });
 
-// Article.hasMany(CartItem, { foreignKey: 'product_fk' });
-// CartItem.belongsTo(Article, { foreignKey: 'product_fk' });
+// Article -> CartItem association
+Article.hasMany(CartItem, { foreignKey: 'product_fk', as: 'cartItems' });
+CartItem.belongsTo(Article, { foreignKey: 'product_fk', as: 'article' });
 
 const syncModels = async () => {
   try {
-    // Synchroniser les modèles séparément
-    await User.sync(/*{alter: true}*/);
+    await User.sync();
     await Categorie.sync();
     await Article.sync();
     await Order.sync();
-    await Review.sync({alter: true});
-    // await Cart.sync();
-    // await CartItem.sync();
-    // await PaymentDetail.sync();
-    // await OrderItem.sync();
+    await Review.sync({ alter: true });
+    await Cart.sync({ alter: true });
+    await CartItem.sync({ alter: true });
 
     console.log('All models were synchronized successfully.');
   } catch (error) {
@@ -121,18 +104,7 @@ const syncModels = async () => {
   }
 };
 
-/*const closeConnection = async () => {
-  try {
-    await sequelize.close();
-    console.log('Database connection closed.');
-  } catch (error) {
-    console.error('Error closing the database connection:', error);
-  }
-};*/
-
 syncModels();
-
-
 
 export {
   User,
@@ -140,13 +112,8 @@ export {
   Categorie,
   Order,
   Review,
-  // Cart,
-  // CartItem,
-  // PaymentDetail,
-  // OrderItem,
+  Cart,
+  CartItem,
   syncModels,
-  connection
- 
+  connection,
 };
-
-
