@@ -1,0 +1,100 @@
+/* Supprime la couleur de fond du thead et de ses cellules */
+.table thead {
+    background-color: transparent; /* Enlève la couleur de fond par défaut du thead */
+}
+
+.table thead th {
+    background-color: transparent; /* Assure que les cellules d'en-tête n'ont pas de fond */
+    color: black; /* Définit la couleur du texte pour éviter qu'il soit affecté par des styles par défaut */
+    border: none; /* Retire les bordures si elles sont présentes */
+    font-weight: bold; /* S'assure que le texte est en gras */
+    text-align: center; /* Centre le texte dans l'en-tête */
+    padding-bottom: 15px; /* Ajoute un espace sous l'en-tête */
+}
+
+/* Style de base pour le tableau */
+.table {
+    width: 100%;
+    margin: 20px 0;
+    border-collapse: collapse; /* Supprime les espaces entre les cellules */
+    background-color: transparent; /* Assure que le fond du tableau est transparent */
+}
+
+.table th, .table td {
+    padding: 10px;
+    text-align: center; /* Centre le texte dans les cellules */
+    border: none; /* Retire les bordures des cellules */
+    border-bottom: 1px solid #ddd; /* Garde la bordure entre les lignes */
+    background-color: transparent; /* Supprime toute couleur de fond */
+}
+
+.table td {
+    padding-top: 15px; /* Ajoute un espace au-dessus du contenu des cellules */
+}
+
+/* Centrer l'image dans les cellules */
+.table img {
+    width: 100px;
+    height: auto;
+    margin: 0 auto; /* Centre l'image horizontalement */
+}
+
+/* Boutons de quantité */
+.table .buttonquantite {
+    background-color: transparent; /* Retirer toute couleur de fond */
+    color: black; /* Couleur du texte */
+    border: none; /* Retirer la bordure */
+    cursor: pointer;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 16px;
+    padding: 0; /* Enlever les espaces internes */
+}
+
+.table .buttonquantite:focus {
+    outline: none; /* Supprimer l'effet de focus */
+}
+
+/* Conteneur pour les boutons de quantité */
+.table .quantityContainer {
+    display: flex;
+    align-items: center;
+    justify-content: center; /* Centre les éléments horizontalement */
+    padding: 5px;
+    width: max-content;
+}
+
+/* Quantité dans le conteneur */
+.table .quantityValue {
+    padding: 0 10px;
+    font-size: 16px;
+}
+
+/* Bouton de suppression */
+.table .removeButton {
+    width: 20px;
+    height: 20px;
+    background-color: red;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    cursor: pointer;
+    padding: 0;
+}
+
+.table .removeButton:hover {
+    background-color: darkred;
+}
+
+/* Conteneur total */
+.totalContainer {
+    margin-top: 20px;
+    text-align: center;
+}
