@@ -46,21 +46,28 @@ export const usePanier = () => {
 
 // Création du fournisseur de contexte
 export const PanierProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
-  const [panier, setPanier] = useState<Article[]>([]);
+  const [panier, setPanier] = useState<CartItem[]>([]);
   const [totalPrice, setTotalPrice] = useState(0);
 
-  // Fonction pour recalculer le prix total
-  const recalculateTotalPrice = (panier: Article[]) => {
+  // recalculer le prix total
+  const recalculateTotalPrice = (panier: CartItem[]) => {
     const total = panier.reduce((acc, item) => {
-        const price = parseFloat(item.article?.price || '0');
-        const quantity = item.article?.quantity || 1;
-        const itemTotal = price * quantity;
+      const price = parseFloat(item.article.price.toString()) || 0; // S'assurer que le prix est un nombre
+      const quantity = item.quantity || 1; // Quantité par défaut à 1 si non définie
+      const itemTotal = price * quantity;
 
-        console.log("Article:", item.article?.name || "Inconnu", "Prix:", item.article?.price || 0, "Quantité:", item.quantity, "Total Article:", item.article?.price * item.quantity);
+      // Debug : Affichage des détails de l'article
+      console.log(
+        "Article:", item.article.name || "Inconnu",
+        "Prix:", price,
+        "Quantité:", quantity,
+        "Total Article:", itemTotal
+      );
 
-        return acc + itemTotal;
+      return acc + itemTotal;
     }, 0);
-    return parseFloat(total.toFixed(2));
+
+    return parseFloat(total.toFixed(2)); // Arrondir à 2 décimales pour le total
   };
 
   // Charger le panier depuis le backend
@@ -88,31 +95,23 @@ export const PanierProvider: React.FC<{ children: ReactNode }> = ({ children }) 
   // Fonction pour ajouter un article au panier
   const addPanier = async (product: Article) => {
     try {
-      const existingArticle = panier.find(item => item.id === product.id);
-
       const newProduct = {
         ...product,
-        name: product.name || 'Nom Inconnu',
+        name: product.name || 'Produit sans nom',
         price: product.price || 0,
-        quantity: existingArticle ? existingArticle.quantity:1,
+        quantity: product.quantity || 1,
       };
 
-      if (existingArticle) {
-        setPanier(panier.map(item => item.id === product.id ? newProduct : item));
-      } else {
-        setPanier([...panier, newProduct]);
-      }
+      setPanier([...panier, newProduct]);
 
-      // Mise à jour du backend
       await axios.post('http://localhost:9090/api/cartItem/cart-items', {
         product_fk: product.id,
         quantity: 1,
       }, {
-        withCredentials: true, // Inclure les cookies pour l'authentification
+        withCredentials: true
       });
 
-      // Recalculer le total
-      setTotalPrice(recalculateTotalPrice(panier));
+      setTotalPrice(recalculateTotalPrice([...panier, newProduct]));
     } catch (error) {
       console.error('Erreur lors de l\'ajout au panier :', error);
     }
@@ -127,12 +126,12 @@ export const PanierProvider: React.FC<{ children: ReactNode }> = ({ children }) 
     setPanier(updatedPanier);
     setTotalPrice(recalculateTotalPrice(updatedPanier));
 
-    // Mise à jour du serveur avec l'authentification
+    // Mise à jour du serveur
     try {
       await axios.put(`http://localhost:9090/api/cartItem/cart-items/${updatedCartItem.id}`, {
         quantity: updatedCartItem.quantity,
       }, {
-        withCredentials: true, // Assurez-vous que les cookies d'authentification sont envoyés
+        withCredentials: true,
       });
     } catch (error) {
       console.error('Erreur lors de la mise à jour de la quantité sur le serveur :', error);
@@ -150,12 +149,11 @@ export const PanierProvider: React.FC<{ children: ReactNode }> = ({ children }) 
     setPanier(updatedPanier);
     setTotalPrice(recalculateTotalPrice(updatedPanier));
 
-    // Mise à jour du serveur avec l'authentification
     try {
       await axios.put(`http://localhost:9090/api/cartItem/cart-items/${updatedCartItem.id}`, {
         quantity: updatedCartItem.quantity,
       }, {
-        withCredentials: true, // Assurez-vous que les cookies d'authentification sont envoyés
+        withCredentials: true,
       });
     } catch (error) {
       console.error('Erreur lors de la mise à jour de la quantité sur le serveur :', error);
