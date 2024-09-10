@@ -1,6 +1,6 @@
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
-import { User } from '../models/index.js';
+import { User, Cart } from '../models/index.js';
 import { env } from '../config.js';
 
 export const login = async (req, res) => {
@@ -31,19 +31,29 @@ export const login = async (req, res) => {
 
 export const register = async (req, res) => {
   try {
+    // Hash du mot de passe de l'utilisateur
     const hashedPassword = await bcrypt.hash(req.body.password, 10);
 
+    // Créer l'utilisateur
     const user = await User.create({
       ...req.body,
       password: hashedPassword
     });
 
+    // Créer un panier pour cet utilisateur
+  const cart = await Cart.create({
+      user_fk: user.id, // Lier le panier au nouvel utilisateur
+      total_amount: 0   // Initialiser le total du panier à 0
+    });
+
     res.status(201).json({
-      message: "User has been created!",
-      user
+      message: "User and Cart have been created!",
+      user, 
+      cart // Retourne aussi le panier
     });
   } catch (error) {
-    res.status(500).json({ error: "Internal Server Error", mess: error.message  });
+    console.log(error);
+    res.status(500).json({ error: "Internal Server Error", mess: error.message });
   }
 };
 

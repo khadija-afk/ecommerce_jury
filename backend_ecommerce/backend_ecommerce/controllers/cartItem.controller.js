@@ -1,5 +1,6 @@
-import { CartItem } from '../models/index.js';
-import { calculateTotalAmount } from '../utils/cart.util.js'; // Assurez-vous que la fonction est importée
+import { CartItem, Cart } from '../models/index.js';
+import { calculateTotalAmount } from '../utils/cart.util.js';
+import { verifieToken } from '../auth.js'; // Assurez-vous d'importer votre middleware de vérification du token
 
 // Récupérer tous les articles du panier
 export const getAllCartItems = async (req, res) => {
@@ -29,37 +30,40 @@ export const getCartItemById = async (req, res) => {
 // Ajouter un nouvel article ou incrémenter la quantité dans le panier
 export const addCartItem = async (req, res) => {
     try {
-        const { cart_fk, product_fk, quantity } = req.body;
+        const { product_fk, quantity } = req.body;
+        const userId = req.user.id; // Assurez-vous que `req.user.id` provient du middleware JWT
 
-        // Validation des entrées
-        if (!cart_fk || !product_fk || !quantity) {
-            return res.status(400).json({ error: 'Données manquantes pour créer un article du panier' });
+        // Vérifier si un panier existe pour cet utilisateur
+        let cart = await Cart.findOne({ where: { user_fk: userId } });
+        if (!cart) {
+            // Si pas de panier, en créer un
+            cart = await Cart.create({ user_fk: userId, total_amount: 0 });
         }
 
         // Vérifier si l'article existe déjà dans le panier
         const existingCartItem = await CartItem.findOne({
             where: {
-                cart_fk: cart_fk,
+                cart_fk: cart.id,
                 product_fk: product_fk
             }
         });
 
         if (existingCartItem) {
-            // Si l'article existe déjà, incrémenter la quantité
+            // Si l'article existe, augmenter la quantité
             const newQuantity = existingCartItem.quantity + quantity;
             await existingCartItem.update({ quantity: newQuantity });
 
-            // Recalculer et mettre à jour le total_amount du panier
-            await calculateTotalAmount(cart_fk);
+            // Recalculer le total du panier
+            await calculateTotalAmount(cart.id);
 
             return res.status(200).json(existingCartItem);
         }
 
-        // Si l'article n'existe pas, créer un nouveau CartItem
-        const newCartItem = await CartItem.create({ cart_fk, product_fk, quantity });
+        // Si l'article n'existe pas encore, le créer
+        const newCartItem = await CartItem.create({ cart_fk: cart.id, product_fk, quantity });
 
-        // Recalculer et mettre à jour le total_amount du panier
-        await calculateTotalAmount(cart_fk);
+        // Recalculer et mettre à jour le total du panier
+        await calculateTotalAmount(cart.id);
 
         res.status(201).json(newCartItem);
     } catch (error) {
@@ -68,10 +72,10 @@ export const addCartItem = async (req, res) => {
     }
 };
 
-
+// Supprimer un article du panier
 export const deleteCartItem = async (req, res) => {
     try {
-        const { id } = req.params; // Extraire "id" au lieu de "cartItemId"
+        const { id } = req.params;
 
         if (!id) {
             return res.status(400).json({ error: 'id est requis' });

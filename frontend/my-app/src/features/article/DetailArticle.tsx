@@ -47,17 +47,28 @@ const DetailArticle: React.FC = () => {
 
     const handleAddToPanier = async (article: Article) => {
         try {
-            const userId = 33;  // Remplacez ceci par l'ID de l'utilisateur
+            // Récupérer l'utilisateur connecté depuis le localStorage
+            const user = JSON.parse(localStorage.getItem('user') || '{}');
+            const userId = user.id;  // Assurez-vous que l'ID utilisateur est bien stocké dans le localStorage
+
+            if (!userId) {
+                throw new Error("Utilisateur non connecté ou ID manquant");
+            }
+
+            // Requête pour obtenir ou créer un panier pour cet utilisateur
+            const cartResponse = await axios.get(`http://localhost:9090/api/cart/cart`, {
+                withCredentials: true, // Envoyer les cookies
+            });
+
+            const cartId = cartResponse.data.id; // Récupérer l'ID du panier
 
             // Ajouter l'article au backend
             const response = await axios.post(URL.POST_CART_ITEMS, {
-                cart_fk: 15,  // Remplacez par l'ID du panier
+                cart_fk: cartId,  // Utiliser l'ID du panier récupéré
                 product_fk: article.id,
                 quantity: 1
             }, {
-                headers: {
-                    'Authorization': `Bearer ${localStorage.getItem('token')}`
-                }
+                withCredentials: true  // Envoyer les cookies avec la requête
             });
 
             // Ajouter l'article au contexte (local)

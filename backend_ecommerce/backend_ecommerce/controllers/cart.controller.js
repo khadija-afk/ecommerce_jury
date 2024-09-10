@@ -1,12 +1,12 @@
 import { Cart, CartItem, Article } from '../models/index.js';
 import { calculateTotalAmount } from '../utils/cart.util.js';
 
-// Récupérer le panier par ID utilisateur
+// Récupérer le panier par ID utilisateur à partir du token
 export const getCartByUserId = async (req, res) => {
     try {
-        // Vérifiez si le paramètre `userId` est bien présent
-        const userId = req.params.userId;
-        
+        // Utilisation de l'ID utilisateur extrait du token JWT
+        const userId = req.user?.id; 
+
         if (!userId) {
             return res.status(400).json({ error: 'userId est manquant dans la requête' });
         }
@@ -42,7 +42,7 @@ export const getCartByUserId = async (req, res) => {
 // Créer un nouveau panier pour un utilisateur
 export const createCart = async (req, res) => {
     try {
-        const { userId } = req.params;
+        const userId = req.user.id; // Utiliser l'ID de l'utilisateur extrait du token
 
         // Vérifiez si un panier pour cet utilisateur existe déjà
         const existingCart = await Cart.findOne({ where: { user_fk: userId } });
@@ -82,7 +82,7 @@ export const createCart = async (req, res) => {
 // Mettre à jour le montant total du panier
 export const updateCartTotalAmount = async (req, res) => {
     try {
-        const { userId } = req.params;
+        const userId = req.user.id; // Utiliser l'ID de l'utilisateur extrait du token
         const { totalAmount } = req.body;
 
         // Validation du totalAmount
@@ -106,7 +106,7 @@ export const updateCartTotalAmount = async (req, res) => {
 // Supprimer un panier
 export const deleteCart = async (req, res) => {
     try {
-        const { userId } = req.params;
+        const userId = req.user.id; // Utiliser l'ID de l'utilisateur extrait du token
         const cart = await Cart.findOne({ where: { user_fk: userId } });
         if (!cart) {
             return res.status(404).json({ error: 'Panier non trouvé pour cet utilisateur' });
