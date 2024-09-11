@@ -13,11 +13,12 @@ import './models/index.js'
 import routerUser from './routes/user.js'
 import routerArticle from './routes/article.js'
 import routerCategorie from './routes/categorie.js'
-import routerOrder from './routes/order.js'
+import routerOrder from './routes/orderDetails.js'
 import routerReview from './routes/review.js'
 import routerCart from './routes/cart.js'
 import routerCartItem from './routes/cartItem.js'
-// import routerOrderItem from './routes/orderItem.js'
+import routerOrderItem from './routes/orderItem.js'
+import routerPaymentDetails from './routes/paymentDetail.js'
 import routerStripe from './routes/stripe.js'
 import routes from './routes/reset.js'
 import routLogout from './routes/logout.js'
@@ -50,7 +51,8 @@ app.use("/api/order", routerOrder)
 app.use("/api/review", routerReview)
 app.use("/api/cart", routerCart)
 app.use("/api/cartItem", routerCartItem)
-// app.use("/api/orderItem", routerOrderItem)
+app.use("/api/orderItem", routerOrderItem)
+app.use("/api/payment", routerPaymentDetails)
 app.use("/api/stripe", routerStripe)
 app.use("/api", routes);
 app.use("/api/Log", routLogout)

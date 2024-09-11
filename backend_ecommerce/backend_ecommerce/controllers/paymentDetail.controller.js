@@ -1,9 +1,9 @@
-import { PaymentDetail } from '../models/index.js';
+import { PaymentDetails } from '../models/index.js';
 
-// Récupérer tous les détails de paiement
+// Récupérer tous les détails de paiement (protégé)
 export const getAllPaymentDetails = async (req, res) => {
     try {
-        const paymentDetails = await PaymentDetail.findAll();
+        const paymentDetails = await PaymentDetails.findAll();
         res.status(200).json(paymentDetails);
     } catch (error) {
         console.error('Erreur lors de la récupération des détails de paiement :', error);
@@ -11,10 +11,10 @@ export const getAllPaymentDetails = async (req, res) => {
     }
 };
 
-// Récupérer un détail de paiement par son ID
+// Récupérer un détail de paiement par son ID (protégé)
 export const getPaymentDetailById = async (req, res) => {
     try {
-        const paymentDetail = await PaymentDetail.findByPk(req.params.id);
+        const paymentDetail = await PaymentDetails.findByPk(req.params.id);
         if (!paymentDetail) {
             return res.status(404).json({ error: 'Détail de paiement non trouvé' });
         }
@@ -25,10 +25,16 @@ export const getPaymentDetailById = async (req, res) => {
     }
 };
 
-// Ajouter un nouveau détail de paiement
+// Ajouter un nouveau détail de paiement (protégé)
 export const addPaymentDetail = async (req, res) => {
     try {
-        const newPaymentDetail = await PaymentDetail.create(req.body);
+        const { order_fk, amount, provider, status } = req.body;
+
+        if (!order_fk || !amount || !provider) {
+            return res.status(400).json({ error: 'Tous les champs obligatoires doivent être remplis' });
+        }
+
+        const newPaymentDetail = await PaymentDetails.create({ order_fk, amount, provider, status });
         res.status(201).json(newPaymentDetail);
     } catch (error) {
         console.error('Erreur lors de l\'ajout du détail de paiement :', error);
@@ -36,10 +42,10 @@ export const addPaymentDetail = async (req, res) => {
     }
 };
 
-// Mettre à jour un détail de paiement
+// Mettre à jour un détail de paiement (protégé)
 export const updatePaymentDetail = async (req, res) => {
     try {
-        const paymentDetail = await PaymentDetail.findByPk(req.params.id);
+        const paymentDetail = await PaymentDetails.findByPk(req.params.id);
         if (!paymentDetail) {
             return res.status(404).json({ error: 'Détail de paiement non trouvé' });
         }
@@ -51,10 +57,10 @@ export const updatePaymentDetail = async (req, res) => {
     }
 };
 
-// Supprimer un détail de paiement
+// Supprimer un détail de paiement (protégé)
 export const deletePaymentDetail = async (req, res) => {
     try {
-        const paymentDetail = await PaymentDetail.findByPk(req.params.id);
+        const paymentDetail = await PaymentDetails.findByPk(req.params.id);
         if (!paymentDetail) {
             return res.status(404).json({ error: 'Détail de paiement non trouvé' });
         }

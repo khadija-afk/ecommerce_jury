@@ -8,7 +8,8 @@ export async function fetchFromApi(endpoint, opts) {
         ...(body && { body: JSON.stringify(body) }),
         headers: {
             'Content-Type': 'application/json'
-        }
+        },
+        credentials: 'include' // Inclure les cookies dans la requête
     });
 
     console.log(`Response status: ${res.status}`);
@@ -25,23 +26,3 @@ export async function fetchFromApi(endpoint, opts) {
         throw new Error(`Failed to parse JSON: ${error.message}`);
     }
 }
-
-
-
-
-/*const API ='http://localhost:9090/api/stripe'
-
-export async function fetchFromApi(endpoint, opts){
-
-    const {method, body} = {method: 'POST', body: null, ...opts}
-
-    const res = await fetch(`${API}/${endpoint}`, {
-        method,
-        ...(body && {body: JSON.stringify(body)}),
-        headers: {
-            'Content-Type': 'application/json'
-        }
-    })
-
-    return res.json()
-}*/
