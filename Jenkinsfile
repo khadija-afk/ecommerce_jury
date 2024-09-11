@@ -27,10 +27,10 @@ triggers {
                 script {
                     // Install Node.js dependencies for both frontend and backend
                     dir('frontend/my-app') {
-                        bat 'npm install'
+                        echo 'npm install'
                     }
                     dir('backend_ecommerce/backend_ecommerce') {
-                        bat 'npm install'
+                        echo 'npm install'
                     }
                 }
             }
