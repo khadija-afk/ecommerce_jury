@@ -1,30 +1,29 @@
 export default (connection, DataTypes) => {
-    const PaymentDetail = connection.define(
-        'PaymentDetail',
+    connection.define(
+        'PaymentDetails',
         {
-            order_id: {
+            order_fk: {
                 type: DataTypes.INTEGER,
                 allowNull: false,
-                /*references: {
-                    model: 'Order', // Nom du modèle cible
-                    key: 'order_id' // Clé dans le modèle cible à laquelle cela se réfère
-                }*/
+                references: {
+                    model: 'OrderDetails',
+                    key: 'id'
+                }
             },
             amount: {
-                type: DataTypes.FLOAT,
+                type: DataTypes.DECIMAL(10, 2),
                 allowNull: false
             },
-            payment_method: {
+            provider: {
                 type: DataTypes.STRING,
                 allowNull: false
             },
-            payment_status: {
+            status: {
                 type: DataTypes.STRING,
-                allowNull: false
+                allowNull: false, // Par exemple : 'Paid', 'Pending', 'Failed'
+                defaultValue: 'Pending'
             }
         },
-        { timestamps: false }
+        { timestamps: true }
     );
-
-    return PaymentDetail;
 };

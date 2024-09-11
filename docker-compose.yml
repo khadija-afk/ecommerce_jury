@@ -13,6 +13,7 @@ services:
       - ./backend_ecommerce/backend_ecommerce/migrations:/app/migrations
       - ./backend_ecommerce/backend_ecommerce/seeders:/app/seeders
       - ./backend_ecommerce/backend_ecommerce/controllers:/app/controllers
+      - ./backend_ecommerce/backend_ecommerce/routes:/app/routes
       - ./backend_ecommerce/backend_ecommerce/utils:/app/utils
       - ./backend_ecommerce/backend_ecommerce/swagger.js:/app/swagger.js
       
@@ -71,6 +72,29 @@ services:
     ports:
       - "8085:80"
 
+  jenkins:
+    image: jenkins/jenkins:lts
+    container_name: jenkins
+    restart: always
+    user: root
+    ports:
+      - "8080:8080"  # Mappe le port 8080 pour accéder à Jenkins
+      - "50000:50000" # Port pour les agents Jenkins
+    volumes:
+      - jenkins_data:/var/jenkins_home  # Volume persistant pour les données Jenkins
+      - /var/run/docker.sock:/var/run/docker.sock  # Nécessaire pour que Jenkins puisse exécuter des conteneurs Docker
+    environment:
+      - JENKINS_OPTS=--prefix=/jenkins  # Optionnel : si vous voulez que Jenkins soit accessible via un sous-chemin (ex. : /jenkins)
+      - JAVA_OPTS=-Djenkins.install.runSetupWizard=false  # Désactive l'assistant de configuration initiale
+    networks:
+      - jenkins_net
+
 volumes:
   mysql-data:
   node_modules:
+  jenkins_data:
+    driver: local
+
+networks:
+  jenkins_net:
+    driver: bridge

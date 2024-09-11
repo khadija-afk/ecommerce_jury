@@ -2,10 +2,12 @@ import { Sequelize } from 'sequelize';
 import userModel from '../models/user.model.js';
 import articleModel from './article.model.js';
 import categorieModel from './catégories.model.js';
-import orderModel from './order.model.js';
 import reviewModel from './review.model.js';
 import cartModel from './cart.model.js';
 import cartItemModel from './cartItem.model.js';
+import orderDetailsModel from './orderDetails.model.js';
+import orderItemsModel from './orderItem.model.js';
+import paymentDetailsModel from './paymentDetail.model.js'; // Ajout des modèles
 import dotenv from 'dotenv';
 
 dotenv.config();
@@ -41,19 +43,23 @@ try {
 userModel(connection, Sequelize);
 articleModel(connection, Sequelize);
 categorieModel(connection, Sequelize);
-orderModel(connection, Sequelize);
 reviewModel(connection, Sequelize);
 cartModel(connection, Sequelize);
 cartItemModel(connection, Sequelize);
+orderDetailsModel(connection, Sequelize); // Import du modèle OrderDetails
+orderItemsModel(connection, Sequelize); // Import du modèle OrderItems
+paymentDetailsModel(connection, Sequelize); // Import du modèle PaymentDetails
 
 const {
   User,
   Article,
   Categorie,
-  Order,
   Review,
   Cart,
   CartItem,
+  OrderDetails, // Nouveau modèle
+  OrderItems, // Nouveau modèle
+  PaymentDetails, // Nouveau modèle
 } = connection.models;
 
 // Définir les relations User-Article
@@ -63,10 +69,6 @@ Article.belongsTo(User, { foreignKey: 'user_fk' });
 // Définir les relations Categorie-Article
 Categorie.hasMany(Article, { foreignKey: 'categorie_fk' });
 Article.belongsTo(Categorie, { foreignKey: 'categorie_fk' });
-
-// Définir les relations Order-User
-User.hasMany(Order, { foreignKey: 'user_fk' });
-Order.belongsTo(User, { foreignKey: 'user_fk' });
 
 // Définir les relations User-Review
 User.hasMany(Review, { foreignKey: 'user_fk' });
@@ -88,15 +90,36 @@ CartItem.belongsTo(Cart, { foreignKey: 'cart_fk', as: 'Carts' });
 Article.hasMany(CartItem, { foreignKey: 'product_fk', as: 'cartItems' });
 CartItem.belongsTo(Article, { foreignKey: 'product_fk', as: 'article' });
 
+// Définir les relations OrderDetails et User
+OrderDetails.belongsTo(User, { foreignKey: 'user_fk' });
+User.hasMany(OrderDetails, { foreignKey: 'user_fk' });
+
+// Définir les relations OrderDetails et PaymentDetails
+OrderDetails.hasOne(PaymentDetails, { foreignKey: 'order_fk' });
+PaymentDetails.belongsTo(OrderDetails, { foreignKey: 'order_fk' });
+
+
+
+// Relation entre OrderDetails et OrderItems
+OrderDetails.hasMany(OrderItems, { foreignKey: 'order_fk' });
+OrderItems.belongsTo(OrderDetails, { foreignKey: 'order_fk' });
+
+// Relation entre OrderItems et Article (product_id est l'article acheté)
+OrderItems.belongsTo(Article, { foreignKey: 'product_fk' });
+Article.hasMany(OrderItems, { foreignKey: 'product_fk' });
+
 const syncModels = async () => {
   try {
     await User.sync();
     await Categorie.sync();
     await Article.sync();
-    await Order.sync();
-    await Review.sync({ alter: true });
-    await Cart.sync({ alter: true });
-    await CartItem.sync({ alter: true });
+    await Review.sync();
+    await Cart.sync();
+    await CartItem.sync();
+    await OrderDetails.sync({alter: true}); // Synchroniser OrderDetails
+    await PaymentDetails.sync({alter: true}); // Synchroniser PaymentDetails
+    await OrderItems.sync({alter: true}); // Synchroniser OrderItems
+   
 
     console.log('All models were synchronized successfully.');
   } catch (error) {
@@ -110,10 +133,12 @@ export {
   User,
   Article,
   Categorie,
-  Order,
   Review,
   Cart,
   CartItem,
+  OrderDetails, // Exporter le modèle OrderDetails
+  OrderItems, // Exporter le modèle OrderItems
+  PaymentDetails, // Exporter le modèle PaymentDetails
   syncModels,
   connection,
 };

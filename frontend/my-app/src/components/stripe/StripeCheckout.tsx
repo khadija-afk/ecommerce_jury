@@ -1,12 +1,27 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useStripe } from "@stripe/react-stripe-js";
 import { PanierContext } from "../../utils/PanierContext";
 import { fetchFromApi } from "../../utils/helpers/Stripe";
+import axios from 'axios';
 
 const StripeCheckout = () => {
     const [email, setEmail] = useState('');
     const stripe = useStripe();
-    const { panier } = useContext(PanierContext);
+    const { panier, setPanier } = useContext(PanierContext); // Récupérer le panier du contexte
+
+    // Récupérer l'email de l'utilisateur connecté via le backend
+    useEffect(() => {
+        const fetchUserEmail = async () => {
+            try {
+                const response = await axios.get('http://localhost:9090/api/user/check_auth', { withCredentials: true });
+                setEmail(response.data.email);
+            } catch (error) {
+                console.error('Erreur lors de la récupération de l\'email de l\'utilisateur', error);
+            }
+        };
+
+        fetchUserEmail();
+    }, []);
 
     const handleCheckout = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -17,10 +32,10 @@ const StripeCheckout = () => {
             const priceInCents = Math.round(cartItem.article.price * 100); // Convertir le prix en centimes
 
             return {
-                quantity: cartItem.quantity, // Assurez-vous que la quantité est correcte
+                quantity: cartItem.quantity,
                 price_data: {
                     currency: 'eur',
-                    unit_amount: priceInCents, // Le prix doit être en centimes
+                    unit_amount: priceInCents,
                     product_data: {
                         name: cartItem.article.name || "Produit sans nom",
                         description: cartItem.article.description || "Description non disponible",
@@ -30,11 +45,10 @@ const StripeCheckout = () => {
             };
         });
 
-        console.log("Line items:", line_items); // Debug log pour vérifier les articles et leurs quantités
-
         try {
-            const response = await fetchFromApi('api/stripe/create-checkout-session', {
-                body: { line_items, customer_email: email }
+            const response = await fetchFromApi('api/stripe/create-checkout-session' , {
+                body: { line_items, customer_email: email },
+                withCredentials: true
             });
 
             if (!response) {
@@ -48,13 +62,15 @@ const StripeCheckout = () => {
                 return;
             }
 
-            console.log("Session ID:", sessionId); // Debug log
-
             // Redirection vers Stripe Checkout
             const result = await stripe?.redirectToCheckout({ sessionId });
 
             if (result?.error) {
                 console.error("Stripe redirect error:", result.error.message);
+            } else {
+                // Vider le panier après paiement réussi
+                setPanier([]);
+                console.log("Commande passée avec succès, panier vidé !");
             }
         } catch (error) {
             console.error("Error during checkout:", error);
@@ -64,14 +80,13 @@ const StripeCheckout = () => {
     return (
         <>
             <form onSubmit={handleCheckout}>
-                <input
+                {/* <input
                     type="email"
-                    onChange={e => setEmail(e.target.value)}
-                    placeholder="Email"
-                    value={email}
-                />
+                    value={email} // Email récupéré automatiquement
+                    readOnly
+                /> */}
                 <button type="submit">
-                    CHECKOUT
+                    Passer la commande
                 </button>
             </form>
         </>
