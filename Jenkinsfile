@@ -111,12 +111,3 @@ triggers {
         //     }
         // }
     }
-
-    post {
-        failure {
-            echo 'Tests failed, merge to master aborted.'
-        }
-        always {
-            cleanWs()
-        }
-    }    
