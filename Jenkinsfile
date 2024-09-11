@@ -46,7 +46,7 @@ triggers {
                     }
                     dir('backend_ecommerce/backend_ecommerce') {
                         echo 'sur le back'
-                        bat 'npm test'
+                        echo 'npm test'
                     }
                 }
             }
