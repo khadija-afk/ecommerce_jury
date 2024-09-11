@@ -1,7 +1,7 @@
 pipeline {
     agent {
         docker {
-            image 'node:14' // Spécifie l'image Docker Node.js version 14
+            image 'node:21' // Spécifie l'image Docker Node.js version 14
             args '-u root'  // Optionnel: exécuter en tant que root pour installer les dépendances globales
         }
     }
