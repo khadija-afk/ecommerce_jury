@@ -10,9 +10,9 @@ pipeline {
         NODE_ENV = 'test'
         GIT_CREDENTIALS_ID = 'CredentialAtelierCICD' // Remplacez par l'ID de vos credentials Jenkins
     }
-triggers {
-        cron('H/5 * * * *') // Planification pour exÃ©cuter toutes les 5 minutes
-    }
+// triggers {
+//         cron('H/5 * * * *') // Planification pour exÃ©cuter toutes les 5 minutes
+//     }
 
     stages {
         // stage('Checkout') {
