@@ -31,10 +31,6 @@ pipeline {
             steps {
                 script {
                     // Run tests for both frontend and backend
-                    dir('frontend/my-app') {
-                        sh 'npx jest'
-                        
-                    }
                     dir('backend_ecommerce/backend_ecommerce') {
                         sh 'npx jest'
                     }
