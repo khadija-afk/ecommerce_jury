@@ -4,7 +4,7 @@ pipeline {
     environment {
         NODE_ENV = 'test'
         GIT_CREDENTIALS_ID = 'CredentialAtelierCICD' // Remplacez par l'ID de vos credentials Jenkins
-        SONAR_HOST_URL = 'http://localhost:9000/'
+        SONAR_HOST_URL = 'http://sonarqube:9000/'
         SONAR_LOGIN = 'sqa_4c325592530960917aae3de3fddd4f5f26a7c590'
     }
 
@@ -43,7 +43,6 @@ pipeline {
             agent { 
                 docker {
                     image 'sonarsource/sonar-scanner-cli'
-                    args '--network jenkins-network'
                 }
             }
             steps {
