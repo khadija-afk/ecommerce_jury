@@ -40,6 +40,8 @@ pipeline {
         }
 
         stage('SonarQube Analysis') {
+            agent { docker { image 'node:21' } }
+
             steps {
                 withSonarQubeEnv('SonarQube') {
                     sh "npx sonar-scanner \
