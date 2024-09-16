@@ -11,10 +11,7 @@ pipeline {
     stages {
 
         stage('Install Dependencies') {
-            docker {
-            image 'node:21' // Spécifie l'image Docker Node.js version 14
-            args '-u root'  // Optionnel: exécuter en tant que root pour installer les dépendances globales
-        }
+            agent { docker { image 'node:14' args '-u root' } }
             steps {
                 script {
                     // Install Node.js dependencies for both frontend and backend
@@ -29,10 +26,8 @@ pipeline {
         }
 
         stage('Run Tests') {
-            docker {
-            image 'node:21' // Spécifie l'image Docker Node.js version 14
-            args '-u root'  // Optionnel: exécuter en tant que root pour installer les dépendances globales
-        }
+            agent { docker { image 'node:14' args '-u root' } }
+
             steps {
                 script {
                     // Run tests for both frontend and backend
