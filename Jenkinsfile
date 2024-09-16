@@ -44,7 +44,7 @@ pipeline {
 
             steps {
                 withSonarQubeEnv('SonarQube') {
-                    sh "npx sonar-scanner \
+                    sh "sonar-scanner \
                         -Dsonar.projectKey=my-react-project \
                         -Dsonar.sources=. \
                         -Dsonar.host.url=${SONAR_HOST_URL} \
