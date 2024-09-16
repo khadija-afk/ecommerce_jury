@@ -40,8 +40,12 @@ pipeline {
         }
 
         stage('SonarQube Analysis') {
-            agent { docker { image 'sonarsource/sonar-scanner-cli' } }
-
+            agent { 
+                docker {
+                    image 'sonarsource/sonar-scanner-cli'
+                    args '--network sonarqube_net'
+                }
+            }
             steps {
                 withSonarQubeEnv('SonarQube') {
                     sh "sonar-scanner \

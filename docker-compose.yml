@@ -115,6 +115,8 @@ services:
       - sonarqube_logs:/opt/sonarqube/logs
       - sonarqube_extensions:/opt/sonarqube/extensions
       - sonarqube_temp:/opt/sonarqube/temp
+    networks:
+      - sonarqube_net
 
   postgresql:
     image: postgres:latest
@@ -141,5 +143,7 @@ volumes:
     driver: local
 
 networks:
+  sonarqube_net:
+    driver: bridge
   jenkins_net:
     driver: bridge
