@@ -43,12 +43,13 @@ pipeline {
         stage('SonarQube Analysis') {
             steps {
                 withSonarQubeEnv('SonarQube') {
-                    sh 'npx sonar-scanner \
-                        -Dsonar.projectKey=my-ecommerce-project \
+                    sh "chmod +x node_modules/sonar-scanner/bin/sonar-scanner" // Ajouter cette ligne
+                    sh "npx sonar-scanner \
+                        -Dsonar.projectKey=my-react-project \
                         -Dsonar.sources=. \
-                        -Dsonar.host.url=$SONAR_HOST_URL \
-                        -Dsonar.login=$SONAR_LOGIN'
-                }
+                        -Dsonar.host.url=${SONAR_HOST_URL} \
+                        -Dsonar.login=${SONAR_LOGIN}"
+                        }
             }
         }
 
