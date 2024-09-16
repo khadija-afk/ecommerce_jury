@@ -38,6 +38,16 @@ pipeline {
             }
         }
 
+        stage('SonarQube Analysis') {
+            steps {
+                withSonarQubeEnv('SonarQube') {
+                    sh 'npx sonar-scanner \
+                        -Dsonar.projectKey=my-ecommerce-project \
+                        -Dsonar.sources=.'
+                }
+            }
+        }
+
         
     }
 
