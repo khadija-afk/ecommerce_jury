@@ -9,6 +9,8 @@ pipeline {
     environment {
         NODE_ENV = 'test'
         GIT_CREDENTIALS_ID = 'CredentialAtelierCICD' // Remplacez par l'ID de vos credentials Jenkins
+        SONAR_HOST_URL = 'http://localhost:9000/'
+        SONAR_LOGIN = 'sqa_4c325592530960917aae3de3fddd4f5f26a7c590'
     }
 
     stages {
@@ -43,7 +45,9 @@ pipeline {
                 withSonarQubeEnv('SonarQube') {
                     sh 'npx sonar-scanner \
                         -Dsonar.projectKey=my-ecommerce-project \
-                        -Dsonar.sources=.'
+                        -Dsonar.sources=. \
+                        -Dsonar.host.url=$SONAR_HOST_URL \
+                        -Dsonar.login=$SONAR_LOGIN'
                 }
             }
         }
