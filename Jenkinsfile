@@ -11,7 +11,8 @@ pipeline {
     stages {
 
         stage('Install Dependencies') {
-            agent { docker { image 'node:14' args '-u root' } }
+            agent { docker { image 'node:21' } }
+            
             steps {
                 script {
                     // Install Node.js dependencies for both frontend and backend
@@ -26,7 +27,7 @@ pipeline {
         }
 
         stage('Run Tests') {
-            agent { docker { image 'node:14' args '-u root' } }
+            agent { docker { image 'node:21' } }
 
             steps {
                 script {
