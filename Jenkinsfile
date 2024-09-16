@@ -43,7 +43,6 @@ pipeline {
             agent { 
                 docker {
                     image 'sonarsource/sonar-scanner-cli'
-                    args '--network sonarqube_net'
                 }
             }
             steps {
