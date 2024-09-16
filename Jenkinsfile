@@ -42,7 +42,6 @@ pipeline {
         stage('SonarQube Analysis') {
             steps {
                 withSonarQubeEnv('SonarQube') {
-                    sh "chmod +x node_modules/sonar-scanner/bin/sonar-scanner" // Ajouter cette ligne
                     sh "npx sonar-scanner \
                         -Dsonar.projectKey=my-react-project \
                         -Dsonar.sources=. \
