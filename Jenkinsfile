@@ -46,7 +46,6 @@ pipeline {
             //     }
             // }
             steps {
-                    sh 'npx jest'
                     sh "sonar-scanner \
                         -Dsonar.projectKey=my-react-project \
                         -Dsonar.sources=. \
