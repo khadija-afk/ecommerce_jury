@@ -1,4 +1,9 @@
 
+build-custom-jenkins:
+	docker build -t custom-jenkins . -f Dockerfile-jenkins 
+
+test:
+	npx jest
 
 start-front:
 	docker-compose up --build -d frontend
@@ -12,8 +17,11 @@ start-j:
 start-all:
 	docker-compose up --build
 
-bash-backend:
+bash-b:
 	@docker exec -it backend bash
+
+bash-j:
+	@docker exec -it jenkins bash
 
 sequelize-migrate:
 	@npx sequelize-cli db:migrate

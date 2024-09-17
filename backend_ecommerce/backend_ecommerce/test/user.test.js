@@ -62,6 +62,6 @@ afterAll(async () => {
   });
 });*/
 //test qui donne succès à tous les coups
-test("test trivial qui réussit toujours", () => {
+test("test trivial qui réussit toujours 2", () => {
   expect(true).toBe(true);
 });
