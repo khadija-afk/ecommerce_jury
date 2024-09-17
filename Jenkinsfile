@@ -40,11 +40,11 @@ pipeline {
         }
 
         stage('SonarQube Analysis') {
-            agent { 
-                docker {
-                    image 'sonarsource/sonar-scanner-cli'
-                }
-            }
+            // agent { 
+            //     docker {
+            //         image 'sonarsource/sonar-scanner-cli'
+            //     }
+            // }
             steps {
                     sh "sonar-scanner \
                         -Dsonar.projectKey=my-react-project \
