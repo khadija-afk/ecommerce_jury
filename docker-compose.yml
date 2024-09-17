@@ -16,9 +16,6 @@ services:
       - ./backend_ecommerce/backend_ecommerce/routes:/app/routes
       - ./backend_ecommerce/backend_ecommerce/utils:/app/utils
       - ./backend_ecommerce/backend_ecommerce/swagger.js:/app/swagger.js
-      
-      
-      
     environment:
       - NODE_ENV=${NODE_ENV}
       - DB_HOST=${DB_HOST}
@@ -34,7 +31,8 @@ services:
       - VITE_PUBLIC_KEY_STRIPE=${VITE_PUBLIC_KEY_STRIPE}
       - MY_EMAIL=${MY_EMAIL}
       - MY_PASSWORD=${MY_PASSWORD}
-
+    networks:
+      - jenkins_net  # Ajouter au même réseau
 
   frontend:
     build:
@@ -48,6 +46,8 @@ services:
     environment:
       - NODE_ENV=${NODE_ENV}
       - VITE_PUBLIC_KEY_STRIPE=${VITE_PUBLIC_KEY_STRIPE}
+    networks:
+      - jenkins_net  # Ajouter au même réseau
 
   db:
     image: mysql:5.7
@@ -62,6 +62,8 @@ services:
       MYSQL_PASSWORD: ${MYSQL_PASSWORD}
     volumes:
       - mysql-data:/var/lib/mysql
+    networks:
+      - jenkins_net  # Ajouter au même réseau
 
   phpmyadmin:
     image: phpmyadmin/phpmyadmin
@@ -71,6 +73,8 @@ services:
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
     ports:
       - "8085:80"
+    networks:
+      - jenkins_net  # Ajouter au même réseau
 
   jenkins:
     image: jenkins/jenkins:lts
@@ -115,6 +119,8 @@ services:
       - sonarqube_logs:/opt/sonarqube/logs
       - sonarqube_extensions:/opt/sonarqube/extensions
       - sonarqube_temp:/opt/sonarqube/temp
+    networks:
+      - jenkins_net  # Ajouter au même réseau
 
   postgresql:
     image: postgres:latest
@@ -127,6 +133,8 @@ services:
     volumes:
       - postgresql_data:/var/lib/postgresql/data
       - postgresql:/var/lib/postgresql
+    networks:
+      - jenkins_net  # Ajouter au même réseau
 
 volumes:
   mysql-data:
