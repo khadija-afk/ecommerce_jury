@@ -98,6 +98,7 @@ services:
         if ! docker -v &> /dev/null; then
           apt-get update &&
           apt-get install -y docker.io &&
+          apt-get install -y sonar-scanner &&
           usermod -aG docker jenkins;
         fi &&
         /usr/local/bin/jenkins.sh
