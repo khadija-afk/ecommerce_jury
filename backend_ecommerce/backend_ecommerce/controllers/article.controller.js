@@ -1,5 +1,11 @@
 import { Article, User, Categorie } from '../models/index.js';
 
+export const sum = (a, b) =>
+
+    {
+        return a+b;
+    }
+
 export const add = async (req, res) => {
     try {
         const { categorie_fk, name, content, brand, price, stock, photo } = req.body;
