@@ -46,7 +46,7 @@ pipeline {
             //     }
             // }
             steps {
-                    sh "pwd"
+                    sh "ls -l project"
                     sh " sonar-scanner \
                         -Dsonar.projectKey=ecommerce-backend \
                         -Dsonar.sources=. \
