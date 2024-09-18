@@ -66,7 +66,7 @@ pipeline {
             steps {
                     sh " cd frontend/my-app && \
                         sonar-scanner \
-                        -Dsonar.projectKey=ecommerce-backend \
+                        -Dsonar.projectKey=ecommerce-frontend \
                         -Dsonar.sources=. \
                         -Dsonar.host.url=${SONAR_HOST_URL} \
                         -Dsonar.login=${SONAR_LOGIN} \
