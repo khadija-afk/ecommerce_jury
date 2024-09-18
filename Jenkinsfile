@@ -71,6 +71,7 @@ pipeline {
                         -Dsonar.host.url=${SONAR_HOST_URL} \
                         -Dsonar.login=${SONAR_LOGIN} \
                         -Dsonar.javascript.jstest.reportsPath=./reports \
+                        -Dsonar.javascript.lcov.reportPaths=./coverage/lcov.info \
                         -Dsonar.junit.reportPaths=./reports/junit.xml"
             }
         }
