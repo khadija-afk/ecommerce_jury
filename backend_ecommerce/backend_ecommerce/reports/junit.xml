@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuites name="jest tests" tests="3" failures="0" errors="0" time="1.748">
-  <testsuite name="undefined" errors="0" failures="0" skipped="0" timestamp="2024-09-17T21:42:19" time="1.299" tests="1">
-    <testcase classname=" test trivial qui réussit toujours 1" name=" test trivial qui réussit toujours 1" time="0.01">
+<testsuites name="jest tests" tests="3" failures="0" errors="0" time="1.612">
+  <testsuite name="undefined" errors="0" failures="0" skipped="0" timestamp="2024-09-18T19:55:15" time="1.135" tests="1">
+    <testcase classname=" test trivial qui réussit toujours 2" name=" test trivial qui réussit toujours 2" time="0.011">
     </testcase>
   </testsuite>
-  <testsuite name="undefined" errors="0" failures="0" skipped="0" timestamp="2024-09-17T21:42:19" time="1.31" tests="1">
-    <testcase classname=" test trivial qui réussit toujours 2" name=" test trivial qui réussit toujours 2" time="0.009">
+  <testsuite name="undefined" errors="0" failures="0" skipped="0" timestamp="2024-09-18T19:55:15" time="1.146" tests="1">
+    <testcase classname=" test trivial qui réussit toujours 1" name=" test trivial qui réussit toujours 1" time="0.007">
     </testcase>
   </testsuite>
-  <testsuite name="undefined" errors="0" failures="0" skipped="0" timestamp="2024-09-17T21:42:19" time="1.404" tests="1">
-    <testcase classname=" test sum" name=" test sum" time="0.007">
+  <testsuite name="undefined" errors="0" failures="0" skipped="0" timestamp="2024-09-18T19:55:15" time="1.242" tests="1">
+    <testcase classname=" test sum" name=" test sum" time="0.01">
     </testcase>
   </testsuite>
 </testsuites>

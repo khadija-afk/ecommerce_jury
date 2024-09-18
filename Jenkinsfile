@@ -47,9 +47,10 @@ pipeline {
             // }
             steps {
                     sh "ls -l"
-                    sh " sonar-scanner \
+                    sh " cd backend_ecommerce/backend_ecommerce &&\
+                        sonar-scanner \
                         -Dsonar.projectKey=ecommerce-backend \
-                        -Dsonar.sources=backend_ecommerce/backend_ecommerce/. \
+                        -Dsonar.sources=. \
                         -Dsonar.host.url=${SONAR_HOST_URL} \
                         -Dsonar.login=${SONAR_LOGIN} \
                         -Dsonar.javascript.jstest.reportsPath=./reports \
