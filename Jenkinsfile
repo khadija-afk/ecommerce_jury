@@ -39,7 +39,7 @@ pipeline {
             }
         }
 
-        stage('SonarQube Analysis Backend') {
+        stage('SonarQube Analysis BackEnd') {
             // agent { 
             //     docker {
             //         image 'sonarsource/sonar-scanner-cli'
@@ -47,6 +47,24 @@ pipeline {
             // }
             steps {
                     sh " cd backend_ecommerce/backend_ecommerce && \
+                        sonar-scanner \
+                        -Dsonar.projectKey=ecommerce-backend \
+                        -Dsonar.sources=. \
+                        -Dsonar.host.url=${SONAR_HOST_URL} \
+                        -Dsonar.login=${SONAR_LOGIN} \
+                        -Dsonar.javascript.jstest.reportsPath=./reports \
+                        -Dsonar.junit.reportPaths=./reports/junit.xml"
+            }
+        }
+
+        stage('SonarQube Analysis FrontEnd') {
+            // agent { 
+            //     docker {
+            //         image 'sonarsource/sonar-scanner-cli'
+            //     }
+            // }
+            steps {
+                    sh " cd frontend/my-app && \
                         sonar-scanner \
                         -Dsonar.projectKey=ecommerce-backend \
                         -Dsonar.sources=. \
