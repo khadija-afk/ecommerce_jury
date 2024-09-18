@@ -46,8 +46,7 @@ pipeline {
             //     }
             // }
             steps {
-                    sh "ls -l"
-                    sh " cd backend_ecommerce/backend_ecommerce &&\
+                    sh " cd backend_ecommerce/backend_ecommerce && \
                         sonar-scanner \
                         -Dsonar.projectKey=ecommerce-backend \
                         -Dsonar.sources=. \
