@@ -39,15 +39,16 @@ pipeline {
             }
         }
 
-        stage('SonarQube Analysis') {
+        stage('SonarQube Analysis Backend') {
             // agent { 
             //     docker {
             //         image 'sonarsource/sonar-scanner-cli'
             //     }
             // }
             steps {
-                    sh "sonar-scanner \
-                        -Dsonar.projectKey=my-react-project \
+                    sh "pwd"
+                    sh " sonar-scanner \
+                        -Dsonar.projectKey=ecommerce-backend \
                         -Dsonar.sources=. \
                         -Dsonar.host.url=${SONAR_HOST_URL} \
                         -Dsonar.login=${SONAR_LOGIN} \
