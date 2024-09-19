@@ -15,6 +15,7 @@ services:
       - ./backend_ecommerce/backend_ecommerce/controllers:/app/controllers
       - ./backend_ecommerce/backend_ecommerce/routes:/app/routes
       - ./backend_ecommerce/backend_ecommerce/utils:/app/utils
+      - ./backend_ecommerce/backend_ecommerce/test:/app/test
       - ./backend_ecommerce/backend_ecommerce/swagger.js:/app/swagger.js
     environment:
       - NODE_ENV=${NODE_ENV}
