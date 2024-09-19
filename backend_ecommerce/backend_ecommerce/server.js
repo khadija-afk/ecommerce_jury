@@ -22,6 +22,7 @@ import routerPaymentDetails from './routes/paymentDetail.js'
 import routerStripe from './routes/stripe.js'
 import routes from './routes/reset.js'
 import routLogout from './routes/logout.js'
+import stripeWebhookRoute from './routes/stripewebhook.js'
 
 
 
@@ -57,6 +58,9 @@ app.use("/api/stripe", routerStripe)
 app.use("/api", routes);
 app.use("/api/Log", routLogout)
 
+//stripe
+app.use('/api/webhook', stripeWebhookRoute);
+
 
 
 
@@ -65,6 +69,8 @@ export { app }
 
 
 // LISTEN
-app.listen(PORT,  () => {
-  console.log(`Listening at http://localhost:${PORT}`);
-})
+if (process.env.NODE_ENV !== 'test') {
+  app.listen(PORT, () => {
+      console.log(`Listening at http://localhost:${PORT}`);
+  });
+}
