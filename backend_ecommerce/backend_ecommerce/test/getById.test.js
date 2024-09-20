@@ -1,11 +1,12 @@
 import request from 'supertest';
-
-import  '../databaseTest.js';
+import { prepareDatabase } from '../serverTest.js';
+import { app } from '../server.js';
 
 describe('GET /api/article/:id', () => {
-    let app;
     
-    
+    beforeAll(async () => {
+        await prepareDatabase();
+    });
     
     
     it('devrait retourner l\'article avec l\'ID donné', async () => {
