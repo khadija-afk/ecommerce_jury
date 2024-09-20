@@ -6,7 +6,7 @@ export default (connection, DataTypes) => {
                 type: DataTypes.INTEGER,
                 allowNull: false,
                 references: {
-                    model: 'Users', // Assurez-vous que le modèle utilisateur est correctement nommé
+                    model: 'Users',
                     key: 'id'
                 }
             },
@@ -14,13 +14,13 @@ export default (connection, DataTypes) => {
                 type: DataTypes.DECIMAL(10, 2),
                 allowNull: false
             },
-            payment_fk: {
-                type: DataTypes.INTEGER,
-                allowNull: true, // Peut être optionnel si le paiement n'est pas encore fait
-                references: {
-                    model: 'PaymentDetails',
-                    key: 'id'
-                }
+            address: {
+                type: DataTypes.STRING,
+                allowNull: false,  // L'adresse de livraison est obligatoire
+            },
+            paymentMethod: {
+                type: DataTypes.STRING,
+                allowNull: false,  // La méthode de paiement est obligatoire
             }
         },
         { timestamps: true }
