@@ -2,12 +2,12 @@
 FROM node:21
 
 # Définir le répertoire de travail dans le conteneur
-WORKDIR /app
+
+
+# Copier le reste des fichiers de l'application
+COPY . .
 
 RUN rm -rf node_modules package-lock.json
-
-# Copier les fichiers package.json et package-lock.json
-COPY package*.json ./
 
 # Installer les dépendances de l'application
 RUN npm install
@@ -15,8 +15,7 @@ RUN npm install
 # Forcer la reconstruction de bcrypt
 RUN npm rebuild bcrypt --build-from-source
 
-# Copier le reste des fichiers de l'application
-COPY . .
+WORKDIR /app
 
 # Exposer le port sur lequel l'application s'exécute
 EXPOSE 9090
