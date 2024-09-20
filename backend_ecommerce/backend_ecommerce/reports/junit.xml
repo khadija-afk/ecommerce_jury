@@ -1,15 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuites name="jest tests" tests="3" failures="0" errors="0" time="1.612">
-  <testsuite name="undefined" errors="0" failures="0" skipped="0" timestamp="2024-09-18T19:55:15" time="1.135" tests="1">
-    <testcase classname=" test trivial qui réussit toujours 2" name=" test trivial qui réussit toujours 2" time="0.011">
+<testsuites name="jest tests" tests="4" failures="0" errors="0" time="3.303">
+  <testsuite name="undefined" errors="0" failures="0" skipped="0" timestamp="2024-09-19T14:49:53" time="1.241" tests="1">
+    <testcase classname=" test trivial qui réussit toujours 1" name=" test trivial qui réussit toujours 1" time="0.005">
     </testcase>
   </testsuite>
-  <testsuite name="undefined" errors="0" failures="0" skipped="0" timestamp="2024-09-18T19:55:15" time="1.146" tests="1">
-    <testcase classname=" test trivial qui réussit toujours 1" name=" test trivial qui réussit toujours 1" time="0.007">
+  <testsuite name="undefined" errors="0" failures="0" skipped="0" timestamp="2024-09-19T14:49:54" time="0.143" tests="1">
+    <testcase classname=" test trivial qui réussit toujours 2" name=" test trivial qui réussit toujours 2" time="0.004">
     </testcase>
   </testsuite>
-  <testsuite name="undefined" errors="0" failures="0" skipped="0" timestamp="2024-09-18T19:55:15" time="1.242" tests="1">
-    <testcase classname=" test sum" name=" test sum" time="0.01">
+  <testsuite name="GET /api/article/:id" errors="0" failures="0" skipped="0" timestamp="2024-09-19T14:49:55" time="1.744" tests="2">
+    <testcase classname="GET /api/article/:id devrait retourner l&apos;article avec l&apos;ID donné" name="GET /api/article/:id devrait retourner l&apos;article avec l&apos;ID donné" time="0.051">
+    </testcase>
+    <testcase classname="GET /api/article/:id devrait retourner une erreur 404 si l&apos;article n&apos;est pas trouvé" name="GET /api/article/:id devrait retourner une erreur 404 si l&apos;article n&apos;est pas trouvé" time="0.015">
     </testcase>
   </testsuite>
 </testsuites>

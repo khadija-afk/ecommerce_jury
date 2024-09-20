@@ -8,15 +8,17 @@ import ArticleList from './features/article/ArticleList';
 import AddCategoryForm from './features/category/AddCategoryForm';
 import Detail from './features/article/DetailArticle';
 import Panier from './pages/panier/Panier';
-import HomePage from './pages/home';
+import HomePage from './pages/home/home';
 import Layout from './components/Layout';
 import Users from './dashbord/user/Users';
 import Articles from './dashbord/article/Articles';
 import Success from './components/stripe/Successe';
 import Canceled from './components/stripe/Canceled';
-import Dashboard from './dashbord/page';
 import Page from './dashbord/page';
 import FavorisPage from './pages/favorie/Favorite';
+
+//ORDRS
+import Checkout from './pages/checkout/Checkout.jsx'
 
 // SERVICES
 import PublicRoute  from './utils/helpers/PublicRoute';
@@ -40,6 +42,7 @@ const App = () => {
             <Route path="article" element={<ArticleList />} />
             <Route path="api/article/:id" element={<Detail />} />
             <Route path = "/panier" element = {<Panier />} />
+            <Route path ="/checkout" element ={<Checkout />} />
             <Route path = "/success" element = {<Success />} />
             <Route path = "/cancel" element = {<Canceled />} />
             <Route path = "/favoris" element = {<FavorisPage/>} />
