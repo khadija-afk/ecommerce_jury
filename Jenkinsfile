@@ -33,7 +33,7 @@ pipeline {
                 script {
                     // Run tests for both frontend and backend
                     dir('backend_ecommerce/backend_ecommerce') {
-                        sh 'npx jest'
+                        sh 'make test'
                     }
                 }
             }
