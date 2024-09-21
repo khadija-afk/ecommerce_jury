@@ -52,16 +52,19 @@ export const getAll = async (req, res) => {
 };
 
 export const getById = async (req, res) => {
+    const id = req.params.id;
+    let article;
+
     try {
-        const id = req.params.id;
-        const article = await Article.findByPk(id);
-        if (!article) {
-            return res.status(404).json({ error: "Article non trouvé" });
-        }
-        res.status(200).json(article);
+        article = await Article.findByPk(id);
     } catch (err) {
-        res.status(500).json({ error: "Error lors de la récupération" });
+        return res.status(500).json({ error: "Error lors de la récupération" });
     }
+
+    if (!article) {
+        return res.status(404).json({ error: "Article non trouvé" });
+    }
+    res.status(200).json(article);
 };
 
 export const updateById = async (req, res) => {

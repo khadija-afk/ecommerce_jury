@@ -2,12 +2,13 @@ import request from 'supertest';
 import { prepareDatabase } from '../serverTest.js';
 import { app } from '../server.js';
 
+
+
 describe('GET /api/article/:id', () => {
     
     beforeAll(async () => {
         await prepareDatabase();
     });
-    
     
     it('200', async () => {
         const response = await request(app).get('/api/article/1');
@@ -33,4 +34,18 @@ describe('GET /api/article/:id', () => {
         expect(response.status).toBe(404);
         expect(response.body).toEqual({ error: 'Article non trouvé' });
     });
+
+    it('500', async () => {
+        const { Article } = require('../models/index.js');
+    
+        // Utiliser jest.spyOn pour intercepter l'appel à findByPk et simuler une erreur
+        Article.findByPk = jest.fn().mockRejectedValue(new Error('Erreur de Réseau'))
+    
+        const response = await request(app).get('/api/article/1');
+        
+        expect(response.status).toBe(500);
+        expect(response.body).toEqual({ error: 'Error lors de la récupération' });
+    
+    });
+    
 });
