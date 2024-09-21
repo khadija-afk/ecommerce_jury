@@ -24,7 +24,10 @@ describe('DELETE /api/article/:id', () => {
     it('deleteById - 404', async () => {
 
         let userToken;
-        userToken = jwt.sign({ id: 1, email: 'john.doe@example.com' }, env.token); // Signer le token avec une clé secrète
+        if (!process.env.SECRET_KEY) {
+            process.env.SECRET_KEY = 'your_secret_key_here';
+        }
+        userToken = jwt.sign({ id: 1, email: 'john.doe@example.com' }, process.env.SECRET_KEY, { expiresIn: '1h' };     // Signer le token avec une clé secrète
 
 
         const response = await request(app)
