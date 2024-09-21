@@ -37,6 +37,19 @@ const prepareDatabase = async () => {
 };
 
 
+
+// Fonction pour vider la base de données après les tests
+const teardownDatabase = async () => {
+    try {
+        await Article.destroy({ where: {}, truncate: true });
+        await Categorie.destroy({ where: {}, truncate: true });
+        await User.destroy({ where: {}, truncate: true });
+    } catch (error) {
+        console.error('Error during database teardown:', error);
+    }
+};
+
 export {
     prepareDatabase,
+    teardownDatabase,
 };
