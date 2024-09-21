@@ -3,9 +3,15 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.getReview = exports.getByUser = exports.getByDesc = exports.getByAsc = exports.deleteById = exports.updateById = exports.getById = exports.getAll = exports.add = void 0;
+exports.getReview = exports.getByUser = exports.getByDesc = exports.getByAsc = exports.deleteById = exports.updateById = exports.getById = exports.getAll = exports.add = exports.sum = void 0;
 
 var _index = require("../models/index.js");
+
+var sum = function sum(a, b) {
+  return a + b;
+};
+
+exports.sum = sum;
 
 var add = function add(req, res) {
   var _req$body, categorie_fk, name, content, brand, price, stock, photo, user_fk, user, categorie, newArticle;
@@ -102,23 +108,25 @@ var getAll = function getAll(req, res) {
 
         case 3:
           articles = _context2.sent;
-          res.status(200).json(articles);
-          _context2.next = 10;
+          _context2.next = 9;
           break;
 
-        case 7:
-          _context2.prev = 7;
+        case 6:
+          _context2.prev = 6;
           _context2.t0 = _context2["catch"](0);
-          res.status(500).json({
+          return _context2.abrupt("return", res.status(500).json({
             error: "Error lors de la récupération"
-          });
+          }));
+
+        case 9:
+          return _context2.abrupt("return", res.status(200).json(articles));
 
         case 10:
         case "end":
           return _context2.stop();
       }
     }
-  }, null, null, [[0, 7]]);
+  }, null, null, [[0, 6]]);
 };
 
 exports.getAll = getAll;
@@ -129,16 +137,26 @@ var getById = function getById(req, res) {
     while (1) {
       switch (_context3.prev = _context3.next) {
         case 0:
-          _context3.prev = 0;
           id = req.params.id;
+          _context3.prev = 1;
           _context3.next = 4;
           return regeneratorRuntime.awrap(_index.Article.findByPk(id));
 
         case 4:
           article = _context3.sent;
+          _context3.next = 10;
+          break;
 
+        case 7:
+          _context3.prev = 7;
+          _context3.t0 = _context3["catch"](1);
+          return _context3.abrupt("return", res.status(500).json({
+            error: "Error lors de la récupération"
+          }));
+
+        case 10:
           if (article) {
-            _context3.next = 7;
+            _context3.next = 12;
             break;
           }
 
@@ -146,24 +164,15 @@ var getById = function getById(req, res) {
             error: "Article non trouvé"
           }));
 
-        case 7:
-          res.status(200).json(article);
-          _context3.next = 13;
-          break;
-
-        case 10:
-          _context3.prev = 10;
-          _context3.t0 = _context3["catch"](0);
-          res.status(500).json({
-            error: "Error lors de la récupération"
-          });
+        case 12:
+          return _context3.abrupt("return", res.status(200).json(article));
 
         case 13:
         case "end":
           return _context3.stop();
       }
     }
-  }, null, null, [[0, 10]]);
+  }, null, null, [[1, 7]]);
 };
 
 exports.getById = getById;

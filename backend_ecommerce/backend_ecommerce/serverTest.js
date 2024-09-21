@@ -6,6 +6,8 @@ const prepareDatabase = async () => {
     try {
         await initializeDatabase();
         
+        
+
         // Insérer un utilisateur de test
         const user = await User.create({
             firstName: 'John',
