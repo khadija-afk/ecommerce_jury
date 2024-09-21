@@ -2,3 +2,4 @@
 .env.txt
 
 node_modules
+lcov-report
