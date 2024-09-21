@@ -9,7 +9,7 @@ describe('GET /api/article/:id', () => {
     });
     
     
-    it('devrait retourner l\'article avec l\'ID donné', async () => {
+    it('200', async () => {
         const response = await request(app).get('/api/article/1');
         expect(response.status).toBe(200);
         expect(response.body).toEqual({
@@ -28,7 +28,7 @@ describe('GET /api/article/:id', () => {
         });
     });
 
-    it('devrait retourner une erreur 404 si l\'article n\'est pas trouvé', async () => {
+    it('404', async () => {
         const response = await request(app).get('/api/article/999');
         expect(response.status).toBe(404);
         expect(response.body).toEqual({ error: 'Article non trouvé' });
