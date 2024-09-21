@@ -1,17 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuites name="jest tests" tests="4" failures="0" errors="0" time="4.645">
-  <testsuite name="undefined" errors="0" failures="0" skipped="0" timestamp="2024-09-21T21:06:26" time="0.589" tests="1">
-    <testcase classname=" test trivial qui réussit toujours 1" name=" test trivial qui réussit toujours 1" time="0.005">
-    </testcase>
-  </testsuite>
-  <testsuite name="undefined" errors="0" failures="0" skipped="0" timestamp="2024-09-21T21:06:26" time="0.604" tests="1">
+<testsuites name="jest tests" tests="5" failures="0" errors="0" time="2.352">
+  <testsuite name="undefined" errors="0" failures="0" skipped="0" timestamp="2024-09-21T22:10:25" time="0.556" tests="1">
     <testcase classname=" test trivial qui réussit toujours 2" name=" test trivial qui réussit toujours 2" time="0.005">
     </testcase>
   </testsuite>
-  <testsuite name="GET /api/article/:id" errors="0" failures="0" skipped="0" timestamp="2024-09-21T21:06:26" time="4.452" tests="2">
-    <testcase classname="GET /api/article/:id 200" name="GET /api/article/:id 200" time="0.028">
+  <testsuite name="undefined" errors="0" failures="0" skipped="0" timestamp="2024-09-21T22:10:25" time="0.558" tests="1">
+    <testcase classname=" test trivial qui réussit toujours 1" name=" test trivial qui réussit toujours 1" time="0.006">
     </testcase>
-    <testcase classname="GET /api/article/:id 404" name="GET /api/article/:id 404" time="0.005">
+  </testsuite>
+  <testsuite name="GET /api/article/:id" errors="0" failures="0" skipped="0" timestamp="2024-09-21T22:10:25" time="2.132" tests="3">
+    <testcase classname="GET /api/article/:id 200" name="GET /api/article/:id 200" time="0.039">
+    </testcase>
+    <testcase classname="GET /api/article/:id 404" name="GET /api/article/:id 404" time="0.008">
+    </testcase>
+    <testcase classname="GET /api/article/:id 500" name="GET /api/article/:id 500" time="0.006">
     </testcase>
   </testsuite>
 </testsuites>
