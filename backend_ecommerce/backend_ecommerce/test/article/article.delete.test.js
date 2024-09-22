@@ -57,6 +57,13 @@ describe('DELETE /api/article/:id', () => {
             .set('Cookie', `access_token=${userToken}`);
         expect(response.status).toBe(200);
         expect(response.body).toBe('Article deleted !');
+
+
+        const response_get = await request(app)
+                                .get('/api/article/1')
+                                .set('Cookie', `access_token=${userToken}`);
+        expect(response_get.status).toBe(404);
+        expect(response_get.body).toEqual({ error: "Article non trouvé" })
     });
 
 
