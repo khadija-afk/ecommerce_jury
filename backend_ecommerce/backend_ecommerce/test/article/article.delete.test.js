@@ -76,19 +76,31 @@ describe('DELETE /api/article/:id', () => {
     it('deleteById - 500', async () => {
         const { Article } = require('../../models/index.js');
         let userToken;
-        userToken = jwt.sign({ id: 1, email: 'john.doe@example.com' }, env.token); // Signer le token avec une clé secrète
-
-        // Utiliser jest.spyOn pour intercepter l'appel à findByPk et simuler une erreur
-        Article.findByPk = jest.fn().mockRejectedValue(new Error('Erreur de Réseau'))
+        userToken = jwt.sign({ id: 100, email: 'john.doe@example.com' }, env.token); // Signer le token avec une clé secrète
     
+        // Simuler une instance d'article avec une méthode destroy qui lève une erreur
+        const mockArticle = {
+            user_fk: 100,
+            destroy: jest.fn().mockRejectedValue(new Error('Erreur de Réseau')),
+        };
+    
+        // Mock de Article.findByPk pour retourner l'instance mockée
+        Article.findByPk = jest.fn().mockResolvedValue(mockArticle);
+    
+        // Exécuter la requête de suppression
         const response = await request(app)
-                                .delete('/api/article/1')
+                                .delete('/api/article/100')
                                 .set('Cookie', `access_token=${userToken}`);
-                                
+    
+        // Vérifier le résultat attendu
         expect(response.status).toBe(500);
         expect(response.body).toEqual({ error: 'Error lors de la suppression' });
-
-        Article.findByPk.mockRestore?.();
+    
+        // Vérifier que destroy a bien été appelé
+        expect(mockArticle.destroy).toHaveBeenCalled();
+    
+        // Restaurer le mock
+        Article.findByPk.mockRestore();
     });
 
 });
