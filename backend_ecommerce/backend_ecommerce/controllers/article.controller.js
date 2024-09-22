@@ -88,23 +88,35 @@ export const updateById = async (req, res) => {
 };
 
 export const deleteById = async (req, res) => {
-    let article;
     const id = req.params.id;
-    article = await Article.findByPk(id);
+    
+    // Étape 1 : Rechercher l'article
+    let article;
+    try {
+        article = await Article.findByPk(id);
+    } catch (err) {
+        return res.status(501).json({ error: "Erreur lors de la recherche de l'article" });
+    }
 
     if (!article) {
         return res.status(404).json({ error: "Article non trouvé" });
     }
-    if (article.user_fk === req.user.id) {
-        try {
-            await article.destroy();
-        } catch (err) {
-            return res.status(500).json({ error: "Error lors de la suppression" });
-        }
-        return res.status(200).json("Article deleted !");
-    } else {
-        return res.status(403).json({ error: "Seul le créateur peut supprimer !" });
+
+    // Étape 2 : Vérifier si l'utilisateur est le créateur de l'article
+    if (article.user_fk !== req.user.id) {
+        return res.status(403).json({ error: "Seul le créateur peut supprimer cet article !" });
     }
+
+     // Étape 3 : Supprimer l'article
+     try {
+        await article.destroy();
+    } catch (error) {
+        return res.status(500).json({ error: "Erreur serveur lors de la suppression de l'article" });
+    }
+
+    // Étape 4 : Retourner la réponse de succès
+    return res.status(200).json("Article deleted !");
+
 };
 
 export const getByAsc = async (req, res) => {
