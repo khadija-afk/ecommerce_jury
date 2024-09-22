@@ -1,31 +1,31 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuites name="jest tests" tests="11" failures="0" errors="0" time="2.807">
-  <testsuite name="undefined" errors="0" failures="0" skipped="0" timestamp="2024-09-22T23:20:00" time="0.595" tests="1">
+<testsuites name="jest tests" tests="11" failures="0" errors="0" time="3.546">
+  <testsuite name="undefined" errors="0" failures="0" skipped="0" timestamp="2024-09-22T23:21:07" time="0.57" tests="1">
     <testcase classname=" test trivial qui réussit toujours 2" name=" test trivial qui réussit toujours 2" time="0.006">
     </testcase>
   </testsuite>
-  <testsuite name="DELETE /api/article/:id" errors="0" failures="0" skipped="0" timestamp="2024-09-22T23:20:00" time="2.209" tests="5">
-    <testcase classname="DELETE /api/article/:id deleteById - 404" name="DELETE /api/article/:id deleteById - 404" time="0.041">
+  <testsuite name="DELETE /api/article/:id" errors="0" failures="0" skipped="0" timestamp="2024-09-22T23:21:07" time="3.011" tests="5">
+    <testcase classname="DELETE /api/article/:id deleteById - 404" name="DELETE /api/article/:id deleteById - 404" time="0.046">
     </testcase>
     <testcase classname="DELETE /api/article/:id deleteById - 403" name="DELETE /api/article/:id deleteById - 403" time="0.008">
     </testcase>
-    <testcase classname="DELETE /api/article/:id deleteById - 200" name="DELETE /api/article/:id deleteById - 200" time="0.014">
+    <testcase classname="DELETE /api/article/:id deleteById - 200" name="DELETE /api/article/:id deleteById - 200" time="0.019">
     </testcase>
     <testcase classname="DELETE /api/article/:id deleteById - 404" name="DELETE /api/article/:id deleteById - 404" time="0.006">
     </testcase>
-    <testcase classname="DELETE /api/article/:id deleteById - 500" name="DELETE /api/article/:id deleteById - 500" time="0.006">
+    <testcase classname="DELETE /api/article/:id deleteById - 500" name="DELETE /api/article/:id deleteById - 500" time="0.007">
     </testcase>
   </testsuite>
-  <testsuite name="GET /api/article/:id" errors="0" failures="0" skipped="0" timestamp="2024-09-22T23:20:00" time="2.554" tests="5">
-    <testcase classname="GET /api/article/:id getById - 200" name="GET /api/article/:id getById - 200" time="0.04">
+  <testsuite name="GET /api/article/:id" errors="0" failures="0" skipped="0" timestamp="2024-09-22T23:21:07" time="3.298" tests="5">
+    <testcase classname="GET /api/article/:id getById - 200" name="GET /api/article/:id getById - 200" time="0.039">
     </testcase>
-    <testcase classname="GET /api/article/:id getById - 404" name="GET /api/article/:id getById - 404" time="0.006">
+    <testcase classname="GET /api/article/:id getById - 404" name="GET /api/article/:id getById - 404" time="0.016">
     </testcase>
     <testcase classname="GET /api/article/:id getById - 500" name="GET /api/article/:id getById - 500" time="0.006">
     </testcase>
-    <testcase classname="GET /api/article/ findAll - 200" name="GET /api/article/ findAll - 200" time="0.01">
+    <testcase classname="GET /api/article/ findAll - 200" name="GET /api/article/ findAll - 200" time="0.004">
     </testcase>
-    <testcase classname="GET /api/article/ findAll - 500" name="GET /api/article/ findAll - 500" time="0.007">
+    <testcase classname="GET /api/article/ findAll - 500" name="GET /api/article/ findAll - 500" time="0.004">
     </testcase>
   </testsuite>
 </testsuites>

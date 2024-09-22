@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1727046300629" clover="3.2.0">
-  <project timestamp="1727046300629" name="All files">
-    <metrics statements="711" coveredstatements="242" conditionals="138" coveredconditionals="11" methods="82" coveredmethods="17" elements="931" coveredelements="270" complexity="0" loc="711" ncloc="711" packages="6" files="41" classes="41"/>
+<coverage generated="1727047272305" clover="3.2.0">
+  <project timestamp="1727047272306" name="All files">
+    <metrics statements="712" coveredstatements="243" conditionals="138" coveredconditionals="11" methods="82" coveredmethods="17" elements="932" coveredelements="271" complexity="0" loc="712" ncloc="712" packages="6" files="41" classes="41"/>
     <package name="app">
-      <metrics statements="54" coveredstatements="45" conditionals="8" coveredconditionals="4" methods="6" coveredmethods="4"/>
+      <metrics statements="55" coveredstatements="46" conditionals="8" coveredconditionals="4" methods="6" coveredmethods="4"/>
       <file name="auth.js" path="/app/auth.js">
         <metrics statements="9" coveredstatements="8" conditionals="4" coveredconditionals="2" methods="2" coveredmethods="2"/>
         <line num="6" count="2" type="stmt"/>
@@ -55,20 +55,21 @@
         <line num="74" count="0" type="stmt"/>
       </file>
       <file name="serverTest.js" path="/app/serverTest.js">
-        <metrics statements="13" coveredstatements="11" conditionals="0" coveredconditionals="0" methods="2" coveredmethods="2"/>
+        <metrics statements="14" coveredstatements="12" conditionals="0" coveredconditionals="0" methods="2" coveredmethods="2"/>
         <line num="5" count="2" type="stmt"/>
         <line num="6" count="3" type="stmt"/>
         <line num="7" count="3" type="stmt"/>
         <line num="12" count="3" type="stmt"/>
-        <line num="21" count="3" type="stmt"/>
-        <line num="27" count="3" type="stmt"/>
-        <line num="37" count="0" type="stmt"/>
-        <line num="44" count="2" type="stmt"/>
-        <line num="45" count="3" type="stmt"/>
-        <line num="46" count="3" type="stmt"/>
-        <line num="47" count="3" type="stmt"/>
-        <line num="48" count="3" type="stmt"/>
-        <line num="50" count="0" type="stmt"/>
+        <line num="20" count="3" type="stmt"/>
+        <line num="29" count="3" type="stmt"/>
+        <line num="35" count="3" type="stmt"/>
+        <line num="45" count="0" type="stmt"/>
+        <line num="52" count="2" type="stmt"/>
+        <line num="53" count="3" type="stmt"/>
+        <line num="54" count="3" type="stmt"/>
+        <line num="55" count="3" type="stmt"/>
+        <line num="56" count="3" type="stmt"/>
+        <line num="58" count="0" type="stmt"/>
       </file>
       <file name="swagger.js" path="/app/swagger.js">
         <metrics statements="3" coveredstatements="3" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
@@ -123,12 +124,12 @@
         <line num="90" count="2" type="stmt"/>
         <line num="92" count="4" type="stmt"/>
         <line num="93" count="4" type="stmt"/>
-        <line num="94" count="4" type="stmt"/>
+        <line num="95" count="4" type="cond" truecount="2" falsecount="0"/>
         <line num="96" count="1" type="stmt"/>
-        <line num="99" count="3" type="cond" truecount="2" falsecount="0"/>
-        <line num="100" count="1" type="stmt"/>
-        <line num="102" count="2" type="cond" truecount="2" falsecount="0"/>
-        <line num="103" count="1" type="stmt"/>
+        <line num="98" count="3" type="cond" truecount="2" falsecount="0"/>
+        <line num="99" count="2" type="stmt"/>
+        <line num="100" count="2" type="stmt"/>
+        <line num="102" count="1" type="stmt"/>
         <line num="104" count="1" type="stmt"/>
         <line num="106" count="1" type="stmt"/>
         <line num="110" count="2" type="stmt"/>
