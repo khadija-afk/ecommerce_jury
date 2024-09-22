@@ -42,7 +42,7 @@ describe('DELETE /api/article/:id', () => {
             .delete('/api/article/1')
             .set('Cookie', `access_token=${userToken}`);
         expect(response.status).toBe(403);
-        expect(response.body).toEqual({ error: "Seul le créateur peut supprimer !" })
+        expect(response.body).toEqual({ error: "Seul le créateur peut supprimer cet article !" })
     });
 
 
@@ -94,10 +94,31 @@ describe('DELETE /api/article/:id', () => {
     
         // Vérifier le résultat attendu
         expect(response.status).toBe(500);
-        expect(response.body).toEqual({ error: 'Error lors de la suppression' });
+        expect(response.body).toEqual({ error: "Erreur serveur lors de la suppression de l'article" });
     
         // Vérifier que destroy a bien été appelé
         expect(mockArticle.destroy).toHaveBeenCalled();
+    
+        // Restaurer le mock
+        Article.findByPk.mockRestore();
+    });
+
+    it('deleteById - 501', async () => {
+        const { Article } = require('../../models/index.js');
+        let userToken;
+        userToken = jwt.sign({ id: 100, email: 'john.doe@example.com' }, env.token); // Signer le token avec une clé secrète
+    
+        // Mock de Article.findByPk pour retourner l'instance mockée
+        Article.findByPk = jest.fn().mockRejectedValue(new Error('Erreur de Réseau'));
+    
+        // Exécuter la requête de suppression
+        const response = await request(app)
+                                .delete('/api/article/100')
+                                .set('Cookie', `access_token=${userToken}`);
+    
+        // Vérifier le résultat attendu
+        expect(response.status).toBe(501);
+        expect(response.body).toEqual({ error: "Erreur lors de la recherche de l'article" });
     
         // Restaurer le mock
         Article.findByPk.mockRestore();
