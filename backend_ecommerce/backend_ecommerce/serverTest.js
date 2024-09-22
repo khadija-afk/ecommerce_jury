@@ -17,6 +17,14 @@ const prepareDatabase = async () => {
             role: 'user',
         });
 
+        const user2 = await User.create({
+            firstName: 'John2',
+            lastName: 'Doe2',
+            email: 'john2.doe2@example.com',
+            password: 'password1232',
+            role: 'user',
+        });
+
         // Insérer une catégorie de test
         const category = await Categorie.create({
             name: 'Test Category',
