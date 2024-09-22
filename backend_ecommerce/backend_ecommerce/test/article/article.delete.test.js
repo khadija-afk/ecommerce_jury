@@ -1,8 +1,8 @@
 import request from 'supertest';
-import { prepareDatabase, teardownDatabase } from '../serverTest.js';
-import { app } from '../server.js';
+import { prepareDatabase, teardownDatabase } from '../../serverTest.js';
+import { app } from '../../server.js';
 import jwt from 'jsonwebtoken';
-import { env } from '../config.js'; // Assurez-vous d'importer la configuration correcte
+import { env } from '../../config.js'; // Assurez-vous d'importer la configuration correcte
 
 
 describe('DELETE /api/article/:id', () => {
@@ -67,7 +67,7 @@ describe('DELETE /api/article/:id', () => {
     });
 
     it('deleteById - 500', async () => {
-        const { Article } = require('../models/index.js');
+        const { Article } = require('../../models/index.js');
         let userToken;
         userToken = jwt.sign({ id: 1, email: 'john.doe@example.com' }, env.token); // Signer le token avec une clé secrète
 
