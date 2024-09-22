@@ -88,19 +88,22 @@ export const updateById = async (req, res) => {
 };
 
 export const deleteById = async (req, res) => {
+    let article;
+    const id = req.params.id;
     try {
-        const article = await Article.findByPk(req.params.id);
-        if (!article) {
-            return res.status(404).json({ error: "Article non trouvé" });
-        }
-        if (article.user_fk === req.user.id) {
-            await article.destroy();
-            res.status(200).json("Article deleted !");
-        } else {
-            return res.status(403).json({ error: "Seul le créateur peut supprimer !" });
-        }
+        article = await Article.findByPk(id);
     } catch (err) {
-        res.status(500).json({ error: "Error lors de la suppression" });
+        return res.status(500).json({ error: "Error lors de la suppression" });
+    }
+
+    if (!article) {
+        return res.status(404).json({ error: "Article non trouvé" });
+    }
+    if (article.user_fk === req.user.id) {
+        await article.destroy();
+        return res.status(200).json("Article deleted !");
+    } else {
+        return res.status(403).json({ error: "Seul le créateur peut supprimer !" });
     }
 };
 
