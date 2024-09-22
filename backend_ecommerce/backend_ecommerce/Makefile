@@ -1,6 +1,6 @@
 
 
-ENV_TEST=NODE_ENV=test TOKEN=fake-test-token SECRET_KEY=fake-test-secret-key
+ENV_TEST=NODE_ENV=test TOKEN=fake-test-token
 OPS= --silent --verbose
 COV= $(OPS) --coverage
 
