@@ -21,7 +21,6 @@ export const login = async (req, res) => {
   if (!comparePassword) return res.status(400).json("Wrong Credentials!");
 
   const token = jwt.sign({ id: user.id }, env.token, { expiresIn: "24h" });
-  console.log('__log__', user.dataValues)
   const { password, ...other } = user.dataValues;
 
   res.cookie('access_token', token, { httpOnly: true })
