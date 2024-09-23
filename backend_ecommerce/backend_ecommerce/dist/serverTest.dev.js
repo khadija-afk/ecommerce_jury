@@ -9,7 +9,7 @@ var _index = require("./models/index.js");
 
 // testServer.js
 var prepareDatabase = function prepareDatabase() {
-  var user, category;
+  var user, user2, category;
   return regeneratorRuntime.async(function prepareDatabase$(_context) {
     while (1) {
       switch (_context.prev = _context.next) {
@@ -31,14 +31,25 @@ var prepareDatabase = function prepareDatabase() {
         case 5:
           user = _context.sent;
           _context.next = 8;
+          return regeneratorRuntime.awrap(_index.User.create({
+            firstName: 'John2',
+            lastName: 'Doe2',
+            email: 'john2.doe2@example.com',
+            password: 'password1232',
+            role: 'user'
+          }));
+
+        case 8:
+          user2 = _context.sent;
+          _context.next = 11;
           return regeneratorRuntime.awrap(_index.Categorie.create({
             name: 'Test Category',
             description: 'A category for testing'
           }));
 
-        case 8:
+        case 11:
           category = _context.sent;
-          _context.next = 11;
+          _context.next = 14;
           return regeneratorRuntime.awrap(_index.Article.create({
             name: 'Test Article',
             content: 'This is a test article',
@@ -54,21 +65,21 @@ var prepareDatabase = function prepareDatabase() {
 
           }));
 
-        case 11:
-          _context.next = 16;
+        case 14:
+          _context.next = 19;
           break;
 
-        case 13:
-          _context.prev = 13;
+        case 16:
+          _context.prev = 16;
           _context.t0 = _context["catch"](0);
           console.error('Unable to connect to the database or synchronize:', _context.t0);
 
-        case 16:
+        case 19:
         case "end":
           return _context.stop();
       }
     }
-  }, null, null, [[0, 13]]);
+  }, null, null, [[0, 16]]);
 }; // Fonction pour vider la base de données après les tests
 
 

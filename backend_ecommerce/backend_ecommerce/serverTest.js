@@ -1,13 +1,12 @@
 // testServer.js
 import { initializeDatabase, Article, User, Categorie } from './models/index.js';
+import jwt from 'jsonwebtoken';
+import { env } from './config.js'; // Assurez-vous d'importer la configuration correcte
 
 
 const prepareDatabase = async () => {
     try {
         await initializeDatabase();
-        
-        
-
         // Insérer un utilisateur de test
         const user = await User.create({
             firstName: 'John',
@@ -59,7 +58,15 @@ const teardownDatabase = async () => {
     }
 };
 
+const getUserToken = async (user_email) => {
+    const user = await User.findOne({ where: { email: user_email } });
+    if(!user) return jwt.sign({ id: 100, email: user_email }, env.token);
+    return jwt.sign({ id: user.id, email: user.email }, env.token);
+};
+
+
 export {
     prepareDatabase,
     teardownDatabase,
+    getUserToken
 };

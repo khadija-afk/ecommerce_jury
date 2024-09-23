@@ -1,15 +1,16 @@
 import request from 'supertest';
-import { prepareDatabase, teardownDatabase } from '../../serverTest.js';
+import { prepareDatabase, teardownDatabase, getUserToken } from '../../serverTest.js';
 import { app } from '../../server.js';
-import jwt from 'jsonwebtoken';
-import { env } from '../../config.js'; // Assurez-vous d'importer la configuration correcte
-
 
 describe('DELETE /api/article/:id', () => {
     
+    let user_john;
+    let fake_user;
+
     beforeAll(async () => {
         await prepareDatabase();
-
+        user_john = await getUserToken('john.doe@example.com');
+        fake_user = await getUserToken('fake@example.com');
     });
     
     afterAll(async () => {
@@ -20,52 +21,35 @@ describe('DELETE /api/article/:id', () => {
         jest.restoreAllMocks(); // Restaurer les mocks après chaque test
     });
 
-
     it('deleteById - 404', async () => {
-        let userToken;
-        userToken = jwt.sign({ id: 1, email: 'john.doe@example.com' }, env.token); // Signer le token avec une clé secrète
-
-
         const response = await request(app)
             .delete('/api/article/999')
-            .set('Cookie', `access_token=${userToken}`);
+            .set('Cookie', `access_token=${user_john}`);
         expect(response.status).toBe(404);
         expect(response.body).toEqual({ error: 'Article non trouvé' });
     });
 
     it('deleteById - 403', async () => {
-
-        let userToken;
-        userToken = jwt.sign({ id: 999, email: 'john.doe@example.com' }, env.token); // Signer le token avec une clé secrète
-
         const response = await request(app)
             .delete('/api/article/1')
-            .set('Cookie', `access_token=${userToken}`);
+            .set('Cookie', `access_token=${fake_user}`);
         expect(response.status).toBe(403);
         expect(response.body).toEqual({ error: "Seul le créateur peut supprimer cet article !" })
     });
 
-
     it('deleteById - 200', async () => {
-
-        let userToken;
-        userToken = jwt.sign({ id: 1, email: 'john.doe@example.com' }, env.token); // Signer le token avec une clé secrète
-
-
         const response = await request(app)
             .delete('/api/article/1')
-            .set('Cookie', `access_token=${userToken}`);
+            .set('Cookie', `access_token=${user_john}`);
         expect(response.status).toBe(200);
         expect(response.body).toBe('Article deleted !');
 
-
         const response_get = await request(app)
                                 .get('/api/article/1')
-                                .set('Cookie', `access_token=${userToken}`);
+                                .set('Cookie', `access_token=${user_john}`);
         expect(response_get.status).toBe(404);
         expect(response_get.body).toEqual({ error: "Article non trouvé" })
     });
-
 
     it('deleteById - 404', async () => {
         const response = await request(app).get('/api/article/999');
@@ -75,9 +59,7 @@ describe('DELETE /api/article/:id', () => {
 
     it('deleteById - 500', async () => {
         const { Article } = require('../../models/index.js');
-        let userToken;
-        userToken = jwt.sign({ id: 100, email: 'john.doe@example.com' }, env.token); // Signer le token avec une clé secrète
-    
+        
         // Simuler une instance d'article avec une méthode destroy qui lève une erreur
         const mockArticle = {
             user_fk: 100,
@@ -90,7 +72,7 @@ describe('DELETE /api/article/:id', () => {
         // Exécuter la requête de suppression
         const response = await request(app)
                                 .delete('/api/article/100')
-                                .set('Cookie', `access_token=${userToken}`);
+                                .set('Cookie', `access_token=${fake_user}`);
     
         // Vérifier le résultat attendu
         expect(response.status).toBe(500);
@@ -105,8 +87,6 @@ describe('DELETE /api/article/:id', () => {
 
     it('deleteById - 501', async () => {
         const { Article } = require('../../models/index.js');
-        let userToken;
-        userToken = jwt.sign({ id: 100, email: 'john.doe@example.com' }, env.token); // Signer le token avec une clé secrète
     
         // Mock de Article.findByPk pour retourner l'instance mockée
         Article.findByPk = jest.fn().mockRejectedValue(new Error('Erreur de Réseau'));
@@ -114,7 +94,7 @@ describe('DELETE /api/article/:id', () => {
         // Exécuter la requête de suppression
         const response = await request(app)
                                 .delete('/api/article/100')
-                                .set('Cookie', `access_token=${userToken}`);
+                                .set('Cookie', `access_token=${fake_user}`);
     
         // Vérifier le résultat attendu
         expect(response.status).toBe(501);
