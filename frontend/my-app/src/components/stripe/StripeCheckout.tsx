@@ -4,8 +4,9 @@ import { PanierContext } from "../../utils/PanierContext";
 import { fetchFromApi } from "../../utils/helpers/Stripe";
 import axios from 'axios';
 
-const StripeCheckout = () => {
+const StripeCheckout = ({ orderId }) => {
     const [email, setEmail] = useState('');
+    const [loading, setLoading] = useState(false); // Nouvel état pour le chargement
     const stripe = useStripe();
     const { panier, setPanier } = useContext(PanierContext); // Récupérer le panier du contexte
 
@@ -23,8 +24,9 @@ const StripeCheckout = () => {
         fetchUserEmail();
     }, []);
 
-    const handleCheckout = async (e: React.FormEvent) => {
+    const handleCheckout = async (e) => {
         e.preventDefault();
+        setLoading(true); // Démarrer le chargement
 
         // Préparation des items pour Stripe Checkout
         const line_items = panier.map(cartItem => {
@@ -46,8 +48,9 @@ const StripeCheckout = () => {
         });
 
         try {
-            const response = await fetchFromApi('api/stripe/create-checkout-session' , {
-                body: { line_items, customer_email: email },
+            // Envoyer les articles, l'email et l'ID de la commande au backend
+            const response = await fetchFromApi('api/stripe/create-checkout-session', {
+                body: { line_items, customer_email: email, orderId },
                 withCredentials: true
             });
 
@@ -74,19 +77,16 @@ const StripeCheckout = () => {
             }
         } catch (error) {
             console.error("Error during checkout:", error);
+        } finally {
+            setLoading(false); // Arrêter le chargement
         }
     };
 
     return (
         <>
             <form onSubmit={handleCheckout}>
-                {/* <input
-                    type="email"
-                    value={email} // Email récupéré automatiquement
-                    readOnly
-                /> */}
-                <button type="submit">
-                    Passer la commande
+                <button type="submit" disabled={loading}>
+                    {loading ? 'Traitement...' : 'Passer la commande'}
                 </button>
             </form>
         </>

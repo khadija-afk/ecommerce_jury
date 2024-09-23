@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { PanierContext } from "../../utils/PanierContext";
 import axios from 'axios';
-import StripeCheckout from '../../components/stripe/StripeCheckout';
+import Checkout from '../checkout/Checkout'
 import './Panier.css'; // Importer le fichier CSS
 
 const Panier = () => {
@@ -102,7 +102,7 @@ const Panier = () => {
                         <p>Total du panier : {recalculateTotalPrice()} $</p>
                     </div>
 
-                    <StripeCheckout />
+                    <Checkout />
                 </>
             ) : (
                 <p>Panier Vide !</p>
