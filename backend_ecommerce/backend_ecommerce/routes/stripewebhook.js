@@ -1,11 +1,11 @@
 import express from 'express';
-import stripe from './stripe.js'; // Assure-toi que tu importes bien la configuration Stripe
-import { OrderDetails, PaymentDetails } from "../models/index.js"; // Import des modèles de base de données
+import stripe from './stripe.js'; // Assurez-vous que Stripe est bien configuré
+import { OrderDetails, PaymentDetails, OrderItems } from "../models/index.js"; // Import des modèles de base de données
 
 const router = express.Router();
 
 router.post('/webhook', express.raw({ type: 'application/json' }), async (req, res) => {
-    const endpointSecret = process.env.STRIPE_WEBHOOK_SECRET; // Assure-toi que cette variable d'environnement est bien configurée
+    const endpointSecret = process.env.STRIPE_WEBHOOK_SECRET; // Assurez-vous que cette variable est bien configurée
 
     const sig = req.headers['stripe-signature']; // Récupérer la signature envoyée par Stripe
 
@@ -20,27 +20,59 @@ router.post('/webhook', express.raw({ type: 'application/json' }), async (req, r
     }
 
     // Traiter l'événement Stripe
-    switch (event.type) {
-        case 'checkout.session.completed':
-            const session = event.data.object;
+    if (event.type === 'checkout.session.completed') {
+        const session = event.data.object;
 
-            try {
-                // Récupérer la commande à partir de la session de paiement Stripe
-                const order = await OrderDetails.findOne({ where: { payment_session_id: session.id } });
+        try {
+            // Récupérer la commande à partir de la session de paiement Stripe
+            const order = await OrderDetails.findOne({ where: { payment_session_id: session.id } });
 
-                if (order) {
-                    // Mettre à jour le statut du paiement et de la commande
-                    await PaymentDetails.update({ status: 'Paid' }, { where: { order_fk: order.id } });
-                    await order.update({ status: 'Completed' });
-
-                    console.log('Order and payment details updated successfully.');
-                }
-            } catch (error) {
-                console.error('Error processing the checkout.session.completed event:', error);
+            if (!order) {
+                console.error('Order not found for session ID:', session.id);
+                return res.status(404).send('Order not found');
             }
-            break;
-        default:
-            console.log(`Unhandled event type ${event.type}`);
+
+            // Créer les items de la commande
+            const panier = await Cart.findOne({
+                where: { user_fk: order.user_fk },
+                include: [{ model: CartItem, as: 'cartItems', include: [{ model: Article, as: 'article' }] }]
+            });
+
+            if (!panier || !panier.cartItems.length) {
+                console.error('Panier vide ou non trouvé pour l’utilisateur', order.user_fk);
+                return res.status(404).send('Panier vide ou non trouvé');
+            }
+
+            // Créer chaque item dans la table OrderItems
+            await Promise.all(panier.cartItems.map(async (item) => {
+                await OrderItems.create({
+                    order_fk: order.id,
+                    product_fk: item.article.id,
+                    quantity: item.quantity,
+                    price: item.article.price,
+                });
+            }));
+
+            // Mettre à jour les détails du paiement
+            await PaymentDetails.create({
+                order_fk: order.id,
+                amount: session.amount_total / 100,
+                provider: 'Stripe',
+                status: 'Paid',
+            });
+
+            // Mettre à jour le statut de la commande
+            await order.update({ status: 'Completed' });
+
+            // Vider le panier après la commande
+            await CartItem.destroy({ where: { cart_fk: panier.id } });
+
+            console.log('Order and payment details updated successfully.');
+        } catch (error) {
+            console.error('Error processing the checkout.session.completed event:', error);
+        }
+    } else {
+        console.log(`Unhandled event type ${event.type}`);
     }
 
     // Répondre à Stripe pour confirmer la réception

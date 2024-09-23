@@ -18,7 +18,7 @@ import Page from './dashbord/page';
 import FavorisPage from './pages/favorie/Favorite';
 
 //ORDRS
-import Checkout from './pages/checkout/Checkout.jsx'
+import Checkout from './pages/checkout/Checkout.js'
 
 // SERVICES
 import PublicRoute  from './utils/helpers/PublicRoute';

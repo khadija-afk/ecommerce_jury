@@ -25,7 +25,7 @@ describe('POST /api/article', () => {
         jest.restoreAllMocks(); // Restaurer les mocks après chaque test
     });
 
-    it('add - 201 should create a new article', async () => {
+    it('201 ', async () => {
         const response = await request(app)
             .post('/api/article')
             .send({
@@ -44,7 +44,7 @@ describe('POST /api/article', () => {
         expect(response.body.name).toBe('New Article');
     });
 
-    it('add - 404 should return error if user not found', async () => {
+    it('404 ', async () => {
         // Simuler un utilisateur inexistant
         const fakeToken = jwt.sign({ id: 999, email: 'fakeuser@example.com' }, env.token);
 
@@ -65,7 +65,7 @@ describe('POST /api/article', () => {
         expect(response.body).toEqual({ error: 'Utilisateur non trouvé' });
     });
 
-    it('add - 404 should return error if category not found', async () => {
+    it(' 404', async () => {
         const response = await request(app)
             .post('/api/article')
             .send({
@@ -83,7 +83,7 @@ describe('POST /api/article', () => {
         expect(response.body).toEqual({ error: 'Catégorie non trouvée' });
     });
 
-    it('add - 500 should return error if server error', async () => {
+    it('500', async () => {
         // Simuler une erreur lors de la création de l'article
         const mockCreate = jest.spyOn(Article, 'create').mockRejectedValueOnce(new Error('Erreur interne'));
 

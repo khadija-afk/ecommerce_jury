@@ -119,27 +119,27 @@ export const deleteById = async (req, res) => {
 
 };
 
-export const getByAsc = async (req, res) => {
-    try {
-        const articles = await Article.findAll({
-            order: [["price", 'ASC']]
-        });
-        res.status(200).json(articles);
-    } catch (err) {
-        res.status(500).json({ error: "Erreur lors du tri des articles par prix" });
-    }
-};
+// export const getByAsc = async (req, res) => {
+//     try {
+//         const articles = await Article.findAll({
+//             order: [["price", 'ASC']]
+//         });
+//         res.status(200).json(articles);
+//     } catch (err) {
+//         res.status(500).json({ error: "Erreur lors du tri des articles par prix" });
+//     }
+// };
 
-export const getByDesc = async (req, res) => {
-    try {
-        const articles = await Article.findAll({
-            order: [["price", 'DESC']]
-        });
-        res.status(200).json(articles);
-    } catch (err) {
-        res.status(500).json({ error: "Erreur lors du tri des articles par prix" });
-    }
-};
+// export const getByDesc = async (req, res) => {
+//     try {
+//         const articles = await Article.findAll({
+//             order: [["price", 'DESC']]
+//         });
+//         res.status(200).json(articles);
+//     } catch (err) {
+//         res.status(500).json({ error: "Erreur lors du tri des articles par prix" });
+//     }
+// };
 
 export const getByUser = async (req, res) => {
     try {
