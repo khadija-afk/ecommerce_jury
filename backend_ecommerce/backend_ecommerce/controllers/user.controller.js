@@ -4,29 +4,28 @@ import { User, Cart } from '../models/index.js';
 import { env } from '../config.js';
 
 export const login = async (req, res) => {
+  let user;
+  let email = req.body.email;
+
+  // step 1 : get user
   try {
-    const user = await User.findOne({where : {email: req.body.email} });
-    if (!user) return res.status(404).json("User not found!");
+    user = await User.findOne({where : {email: email} });
 
-    const comparePassword = await bcrypt.compare(req.body.password, user.password);
-    console.log("compare",comparePassword,"body", req.body.password, "user", user)
-    if (!comparePassword) return res.status(400).json("Wrong Credentials!");
-
-    const token = jwt.sign({ id: user.id }, env.token, { expiresIn: "24h" });
-
-  const { password, ...other } = user.dataValues;
-/*const other = {
-  id: req.body.user_id,
-  name: req.body.firstName,
-  email: req.body.email,
-  picture: req.body.picture
-}*/
-    res.cookie('access_token', token, { httpOnly: true })
-      .status(200).json(other);
-  } catch (e) {
-    console.log(e);
-    res.status(500).json({ error: "Internal Server Error", mess: e.messsage });
+  } catch (err) {
+      return res.status(501).json({ error: "Erreur lors de la recherche de user" });
   }
+  if (!user) return res.status(404).json("User not found!");
+
+  // step 2: validate password
+  const comparePassword = await bcrypt.compare(req.body.password, user.password);
+  if (!comparePassword) return res.status(400).json("Wrong Credentials!");
+
+  const token = jwt.sign({ id: user.id }, env.token, { expiresIn: "24h" });
+  console.log('__log__', user.dataValues)
+  const { password, ...other } = user.dataValues;
+
+  res.cookie('access_token', token, { httpOnly: true })
+    .status(200).json(other);
 };
 
 export const register = async (req, res) => {

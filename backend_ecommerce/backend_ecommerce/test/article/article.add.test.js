@@ -26,7 +26,7 @@ describe('POST /api/article', () => {
         const response = await request(app)
             .post('/api/article')
             .send({
-                name: 'New Article',
+                name: 'New Article 3',
                 content: 'Content of new article',
                 brand: 'New Brand',
                 price: 20.99,
@@ -38,7 +38,7 @@ describe('POST /api/article', () => {
 
         expect(response.status).toBe(201);
         expect(response.body).toHaveProperty('id');
-        expect(response.body.name).toBe('New Article');
+        expect(response.body.name).toBe('New Article 3');
     });
 
     it('404 ', async () => {
