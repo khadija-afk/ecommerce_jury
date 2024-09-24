@@ -103,7 +103,7 @@ export const deleteById = async (req, res) => {
       // Si tout se passe bien, renvoie le statut 200 (OK) et un message de confirmation
       res.status(200).json({ message: "User deleted" });
   } catch (error) {
-      // Log l'erreur si quelque chose se passe mal
+    res.status(500).json({ error: "Internal Server Error" }); 
       console.log(error);
   }
 }
