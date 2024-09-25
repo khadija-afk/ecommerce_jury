@@ -95,17 +95,22 @@ export const updateById = async (req, res) => {
 };
 
 export const deleteById = async (req, res) => {
+  let res_destroy;
+  
   try {
-      // Utilise la méthode destroy de Serquelize pour supprimer l'utilisateur avec l'ID spécifié
-      const userDeleted = await User.destroy({ where: { id: req.params.id } });
-      // Si l'utilisateur n'est pas trouvé, renvoie le statut 404 (Non trouvé) et un message d'erreur
-      if (!userDeleted) return res.status(404).json("User not found !");
-      // Si tout se passe bien, renvoie le statut 200 (OK) et un message de confirmation
-      res.status(200).json({ message: "User deleted" });
+    
+    res_destroy =  await User.destroy({ where: { id: req.params.id } });
+
   } catch (error) {
-    res.status(500).json({ error: "Internal Server Error" }); 
-      console.log(error);
+    return res.status(500).json({ 
+      error: "An error occurred while deleting the user", 
+      details: error.message // Détails de l'erreur pour faciliter le débogage
+    });
   }
+
+  if (!res_destroy) return res.status(404).json({ message: "User not found!" });
+
+  return res.status(200).json({ message: "User deleted" });
 }
 
 export const checkAuth = async (req, res) => {

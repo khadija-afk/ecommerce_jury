@@ -1,61 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuites name="jest tests" tests="22" failures="0" errors="0" time="6.994">
-  <testsuite name="GET /api/user/get/:id" errors="0" failures="0" skipped="0" timestamp="2024-09-25T18:37:03" time="5.041" tests="3">
-    <testcase classname="GET /api/user/get/:id 200 - should return a user by ID" name="GET /api/user/get/:id 200 - should return a user by ID" time="0.053">
+<testsuites name="jest tests" tests="3" failures="0" errors="0" time="3.355">
+  <testsuite name="DELETE /api/user/delete/:id" errors="0" failures="0" skipped="0" timestamp="2024-09-25T20:29:25" time="3.275" tests="3">
+    <testcase classname="DELETE /api/user/delete/:id 404 - should return user not found" name="DELETE /api/user/delete/:id 404 - should return user not found" time="0.024">
     </testcase>
-    <testcase classname="GET /api/user/get/:id 404 - should return user not found" name="GET /api/user/get/:id 404 - should return user not found" time="0.007">
+    <testcase classname="DELETE /api/user/delete/:id 200 - should delete a user by ID" name="DELETE /api/user/delete/:id 200 - should delete a user by ID" time="0.005">
     </testcase>
-    <testcase classname="GET /api/user/get/:id 500 - should return internal server error" name="GET /api/user/get/:id 500 - should return internal server error" time="0.012">
-    </testcase>
-  </testsuite>
-  <testsuite name="GET /api/user/check_auth" errors="0" failures="0" skipped="0" timestamp="2024-09-25T18:37:03" time="6.222" tests="5">
-    <testcase classname="GET /api/user/check_auth 200 - should return user data if token is valid" name="GET /api/user/check_auth 200 - should return user data if token is valid" time="0.041">
-    </testcase>
-    <testcase classname="GET /api/user/check_auth 401 - should return access denied if token is missing" name="GET /api/user/check_auth 401 - should return access denied if token is missing" time="0.007">
-    </testcase>
-    <testcase classname="GET /api/user/check_auth 404 - should return user not found if user does not exist" name="GET /api/user/check_auth 404 - should return user not found if user does not exist" time="0.008">
-    </testcase>
-    <testcase classname="GET /api/user/check_auth 500 - should return internal server error on exception" name="GET /api/user/check_auth 500 - should return internal server error on exception" time="0.008">
-    </testcase>
-    <testcase classname="GET /api/user/check_auth 500 - should return invalid signature if token is incorrect" name="GET /api/user/check_auth 500 - should return invalid signature if token is incorrect" time="0.012">
-    </testcase>
-  </testsuite>
-  <testsuite name="POST /api/user/add" errors="0" failures="0" skipped="0" timestamp="2024-09-25T18:37:03" time="6.378" tests="2">
-    <testcase classname="POST /api/user/add 201 created successfully" name="POST /api/user/add 201 created successfully" time="0.124">
-    </testcase>
-    <testcase classname="POST /api/user/add 500 " name="POST /api/user/add 500 " time="0.08">
-    </testcase>
-  </testsuite>
-  <testsuite name="GET /api/user/all" errors="0" failures="0" skipped="0" timestamp="2024-09-25T18:37:03" time="6.531" tests="2">
-    <testcase classname="GET /api/user/all 200 " name="GET /api/user/all 200 " time="0.037">
-    </testcase>
-    <testcase classname="GET /api/user/all 500 " name="GET /api/user/all 500 " time="0.007">
-    </testcase>
-  </testsuite>
-  <testsuite name="DELETE /api/user/delete/:id" errors="0" failures="0" skipped="0" timestamp="2024-09-25T18:37:03" time="6.516" tests="3">
-    <testcase classname="DELETE /api/user/delete/:id 200 - should delete a user by ID" name="DELETE /api/user/delete/:id 200 - should delete a user by ID" time="0.038">
-    </testcase>
-    <testcase classname="DELETE /api/user/delete/:id 404 - should return user not found" name="DELETE /api/user/delete/:id 404 - should return user not found" time="0.007">
-    </testcase>
-    <testcase classname="DELETE /api/user/delete/:id 500 - should return internal server error" name="DELETE /api/user/delete/:id 500 - should return internal server error" time="0.006">
-    </testcase>
-  </testsuite>
-  <testsuite name="POST /api/user/sign" errors="0" failures="0" skipped="0" timestamp="2024-09-25T18:37:03" time="6.611" tests="4">
-    <testcase classname="POST /api/user/sign 404" name="POST /api/user/sign 404" time="0.042">
-    </testcase>
-    <testcase classname="POST /api/user/sign 501" name="POST /api/user/sign 501" time="0.009">
-    </testcase>
-    <testcase classname="POST /api/user/sign 400" name="POST /api/user/sign 400" time="0.006">
-    </testcase>
-    <testcase classname="POST /api/user/sign 200" name="POST /api/user/sign 200" time="0.077">
-    </testcase>
-  </testsuite>
-  <testsuite name="PUT /api/user/update/:id" errors="0" failures="0" skipped="0" timestamp="2024-09-25T18:37:03" time="6.669" tests="3">
-    <testcase classname="PUT /api/user/update/:id 200 - should update a user by ID" name="PUT /api/user/update/:id 200 - should update a user by ID" time="0.037">
-    </testcase>
-    <testcase classname="PUT /api/user/update/:id 404 - should return user not found" name="PUT /api/user/update/:id 404 - should return user not found" time="0.006">
-    </testcase>
-    <testcase classname="PUT /api/user/update/:id 500 - should return internal server error" name="PUT /api/user/update/:id 500 - should return internal server error" time="0.006">
+    <testcase classname="DELETE /api/user/delete/:id 500 - should return internal server error" name="DELETE /api/user/delete/:id 500 - should return internal server error" time="0.005">
     </testcase>
   </testsuite>
 </testsuites>
