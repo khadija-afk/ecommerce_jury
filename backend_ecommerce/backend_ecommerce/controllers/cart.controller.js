@@ -52,7 +52,7 @@ export const createCart = async (req, res) => {
 
     } catch (error) {
         console.error('Erreur lors de la création du panier :', error);
-        res.status(500).json({ error: 'Erreur serveur lors de la création du panier', detail: error.message });
+        return res.status(500).json({ error: 'Erreur serveur lors de la création du panier', detail: error.message });
     }
 
     return res.status(201).json(newCart); // Renvoyer le panier mis à jour avec son total
@@ -85,17 +85,20 @@ export const updateCartTotalAmount = async (req, res) => {
 
 // Supprimer un panier
 export const deleteCart = async (req, res) => {
-    try {
-        const userId = req.user.id; // Utiliser l'ID de l'utilisateur extrait du token
-        const cart = await Cart.findOne({ where: { user_fk: userId } });
-        if (!cart) {
-            return res.status(404).json({ error: 'Panier non trouvé pour cet utilisateur' });
-        }
+    let userId = req.user.id; // Utiliser l'ID de l'utilisateur extrait du token
 
+    let cart = await Cart.findOne({ where: { user_fk: userId } });
+    if (!cart) {
+        return res.status(404).json({ error: 'Panier non trouvé pour cet utilisateur' });
+    }
+
+    try {
         await cart.destroy();
-        res.status(204).send(); // 204 No Content, donc pas de contenu dans la réponse
     } catch (error) {
         console.error('Erreur lors de la suppression du panier :', error);
-        res.status(500).json({ error: 'Erreur serveur lors de la suppression du panier' });
+        return res.status(500).json({ error: 'Erreur serveur lors de la suppression du panier' });
     }
+
+    return res.status(204).send(); // 204 No Content, donc pas de contenu dans la réponse
+
 };
