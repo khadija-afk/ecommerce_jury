@@ -6,7 +6,7 @@ const router = express.Router();
 
 // Routes pour gérer les paniers avec vérification du token
 router.get('/cart', verifieToken, getCartByUserId); // Obtenir le panier d'un utilisateur connecté
-router.post('/cart/:userId', verifieToken, createCart); // Créer un panier pour un utilisateur connecté
+router.post('/cart', verifieToken, createCart); // Créer un panier pour un utilisateur connecté
 router.put('/cart/:userId', verifieToken, updateCartTotalAmount); // Mettre à jour le montant total du panier
 router.delete('/cart/:userId', verifieToken, deleteCart); // Supprimer le panier d'un utilisateur connecté
 

@@ -37,42 +37,26 @@ export const getCartByUserId = async (req, res) => {
 
 // Créer un nouveau panier pour un utilisateur
 export const createCart = async (req, res) => {
+    let userId;
+    let newCart;
+    userId = req.user.id;
+
+    const existingCart = await Cart.findOne({ where: { user_fk: userId } });
+    if (existingCart) {
+        return res.status(200).json({ error: 'Un panier existe déjà pour cet utilisateur' });
+    }
+
     try {
-        const userId = req.user.id; // Utiliser l'ID de l'utilisateur extrait du token
-
-        // Vérifiez si un panier pour cet utilisateur existe déjà
-        const existingCart = await Cart.findOne({ where: { user_fk: userId } });
-        if (existingCart) {
-            return res.status(400).json({ error: 'Un panier existe déjà pour cet utilisateur' });
-        }
-
         // Créer un nouveau panier avec un total initial de 0
-        const newCart = await Cart.create({ user_fk: userId, total_amount: 0 });
+        newCart = await Cart.create({ user_fk: userId, total_amount: 0 });
 
-        // Vérifiez si des articles sont passés dans la requête pour ce panier
-        const { cartItems } = req.body;
-        if (Array.isArray(cartItems) && cartItems.length > 0) {
-            // Ajouter chaque CartItem associé à ce panier
-            for (const item of cartItems) {
-                await CartItem.create({
-                    cart_fk: newCart.id,
-                    product_fk: item.product_fk,
-                    quantity: item.quantity
-                });
-            }
-
-            // Recalculer et mettre à jour le total_amount du panier
-            await calculateTotalAmount(newCart.id);
-        }
-
-        // Recharger le panier avec son total mis à jour
-        const updatedCart = await Cart.findByPk(newCart.id);
-
-        res.status(201).json(updatedCart); // Renvoyer le panier mis à jour avec son total
     } catch (error) {
         console.error('Erreur lors de la création du panier :', error);
         res.status(500).json({ error: 'Erreur serveur lors de la création du panier', detail: error.message });
     }
+
+    return res.status(201).json(newCart); // Renvoyer le panier mis à jour avec son total
+
 };
 
 // Mettre à jour le montant total du panier
