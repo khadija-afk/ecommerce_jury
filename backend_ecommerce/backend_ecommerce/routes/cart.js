@@ -8,6 +8,6 @@ const router = express.Router();
 router.get('/cart', verifieToken, getCartByUserId); // Obtenir le panier d'un utilisateur connecté
 router.post('/cart', verifieToken, createCart); // Créer un panier pour un utilisateur connecté
 router.put('/cart/:userId', verifieToken, updateCartTotalAmount); // Mettre à jour le montant total du panier
-router.delete('/cart/:userId', verifieToken, deleteCart); // Supprimer le panier d'un utilisateur connecté
+router.delete('/cart', verifieToken, deleteCart); // Supprimer le panier d'un utilisateur connecté
 
 export default router;
