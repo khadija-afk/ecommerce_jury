@@ -111,6 +111,7 @@ export const deleteById = async (req, res) => {
 export const checkAuth = async (req, res) => {
   try {
     const token = req.cookies.access_token; // Assurez-vous que le token est stocké dans les cookies
+    console.log('___auth', token)
     if (!token) return res.status(401).json({ message: "Access Denied, No Token Provided!" });
 
     const verified = jwt.verify(token, env.token); // Vérifiez le token avec votre clé secrète

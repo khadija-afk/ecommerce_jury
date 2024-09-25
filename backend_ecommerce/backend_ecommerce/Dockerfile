@@ -21,4 +21,5 @@ WORKDIR /app
 EXPOSE 9090
 
 # Démarrer l'application
-CMD ["npm", "start"]
+CMD ["npx", "nodemon", "server.js"]
+

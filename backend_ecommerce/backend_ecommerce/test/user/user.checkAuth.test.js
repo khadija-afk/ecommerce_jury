@@ -1,17 +1,27 @@
 import request from 'supertest';
 import { app } from '../../server.js'; // Assurez-vous que le chemin est correct
 import { User } from '../../models/index.js'; // Importez votre modèle
-import { env } from '../../config.js';
-import jwt from 'jsonwebtoken';
+import { prepareDatabase, teardownDatabase, getUserToken } from '../../serverTest.js';
 
 describe('GET /api/user/check_auth', () => {
-    const validToken = jwt.sign({ id: 1 }, env.token); // Simuler un token valide avec une clé correcte
-    const invalidToken = jwt.sign({ id: 1 }, 'wrong-secret'); // Simuler un token avec une mauvaise clé
+    let user_john;
+    let token_invalid;
 
-    afterEach(() => {
+    beforeAll(async () => {
+        await prepareDatabase();
+        user_john = await getUserToken('john.doe@example.com');
+        token_invalid = await getUserToken('token.invalid@example.com');
+    });
+    
+
+    afterEach(async () => {
         jest.restoreAllMocks(); // Restaurer les mocks après chaque test
     });
 
+    afterAll(async () => {
+        await teardownDatabase();
+    });
+    
     it('200 - should return user data if token is valid', async () => {
         const mockUser = {
             id: 1,
@@ -30,7 +40,7 @@ describe('GET /api/user/check_auth', () => {
 
         const response = await request(app)
             .get('/api/user/check_auth')
-            .set('Cookie', `access_token=${validToken}`);
+            .set('Cookie', `access_token=${user_john}`);
 
         expect(response.status).toBe(200);
         expect(response.body).toEqual({
@@ -52,12 +62,14 @@ describe('GET /api/user/check_auth', () => {
         });
     });
 
+
+
     it('404 - should return user not found if user does not exist', async () => {
         User.findByPk = jest.fn().mockResolvedValue(null);
 
         const response = await request(app)
             .get('/api/user/check_auth')
-            .set('Cookie', `access_token=${validToken}`);
+            .set('Cookie', `access_token=${user_john}`);
 
         expect(response.status).toBe(404);
         expect(response.body).toEqual({ message: "User not found!" });
@@ -70,7 +82,7 @@ describe('GET /api/user/check_auth', () => {
 
         const response = await request(app)
             .get('/api/user/check_auth')
-            .set('Cookie', `access_token=${validToken}`);
+            .set('Cookie', `access_token=${user_john}`);
 
         expect(response.status).toBe(500);
         expect(response.body).toEqual({
@@ -84,7 +96,7 @@ describe('GET /api/user/check_auth', () => {
     it('500 - should return invalid signature if token is incorrect', async () => {
         const response = await request(app)
             .get('/api/user/check_auth')
-            .set('Cookie', `access_token=${invalidToken}`);
+            .set('Cookie', `access_token=${token_invalid}`);
 
         expect(response.status).toBe(500);
         expect(response.body).toEqual({

@@ -60,6 +60,7 @@ const teardownDatabase = async () => {
 
 const getUserToken = async (user_email) => {
     const user = await User.findOne({ where: { email: user_email } });
+    if (user_email == 'token.invalid@example.com') return jwt.sign({ id: 100, email: user_email }, "token.invalid");
     if(!user) return jwt.sign({ id: 100, email: user_email }, env.token);
     return jwt.sign({ id: user.id, email: user.email }, env.token);
 };
