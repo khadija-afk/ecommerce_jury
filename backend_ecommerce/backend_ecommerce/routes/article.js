@@ -101,13 +101,62 @@ import {
  */
 
 const router = express.Router();
+
+/**
+ * @swagger
+ * /api/article/{id}:
+ *   get:
+ *     summary: Récupérer un élément par ID
+ */
 router.post('/', verifieToken, add);
+
+/**
+ * @swagger
+ * /api/article/{id}:
+ *   get:
+ *     summary: Récupérer un élément par ID
+ */
 router.get('/', getAll);
+
+/**
+ * @swagger
+ * /api/article/{id}:
+ *   get:
+ *     summary: Récupérer un élément par ID
+ */
 router.get('/:id', getById);
+
+/**
+ * @swagger
+ * /api/article/{id}:
+ *   put:
+ *     summary: Récupérer un élément par ID
+ */
 router.put('/:id', verifieToken, updateById);
+
+/**
+ * @swagger
+ * /api/article/{id}:
+ *   get:
+ *     summary: Récupérer un élément par ID
+ */
 router.delete('/:id', verifieToken, deleteById);
 // router.get('/sort/asc', getByAsc);
 // router.get('/sort/desc', getByDesc);
+
+/**
+ * @swagger
+ * /api/article/{id}:
+ *   get:
+ *     summary: Récupérer un élément par ID
+ */
 router.get('/user/articles', verifieToken, getByUser);
+
+/**
+ * @swagger
+ * /api/article/{id}:
+ *   get:
+ *     summary: Récupérer un éléme
+ */
 router.get('/:id/avis', getReview);
 export default router;

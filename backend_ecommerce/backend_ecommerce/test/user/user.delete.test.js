@@ -18,7 +18,7 @@ describe('DELETE /api/user/delete/:id', () => {
         // Vérifier que destroy a bien été appelé avec l'ID correct
         expect(User.destroy).toHaveBeenCalledWith({ where: { id: "1" } });
     });
-
+  
     it('404 - should return user not found', async () => {
         // Mock de User.destroy pour simuler qu'aucun utilisateur n'a été trouvé
         User.destroy = jest.fn().mockResolvedValue(0); // Simuler qu'aucun utilisateur n'a été supprimé (0 signifie non trouvé)

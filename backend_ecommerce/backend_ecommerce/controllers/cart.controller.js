@@ -3,13 +3,12 @@ import { calculateTotalAmount } from '../utils/cart.util.js';
 
 // Récupérer le panier par ID utilisateur à partir du token
 export const getCartByUserId = async (req, res) => {
+
+    const userId = req.user.id; 
+
     try {
         // Utilisation de l'ID utilisateur extrait du token JWT
-        const userId = req.user?.id; 
-
-        if (!userId) {
-            return res.status(400).json({ error: 'userId est manquant dans la requête' });
-        }
+        
 
         const cart = await Cart.findOne({
             where: { user_fk: userId },
