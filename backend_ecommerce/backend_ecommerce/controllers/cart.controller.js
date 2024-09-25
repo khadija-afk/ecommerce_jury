@@ -5,12 +5,9 @@ import { calculateTotalAmount } from '../utils/cart.util.js';
 export const getCartByUserId = async (req, res) => {
 
     const userId = req.user.id; 
-
+    let cart;
     try {
-        // Utilisation de l'ID utilisateur extrait du token JWT
-        
-
-        const cart = await Cart.findOne({
+        cart = await Cart.findOne({
             where: { user_fk: userId },
             include: [
                 {
@@ -26,16 +23,16 @@ export const getCartByUserId = async (req, res) => {
                 }
             ]
         });
-
-        if (!cart) {
-            return res.status(404).json({ error: 'Panier non trouvé pour cet utilisateur' });
-        }
-
-        res.status(200).json(cart);
     } catch (error) {
         console.error('Erreur lors de la récupération du panier :', error);
-        res.status(500).json({ error: 'Erreur serveur lors de la récupération du panier' });
+        return res.status(500).json({ error: 'Erreur serveur lors de la récupération du panier' });
     }
+
+    if (!cart) {
+        return res.status(404).json({ error: 'Panier non trouvé pour cet utilisateur' });
+    }
+
+    return res.status(200).json(cart);
 };
 
 // Créer un nouveau panier pour un utilisateur

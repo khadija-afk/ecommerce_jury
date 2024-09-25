@@ -5,7 +5,7 @@ OPS= --silent --verbose
 COV= $(OPS) --coverage
 
 test:
-	$(ENV_TEST) npx jest $(OPS) $(filter-out $@,$(MAKECMDGOALS))
+	$(ENV_TEST) npx jest $(OPS) $(filter-out $@,$(MAKECMDGOALS))  
 
 test-cov:
 	$(ENV_TEST) npx jest $(COV)
@@ -16,6 +16,6 @@ sequelize-migrate:
 # Cette ligne permet de gérer des arguments comme 'make test user'
 %:
 	@:
-	
+
 .PHONY: test
 

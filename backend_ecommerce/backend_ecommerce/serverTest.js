@@ -1,5 +1,5 @@
 // testServer.js
-import { initializeDatabase, Article, User, Categorie } from './models/index.js';
+import { initializeDatabase, Article, User, Categorie, Cart } from './models/index.js';
 import jwt from 'jsonwebtoken';
 import { env } from './config.js'; // Assurez-vous d'importer la configuration correcte
 
@@ -28,6 +28,13 @@ const prepareDatabase = async () => {
         const category = await Categorie.create({
             name: 'Test Category',
             description: 'A category for testing',
+        });
+
+        // Insérer une cart de test
+        const cart = await Cart.create({
+            name: 'cart',
+            user_fk: user.id,
+            total_amount: 0
         });
 
         // Insérer des données de test avec tous les champs requis
