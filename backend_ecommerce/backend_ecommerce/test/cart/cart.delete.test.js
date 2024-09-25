@@ -46,12 +46,18 @@ describe('GET /api/cart', () => {
     it('500', async () => {
     
         const { Cart } = require('../../models/index.js');
-    
-        Cart.findOne = jest.fn().mockRejectedValue(new Error('Erreur de suppression'))
+
+        const mockCart = {
+            id: 1,
+            destroy: jest.fn().mockRejectedValue(new Error('Erreur de suppression'))
+        };
+
+        // Mock de Categorie.findByPk pour retourner la catégorie simulée
+        Cart.findOne = jest.fn().mockResolvedValue(mockCart); // Mock de la fonction
 
         // Effectuer la requête avec un en-tête Authorization
         const response = await request(app)
-            .get('/api/cart/cart')
+            .delete('/api/cart/cart')
             .set('Cookie', `access_token=${user_John2}`);  // Utilisation de l'en-tête Authorization
         
         expect(response.status).toBe(500);  // Vérifiez bien le statut
