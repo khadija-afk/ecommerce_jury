@@ -78,33 +78,32 @@ export const addCartItem = async (req, res) => {
 
 // Supprimer un article du panier
 export const deleteCartItem = async (req, res) => {
+
+    const { id } = req.params;
+
+    // Trouver l'article du panier avant de le supprimer pour récupérer le cart_fk
+    let cartItem = await CartItem.findOne({ where: { id } });
+
+    if (!cartItem) {
+        return res.status(404).json({ error: 'Article du panier non trouvé' });
+    }
+
+    let cartId = cartItem.cart_fk;
+
     try {
-        const { id } = req.params;
-
-        if (!id) {
-            return res.status(400).json({ error: 'id est requis' });
-        }
-
-        // Trouver l'article du panier avant de le supprimer pour récupérer le cart_fk
-        const cartItem = await CartItem.findOne({ where: { id } });
-
-        if (!cartItem) {
-            return res.status(404).json({ error: 'Article du panier non trouvé' });
-        }
-
-        const cartId = cartItem.cart_fk;
-
+        
         // Supprimer l'article du panier en utilisant l'id
         await CartItem.destroy({ where: { id } });
 
         // Recalculer le montant total du panier après la suppression de l'article
         await calculateTotalAmount(cartId);
 
-        res.status(204).send(); // Pas de contenu
     } catch (error) {
         console.error('Erreur lors de la suppression de l\'article :', error);
-        res.status(500).json({ error: 'Erreur serveur lors de la suppression de l\'article' });
+        return res.status(500).json({ error: 'Erreur serveur lors de la suppression de l\'article' });
     }
+    return res.status(204).send(); // Pas de contenu
+
 };
 
 // Mettre à jour un article du panier
