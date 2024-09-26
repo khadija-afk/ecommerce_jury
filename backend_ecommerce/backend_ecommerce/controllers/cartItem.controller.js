@@ -108,21 +108,23 @@ export const deleteCartItem = async (req, res) => {
 
 // Mettre à jour un article du panier
 export const updateCartItem = async (req, res) => {
-    try {
-        const cartItem = await CartItem.findByPk(req.params.id);
-        if (!cartItem) {
-            return res.status(404).json({ error: 'Article du panier non trouvé' });
-        }
 
+
+    let cartItem = await CartItem.findByPk(req.params.id);
+    if (!cartItem) {
+        return res.status(404).json({ error: 'Article du panier non trouvé' });
+    }
+
+    try {
         // Mise à jour de l'article
         await cartItem.update(req.body);
-
         // Recalculer et mettre à jour le total_amount du panier
         await calculateTotalAmount(cartItem.cart_fk);
 
-        res.status(200).json(cartItem);
     } catch (error) {
         console.error('Erreur lors de la mise à jour de l\'article du panier :', error);
-        res.status(500).json({ error: 'Erreur serveur lors de la mise à jour de l\'article du panier' });
+        return res.status(500).json({ error: 'Erreur serveur lors de la mise à jour de l\'article du panier' });
     }
+    return res.status(200).json(cartItem);
+
 };
