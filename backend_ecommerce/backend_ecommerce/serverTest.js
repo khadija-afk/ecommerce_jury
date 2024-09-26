@@ -45,13 +45,6 @@ const prepareDatabase = async () => {
             total_amount: 0
         });
 
-        // // Insérer une cartItems de test
-        // const item = await CartItem.create({
-        //     id: 1,
-        //     cart_fk:cart.id,
-        //     product_fk:article.id,
-        //     quantity:1
-        // });
         
 
         // Insérer des données de test avec tous les champs requis
@@ -65,15 +58,23 @@ const prepareDatabase = async () => {
             categorie_fk: category.id, // Utiliser l'ID de la catégorie créée
         });
 
-        // const article2 = await Article.create({
-        //     name: 'Test Article',
-        //     content: 'This is a test article',
-        //     brand: 'Test Brand', // Fournir une marque
-        //     price: 10.99, // Fournir un prix
-        //     stock: 100, // Fournir un stock
-        //     user_fk: user2.id, // Utiliser l'ID de l'utilisateur créé
-        //     categorie_fk: category.id, // Utiliser l'ID de la catégorie créée
-        // });
+        
+        const article2 = await Article.create({
+            name: 'Test Article 2',
+            content: 'This is a test article 2',
+            brand: 'Test Brand 2', // Fournir une marque
+            price: 33.99, // Fournir un prix
+            stock: 12, // Fournir un stock
+            user_fk: user.id, // Utiliser l'ID de l'utilisateur créé
+            categorie_fk: category.id, // Utiliser l'ID de la catégorie créée
+        });
+
+        const cartItem = await CartItem.create({
+            cart_fk: cart.id,
+            product_fk: article.id,
+            quantity: 10
+        })
+
     } catch (error) {
         console.error('Unable to connect to the database or synchronize:', error);
     }
