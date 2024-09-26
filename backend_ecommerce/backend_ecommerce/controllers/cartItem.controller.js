@@ -67,7 +67,6 @@ export const addCartItem = async (req, res) => {
 
         res.status(201).json(newCartItem);
     } catch (error) {
-        console.error('Erreur lors de l\'ajout de l\'article au panier :', error);
         res.status(500).json({ error: 'Erreur serveur lors de l\'ajout de l\'article au panier' });
     }
 };
