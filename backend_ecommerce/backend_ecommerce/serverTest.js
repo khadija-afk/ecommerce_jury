@@ -46,10 +46,16 @@ const prepareDatabase = async () => {
         });
 
         // // Insérer une cartItems de test
+        // const item = await CartItem.create({
+        //     id: 1,
+        //     cart_fk:cart.id,
+        //     product_fk:article.id,
+        //     quantity:1
+        // });
         
 
         // Insérer des données de test avec tous les champs requis
-        await Article.create({
+        const article = await Article.create({
             name: 'Test Article',
             content: 'This is a test article',
             brand: 'Test Brand', // Fournir une marque
@@ -80,6 +86,8 @@ const teardownDatabase = async () => {
     try {
         await Article.destroy({ where: {}, truncate: true });
         await Categorie.destroy({ where: {}, truncate: true });
+        await Cart.destroy({ where: {}, truncate: true });
+        // await CartItem.destroy({ where: {}, truncate: true });
         await User.destroy({ where: {}, truncate: true });
     } catch (error) {
         console.error('Error during database teardown:', error);
