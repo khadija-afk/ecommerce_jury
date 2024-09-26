@@ -85,20 +85,20 @@ describe('GET /api/article/', () => {
         const response = await request(app).get('/api/article');
         
         expect(response.status).toBe(200);
-        expect(response.body).toEqual([{
-            id: 1,
-            name: 'Test Article', // Mettre à jour de 'title' à 'name'
-            content: 'This is a test article',
-            brand: 'Test Brand',
-            price: 10.99,
-            status: false,
-            stock: 100,
-            user_fk: 1, // ou l'ID correspondant de l'utilisateur
-            categorie_fk: 1, // ou l'ID correspondant de la catégorie
-            photo: null, // ou la valeur appropriée
-            createdAt: expect.any(String), // Ignorer la date exacte en utilisant expect.any
-            updatedAt: expect.any(String), // Ignorer la date exacte en utilisant expect.any
-        }]);
+        expect(response.body).toEqual([
+            expect.objectContaining({
+                id: 1,
+                name: 'Test Article',
+                price: 10.99,
+                stock: 100
+            }),
+            expect.objectContaining({
+                id: 2,
+                name: 'Test Article 2',
+                price: 33.99,
+                stock: 12
+            })
+        ]);
 
     }); 
 

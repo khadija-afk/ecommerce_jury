@@ -29,46 +29,51 @@ export const getCartItemById = async (req, res) => {
 
 // Ajouter un nouvel article ou incrémenter la quantité dans le panier
 export const addCartItem = async (req, res) => {
+    let newCartItem;
+    const { product_fk, quantity } = req.body;
+    let userId = req.user.id; // Assurez-vous que `req.user.id` provient du middleware JWT
+    let existingCartItem;
+
+    let cart = await Cart.findOne({ where: { user_fk: userId } });
+    if (!cart) {
+        // Si pas de panier, en créer un
+        cart = await Cart.create({ user_fk: userId, total_amount: 0 });
+    }
+
+    
+
     try {
-        const { product_fk, quantity } = req.body;
-        const userId = req.user.id; // Assurez-vous que `req.user.id` provient du middleware JWT
 
-        // Vérifier si un panier existe pour cet utilisateur
-        let cart = await Cart.findOne({ where: { user_fk: userId } });
-        if (!cart) {
-            // Si pas de panier, en créer un
-            cart = await Cart.create({ user_fk: userId, total_amount: 0 });
-        }
-
-        // Vérifier si l'article existe déjà dans le panier
-        const existingCartItem = await CartItem.findOne({
+        existingCartItem = await CartItem.findOne({
             where: {
                 cart_fk: cart.id,
                 product_fk: product_fk
             }
         });
-
+    
         if (existingCartItem) {
             // Si l'article existe, augmenter la quantité
             const newQuantity = existingCartItem.quantity + quantity;
             await existingCartItem.update({ quantity: newQuantity });
-
+    
             // Recalculer le total du panier
             await calculateTotalAmount(cart.id);
-
+    
             return res.status(200).json(existingCartItem);
         }
 
         // Si l'article n'existe pas encore, le créer
-        const newCartItem = await CartItem.create({ cart_fk: cart.id, product_fk, quantity });
+        newCartItem = await CartItem.create({ cart_fk: cart.id, product_fk, quantity });
 
         // Recalculer et mettre à jour le total du panier
         await calculateTotalAmount(cart.id);
 
-        res.status(201).json(newCartItem);
     } catch (error) {
         res.status(500).json({ error: 'Erreur serveur lors de l\'ajout de l\'article au panier' });
     }
+
+    res.status(201).json(newCartItem);
+
 };
 
 // Supprimer un article du panier

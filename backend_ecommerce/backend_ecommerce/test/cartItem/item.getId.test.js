@@ -10,13 +10,6 @@ describe('GET /api/cartItem/cart-items/:id', () => {
     beforeAll(async () => {
         await prepareDatabase();
         // user_john = await getUserToken('john.doe@example.com');
-        
-        await CartItem.create({
-            id: 1,
-            cart_fk:1,
-            product_fk:1,
-            quantity:50
-        });
     });
     
     afterAll(async () => {
@@ -37,7 +30,7 @@ describe('GET /api/cartItem/cart-items/:id', () => {
             id: 1,
             cart_fk:1,
             product_fk:1,
-            quantity:50
+            quantity: 10
         });
     });
 
