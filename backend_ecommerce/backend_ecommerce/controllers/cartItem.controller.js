@@ -8,7 +8,6 @@ export const getAllCartItems = async (req, res) => {
         const cartItems = await CartItem.findAll();
         res.status(200).json(cartItems);
     } catch (error) {
-        console.error('Erreur lors de la récupération des articles du panier :', error);
         res.status(500).json({ error: 'Erreur serveur lors de la récupération des articles du panier' });
     }
 };

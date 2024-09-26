@@ -1,5 +1,5 @@
 // testServer.js
-import { initializeDatabase, Article, User, Categorie, Cart } from './models/index.js';
+import { initializeDatabase, Article, User, Categorie, Cart, CartItem } from './models/index.js';
 import jwt from 'jsonwebtoken';
 import { env } from './config.js'; // Assurez-vous d'importer la configuration correcte
 
@@ -45,6 +45,9 @@ const prepareDatabase = async () => {
             total_amount: 0
         });
 
+        // // Insérer une cartItems de test
+        
+
         // Insérer des données de test avec tous les champs requis
         await Article.create({
             name: 'Test Article',
@@ -55,6 +58,16 @@ const prepareDatabase = async () => {
             user_fk: user.id, // Utiliser l'ID de l'utilisateur créé
             categorie_fk: category.id, // Utiliser l'ID de la catégorie créée
         });
+
+        // const article2 = await Article.create({
+        //     name: 'Test Article',
+        //     content: 'This is a test article',
+        //     brand: 'Test Brand', // Fournir une marque
+        //     price: 10.99, // Fournir un prix
+        //     stock: 100, // Fournir un stock
+        //     user_fk: user2.id, // Utiliser l'ID de l'utilisateur créé
+        //     categorie_fk: category.id, // Utiliser l'ID de la catégorie créée
+        // });
     } catch (error) {
         console.error('Unable to connect to the database or synchronize:', error);
     }
@@ -84,5 +97,6 @@ const getUserToken = async (user_email) => {
 export {
     prepareDatabase,
     teardownDatabase,
-    getUserToken
+    getUserToken, 
+
 };
