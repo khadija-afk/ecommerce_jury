@@ -1,5 +1,5 @@
 // testServer.js
-import { initializeDatabase, Article, User, Categorie, Cart, CartItem } from './models/index.js';
+import { initializeDatabase, Article, User, Categorie, Cart, CartItem, OrderDetails } from './models/index.js';
 import jwt from 'jsonwebtoken';
 import { env } from './config.js'; // Assurez-vous d'importer la configuration correcte
 
@@ -15,6 +15,8 @@ const prepareDatabase = async () => {
             password: 'password123',
             role: 'user',
         });
+
+        
 
         const user2 = await User.create({
             firstName: 'John2',
@@ -75,6 +77,13 @@ const prepareDatabase = async () => {
             quantity: 10
         })
 
+        const newOrder = await OrderDetails.create({
+            user_fk: user2.id,
+            total: 100,
+            address: '11 rue du bois joly',
+            paymentMethod: 'stripe'
+        });
+
     } catch (error) {
         console.error('Unable to connect to the database or synchronize:', error);
     }
@@ -85,10 +94,11 @@ const prepareDatabase = async () => {
 // Fonction pour vider la base de données après les tests
 const teardownDatabase = async () => {
     try {
+        await Cart.destroy({ where: {}, truncate: true });
+        await CartItem.destroy({ where: {}, truncate: true });
+        await OrderDetails.destroy({ where: {}, truncate: true });
         await Article.destroy({ where: {}, truncate: true });
         await Categorie.destroy({ where: {}, truncate: true });
-        await Cart.destroy({ where: {}, truncate: true });
-        // await CartItem.destroy({ where: {}, truncate: true });
         await User.destroy({ where: {}, truncate: true });
     } catch (error) {
         console.error('Error during database teardown:', error);

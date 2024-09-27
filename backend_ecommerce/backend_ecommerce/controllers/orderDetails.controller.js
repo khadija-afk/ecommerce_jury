@@ -11,7 +11,6 @@ export const getAllOrders = async (req, res) => {
         }
         res.status(200).json(orders);
     } catch (error) {
-        console.error('Erreur lors de la récupération des commandes :', error);
         res.status(500).json({ error: 'Erreur serveur lors de la récupération des commandes' });
     }
 };
