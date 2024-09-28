@@ -1,8 +1,5 @@
 import { Article } from '../models/index.js';
 
-
-
-
 export const get = async (id) => {
     // Rechercher l'article par ID
     let article
