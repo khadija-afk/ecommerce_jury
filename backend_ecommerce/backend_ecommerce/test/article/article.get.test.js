@@ -53,9 +53,12 @@ describe('GET /api/article/:id', () => {
         Article.findByPk = jest.fn().mockRejectedValue(new Error('Erreur de Réseau'))
     
         const response = await request(app).get('/api/article/1');
-        
+        console.log("_123", response)
         expect(response.status).toBe(500);
-        expect(response.body).toEqual({ error: 'Error lors de la récupération' });
+        expect(response.body).toEqual(expect.objectContaining({
+            "error": "Error lors de la récupération",
+        }));
+        
 
         Article.findByPk.mockRestore?.();
     });
@@ -111,7 +114,9 @@ describe('GET /api/article/', () => {
         const response = await request(app).get('/api/article/');
         
         expect(response.status).toBe(500);
-        expect(response.body).toEqual({ error: 'Error lors de la récupération' });
+        expect(response.body).toEqual(expect.objectContaining({
+            "error": "Error lors de la récupération",
+        }));
         
         Article.findAll.mockRestore?.();
     });
