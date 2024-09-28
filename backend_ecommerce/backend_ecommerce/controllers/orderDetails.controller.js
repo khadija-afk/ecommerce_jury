@@ -50,7 +50,6 @@ export const createOrder = async (req, res) => {
 
         res.status(201).json({ orderId: newOrder.id });
     } catch (error) {
-        console.error('Erreur lors de la création de la commande :', error);
         res.status(500).json({ error: 'Erreur serveur lors de la création de la commande' });
     }
 };
