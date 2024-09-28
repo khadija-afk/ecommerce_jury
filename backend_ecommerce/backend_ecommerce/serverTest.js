@@ -94,10 +94,13 @@ const prepareDatabase = async () => {
 // Fonction pour vider la base de données après les tests
 const teardownDatabase = async () => {
     try {
-        await Cart.destroy({ where: {}, truncate: true });
-        await CartItem.destroy({ where: {}, truncate: true });
-        await OrderDetails.destroy({ where: {}, truncate: true });
-        await Article.destroy({ where: {}, truncate: true });
+        // Supprimer les éléments dépendants en premier
+        await CartItem.destroy({ where: {}, truncate: true });  // Dépend de Cart et Article
+        await OrderDetails.destroy({ where: {}, truncate: true });  // Dépend de User
+        
+        // Supprimer les éléments parents ensuite
+        await Cart.destroy({ where: {}, truncate: true });  // Dépend de User
+        await Article.destroy({ where: {}, truncate: true });  // Dépend de User et Categorie
         await Categorie.destroy({ where: {}, truncate: true });
         await User.destroy({ where: {}, truncate: true });
     } catch (error) {

@@ -104,7 +104,7 @@ export const deleteById = async (req, res) => {
   } catch (error) {
     return res.status(500).json({ 
       error: "An error occurred while deleting the user", 
-      details: error.message // Détails de l'erreur pour faciliter le débogage
+      details: error.message
     });
   }
 

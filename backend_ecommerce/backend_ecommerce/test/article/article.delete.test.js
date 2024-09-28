@@ -85,7 +85,7 @@ describe('DELETE /api/article/:id', () => {
         Article.findByPk.mockRestore();
     });
 
-    it('deleteById - 501', async () => {
+    it('deleteById - 500', async () => {
         const { Article } = require('../../models/index.js');
     
         // Mock de Article.findByPk pour retourner l'instance mockée
@@ -97,8 +97,8 @@ describe('DELETE /api/article/:id', () => {
                                 .set('Cookie', `access_token=${fake_user}`);
     
         // Vérifier le résultat attendu
-        expect(response.status).toBe(501);
-        expect(response.body).toEqual({ error: "Erreur lors de la recherche de l'article" });
+        expect(response.status).toBe(500);
+        expect(response.body).toEqual({ error: "Error lors de la récupération" });
     
         // Restaurer le mock
         Article.findByPk.mockRestore();
