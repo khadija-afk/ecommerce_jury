@@ -3,6 +3,9 @@ import jwt from 'jsonwebtoken';
 import { User, Cart } from '../models/index.js';
 import { env } from '../config.js';
 
+import * as userService from '../services/user.service.js';
+ 
+
 export const login = async (req, res) => {
   let user;
   let email = req.body.email;
@@ -78,9 +81,16 @@ export const getById = async (req, res) => {
 };
 
 export const updateById = async (req, res) => {
+
+  let user;
+  const id = req.params.id;
   try {
-    const user = await User.findByPk(req.params.id);
-    if (!user) return res.status(404).json({ message: "User not found!" });
+    user = await userService.get(id);
+  } catch (error) {
+      return res.status(error.status).json({ error: error.error });
+  }
+
+  try {
 
     await user.update(req.body);
 
