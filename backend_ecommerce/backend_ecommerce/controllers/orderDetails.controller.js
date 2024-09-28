@@ -68,7 +68,6 @@ export const updateOrder = async (req, res) => {
         await order.update({ total, address, paymentMethod });
         res.status(200).json(order);
     } catch (error) {
-        console.error('Erreur lors de la mise à jour de la commande :', error);
         res.status(500).json({ error: 'Erreur serveur lors de la mise à jour de la commande' });
     }
 };

@@ -8,7 +8,10 @@ export default (connection, DataTypes) => {
                 references: {
                     model: 'Users',
                     key: 'id'
-                }
+                },
+
+                onDelete: 'CASCADE',
+                onUpdate: 'CASCADE'
             },
             total: {
                 type: DataTypes.DECIMAL(10, 2),
