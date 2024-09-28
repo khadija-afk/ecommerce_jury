@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1727562860771" clover="3.2.0">
-  <project timestamp="1727562860772" name="All files">
+<coverage generated="1727563826159" clover="3.2.0">
+  <project timestamp="1727563826160" name="All files">
     <metrics statements="714" coveredstatements="489" conditionals="142" coveredconditionals="76" methods="83" coveredmethods="49" elements="939" coveredelements="614" complexity="0" loc="714" ncloc="714" packages="6" files="42" classes="42"/>
     <package name="app">
       <metrics statements="70" coveredstatements="61" conditionals="14" coveredconditionals="9" methods="7" coveredmethods="5"/>
@@ -806,13 +806,13 @@
       <metrics statements="32" coveredstatements="9" conditionals="16" coveredconditionals="4" methods="5" coveredmethods="1"/>
       <file name="article.service.js" path="/app/services/article.service.js">
         <metrics statements="7" coveredstatements="7" conditionals="4" coveredconditionals="4" methods="1" coveredmethods="1"/>
-        <line num="6" count="29" type="stmt"/>
-        <line num="9" count="14" type="stmt"/>
-        <line num="11" count="14" type="stmt"/>
-        <line num="15" count="2" type="stmt"/>
-        <line num="20" count="12" type="cond" truecount="2" falsecount="0"/>
-        <line num="21" count="5" type="stmt"/>
-        <line num="26" count="7" type="stmt"/>
+        <line num="3" count="29" type="stmt"/>
+        <line num="6" count="14" type="stmt"/>
+        <line num="8" count="14" type="stmt"/>
+        <line num="12" count="2" type="stmt"/>
+        <line num="17" count="12" type="cond" truecount="2" falsecount="0"/>
+        <line num="18" count="5" type="stmt"/>
+        <line num="23" count="7" type="stmt"/>
       </file>
       <file name="checkout.js" path="/app/services/checkout.js">
         <metrics statements="24" coveredstatements="1" conditionals="12" coveredconditionals="0" methods="4" coveredmethods="0"/>
