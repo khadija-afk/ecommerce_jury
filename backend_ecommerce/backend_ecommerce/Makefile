@@ -17,5 +17,9 @@ sequelize-migrate:
 %:
 	@:
 
-.PHONY: test
+
+lint:
+	npx eslint controllers
+	
+.PHONY: test lint
 

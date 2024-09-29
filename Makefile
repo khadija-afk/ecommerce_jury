@@ -1,4 +1,6 @@
 
+
+
 clean_node_modules:
 	@rm -rf backend_ecommerce/backend_ecommerce/node_modules
 
@@ -28,3 +30,5 @@ bash-j:
 
 sequelize-migrate:
 	@npx sequelize-cli db:migrate
+
+
