@@ -3,21 +3,24 @@ import * as Service from '../services/service.js';
 
 
 export const add = async (req, res) => {
+    const { categorie_fk, name, content, brand, price, stock, photo } = req.body;
+
+    const user_fk = req.user.id;
+    let user;
     try {
-        const { categorie_fk, name, content, brand, price, stock, photo } = req.body;
-        const user_fk = req.user.id; // Utiliser l'ID de l'utilisateur connecté
+        user = await Service.get(User, user_fk);
+    } catch (error) {
+        return res.status(error.status).json({ error: error.error });
+    }
 
-        // Vérifier si l'utilisateur existe
-        const user = await User.findByPk(user_fk);
-        if (!user) {
-            return res.status(404).json({ error: "Utilisateur non trouvé" });
-        }
+    let categorie;
+    try {
+        categorie = await Service.get(Categorie, categorie_fk);
+    } catch (error) {
+        return res.status(error.status).json({ error: error.error });
+    }
 
-        // Vérifier si la catégorie existe
-        const categorie = await Categorie.findByPk(categorie_fk);
-        if (!categorie) {
-            return res.status(404).json({ error: "Catégorie non trouvée" });
-        }
+    try {
 
         // Créer un nouvel article avec les informations reçues dans le corps de la requête
         const newArticle = await Article.create({
@@ -87,30 +90,16 @@ export const updateById = async (req, res) => {
 
 export const deleteById = async (req, res) => {
     const id = req.params.id;
-    
-    // Étape 1 : Rechercher l'article
+    const userId = req.user.id;
     let article;
     try {
         article = await Service.get(Article, id);
+        await Service.destroy(article, userId);
+
+        return res.status(200).json("Article deleted !");
     } catch (error) {
         return res.status(error.status).json({ error: error.error });
     }
-
-    // Étape 2 : Vérifier si l'utilisateur est le créateur de l'article
-    if (article.user_fk !== req.user.id) {
-        return res.status(403).json({ error: "Seul le créateur peut supprimer cet article !" });
-    }
-
-     // Étape 3 : Supprimer l'article
-     try {
-        await article.destroy();
-    } catch (error) {
-        return res.status(500).json({ error: "Erreur serveur lors de la suppression de l'article" });
-    }
-
-    // Étape 4 : Retourner la réponse de succès
-    return res.status(200).json("Article deleted !");
-
 };
 
 // export const getByAsc = async (req, res) => {
@@ -136,26 +125,27 @@ export const deleteById = async (req, res) => {
 // };
 
 export const getByUser = async (req, res) => {
+
+    let user;
     try {
-        const user = await User.findByPk(req.user.id, { include: Article });
-        if (!user) {
-            return res.status(404).json({ error: "Utilisateur non trouvé" });
-        }
-        res.status(200).json(user.Articles);
-    } catch (err) {
-        console.log(err);
-        res.status(500).json({ error: "Erreur." });
+        user = await Service.get(User, id, { include: Article });
+
+        return res.status(200).json(user.Articles);
+
+    } catch (error) {
+        return res.status(error.status).json({ error: error.error });
     }
+
 };
 
 export const getReview = async (req, res) => {
+
+    let article;
     try {
-        const article = await Article.findByPk(req.params.id, { include: "reviews" });
-        if (!article) {
-            return res.status(404).json({ error: "Article non trouvé" });
-        }
-        res.status(200).json(article.reviews);
+        article = await Service.get(Article, req.params.id, { include: "reviews" });
+
+        return res.status(200).json(article.reviews);
     } catch (error) {
-        res.status(500).json({ error: error.message });
+        return res.status(error.status).json({ error: error.error });
     }
 };
