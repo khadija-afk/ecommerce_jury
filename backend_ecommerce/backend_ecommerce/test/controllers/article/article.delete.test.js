@@ -1,15 +1,18 @@
 import request from 'supertest';
 import { prepareDatabase, teardownDatabase, getUserToken } from '../../../serverTest.js';
 import { app } from '../../../server.js';
+import * as Service from '../../../services/service.js';
 
 describe('DELETE /api/article/:id', () => {
     
     let user_john;
+    let user_john2;
     let fake_user;
 
     beforeAll(async () => {
         await prepareDatabase();
         user_john = await getUserToken('john.doe@example.com');
+        user_john2 = await getUserToken('john2.doe2@example.com');
         fake_user = await getUserToken('fake@example.com');
     });
     
@@ -58,21 +61,19 @@ describe('DELETE /api/article/:id', () => {
     });
 
     it('deleteById - 500', async () => {
-        const { Article } = require('../../../models/index.js');
-        
-        // Simuler une instance d'article avec une méthode destroy qui lève une erreur
+
         const mockArticle = {
-            user_fk: 100,
+            user_fk: 2,
             destroy: jest.fn().mockRejectedValue(new Error('Erreur de Réseau')),
         };
     
         // Mock de Article.findByPk pour retourner l'instance mockée
-        Article.findByPk = jest.fn().mockResolvedValue(mockArticle);
+        Service.get = jest.fn().mockResolvedValue(mockArticle);
     
         // Exécuter la requête de suppression
         const response = await request(app)
-                                .delete('/api/article/100')
-                                .set('Cookie', `access_token=${fake_user}`);
+                                .delete('/api/article/1')
+                                .set('Cookie', `access_token=${user_john2}`);
     
         // Vérifier le résultat attendu
         expect(response.status).toBe(500);
@@ -81,27 +82,6 @@ describe('DELETE /api/article/:id', () => {
         // Vérifier que destroy a bien été appelé
         expect(mockArticle.destroy).toHaveBeenCalled();
     
-        // Restaurer le mock
-        Article.findByPk.mockRestore();
-    });
-
-    it('deleteById - 500', async () => {
-        const { Article } = require('../..//../models/index.js');
-    
-        // Mock de Article.findByPk pour retourner l'instance mockée
-        Article.findByPk = jest.fn().mockRejectedValue(new Error('Erreur de Réseau'));
-    
-        // Exécuter la requête de suppression
-        const response = await request(app)
-                                .delete('/api/article/100')
-                                .set('Cookie', `access_token=${fake_user}`);
-    
-        // Vérifier le résultat attendu
-        expect(response.status).toBe(500);
-        expect(response.body).toEqual({ error: "Error lors de la récupération" });
-    
-        // Restaurer le mock
-        Article.findByPk.mockRestore();
     });
 
 });

@@ -1,5 +1,5 @@
 import { Article, User, Categorie } from '../models/index.js';
-import * as articleService from '../services/article.service.js';
+import * as Service from '../services/service.js';
 
 
 export const add = async (req, res) => {
@@ -55,7 +55,7 @@ export const getById = async (req, res) => {
     const id = req.params.id;
     let article;
     try {
-        article = await articleService.get(id);
+        article = await Service.get(Article, id);
     } catch (error) {
         return res.status(error.status).json({ error: error.error });
     }
@@ -68,7 +68,7 @@ export const updateById = async (req, res) => {
     let article;
     
     try {
-        article = await articleService.get(id);
+        article = await Service.get(Article, id);
     } catch (error) {
         return res.status(error.status).json({ error: error.error });
     }
@@ -91,7 +91,7 @@ export const deleteById = async (req, res) => {
     // Étape 1 : Rechercher l'article
     let article;
     try {
-        article = await articleService.get(id);
+        article = await Service.get(Article, id);
     } catch (error) {
         return res.status(error.status).json({ error: error.error });
     }

@@ -59,7 +59,7 @@ describe('PUT /api/user/update/:id', () => {
             });
 
         expect(response.status).toBe(404);
-        expect(response.body).toEqual({ error: "User not found!" });
+        expect(response.body).toEqual({ error: "User non trouvé" });
 
         // Vérifier que findByPk a bien été appelé avec la bonne valeur
         expect(User.findByPk).toHaveBeenCalledWith("999");
