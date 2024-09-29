@@ -19,7 +19,10 @@ sequelize-migrate:
 
 
 lint:
-	npx eslint controllers
+	npx eslint .
+
+format:
+	npx prettier --write . 
 	
 .PHONY: test lint
 
