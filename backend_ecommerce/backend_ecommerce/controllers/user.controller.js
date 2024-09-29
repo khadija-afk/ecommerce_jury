@@ -3,7 +3,7 @@ import jwt from 'jsonwebtoken';
 import { User, Cart } from '../models/index.js';
 import { env } from '../config.js';
 
-import * as userService from '../services/user.service.js';
+import * as Service from '../services/service.js';
  
 
 export const login = async (req, res) => {
@@ -69,6 +69,7 @@ export const getAll = async (req, res) => {
 };
 
 export const getById = async (req, res) => {
+  
   try {
     const id = req.params.id;
     const user = await User.findById(id);
@@ -85,7 +86,7 @@ export const updateById = async (req, res) => {
   let user;
   const id = req.params.id;
   try {
-    user = await userService.get(id);
+    user = await Service.get(User, id);
   } catch (error) {
       return res.status(error.status).json({ error: error.error });
   }

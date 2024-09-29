@@ -1,4 +1,7 @@
 
+clean_node_modules:
+	@rm -rf backend_ecommerce/backend_ecommerce/node_modules
+
 build-custom-jenkins:
 	docker build -t custom-jenkins . -f Dockerfile-jenkins 
 
@@ -8,14 +11,14 @@ test:
 start-front:
 	docker-compose up --build -d frontend
 
-start-back:
+start-back: clean_node_modules
 	docker-compose up --build -d backend
 
 start-j:
 	docker-compose up --build -d jenkins
 
-start-all:
-	docker-compose up --build
+start-all: clean_node_modules
+	docker-compose up --build -d
 
 bash-b:
 	@docker exec -it backend bash

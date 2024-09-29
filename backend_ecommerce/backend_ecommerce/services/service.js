@@ -1,11 +1,10 @@
-import { User } from '../models/index.js';
 
-export const get = async (id) => {
+export const get = async (Model, id) => {
     // Rechercher l'article par ID
-    let user
+    let model
     try {
     
-        user = await User.findByPk(id);
+        model = await Model.findByPk(id);
 
     } catch (error) {
 
@@ -14,11 +13,11 @@ export const get = async (id) => {
         );
     }
     // Si l'article n'existe pas, lancer une exception
-    if (!user) {
+    if (!model) {
         throw Object.assign(
-            { error: 'User not found!', status: 404 }
+            { error: Model.name + ' non trouvé', status: 404 }
         );
     }
 
-    return user; // Retourner l'article si trouvé
+    return model; // Retourner l'article si trouvé
 };
