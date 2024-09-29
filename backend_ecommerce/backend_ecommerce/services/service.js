@@ -1,10 +1,32 @@
 
-export const get = async (Model, id) => {
+export const destroy = async (Model, userId) => {
+    let res;
+
+    if (Model.user_fk !== userId) {
+
+        throw Object.assign(
+            { error: 'Seul le créateur peut supprimer', status: 403 }
+        );
+    }
+
+    try {
+        res = await Model.destroy();
+    } catch (error) {
+        throw Object.assign(
+            { error: 'Erreur serveur lors de la suppression', status: error.status || 500, details: error.message }
+        );
+    }
+
+    return res;
+
+}
+
+export const get = async (Model, id, options = {}) => {
     // Rechercher l'article par ID
     let model
     try {
     
-        model = await Model.findByPk(id);
+        model = await Model.findByPk(id, options);
 
     } catch (error) {
 

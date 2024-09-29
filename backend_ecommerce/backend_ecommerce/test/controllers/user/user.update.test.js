@@ -38,7 +38,7 @@ describe('PUT /api/user/update/:id', () => {
         });
     
         // Vérifier que findByPk a bien été appelé avec la bonne valeur
-        expect(User.findByPk).toHaveBeenCalledWith("30");
+        expect(User.findByPk).toHaveBeenCalledWith("30", {});
     
         // Vérifier que la méthode update a bien été appelée avec les nouvelles données
         expect(mockUser.update).toHaveBeenCalledWith({
@@ -62,7 +62,7 @@ describe('PUT /api/user/update/:id', () => {
         expect(response.body).toEqual({ error: "User non trouvé" });
 
         // Vérifier que findByPk a bien été appelé avec la bonne valeur
-        expect(User.findByPk).toHaveBeenCalledWith("999");
+        expect(User.findByPk).toHaveBeenCalledWith("999", {});
     });
 
     it('500 - should return internal server error', async () => {
@@ -82,7 +82,7 @@ describe('PUT /api/user/update/:id', () => {
         });
 
         // Vérifier que findByPk a bien été appelé avec la bonne valeur
-        expect(User.findByPk).toHaveBeenCalledWith("30");
+        expect(User.findByPk).toHaveBeenCalledWith("30", {})
     });
 
 });

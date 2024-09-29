@@ -37,7 +37,7 @@ describe('DELETE /api/article/:id', () => {
             .delete('/api/article/1')
             .set('Cookie', `access_token=${fake_user}`);
         expect(response.status).toBe(403);
-        expect(response.body).toEqual({ error: "Seul le créateur peut supprimer cet article !" })
+        expect(response.body).toEqual({ error: "Seul le créateur peut supprimer" })
     });
 
     it('deleteById - 200', async () => {
@@ -77,7 +77,7 @@ describe('DELETE /api/article/:id', () => {
     
         // Vérifier le résultat attendu
         expect(response.status).toBe(500);
-        expect(response.body).toEqual({ error: "Erreur serveur lors de la suppression de l'article" });
+        expect(response.body).toEqual({ error: "Erreur serveur lors de la suppression" });
     
         // Vérifier que destroy a bien été appelé
         expect(mockArticle.destroy).toHaveBeenCalled();
