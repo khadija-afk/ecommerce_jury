@@ -109,7 +109,8 @@ const teardownDatabase = async () => {
     try {
         // Supprimer les éléments dépendants en premier
         await CartItem.destroy({ where: {}, truncate: true });  // Dépend de Cart et Article
-        await OrderDetails.destroy({ where: {}, truncate: true });  // Dépend de User
+        await OrderDetails.destroy({ where: {}, truncate: true }); 
+        await OrderItems.destroy({ where: {}, truncate: true });  // Dépend de User
         
         // Supprimer les éléments parents ensuite
         await Cart.destroy({ where: {}, truncate: true });  // Dépend de User
