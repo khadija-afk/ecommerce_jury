@@ -29,7 +29,7 @@ describe('DELETE /api/article/:id', () => {
             .delete('/api/article/999')
             .set('Cookie', `access_token=${user_john}`);
         expect(response.status).toBe(404);
-        expect(response.body).toEqual({ error: 'Article non trouvé' });
+        expect(response.body).toEqual({ error: 'Not found' });
     });
 
     it('deleteById - 403', async () => {
@@ -51,13 +51,13 @@ describe('DELETE /api/article/:id', () => {
                                 .get('/api/article/1')
                                 .set('Cookie', `access_token=${user_john}`);
         expect(response_get.status).toBe(404);
-        expect(response_get.body).toEqual({ error: "Article non trouvé" })
+        expect(response_get.body).toEqual({ error: "Not found" })
     });
 
     it('deleteById - 404', async () => {
         const response = await request(app).get('/api/article/999');
         expect(response.status).toBe(404);
-        expect(response.body).toEqual({ error: 'Article non trouvé' });
+        expect(response.body).toEqual({ error: 'Not found' });
     });
 
     it('deleteById - 500', async () => {

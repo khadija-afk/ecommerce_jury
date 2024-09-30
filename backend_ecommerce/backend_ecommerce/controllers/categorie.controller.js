@@ -1,4 +1,5 @@
 import { Categorie } from '../models/index.js';
+import * as Service from '../services/service.js';
 
 // Récupérer toutes les catégories
 export const getAllCategories = async (req, res) => {
@@ -13,15 +14,13 @@ export const getAllCategories = async (req, res) => {
 
 // Récupérer une catégorie par son ID
 export const getCategoryById = async (req, res) => {
+    const id = req.params.id;
+    let category;
     try {
-        const category = await Categorie.findByPk(req.params.id);
-        if (!category) {
-            return res.status(404).json({ error: 'Catégorie non trouvée' });
-        }
-        res.status(200).json(category);
+        category = await Service.get(Categorie, id);
+        return res.status(200).json(category);
     } catch (error) {
-        console.error('Erreur lors de la récupération de la catégorie:', error);
-        res.status(500).json({ error: 'Erreur serveur lors de la récupération de la catégorie' });
+        return res.status(error.status).json({ error: error.error });
     }
 };
 

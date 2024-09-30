@@ -2,7 +2,7 @@ import request from 'supertest';
 import { prepareDatabase, teardownDatabase, getUserToken } from '../../../serverTest.js';
 import { app } from '../../../server.js';
 
-describe('GET /api/cartItem/cart-items/:id', () => {
+describe('PUT /api/cartItem/cart-items/:id', () => {
 
     let user_john;
     

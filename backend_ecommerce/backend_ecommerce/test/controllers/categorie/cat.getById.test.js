@@ -18,7 +18,7 @@ describe('GET /api/categorie/:id', () => {
         expect(response.body).toEqual(mockCategory); // Vérifiez que la réponse contient la catégorie simulée
 
         // Vérifier que findByPk a bien été appelé avec l'ID correct (convertir en nombre)
-        expect(Categorie.findByPk).toHaveBeenCalledWith("1"); // Utilisez `1` comme nombre ici
+        expect(Categorie.findByPk).toHaveBeenCalledWith("1", {}); // Utilisez `1` comme nombre ici
     });
 
     it('404 - should return category not found', async () => {
@@ -27,10 +27,10 @@ describe('GET /api/categorie/:id', () => {
 
         const response = await request(app).get('/api/categorie/999'); // Assurez-vous que l'URL est correcte
         expect(response.status).toBe(404);
-        expect(response.body).toEqual({ error: 'Catégorie non trouvée' });
+        expect(response.body).toEqual({ error: 'Not found' });
 
         // Vérifier que findByPk a bien été appelé avec l'ID correct (convertir en nombre)
-        expect(Categorie.findByPk).toHaveBeenCalledWith("999"); // Utilisez `999` comme nombre ici
+        expect(Categorie.findByPk).toHaveBeenCalledWith("999", {}); // Utilisez `999` comme nombre ici
     });
 
     it('500 - should return internal server error', async () => {
@@ -40,10 +40,10 @@ describe('GET /api/categorie/:id', () => {
         const response = await request(app).get('/api/categorie/1'); // Assurez-vous que l'URL est correcte
         expect(response.status).toBe(500);
         expect(response.body).toEqual({
-            error: 'Erreur serveur lors de la récupération de la catégorie'
+            error: 'Server error while findByPk'
         });
 
         // Vérifier que findByPk a bien été appelé avec l'ID correct (convertir en nombre)
-        expect(Categorie.findByPk).toHaveBeenCalledWith("1"); // Utilisez `1` comme nombre ici
+        expect(Categorie.findByPk).toHaveBeenCalledWith("1", {}); // Utilisez `1` comme nombre ici
     });
 });

@@ -1,6 +1,7 @@
 import { CartItem, Cart } from '../models/index.js';
 import { calculateTotalAmount } from '../utils/cart.util.js';
 import { verifieToken } from '../auth.js'; // Assurez-vous d'importer votre middleware de vérification du token
+import * as Service from '../services/service.js';
 
 // Récupérer tous les articles du panier
 export const getAllCartItems = async (req, res) => {
@@ -14,14 +15,12 @@ export const getAllCartItems = async (req, res) => {
 
 // Récupérer un article du panier par son ID
 export const getCartItemById = async (req, res) => {
+
     try {
-        const cartItem = await CartItem.findByPk(req.params.id);
-        if (!cartItem) {
-            return res.status(404).json({ error: 'Article du panier non trouvé' });
-        }
-        res.status(200).json(cartItem);
+        const cartItem = await Service.get(CartItem, req.params.id);
+        return res.status(200).json(cartItem);
     } catch (error) {
-        res.status(500).json({ error: 'Erreur serveur lors de la récupération de l\'article du panier' });
+        return res.status(error.status).json({ error: error.error });
     }
 
     
@@ -110,9 +109,12 @@ export const deleteCartItem = async (req, res) => {
 export const updateCartItem = async (req, res) => {
 
 
-    let cartItem = await CartItem.findByPk(req.params.id);
-    if (!cartItem) {
-        return res.status(404).json({ error: 'Article du panier non trouvé' });
+    let cartItem;
+
+    try {
+        cartItem = await Service.get(CartItem, req.params.id);
+    } catch (error) {
+        return res.status(error.status).json({ error: error.error });
     }
 
     try {

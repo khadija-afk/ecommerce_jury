@@ -59,7 +59,7 @@ describe('PUT /api/user/update/:id', () => {
             });
 
         expect(response.status).toBe(404);
-        expect(response.body).toEqual({ error: "User non trouvé" });
+        expect(response.body).toEqual({ error: "Not found" });
 
         // Vérifier que findByPk a bien été appelé avec la bonne valeur
         expect(User.findByPk).toHaveBeenCalledWith("999", {});
@@ -78,7 +78,7 @@ describe('PUT /api/user/update/:id', () => {
 
         expect(response.status).toBe(500);
         expect(response.body).toEqual({
-            error: "Error lors de la récupération",
+            error: "Server error while findByPk",
         });
 
         // Vérifier que findByPk a bien été appelé avec la bonne valeur

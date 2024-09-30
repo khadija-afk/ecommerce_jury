@@ -39,8 +39,7 @@ describe('GET /api/user/all', () => {
         const response = await request(app).get('/api/user/all'); // Assurez-vous que l'URL est correcte
         expect(response.status).toBe(500);
         expect(response.body).toEqual({
-            error: "Internal Server Error",
-            details: "Erreur de réseau"
+            error: "Server error while findAll",
         });
 
         // Vérifier que findAll a bien été appelé

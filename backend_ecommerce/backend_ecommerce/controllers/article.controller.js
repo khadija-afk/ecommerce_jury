@@ -43,14 +43,13 @@ export const add = async (req, res) => {
 };
 export const getAll = async (req, res) => {
     let articles;
-
     try {
-        articles = await Article.findAll();
-    } catch (err) {
-        return res.status(500).json({ error: "Error lors de la récupération" });
+        articles = await Service.findAll(Article);
+        return res.status(200).json(articles);
+    } catch (error) {
+        return res.status(error.status).json({ error: error.error });
     }
         
-    return res.status(200).json(articles);
 };
 
 export const getById = async (req, res) => {

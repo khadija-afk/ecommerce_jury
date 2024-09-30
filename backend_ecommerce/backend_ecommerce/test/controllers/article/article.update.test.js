@@ -39,7 +39,7 @@ describe('PUT /api/article/:id', () => {
             .set('Cookie', `access_token=${user_john}`);
 
         expect(response.status).toBe(404);
-        expect(response.body).toEqual({ error: "Article non trouvé" });
+        expect(response.body).toEqual({ error: "Not found" });
     });
 
     it('403 ', async () => {

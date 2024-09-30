@@ -43,7 +43,7 @@ describe('GET /api/article/:id', () => {
         const response = await request(app)
                 .get('/api/article/999')
         expect(response.status).toBe(404);
-        expect(response.body).toEqual({ error: 'Article non trouvé' });
+        expect(response.body).toEqual({ error: 'Not found' });
     });
 
     it('getById - 500', async () => {
@@ -56,7 +56,7 @@ describe('GET /api/article/:id', () => {
         console.log("_123", response)
         expect(response.status).toBe(500);
         expect(response.body).toEqual(expect.objectContaining({
-            "error": "Error lors de la récupération",
+            "error": "Server error while findByPk",
         }));
         
 
@@ -115,7 +115,7 @@ describe('GET /api/article/', () => {
         
         expect(response.status).toBe(500);
         expect(response.body).toEqual(expect.objectContaining({
-            "error": "Error lors de la récupération",
+            "error": "Server error while findAll",
         }));
         
         Article.findAll.mockRestore?.();
