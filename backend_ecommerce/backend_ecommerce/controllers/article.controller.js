@@ -59,10 +59,10 @@ export const getById = async (req, res) => {
     let article;
     try {
         article = await Service.get(Article, id);
+        return res.status(200).json(article);
     } catch (error) {
         return res.status(error.status).json({ error: error.error });
     }
-    return res.status(200).json(article);
 
 };
 
