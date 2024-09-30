@@ -2,7 +2,7 @@
 export const destroy = async (Model, userId) => {
     let res;
 
-    if (Model.user_fk !== userId) {
+    if ( userId && Model.user_fk !== userId) {
 
         throw Object.assign(
             { error: 'Seul le créateur peut supprimer', status: 403 }

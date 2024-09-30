@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1727731038588" clover="3.2.0">
-  <project timestamp="1727731038589" name="All files">
-    <metrics statements="718" coveredstatements="531" conditionals="131" coveredconditionals="81" methods="85" coveredmethods="55" elements="934" coveredelements="667" complexity="0" loc="718" ncloc="718" packages="6" files="42" classes="42"/>
+<coverage generated="1727731480432" clover="3.2.0">
+  <project timestamp="1727731480433" name="All files">
+    <metrics statements="718" coveredstatements="529" conditionals="129" coveredconditionals="79" methods="85" coveredmethods="55" elements="932" coveredelements="663" complexity="0" loc="718" ncloc="718" packages="6" files="42" classes="42"/>
     <package name="app">
       <metrics statements="73" coveredstatements="64" conditionals="14" coveredconditionals="9" methods="7" coveredmethods="5"/>
       <file name="auth.js" path="/app/auth.js">
@@ -97,7 +97,7 @@
       </file>
     </package>
     <package name="app.controllers">
-      <metrics statements="431" coveredstatements="319" conditionals="82" coveredconditionals="60" methods="49" coveredmethods="34"/>
+      <metrics statements="431" coveredstatements="317" conditionals="80" coveredconditionals="58" methods="49" coveredmethods="34"/>
       <file name="article.controller.js" path="/app/controllers/article.controller.js">
         <metrics statements="53" coveredstatements="45" conditionals="2" coveredconditionals="2" methods="7" coveredmethods="5"/>
         <line num="5" count="33" type="stmt"/>
@@ -252,7 +252,7 @@
         <line num="130" count="1" type="stmt"/>
       </file>
       <file name="categorie.controller.js" path="/app/controllers/categorie.controller.js">
-        <metrics statements="40" coveredstatements="40" conditionals="6" coveredconditionals="6" methods="5" coveredmethods="5"/>
+        <metrics statements="40" coveredstatements="38" conditionals="4" coveredconditionals="4" methods="5" coveredmethods="5"/>
         <line num="5" count="33" type="stmt"/>
         <line num="6" count="2" type="stmt"/>
         <line num="7" count="2" type="stmt"/>
@@ -275,24 +275,24 @@
         <line num="38" count="1" type="stmt"/>
         <line num="39" count="1" type="stmt"/>
         <line num="44" count="33" type="stmt"/>
-        <line num="45" count="3" type="stmt"/>
         <line num="46" count="3" type="stmt"/>
         <line num="47" count="3" type="stmt"/>
-        <line num="48" count="2" type="cond" truecount="2" falsecount="0"/>
-        <line num="49" count="1" type="stmt"/>
-        <line num="51" count="1" type="stmt"/>
-        <line num="52" count="1" type="stmt"/>
+        <line num="48" count="3" type="stmt"/>
+        <line num="50" count="2" type="stmt"/>
+        <line num="53" count="1" type="stmt"/>
         <line num="54" count="1" type="stmt"/>
         <line num="55" count="1" type="stmt"/>
-        <line num="60" count="33" type="stmt"/>
-        <line num="61" count="3" type="stmt"/>
-        <line num="62" count="3" type="stmt"/>
-        <line num="63" count="2" type="cond" truecount="2" falsecount="0"/>
-        <line num="64" count="1" type="stmt"/>
-        <line num="66" count="1" type="stmt"/>
+        <line num="57" count="0" type="stmt"/>
+        <line num="58" count="0" type="stmt"/>
+        <line num="63" count="33" type="stmt"/>
+        <line num="64" count="3" type="stmt"/>
+        <line num="65" count="3" type="stmt"/>
+        <line num="66" count="2" type="cond" truecount="2" falsecount="0"/>
         <line num="67" count="1" type="stmt"/>
         <line num="69" count="1" type="stmt"/>
         <line num="70" count="1" type="stmt"/>
+        <line num="72" count="1" type="stmt"/>
+        <line num="73" count="1" type="stmt"/>
       </file>
       <file name="orderDetails.controller.js" path="/app/controllers/orderDetails.controller.js">
         <metrics statements="46" coveredstatements="46" conditionals="13" coveredconditionals="13" methods="5" coveredmethods="5"/>
@@ -838,12 +838,12 @@
         <line num="33" count="2" type="stmt"/>
         <line num="38" count="2" type="stmt"/>
         <line num="41" count="33" type="cond" truecount="1" falsecount="0"/>
-        <line num="44" count="31" type="stmt"/>
-        <line num="46" count="31" type="stmt"/>
-        <line num="50" count="4" type="stmt"/>
-        <line num="55" count="27" type="cond" truecount="2" falsecount="0"/>
-        <line num="56" count="11" type="stmt"/>
-        <line num="61" count="16" type="stmt"/>
+        <line num="44" count="34" type="stmt"/>
+        <line num="46" count="34" type="stmt"/>
+        <line num="50" count="5" type="stmt"/>
+        <line num="55" count="29" type="cond" truecount="2" falsecount="0"/>
+        <line num="56" count="12" type="stmt"/>
+        <line num="61" count="17" type="stmt"/>
       </file>
       <file name="stripe.js" path="/app/services/stripe.js">
         <metrics statements="1" coveredstatements="1" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
