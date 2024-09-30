@@ -59,12 +59,12 @@ export const register = async (req, res) => {
 };
 
 export const getAll = async (req, res) => {
+  let users;
   try {
-    const users = await User.findAll(); // Utilisation de findAll() au lieu de find()
-    res.status(200).json(users);
+    users = await Service.findAll(User);
+    return res.status(200).json(users);
   } catch (error) {
-    console.log(error);
-    res.status(500).json({ error: "Internal Server Error", details: error.message });
+      return res.status(error.status).json({ error: error.error });
   }
 };
 
@@ -78,7 +78,10 @@ export const getById = async (req, res) => {
   } catch (error) {
     console.log(error);
     res.status(500).json({ error: "Internal Server Error" });
+    
   }
+
+
 };
 
 export const updateById = async (req, res) => {

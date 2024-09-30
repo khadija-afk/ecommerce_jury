@@ -38,7 +38,7 @@ describe('GET /api/cartItem/cart-items/:id', () => {
         const response = await request(app)
                 .get('/api/cartItem/cart-items/999')
         expect(response.status).toBe(404);
-        expect(response.body).toEqual({ error: 'Article du panier non trouvé' });
+        expect(response.body).toEqual({ error: 'Not found' });
     });
 
     it('500', async () => {
@@ -50,7 +50,7 @@ describe('GET /api/cartItem/cart-items/:id', () => {
         const response = await request(app).get('/api/cartItem/cart-items/1');
         
         expect(response.status).toBe(500);
-        expect(response.body).toEqual({ error: 'Erreur serveur lors de la récupération de l\'article du panier' });
+        expect(response.body).toEqual({ error: 'Server error while findByPk' });
 
         CartItem.findByPk.mockRestore?.();
     });

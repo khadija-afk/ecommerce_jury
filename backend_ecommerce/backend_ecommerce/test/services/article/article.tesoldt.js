@@ -20,7 +20,7 @@
 
 //     it('404 ', async () => {
 //         await expect(Service.get(99)).rejects.toEqual({
-//             error: 'Article non trouvé',
+//             error: 'Not found',
 //             status: 404,
 //           });
 //     })
@@ -29,7 +29,7 @@
 //         jest.spyOn(Article, 'findByPk').mockRejectedValueOnce(new Error('Erreur interne'));
 
 //         await expect(Service.get(99)).rejects.toEqual({
-//             error: 'Error lors de la récupération',
+//             error: 'Server error while findByPk',
 //             details: 'Erreur interne',
 //             status: 500,
 //           });

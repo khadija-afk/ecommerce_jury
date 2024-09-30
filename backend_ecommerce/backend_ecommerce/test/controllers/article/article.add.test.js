@@ -57,7 +57,7 @@ describe('POST /api/article', () => {
             .set('Cookie', `access_token=${fake_user}`);
 
         expect(response.status).toBe(404);
-        expect(response.body).toEqual({ error: 'User non trouvé' });
+        expect(response.body).toEqual({ error: 'Not found' });
     });
 
     it(' 404', async () => {
@@ -75,7 +75,7 @@ describe('POST /api/article', () => {
             .set('Cookie', `access_token=${user_john}`);
 
         expect(response.status).toBe(404);
-        expect(response.body).toEqual({ error: 'Categorie non trouvé' });
+        expect(response.body).toEqual({ error: 'Not found' });
     });
 
     it('500', async () => {
