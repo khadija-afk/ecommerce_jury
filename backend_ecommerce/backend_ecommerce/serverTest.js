@@ -1,5 +1,5 @@
 // testServer.js
-import { initializeDatabase, Article, User, Categorie, Cart, CartItem, OrderDetails } from './models/index.js';
+import { initializeDatabase, Article, User, Categorie, Cart, CartItem, OrderDetails, OrderItems } from './models/index.js';
 import jwt from 'jsonwebtoken';
 import { env } from './config.js'; // Assurez-vous d'importer la configuration correcte
 
@@ -83,6 +83,19 @@ const prepareDatabase = async () => {
             address: '11 rue du bois joly',
             paymentMethod: 'stripe'
         });
+        const newOrder2 = await OrderDetails.create({
+            user_fk: user3.id,
+            total: 100,
+            address: '11 rue du bois joly',
+            paymentMethod: 'stripe'
+        });
+
+        const orderItem = await OrderItems.create({
+            order_fk: newOrder2.id,
+            product_fk: article2.id,
+            quantity: 10,
+            price: 100.99
+        })
 
     } catch (error) {
         console.error('Unable to connect to the database or synchronize:', error);

@@ -29,7 +29,7 @@ describe('DELETE /api/user/delete/:id', () => {
 
 
     it('200 - should delete a user by ID', async () => {
-        const response = await request(app).delete('/api/user/delete/1'); // Assurez-vous que l'URL est correcte
+        const response = await request(app).delete('/api/user/delete/2'); // Assurez-vous que l'URL est correcte
         console.log("__ff",response.error)
         expect(response.status).toBe(200);
         expect(response.body).toEqual({ message: "User deleted" });
