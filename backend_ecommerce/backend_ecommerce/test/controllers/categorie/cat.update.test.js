@@ -37,7 +37,7 @@ describe('PUT /api/categorie/:id', () => {
         expect(response.body).toEqual(categoryWithoutUpdate); // Vérifier que la réponse renvoie la catégorie simulée mise à jour
 
         // Vérifier que Categorie.findByPk a été appelée avec l'ID correct (chaîne de caractères)
-        expect(findByPkSpy).toHaveBeenCalledWith("1");
+        expect(findByPkSpy).toHaveBeenCalledWith("1", {});
 
         // Vérifier que la méthode update a été appelée avec les bons paramètres
         expect(mockCategory.update).toHaveBeenCalledWith({
@@ -60,10 +60,10 @@ describe('PUT /api/categorie/:id', () => {
 
         // Vérifications
         expect(response.status).toBe(404);
-        expect(response.body).toEqual({ error: 'Catégorie non trouvée' });
+        expect(response.body).toEqual({ error: 'Not found' });
 
         // Vérifier que Categorie.findByPk a bien été appelée avec l'ID correct (chaîne de caractères)
-        expect(findByPkSpy).toHaveBeenCalledWith("999");
+        expect(findByPkSpy).toHaveBeenCalledWith("999", {});
     });
 
     it('500 - should return internal server error on exception', async () => {
@@ -80,10 +80,10 @@ describe('PUT /api/categorie/:id', () => {
 
         // Vérifications
         expect(response.status).toBe(500);
-        expect(response.body).toEqual({ error: 'Erreur serveur lors de la mise à jour de la catégorie' });
+        expect(response.body).toEqual({ error: 'Server error while findByPk' });
 
         // Vérifier que Categorie.findByPk a bien été appelée avec l'ID correct (chaîne de caractères)
-        expect(findByPkSpy).toHaveBeenCalledWith("1");
+        expect(findByPkSpy).toHaveBeenCalledWith("1", {});
     });
 
 });

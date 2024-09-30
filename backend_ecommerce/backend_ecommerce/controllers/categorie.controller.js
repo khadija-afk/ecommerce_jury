@@ -42,12 +42,15 @@ export const createCategory = async (req, res) => {
 
 // Mettre à jour une catégorie
 export const updateCategory = async (req, res) => {
+    let category;
+    const { name, description } = req.body;
     try {
-        const { name, description } = req.body;
-        const category = await Categorie.findByPk(req.params.id);
-        if (!category) {
-            return res.status(404).json({ error: 'Catégorie non trouvée' });
-        }
+        category = await Service.get(Categorie, req.params.id);
+    } catch (error) {
+        return res.status(error.status).json({ error: error.error });
+    }
+
+    try {
         await category.update({ name, description });
         res.status(200).json(category);
     } catch (error) {
@@ -58,6 +61,7 @@ export const updateCategory = async (req, res) => {
 
 // Supprimer une catégorie
 export const deleteCategory = async (req, res) => {
+
     try {
         const category = await Categorie.findByPk(req.params.id);
         if (!category) {
