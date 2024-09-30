@@ -41,19 +41,24 @@ describe('DELETE /api/order/orders/:id', () => {
         
     });
 
-    // it('500', async () => {
+    it('500', async () => {
     
-    //     const { OrderDetails } = require('../../../models/index.js');
+        const { OrderDetails } = require('../../../models/index.js');
+
+        const mockorder = {
+            id: 1,
+            destroy: jest.fn().mockRejectedValue(new Error('Erreur de réseau'))
+        };
     
-    //     OrderDetails.destroy = jest.fn().mockRejectedValue(new Error('Erreur de réseau'));
+        OrderDetails.findOne = jest.fn().mockRejectedValue(mockorder);
 
        
-    //     const response = await request(app)
-    //         .delete('/api/order/orders/1')
-    //         .set('Cookie', `access_token=${user_john2}`)
+        const response = await request(app)
+            .delete('/api/order/orders/1')
+            .set('Cookie', `access_token=${user_john2}`)
            
-    //     expect(response.status).toBe(500);  
-    //     OrderDetails.destroy.mockRestore();
-    // });
+        expect(response.status).toBe(500);  
+        
+    });
     
 })
