@@ -76,12 +76,7 @@ export const updateOrderItem = async (req, res) => {
 
         const orderItem = await OrderItems.findOne({
             where: { id: req.params.id },
-            // include: [
-            //     {
-            //         model: OrderDetails,
-            //         where: { user_fk: userId }, // S'assurer que l'article de commande appartient à une commande de l'utilisateur
-            //     },
-            // ],
+           
         });
 
         if (!orderItem) {
@@ -103,12 +98,7 @@ export const deleteOrderItem = async (req, res) => {
 
         const orderItem = await OrderItems.findOne({
             where: { id: req.params.id },
-            include: [
-                {
-                    model: OrderDetails,
-                    where: { user_fk: userId }, // S'assurer que l'article de commande appartient à une commande de l'utilisateur
-                },
-            ],
+            
         });
 
         if (!orderItem) {
@@ -118,7 +108,6 @@ export const deleteOrderItem = async (req, res) => {
         await orderItem.destroy();
         res.status(200).json({ message: 'Article de commande supprimé avec succès' });
     } catch (error) {
-        console.error('Erreur lors de la suppression de l\'article de commande:', error);
         res.status(500).json({ error: 'Erreur serveur lors de la suppression de l\'article de commande', detail: error.message });
     }
 };
