@@ -1,6 +1,7 @@
 import request from 'supertest';
 import { app } from '../../../server.js'; // Assurez-vous que le chemin est correct
 import { prepareDatabase, teardownDatabase, getUserToken,  } from '../../../serverTest.js';
+import { OrderItems } from '../../../models/index.js';
 
 
 
@@ -45,25 +46,22 @@ describe('GET /api/orderItem/order-items/:id', () => {
 
    
 
-    // it('500', async () => {
-    //     const OrderItems = require('../../../models/index.js');  // Assurez-vous que le chemin est correct
+    it('500 - Server error while retrieving the order item', async () => {
+        // Mock de la méthode findByPk pour simuler une erreur de réseau
+        const mockFindByPk = jest.spyOn(OrderItems, 'findByPk').mockRejectedValue(new Error('Erreur de réseau'));
     
-    //     // Mock de la méthode findByPk pour simuler une erreur de réseau
-    //     OrderItems.findByPk = jest.fn().mockRejectedValue(new Error('Erreur de Réseau'))
-
-    //     console.log('khadija', OrderItems.findByPk)
+        // Exécuter la requête GET pour récupérer un OrderItem
+        const response = await request(app)
+            .get('/api/orderItem/order-items/13')
+            .set('Cookie', `access_token=${user_john3}`);
     
+        // Vérifier le statut et le message d'erreur
+        expect(response.status).toBe(500);
+        expect(response.body).toEqual({ error: 'Server error while retrieving the order item' });
     
-    //     const response = await request(app)
-    //         .get('/api/orderItem/order-items/13')
-    //         .set('Cookie', `access_token=${user_john}`);
+        // Restaurer la méthode originale après le test
+        mockFindByPk.mockRestore();
+    });
     
-    //     // Vérifier le statut et le message d'erreur
-    //     expect(response.status).toBe(500);
-    //     expect(response.body).toEqual({ error: "Server error while retrieving the order item" });
-    
-    //     // Restaurer la méthode originale après le test
-    //     OrderItems.findByPk.mockRestore();
-    // });
     
 })
