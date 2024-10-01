@@ -1,0 +1,5 @@
+2024-10-01 21:47:46 [error]: Error retrieving User, id: 30, status: undefined, details: Erreur de réseau
+2024-10-01 21:47:49 [error]: Error retrieving Categorie, id: 1, status: undefined, details: Erreur lors de la mise à jour
+2024-10-01 21:47:51 [error]: Error retrieving Categorie, id: 1, status: undefined, details: Erreur lors de la récupération de la catégorie
+2024-10-01 21:47:52 [error]: Error retrieving CartItem, id: 1, status: undefined, details: Erreur de Réseau
+2024-10-01 21:47:54 [error]: Error retrieving Article, id: 1, status: undefined, details: Erreur de Réseau

@@ -19,7 +19,10 @@ start-back: clean_node_modules
 start-j:
 	docker-compose up --build -d jenkins
 
-start-all: clean_node_modules
+down-all:
+	docker-compose down
+
+start-all: down-all clean_node_modules
 	docker-compose up --build -d
 
 bash-b:
