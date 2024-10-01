@@ -1,0 +1,38 @@
+2024-10-01 21:47:45 [debug]: Controller Add Article start
+2024-10-01 21:47:45 [info]: User retrieved, id: 1
+2024-10-01 21:47:45 [info]: Categorie retrieved, id: 1
+2024-10-01 21:47:45 [debug]: Controller Add Article start
+2024-10-01 21:47:45 [warn]: User not found id: 100
+2024-10-01 21:47:45 [debug]: Controller Add Article start
+2024-10-01 21:47:45 [info]: User retrieved, id: 1
+2024-10-01 21:47:45 [warn]: Categorie not found id: 999
+2024-10-01 21:47:45 [debug]: Controller Add Article start
+2024-10-01 21:47:45 [info]: User retrieved, id: 1
+2024-10-01 21:47:45 [info]: Categorie retrieved, id: 1
+2024-10-01 21:47:46 [info]: User retrieved, id: 30
+2024-10-01 21:47:46 [warn]: User not found id: 999
+2024-10-01 21:47:46 [error]: Error retrieving User, id: 30, status: undefined, details: Erreur de réseau
+2024-10-01 21:47:49 [info]: Categorie retrieved, id: 1
+2024-10-01 21:47:49 [warn]: Categorie not found id: 999
+2024-10-01 21:47:49 [error]: Error retrieving Categorie, id: 1, status: undefined, details: Erreur lors de la mise à jour
+2024-10-01 21:47:51 [info]: Categorie retrieved, id: 1
+2024-10-01 21:47:51 [warn]: Categorie not found id: 999
+2024-10-01 21:47:51 [error]: Error retrieving Categorie, id: 1, status: undefined, details: Erreur lors de la récupération de la catégorie
+2024-10-01 21:47:51 [warn]: CartItem not found id: 123
+2024-10-01 21:47:51 [info]: CartItem retrieved, id: 1
+2024-10-01 21:47:51 [info]: CartItem retrieved, id: 1
+2024-10-01 21:47:52 [info]: CartItem retrieved, id: 1
+2024-10-01 21:47:52 [warn]: CartItem not found id: 999
+2024-10-01 21:47:52 [error]: Error retrieving CartItem, id: 1, status: undefined, details: Erreur de Réseau
+2024-10-01 21:47:54 [info]: Article retrieved, id: 1
+2024-10-01 21:47:54 [warn]: Article not found id: 999
+2024-10-01 21:47:54 [error]: Error retrieving Article, id: 1, status: undefined, details: Erreur de Réseau
+2024-10-01 21:47:56 [info]: Article retrieved, id: 1
+2024-10-01 21:47:56 [warn]: Article not found id: 999
+2024-10-01 21:47:56 [info]: Article retrieved, id: 1
+2024-10-01 21:47:56 [info]: Article retrieved, id: 1
+2024-10-01 21:47:56 [warn]: Article not found id: 999
+2024-10-01 21:47:56 [info]: Article retrieved, id: 1
+2024-10-01 21:47:56 [info]: Article retrieved, id: 1
+2024-10-01 21:47:56 [warn]: Article not found id: 1
+2024-10-01 21:47:56 [warn]: Article not found id: 999
