@@ -5,15 +5,18 @@ export const getAllOrderItems = async (req, res) => {
     try {
         const userId = req.user.id; // Utiliser l'ID de l'utilisateur connecté
 
-        const orderItems = await OrderItems.findAll({
-            include: [
-                {
-                    model: OrderDetails,
-                    where: { user_fk: userId }, // Associer les articles de commande aux commandes de l'utilisateur connecté
-                },
-            ],
-        });
+        console.log('Before querying OrderItems');  // Log avant la requête
+const orderItems = await OrderItems.findAll({
+    include: [
+        {
+            model: OrderDetails,
+            where: { user_fk: userId },
+        },
+    ],
+});
+console.log('After querying OrderItems:', orderItems);  // Log après la requête
         res.status(200).json(orderItems);
+        console.log('allOrderItems', orderItems);
     } catch (error) {
         console.error('Erreur lors de la récupération des articles de commande:', error);
         res.status(500).json({ error: 'Erreur serveur lors de la récupération des articles de commande' });
@@ -73,12 +76,12 @@ export const updateOrderItem = async (req, res) => {
 
         const orderItem = await OrderItems.findOne({
             where: { id: req.params.id },
-            include: [
-                {
-                    model: OrderDetails,
-                    where: { user_fk: userId }, // S'assurer que l'article de commande appartient à une commande de l'utilisateur
-                },
-            ],
+            // include: [
+            //     {
+            //         model: OrderDetails,
+            //         where: { user_fk: userId }, // S'assurer que l'article de commande appartient à une commande de l'utilisateur
+            //     },
+            // ],
         });
 
         if (!orderItem) {
