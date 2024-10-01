@@ -23,26 +23,19 @@ export const getAllOrderItems = async (req, res) => {
 // Récupérer un article de commande par son ID pour l'utilisateur connecté
 export const getOrderItemById = async (req, res) => {
     try {
-        const userId = req.user.id; // Utiliser l'ID de l'utilisateur connecté
+        // Récupérer l'article de commande par son ID
+        const orderItem = await OrderItems.findByPk(req.params.id);
 
-        const orderItem = await OrderItems.findOne({
-            where: { id: req.params.id },
-            include: [
-                {
-                    model: OrderDetails,
-                    where: { user_fk: userId }, // S'assurer que l'utilisateur est propriétaire de l'article de commande
-                },
-            ],
-        });
-
+        // Vérifier si l'article de commande existe
         if (!orderItem) {
-            return res.status(404).json({ error: 'Article de commande non trouvé' });
+            return res.status(404).json({ error: 'Order item not found' });
         }
 
-        res.status(200).json(orderItem);
+        // Retourner l'article de commande
+        return res.status(200).json(orderItem);
     } catch (error) {
-        console.error('Erreur lors de la récupération de l\'article de commande:', error);
-        res.status(500).json({ error: 'Erreur serveur lors de la récupération de l\'article de commande' });
+        console.error('Captured error:', error); 
+        return res.status(500).json({ error: 'Server error while retrieving the order item' });
     }
 };
 

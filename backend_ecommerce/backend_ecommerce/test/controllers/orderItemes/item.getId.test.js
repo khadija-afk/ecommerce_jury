@@ -34,38 +34,36 @@ describe('GET /api/orderItem/order-items/:id', () => {
        
     });
 
-    // it('200', async () => {
-    //     const response = await request(app)
-    //         .get('/api/orderItem/order-items/1')
-    //         .set('Cookie', `access_token=${user_john3}`);
-    //     expect(response.status).toBe(200);
-    //     expect(response.body).toEqual({
-    //         id: 1,
-    //         order_fk: 2,
-    //         product_fk: 2,
-    //         quantity: 10,
-    //         price: 100.99
-    //     });
-
+    it('200', async () => {
+        const response = await request(app)
+            .get('/api/orderItem/order-items/1')
+            .set('Cookie', `access_token=${user_john3}`);
+        expect(response.status).toBe(200);
+        
        
-    // });
+    });
 
    
 
     // it('500', async () => {
-
-    //     const OrderItems = require('../../../models/index.js')
+    //     const OrderItems = require('../../../models/index.js');  // Assurez-vous que le chemin est correct
     
-    //     const mockfindOne = jest.spyOn(OrderItems, 'findOne').mockRejectedValueOnce(new Error('Erreur de Réseau'));
+    //     // Mock de la méthode findByPk pour simuler une erreur de réseau
+    //     OrderItems.findByPk = jest.fn().mockRejectedValue(new Error('Erreur de Réseau'))
 
+    //     console.log('khadija', OrderItems.findByPk)
+    
+    
     //     const response = await request(app)
-    //         .get('/api/orderItem/order-items/1')
-    //         .set('Cookie', `access_token=${user_john3}`);
-
+    //         .get('/api/orderItem/order-items/13')
+    //         .set('Cookie', `access_token=${user_john}`);
+    
+    //     // Vérifier le statut et le message d'erreur
     //     expect(response.status).toBe(500);
-    //     expect(response.body).toEqual({ error: "Erreur serveur lors de la récupération de l\'article de commande" });
-
-    //     mockfindOne.mockRestore();
+    //     expect(response.body).toEqual({ error: "Server error while retrieving the order item" });
+    
+    //     // Restaurer la méthode originale après le test
+    //     OrderItems.findByPk.mockRestore();
     // });
     
 })
