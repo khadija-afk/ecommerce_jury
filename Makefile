@@ -13,8 +13,14 @@ test:
 start-front:
 	docker-compose up --build -d frontend
 
-start-back: clean_node_modules
+start-back-build: clean_node_modules
 	docker-compose up --build -d backend
+
+start-back: clean_node_modules
+	docker-compose up -d backend
+
+start-back-logs:
+	docker-compose logs -f backend
 
 start-j:
 	docker-compose up --build -d jenkins

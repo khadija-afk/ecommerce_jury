@@ -10,6 +10,9 @@ test:
 test-cov:
 	$(ENV_TEST) npx jest $(COV)
 
+bdd:
+	NODE_ENV=test NODE_PATH=/app npx cucumber-js
+
 sequelize-migrate:
 	@npx sequelize-cli db:migrate
 
@@ -24,5 +27,5 @@ lint:
 format:
 	npx prettier --write controllers
 	
-.PHONY: test lint
+.PHONY: test lint bdd
 
