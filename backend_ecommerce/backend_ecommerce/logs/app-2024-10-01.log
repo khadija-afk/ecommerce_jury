@@ -74,3 +74,41 @@
 2024-10-01 21:51:16 [info]: Article retrieved, id: 1
 2024-10-01 21:51:16 [warn]: Article not found id: 1
 2024-10-01 21:51:16 [warn]: Article not found id: 999
+2024-10-01 22:18:22 [info]: Categorie retrieved, id: 1
+2024-10-01 22:18:21 [info]: User retrieved, id: 30
+2024-10-01 22:18:22 [warn]: Categorie not found id: 999
+2024-10-01 22:18:22 [warn]: User not found id: 999
+2024-10-01 22:18:22 [error]: Error retrieving Categorie, id: 1, status: undefined, details: Erreur lors de la mise à jour
+2024-10-01 22:18:22 [error]: Error retrieving User, id: 30, status: undefined, details: Erreur de réseau
+2024-10-01 22:18:22 [info]: Article retrieved, id: 1
+2024-10-01 22:18:22 [debug]: Controller Add Article start
+2024-10-01 22:18:22 [warn]: Article not found id: 999
+2024-10-01 22:18:22 [info]: User retrieved, id: 1
+2024-10-01 22:18:22 [info]: Categorie retrieved, id: 1
+2024-10-01 22:18:22 [error]: Error retrieving Article, id: 1, status: undefined, details: Erreur de Réseau
+2024-10-01 22:18:22 [debug]: Controller Add Article start
+2024-10-01 22:18:22 [warn]: User not found id: 100
+2024-10-01 22:18:22 [debug]: Controller Add Article start
+2024-10-01 22:18:22 [info]: User retrieved, id: 1
+2024-10-01 22:18:22 [warn]: Categorie not found id: 999
+2024-10-01 22:18:22 [debug]: Controller Add Article start
+2024-10-01 22:18:22 [info]: User retrieved, id: 1
+2024-10-01 22:18:22 [info]: Categorie retrieved, id: 1
+2024-10-01 22:18:25 [warn]: Article not found id: 999
+2024-10-01 22:18:25 [info]: Article retrieved, id: 1
+2024-10-01 22:18:25 [info]: Article retrieved, id: 1
+2024-10-01 22:18:25 [warn]: Article not found id: 1
+2024-10-01 22:18:25 [warn]: Article not found id: 999
+2024-10-01 22:18:28 [info]: Categorie retrieved, id: 1
+2024-10-01 22:18:28 [warn]: Categorie not found id: 999
+2024-10-01 22:18:28 [error]: Error retrieving Categorie, id: 1, status: undefined, details: Erreur lors de la récupération de la catégorie
+2024-10-01 22:18:29 [info]: Article retrieved, id: 1
+2024-10-01 22:18:29 [warn]: Article not found id: 999
+2024-10-01 22:18:29 [info]: Article retrieved, id: 1
+2024-10-01 22:18:30 [info]: Article retrieved, id: 1
+2024-10-01 22:18:35 [warn]: CartItem not found id: 123
+2024-10-01 22:18:35 [info]: CartItem retrieved, id: 1
+2024-10-01 22:18:35 [info]: CartItem retrieved, id: 1
+2024-10-01 22:18:37 [info]: CartItem retrieved, id: 1
+2024-10-01 22:18:37 [warn]: CartItem not found id: 999
+2024-10-01 22:18:37 [error]: Error retrieving CartItem, id: 1, status: undefined, details: Erreur de Réseau

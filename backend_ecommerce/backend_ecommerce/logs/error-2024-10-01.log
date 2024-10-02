@@ -8,3 +8,8 @@
 2024-10-01 21:51:10 [error]: Error retrieving CartItem, id: 1, status: undefined, details: Erreur de Réseau
 2024-10-01 21:51:12 [error]: Error retrieving Categorie, id: 1, status: undefined, details: Erreur lors de la récupération de la catégorie
 2024-10-01 21:51:15 [error]: Error retrieving Categorie, id: 1, status: undefined, details: Erreur lors de la mise à jour
+2024-10-01 22:18:22 [error]: Error retrieving Categorie, id: 1, status: undefined, details: Erreur lors de la mise à jour
+2024-10-01 22:18:22 [error]: Error retrieving User, id: 30, status: undefined, details: Erreur de réseau
+2024-10-01 22:18:22 [error]: Error retrieving Article, id: 1, status: undefined, details: Erreur de Réseau
+2024-10-01 22:18:28 [error]: Error retrieving Categorie, id: 1, status: undefined, details: Erreur lors de la récupération de la catégorie
+2024-10-01 22:18:37 [error]: Error retrieving CartItem, id: 1, status: undefined, details: Erreur de Réseau
