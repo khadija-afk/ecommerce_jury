@@ -1,6 +1,6 @@
 import request from 'supertest';
-import { prepareDatabase, teardownDatabase, getUserToken } from '../../../serverTest.js';
-import { app } from '../../../server.js';
+import { prepareDatabase, teardownDatabase, getUserToken } from 'serverTest.js';
+import { app } from 'server.js';
 
 describe('POST /api/cartItem/cart-items', () => {
     

@@ -1,6 +1,6 @@
 import request from 'supertest';
-import { app } from '../../../server.js'; // Assurez-vous que le chemin est correct
-import { prepareDatabase, teardownDatabase, getUserToken } from '../../../serverTest.js';
+import { app } from 'server.js'; // Assurez-vous que le chemin est correct
+import { prepareDatabase, teardownDatabase, getUserToken } from 'serverTest.js';
 
 describe('DELETE /api/order/orders/:id', () => {
 
@@ -43,7 +43,7 @@ describe('DELETE /api/order/orders/:id', () => {
 
     it('500', async () => {
     
-        const { OrderDetails } = require('../../../models/index.js');
+        const { OrderDetails } = require('models/index.js');
 
         const mockorder = {
             id: 1,

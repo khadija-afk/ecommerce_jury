@@ -1,6 +1,6 @@
 import request from 'supertest';
-import { app } from '../../../server.js'; // Assurez-vous que le chemin est correct
-import { prepareDatabase, teardownDatabase, getUserToken } from '../../../serverTest.js';
+import { app } from 'server.js'; // Assurez-vous que le chemin est correct
+import { prepareDatabase, teardownDatabase, getUserToken } from 'serverTest.js';
 
 describe('GET /api/cart', () => {
 
@@ -45,7 +45,7 @@ describe('GET /api/cart', () => {
 
     it('500', async () => {
     
-        const { Cart } = require('../../../models/index.js');
+        const { Cart } = require('models/index.js');
     
         Cart.findOne = jest.fn().mockRejectedValue(new Error('Erreur de suppression'))
 

@@ -1,6 +1,6 @@
 import request from 'supertest';
-import { app } from '../../../server.js'; // Assurez-vous que le chemin est correct
-import { prepareDatabase, teardownDatabase, getUserToken } from '../../../serverTest.js';
+import { app } from 'server.js'; // Assurez-vous que le chemin est correct
+import { prepareDatabase, teardownDatabase, getUserToken } from 'serverTest.js';
 
 describe('GET /api/order/orders/:id', () => {
 
@@ -53,7 +53,7 @@ describe('GET /api/order/orders/:id', () => {
 
     it('500', async () => {
     
-        const { OrderDetails } = require('../../../models/index.js');
+        const { OrderDetails } = require('models/index.js');
     
         OrderDetails.findOne = jest.fn().mockRejectedValue(new Error('Erreur serveur lors de la récupération des commandes'))
 

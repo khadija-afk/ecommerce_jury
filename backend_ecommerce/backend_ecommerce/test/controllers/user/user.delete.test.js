@@ -1,6 +1,6 @@
 import request from 'supertest';
-import { app } from '../../../server.js'; // Assurez-vous que le chemin est correct
-import { prepareDatabase, teardownDatabase, getUserToken } from '../../../serverTest.js';
+import { app } from 'server.js'; // Assurez-vous que le chemin est correct
+import { prepareDatabase, teardownDatabase, getUserToken } from 'serverTest.js';
 
 describe('DELETE /api/user/delete/:id', () => {
     let user_john;
@@ -39,7 +39,7 @@ describe('DELETE /api/user/delete/:id', () => {
 
     it('500 - should return internal server error', async () => {
         // Mock de User.destroy pour lever une erreur
-        const { User } = require('../../../models/index.js');
+        const { User } = require('models/index.js');
     
         User.destroy= jest.fn().mockRejectedValue(new Error('Erreur de suppression'))
 

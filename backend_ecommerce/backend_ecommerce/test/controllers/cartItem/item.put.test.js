@@ -1,6 +1,6 @@
 import request from 'supertest';
-import { prepareDatabase, teardownDatabase, getUserToken } from '../../../serverTest.js';
-import { app } from '../../../server.js';
+import { prepareDatabase, teardownDatabase, getUserToken } from 'serverTest.js';
+import { app } from 'server.js';
 
 describe('PUT /api/cartItem/cart-items/:id', () => {
 
@@ -39,7 +39,7 @@ describe('PUT /api/cartItem/cart-items/:id', () => {
 
     it('500', async () => {
     
-        const { CartItem } = require('../../../models/index.js');
+        const { CartItem } = require('models/index.js');
         CartItem.update = jest.fn().mockRejectedValue(new Error('Erreur de réseau'));
 
         const mockCartItem = {
