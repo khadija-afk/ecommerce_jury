@@ -40,9 +40,8 @@ export const getCartByUserId = async (req, res) => {
 
 // Créer un nouveau panier pour un utilisateur
 export const createCart = async (req, res) => {
-  let userId;
+  const userId = req.user.id;
   let newCart;
-  userId = req.user.id;
 
   const existingCart = await Cart.findOne({ where: { user_fk: userId } });
   if (existingCart) {
