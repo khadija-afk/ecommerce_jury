@@ -1,7 +1,7 @@
 import request from 'supertest';
-import { prepareDatabase, teardownDatabase, getUserToken } from '../../../serverTest.js';
-import { app } from '../../../server.js';
-import { Article } from '../../../models/index.js';
+import { prepareDatabase, teardownDatabase, getUserToken } from 'serverTest.js';
+import { app } from 'server.js';
+import { Article } from 'models/index.js';
 
 describe('POST /api/article', () => {
     

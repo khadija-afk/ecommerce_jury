@@ -2,7 +2,7 @@
 FROM node:21
 
 # Définir le répertoire de travail dans le conteneur
-
+ENV NODE_PATH=/app
 
 # Copier le reste des fichiers de l'application
 COPY . .

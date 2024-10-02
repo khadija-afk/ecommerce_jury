@@ -1,7 +1,7 @@
 import request from 'supertest';
-import { prepareDatabase, teardownDatabase, getUserToken } from '../../../serverTest.js';
-import { app } from '../../../server.js';
-import * as Service from '../../../services/service.js';
+import { prepareDatabase, teardownDatabase, getUserToken } from 'serverTest.js';
+import { app } from 'server.js';
+import * as Service from 'services/service.js';
 
 describe('DELETE /api/article/:id', () => {
     

@@ -1,6 +1,6 @@
 import request from 'supertest';
-import { prepareDatabase, teardownDatabase, getUserToken } from '../../../serverTest.js';
-import { app } from '../../../server.js';
+import { prepareDatabase, teardownDatabase, getUserToken } from 'serverTest.js';
+import { app } from 'server.js';
 
 describe('DELETE /api/cartItem/cart-items/:id', () => {
 
@@ -28,7 +28,7 @@ describe('DELETE /api/cartItem/cart-items/:id', () => {
     });
 
     it('500', async () => {
-        const { CartItem } = require('../../../models/index.js');
+        const { CartItem } = require('models/index.js');
         CartItem.destroy = jest.fn().mockRejectedValue(new Error('Erreur de réseau'));
 
         const response = await request(app)

@@ -1,8 +1,8 @@
-// import { prepareDatabase, teardownDatabase} from '../../../serverTest.js';
+// import { prepareDatabase, teardownDatabase} from 'serverTest.js';
 
-// import * as Service from '../../../services/service.js'
+// import * as Service from 'services/service.js'
 
-// import { Article } from '../../../models/index.js';
+// import { Article } from 'models/index.js';
 
 // describe('get', () => {
 
