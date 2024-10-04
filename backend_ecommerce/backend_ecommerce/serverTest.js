@@ -1,5 +1,5 @@
 // testServer.js
-import { initializeDatabase, Article, User, Categorie, Cart, CartItem, OrderDetails, OrderItems } from './models/index.js';
+import { initializeDatabase, Article, User, Categorie, Cart, CartItem, OrderDetails, OrderItems, PaymentDetails } from './models/index.js';
 import jwt from 'jsonwebtoken';
 import { env } from './config.js'; // Assurez-vous d'importer la configuration correcte
 
@@ -95,6 +95,14 @@ const prepareDatabase = async () => {
             product_fk: article2.id,
             quantity: 10,
             price: 100.99
+        });
+
+        const paiment = await PaymentDetails.create({
+            order_fk: newOrder.id,
+            amount: 19.99,
+            provider: stripe,
+            status: "succes"
+
         })
 
     } catch (error) {
@@ -111,6 +119,7 @@ const teardownDatabase = async () => {
         await CartItem.destroy({ where: {}, truncate: true });  // Dépend de Cart et Article
         await OrderDetails.destroy({ where: {}, truncate: true }); 
         await OrderItems.destroy({ where: {}, truncate: true });  // Dépend de User
+        await PaymentDetails.destroy({ where: {}, truncate: true });
         
         // Supprimer les éléments parents ensuite
         await Cart.destroy({ where: {}, truncate: true });  // Dépend de User
