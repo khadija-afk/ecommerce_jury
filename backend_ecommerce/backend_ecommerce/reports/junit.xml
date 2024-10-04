@@ -1,303 +1,335 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuites name="jest tests" tests="114" failures="0" errors="0" time="19.866">
-  <testsuite name="PUT /api/user/update/:id" errors="0" failures="0" skipped="0" timestamp="2024-10-04T08:29:50" time="6.083" tests="3">
-    <testcase classname="PUT /api/user/update/:id 200 - should update a user by ID" name="PUT /api/user/update/:id 200 - should update a user by ID" time="0.103">
+<testsuites name="jest tests" tests="126" failures="0" errors="0" time="20.727">
+  <testsuite name="POST /api/cartItem/cart-items" errors="0" failures="0" skipped="0" timestamp="2024-10-04T10:06:29" time="6.195" tests="4">
+    <testcase classname="POST /api/cartItem/cart-items 201 already have Cart" name="POST /api/cartItem/cart-items 201 already have Cart" time="0.714">
     </testcase>
-    <testcase classname="PUT /api/user/update/:id 404 - should return user not found" name="PUT /api/user/update/:id 404 - should return user not found" time="0.029">
+    <testcase classname="POST /api/cartItem/cart-items 201 For first Cart" name="POST /api/cartItem/cart-items 201 For first Cart" time="0.04">
     </testcase>
-    <testcase classname="PUT /api/user/update/:id 500 - should return internal server error" name="PUT /api/user/update/:id 500 - should return internal server error" time="0.018">
+    <testcase classname="POST /api/cartItem/cart-items 200 " name="POST /api/cartItem/cart-items 200 " time="0.028">
     </testcase>
-  </testsuite>
-  <testsuite name="PUT /api/categorie/:id" errors="0" failures="0" skipped="0" timestamp="2024-10-04T08:29:50" time="6.097" tests="3">
-    <testcase classname="PUT /api/categorie/:id 200 - should update a category by ID" name="PUT /api/categorie/:id 200 - should update a category by ID" time="0.095">
-    </testcase>
-    <testcase classname="PUT /api/categorie/:id 404 - should return category not found if ID does not exist" name="PUT /api/categorie/:id 404 - should return category not found if ID does not exist" time="0.016">
-    </testcase>
-    <testcase classname="PUT /api/categorie/:id 500 - should return internal server error on exception" name="PUT /api/categorie/:id 500 - should return internal server error on exception" time="0.013">
+    <testcase classname="POST /api/cartItem/cart-items 500" name="POST /api/cartItem/cart-items 500" time="0.025">
     </testcase>
   </testsuite>
-  <testsuite name="POST /api/user/sign" errors="0" failures="0" skipped="0" timestamp="2024-10-04T08:29:50" time="6.298" tests="4">
-    <testcase classname="POST /api/user/sign 404" name="POST /api/user/sign 404" time="0.054">
+  <testsuite name="POST /api/user/sign" errors="0" failures="0" skipped="0" timestamp="2024-10-04T10:06:29" time="6.26" tests="4">
+    <testcase classname="POST /api/user/sign 404" name="POST /api/user/sign 404" time="0.707">
     </testcase>
-    <testcase classname="POST /api/user/sign 501" name="POST /api/user/sign 501" time="0.046">
+    <testcase classname="POST /api/user/sign 501" name="POST /api/user/sign 501" time="0.042">
     </testcase>
-    <testcase classname="POST /api/user/sign 400" name="POST /api/user/sign 400" time="0.008">
+    <testcase classname="POST /api/user/sign 400" name="POST /api/user/sign 400" time="0.017">
     </testcase>
-    <testcase classname="POST /api/user/sign 200" name="POST /api/user/sign 200" time="0.102">
-    </testcase>
-  </testsuite>
-  <testsuite name="POST /api/user/add" errors="0" failures="0" skipped="0" timestamp="2024-10-04T08:29:50" time="6.436" tests="2">
-    <testcase classname="POST /api/user/add 201 created successfully" name="POST /api/user/add 201 created successfully" time="0.226">
-    </testcase>
-    <testcase classname="POST /api/user/add 500 " name="POST /api/user/add 500 " time="0.113">
+    <testcase classname="POST /api/user/sign 200" name="POST /api/user/sign 200" time="0.114">
     </testcase>
   </testsuite>
-  <testsuite name="GET /api/user/check_auth" errors="0" failures="0" skipped="0" timestamp="2024-10-04T08:29:50" time="6.689" tests="5">
-    <testcase classname="GET /api/user/check_auth 200 - should return user data if token is valid" name="GET /api/user/check_auth 200 - should return user data if token is valid" time="0.054">
+  <testsuite name="PUT /api/user/update/:id" errors="0" failures="0" skipped="0" timestamp="2024-10-04T10:06:29" time="6.529" tests="3">
+    <testcase classname="PUT /api/user/update/:id 200 - should update a user by ID" name="PUT /api/user/update/:id 200 - should update a user by ID" time="0.084">
     </testcase>
-    <testcase classname="GET /api/user/check_auth 401 - should return access denied if token is missing" name="GET /api/user/check_auth 401 - should return access denied if token is missing" time="0.006">
+    <testcase classname="PUT /api/user/update/:id 404 - should return user not found" name="PUT /api/user/update/:id 404 - should return user not found" time="0.014">
     </testcase>
-    <testcase classname="GET /api/user/check_auth 404 - should return user not found if user does not exist" name="GET /api/user/check_auth 404 - should return user not found if user does not exist" time="0.027">
-    </testcase>
-    <testcase classname="GET /api/user/check_auth 500 - should return internal server error on exception" name="GET /api/user/check_auth 500 - should return internal server error on exception" time="0.018">
-    </testcase>
-    <testcase classname="GET /api/user/check_auth 500 - should return invalid signature if token is incorrect" name="GET /api/user/check_auth 500 - should return invalid signature if token is incorrect" time="0.019">
+    <testcase classname="PUT /api/user/update/:id 500 - should return internal server error" name="PUT /api/user/update/:id 500 - should return internal server error" time="0.014">
     </testcase>
   </testsuite>
-  <testsuite name="POST /api/article" errors="0" failures="0" skipped="0" timestamp="2024-10-04T08:29:50" time="7.814" tests="4">
-    <testcase classname="POST /api/article 201 " name="POST /api/article 201 " time="0.089">
+  <testsuite name="GET /api/user/check_auth" errors="0" failures="0" skipped="0" timestamp="2024-10-04T10:06:29" time="6.552" tests="5">
+    <testcase classname="GET /api/user/check_auth 200 - should return user data if token is valid" name="GET /api/user/check_auth 200 - should return user data if token is valid" time="0.056">
+    </testcase>
+    <testcase classname="GET /api/user/check_auth 401 - should return access denied if token is missing" name="GET /api/user/check_auth 401 - should return access denied if token is missing" time="0.01">
+    </testcase>
+    <testcase classname="GET /api/user/check_auth 404 - should return user not found if user does not exist" name="GET /api/user/check_auth 404 - should return user not found if user does not exist" time="0.014">
+    </testcase>
+    <testcase classname="GET /api/user/check_auth 500 - should return internal server error on exception" name="GET /api/user/check_auth 500 - should return internal server error on exception" time="0.015">
+    </testcase>
+    <testcase classname="GET /api/user/check_auth 500 - should return invalid signature if token is incorrect" name="GET /api/user/check_auth 500 - should return invalid signature if token is incorrect" time="0.014">
+    </testcase>
+  </testsuite>
+  <testsuite name="POST /api/article" errors="0" failures="0" skipped="0" timestamp="2024-10-04T10:06:29" time="7.101" tests="4">
+    <testcase classname="POST /api/article 201 " name="POST /api/article 201 " time="0.098">
     </testcase>
     <testcase classname="POST /api/article 404 " name="POST /api/article 404 " time="0.023">
     </testcase>
-    <testcase classname="POST /api/article  404" name="POST /api/article  404" time="0.035">
+    <testcase classname="POST /api/article  404" name="POST /api/article  404" time="0.034">
     </testcase>
-    <testcase classname="POST /api/article 500" name="POST /api/article 500" time="0.033">
-    </testcase>
-  </testsuite>
-  <testsuite name="GET /api/article/:id" errors="0" failures="0" skipped="0" timestamp="2024-10-04T08:29:50" time="8.483" tests="5">
-    <testcase classname="GET /api/article/:id getById - 200" name="GET /api/article/:id getById - 200" time="0.088">
-    </testcase>
-    <testcase classname="GET /api/article/:id getById - 404" name="GET /api/article/:id getById - 404" time="0.024">
-    </testcase>
-    <testcase classname="GET /api/article/:id getById - 500" name="GET /api/article/:id getById - 500" time="0.045">
-    </testcase>
-    <testcase classname="GET /api/article/ findAll - 200" name="GET /api/article/ findAll - 200" time="0.005">
-    </testcase>
-    <testcase classname="GET /api/article/ findAll - 500" name="GET /api/article/ findAll - 500" time="0.004">
+    <testcase classname="POST /api/article 500" name="POST /api/article 500" time="0.026">
     </testcase>
   </testsuite>
-  <testsuite name="GET /api/cartItem/cart-items/:id" errors="0" failures="0" skipped="0" timestamp="2024-10-04T08:29:57" time="2.363" tests="3">
-    <testcase classname="GET /api/cartItem/cart-items/:id 200" name="GET /api/cartItem/cart-items/:id 200" time="0.353">
+  <testsuite name="GET /api/article/:id" errors="0" failures="0" skipped="0" timestamp="2024-10-04T10:06:29" time="7.258" tests="5">
+    <testcase classname="GET /api/article/:id getById - 200" name="GET /api/article/:id getById - 200" time="0.838">
     </testcase>
-    <testcase classname="GET /api/cartItem/cart-items/:id 404" name="GET /api/cartItem/cart-items/:id 404" time="0.034">
+    <testcase classname="GET /api/article/:id getById - 404" name="GET /api/article/:id getById - 404" time="0.017">
     </testcase>
-    <testcase classname="GET /api/cartItem/cart-items/:id 500" name="GET /api/cartItem/cart-items/:id 500" time="0.017">
+    <testcase classname="GET /api/article/:id getById - 500" name="GET /api/article/:id getById - 500" time="0.041">
     </testcase>
-  </testsuite>
-  <testsuite name="PUT /api/orderItem/order-items/:id" errors="0" failures="0" skipped="0" timestamp="2024-10-04T08:29:57" time="2.348" tests="3">
-    <testcase classname="PUT /api/orderItem/order-items/:id 404 - Order item not found" name="PUT /api/orderItem/order-items/:id 404 - Order item not found" time="0.377">
+    <testcase classname="GET /api/article/ findAll - 200" name="GET /api/article/ findAll - 200" time="0.011">
     </testcase>
-    <testcase classname="PUT /api/orderItem/order-items/:id 200 - Successfully updates order item" name="PUT /api/orderItem/order-items/:id 200 - Successfully updates order item" time="0.026">
-    </testcase>
-    <testcase classname="PUT /api/orderItem/order-items/:id 500 - Server error during update" name="PUT /api/orderItem/order-items/:id 500 - Server error during update" time="0.018">
+    <testcase classname="GET /api/article/ findAll - 500" name="GET /api/article/ findAll - 500" time="0.008">
     </testcase>
   </testsuite>
-  <testsuite name="PUT /api/article/:id" errors="0" failures="0" skipped="0" timestamp="2024-10-04T08:29:57" time="2.166" tests="4">
-    <testcase classname="PUT /api/article/:id 200 " name="PUT /api/article/:id 200 " time="0.369">
+  <testsuite name="POST /api/user/add" errors="0" failures="0" skipped="0" timestamp="2024-10-04T10:06:29" time="7.367" tests="2">
+    <testcase classname="POST /api/user/add 201 created successfully" name="POST /api/user/add 201 created successfully" time="0.252">
     </testcase>
-    <testcase classname="PUT /api/article/:id 404 " name="PUT /api/article/:id 404 " time="0.024">
-    </testcase>
-    <testcase classname="PUT /api/article/:id 403 " name="PUT /api/article/:id 403 " time="0.022">
-    </testcase>
-    <testcase classname="PUT /api/article/:id 500 " name="PUT /api/article/:id 500 " time="0.025">
+    <testcase classname="POST /api/user/add 500 " name="POST /api/user/add 500 " time="0.097">
     </testcase>
   </testsuite>
-  <testsuite name="GET /api/order/orders" errors="0" failures="0" skipped="0" timestamp="2024-10-04T08:29:57" time="2.817" tests="3">
-    <testcase classname="GET /api/order/orders 404" name="GET /api/order/orders 404" time="0.08">
+  <testsuite name="PUT /api/payment/payment-details/:id" errors="0" failures="0" skipped="0" timestamp="2024-10-04T10:06:35" time="2.836" tests="3">
+    <testcase classname="PUT /api/payment/payment-details/:id 404" name="PUT /api/payment/payment-details/:id 404" time="0.228">
     </testcase>
-    <testcase classname="GET /api/order/orders 200" name="GET /api/order/orders 200" time="0.057">
+    <testcase classname="PUT /api/payment/payment-details/:id 200" name="PUT /api/payment/payment-details/:id 200" time="0.014">
     </testcase>
-    <testcase classname="GET /api/order/orders 500" name="GET /api/order/orders 500" time="0.026">
-    </testcase>
-  </testsuite>
-  <testsuite name="DELETE /api/article/:id" errors="0" failures="0" skipped="0" timestamp="2024-10-04T08:29:57" time="2.639" tests="5">
-    <testcase classname="DELETE /api/article/:id deleteById - 404" name="DELETE /api/article/:id deleteById - 404" time="0.023">
-    </testcase>
-    <testcase classname="DELETE /api/article/:id deleteById - 403" name="DELETE /api/article/:id deleteById - 403" time="0.019">
-    </testcase>
-    <testcase classname="DELETE /api/article/:id deleteById - 200" name="DELETE /api/article/:id deleteById - 200" time="0.044">
-    </testcase>
-    <testcase classname="DELETE /api/article/:id deleteById - 404" name="DELETE /api/article/:id deleteById - 404" time="0.014">
-    </testcase>
-    <testcase classname="DELETE /api/article/:id deleteById - 500" name="DELETE /api/article/:id deleteById - 500" time="0.012">
+    <testcase classname="PUT /api/payment/payment-details/:id 500" name="PUT /api/payment/payment-details/:id 500" time="0.052">
     </testcase>
   </testsuite>
-  <testsuite name="GET /api/user/all" errors="0" failures="0" skipped="0" timestamp="2024-10-04T08:29:58" time="3.149" tests="2">
-    <testcase classname="GET /api/user/all 200 " name="GET /api/user/all 200 " time="0.167">
+  <testsuite name="DELETE /api/article/:id" errors="0" failures="0" skipped="0" timestamp="2024-10-04T10:06:35" time="2.81" tests="5">
+    <testcase classname="DELETE /api/article/:id deleteById - 404" name="DELETE /api/article/:id deleteById - 404" time="0.182">
+    </testcase>
+    <testcase classname="DELETE /api/article/:id deleteById - 403" name="DELETE /api/article/:id deleteById - 403" time="0.016">
+    </testcase>
+    <testcase classname="DELETE /api/article/:id deleteById - 200" name="DELETE /api/article/:id deleteById - 200" time="0.03">
+    </testcase>
+    <testcase classname="DELETE /api/article/:id deleteById - 404" name="DELETE /api/article/:id deleteById - 404" time="0.018">
+    </testcase>
+    <testcase classname="DELETE /api/article/:id deleteById - 500" name="DELETE /api/article/:id deleteById - 500" time="0.013">
+    </testcase>
+  </testsuite>
+  <testsuite name="GET /api/payment/payment-details/:id" errors="0" failures="0" skipped="0" timestamp="2024-10-04T10:06:36" time="2.758" tests="3">
+    <testcase classname="GET /api/payment/payment-details/:id 404" name="GET /api/payment/payment-details/:id 404" time="0.016">
+    </testcase>
+    <testcase classname="GET /api/payment/payment-details/:id 200" name="GET /api/payment/payment-details/:id 200" time="0.017">
+    </testcase>
+    <testcase classname="GET /api/payment/payment-details/:id 500" name="GET /api/payment/payment-details/:id 500" time="0.009">
+    </testcase>
+  </testsuite>
+  <testsuite name="GET /api/order/orders/:id" errors="0" failures="0" skipped="0" timestamp="2024-10-04T10:06:36" time="2.731" tests="3">
+    <testcase classname="GET /api/order/orders/:id 404" name="GET /api/order/orders/:id 404" time="0.016">
+    </testcase>
+    <testcase classname="GET /api/order/orders/:id 200" name="GET /api/order/orders/:id 200" time="0.01">
+    </testcase>
+    <testcase classname="GET /api/order/orders/:id 500" name="GET /api/order/orders/:id 500" time="0.013">
+    </testcase>
+  </testsuite>
+  <testsuite name="DELETE /api/payment/payment-details/:id" errors="0" failures="0" skipped="0" timestamp="2024-10-04T10:06:36" time="2.838" tests="3">
+    <testcase classname="DELETE /api/payment/payment-details/:id 404" name="DELETE /api/payment/payment-details/:id 404" time="0.019">
+    </testcase>
+    <testcase classname="DELETE /api/payment/payment-details/:id 204" name="DELETE /api/payment/payment-details/:id 204" time="0.023">
+    </testcase>
+    <testcase classname="DELETE /api/payment/payment-details/:id 500" name="DELETE /api/payment/payment-details/:id 500" time="0.013">
+    </testcase>
+  </testsuite>
+  <testsuite name="GET /api/orderItem/order-items" errors="0" failures="0" skipped="0" timestamp="2024-10-04T10:06:36" time="2.899" tests="2">
+    <testcase classname="GET /api/orderItem/order-items 200" name="GET /api/orderItem/order-items 200" time="0.026">
+    </testcase>
+    <testcase classname="GET /api/orderItem/order-items 500" name="GET /api/orderItem/order-items 500" time="0.011">
+    </testcase>
+  </testsuite>
+  <testsuite name="PUT /api/order/orders/:id" errors="0" failures="0" skipped="0" timestamp="2024-10-04T10:06:36" time="3.078" tests="3">
+    <testcase classname="PUT /api/order/orders/:id 404" name="PUT /api/order/orders/:id 404" time="0.043">
+    </testcase>
+    <testcase classname="PUT /api/order/orders/:id 200" name="PUT /api/order/orders/:id 200" time="0.034">
+    </testcase>
+    <testcase classname="PUT /api/order/orders/:id 500" name="PUT /api/order/orders/:id 500" time="0.021">
+    </testcase>
+  </testsuite>
+  <testsuite name="DELETE /api/user/delete/:id" errors="0" failures="0" skipped="0" timestamp="2024-10-04T10:06:38" time="2.793" tests="3">
+    <testcase classname="DELETE /api/user/delete/:id 404 - should return user not found" name="DELETE /api/user/delete/:id 404 - should return user not found" time="0.038">
+    </testcase>
+    <testcase classname="DELETE /api/user/delete/:id 200 - should delete a user by ID" name="DELETE /api/user/delete/:id 200 - should delete a user by ID" time="0.01">
+    </testcase>
+    <testcase classname="DELETE /api/user/delete/:id 500 - should return internal server error" name="DELETE /api/user/delete/:id 500 - should return internal server error" time="0.028">
+    </testcase>
+  </testsuite>
+  <testsuite name="POST /api/order/orders" errors="0" failures="0" skipped="0" timestamp="2024-10-04T10:06:38" time="2.849" tests="3">
+    <testcase classname="POST /api/order/orders 400" name="POST /api/order/orders 400" time="0.01">
+    </testcase>
+    <testcase classname="POST /api/order/orders 201" name="POST /api/order/orders 201" time="0.05">
+    </testcase>
+    <testcase classname="POST /api/order/orders 500" name="POST /api/order/orders 500" time="0.01">
+    </testcase>
+  </testsuite>
+  <testsuite name="GET /api/user/all" errors="0" failures="0" skipped="0" timestamp="2024-10-04T10:06:38" time="2.778" tests="2">
+    <testcase classname="GET /api/user/all 200 " name="GET /api/user/all 200 " time="0.018">
     </testcase>
     <testcase classname="GET /api/user/all 500 " name="GET /api/user/all 500 " time="0.006">
     </testcase>
   </testsuite>
-  <testsuite name="DELETE /api/categorie/:id" errors="0" failures="0" skipped="0" timestamp="2024-10-04T08:29:59" time="2.536" tests="3">
-    <testcase classname="DELETE /api/categorie/:id 200 " name="DELETE /api/categorie/:id 200 " time="0.012">
+  <testsuite name="PUT /api/cart/cart" errors="0" failures="0" skipped="0" timestamp="2024-10-04T10:06:38" time="2.941" tests="4">
+    <testcase classname="PUT /api/cart/cart 400 " name="PUT /api/cart/cart 400 " time="0.016">
     </testcase>
-    <testcase classname="DELETE /api/categorie/:id 404 " name="DELETE /api/categorie/:id 404 " time="0.008">
+    <testcase classname="PUT /api/cart/cart 404 " name="PUT /api/cart/cart 404 " time="0.049">
     </testcase>
-    <testcase classname="DELETE /api/categorie/:id 500 " name="DELETE /api/categorie/:id 500 " time="0.009">
+    <testcase classname="PUT /api/cart/cart 200 " name="PUT /api/cart/cart 200 " time="0.011">
     </testcase>
-  </testsuite>
-  <testsuite name="DELETE /api/user/delete/:id" errors="0" failures="0" skipped="0" timestamp="2024-10-04T08:29:59" time="2.704" tests="3">
-    <testcase classname="DELETE /api/user/delete/:id 404 - should return user not found" name="DELETE /api/user/delete/:id 404 - should return user not found" time="0.017">
-    </testcase>
-    <testcase classname="DELETE /api/user/delete/:id 200 - should delete a user by ID" name="DELETE /api/user/delete/:id 200 - should delete a user by ID" time="0.007">
-    </testcase>
-    <testcase classname="DELETE /api/user/delete/:id 500 - should return internal server error" name="DELETE /api/user/delete/:id 500 - should return internal server error" time="0.009">
+    <testcase classname="PUT /api/cart/cart 500 " name="PUT /api/cart/cart 500 " time="0.014">
     </testcase>
   </testsuite>
-  <testsuite name="POST /api/orderItem/order-items" errors="0" failures="0" skipped="0" timestamp="2024-10-04T08:29:59" time="2.959" tests="4">
-    <testcase classname="POST /api/orderItem/order-items 400 " name="POST /api/orderItem/order-items 400 " time="0.019">
+  <testsuite name="GET /api/cart" errors="0" failures="0" skipped="0" timestamp="2024-10-04T10:06:39" time="2.756" tests="3">
+    <testcase classname="GET /api/cart 200" name="GET /api/cart 200" time="0.025">
     </testcase>
-    <testcase classname="POST /api/orderItem/order-items 403 " name="POST /api/orderItem/order-items 403 " time="0.014">
-    </testcase>
-    <testcase classname="POST /api/orderItem/order-items 201" name="POST /api/orderItem/order-items 201" time="0.015">
-    </testcase>
-    <testcase classname="POST /api/orderItem/order-items 500" name="POST /api/orderItem/order-items 500" time="0.019">
-    </testcase>
-  </testsuite>
-  <testsuite name="GET /api/cart" errors="0" failures="0" skipped="0" timestamp="2024-10-04T08:29:59" time="2.83" tests="3">
-    <testcase classname="GET /api/cart 204" name="GET /api/cart 204" time="0.047">
-    </testcase>
-    <testcase classname="GET /api/cart 404" name="GET /api/cart 404" time="0.012">
+    <testcase classname="GET /api/cart 404" name="GET /api/cart 404" time="0.023">
     </testcase>
     <testcase classname="GET /api/cart 500" name="GET /api/cart 500" time="0.015">
     </testcase>
   </testsuite>
-  <testsuite name="POST /api/order/orders" errors="0" failures="0" skipped="0" timestamp="2024-10-04T08:30:00" time="2.751" tests="3">
-    <testcase classname="POST /api/order/orders 400" name="POST /api/order/orders 400" time="0.016">
+  <testsuite name="GET /api/cartItem/cart-items/:id" errors="0" failures="0" skipped="0" timestamp="2024-10-04T10:06:39" time="2.902" tests="3">
+    <testcase classname="GET /api/cartItem/cart-items/:id 200" name="GET /api/cartItem/cart-items/:id 200" time="0.023">
     </testcase>
-    <testcase classname="POST /api/order/orders 201" name="POST /api/order/orders 201" time="0.013">
+    <testcase classname="GET /api/cartItem/cart-items/:id 404" name="GET /api/cartItem/cart-items/:id 404" time="0.016">
     </testcase>
-    <testcase classname="POST /api/order/orders 500" name="POST /api/order/orders 500" time="0.007">
-    </testcase>
-  </testsuite>
-  <testsuite name="POST /api/cartItem/cart-items" errors="0" failures="0" skipped="0" timestamp="2024-10-04T08:30:00" time="2.99" tests="4">
-    <testcase classname="POST /api/cartItem/cart-items 201 already have Cart" name="POST /api/cartItem/cart-items 201 already have Cart" time="0.051">
-    </testcase>
-    <testcase classname="POST /api/cartItem/cart-items 201 For first Cart" name="POST /api/cartItem/cart-items 201 For first Cart" time="0.041">
-    </testcase>
-    <testcase classname="POST /api/cartItem/cart-items 200 " name="POST /api/cartItem/cart-items 200 " time="0.039">
-    </testcase>
-    <testcase classname="POST /api/cartItem/cart-items 500" name="POST /api/cartItem/cart-items 500" time="0.022">
+    <testcase classname="GET /api/cartItem/cart-items/:id 500" name="GET /api/cartItem/cart-items/:id 500" time="0.012">
     </testcase>
   </testsuite>
-  <testsuite name="GET /api/user/get/:id" errors="0" failures="0" skipped="0" timestamp="2024-10-04T08:30:02" time="2.13" tests="3">
-    <testcase classname="GET /api/user/get/:id 200 - should return a user by ID" name="GET /api/user/get/:id 200 - should return a user by ID" time="0.013">
+  <testsuite name="POST /api/orderItem/order-items" errors="0" failures="0" skipped="0" timestamp="2024-10-04T10:06:39" time="3.154" tests="4">
+    <testcase classname="POST /api/orderItem/order-items 400 " name="POST /api/orderItem/order-items 400 " time="0.009">
     </testcase>
-    <testcase classname="GET /api/user/get/:id 404 - should return user not found" name="GET /api/user/get/:id 404 - should return user not found" time="0.006">
+    <testcase classname="POST /api/orderItem/order-items 403 " name="POST /api/orderItem/order-items 403 " time="0.22">
     </testcase>
-    <testcase classname="GET /api/user/get/:id 500 - should return internal server error" name="GET /api/user/get/:id 500 - should return internal server error" time="0.012">
+    <testcase classname="POST /api/orderItem/order-items 201" name="POST /api/orderItem/order-items 201" time="0.016">
     </testcase>
-  </testsuite>
-  <testsuite name="PUT /api/order/orders/:id" errors="0" failures="0" skipped="0" timestamp="2024-10-04T08:30:02" time="2.783" tests="3">
-    <testcase classname="PUT /api/order/orders/:id 404" name="PUT /api/order/orders/:id 404" time="0.526">
-    </testcase>
-    <testcase classname="PUT /api/order/orders/:id 200" name="PUT /api/order/orders/:id 200" time="0.02">
-    </testcase>
-    <testcase classname="PUT /api/order/orders/:id 500" name="PUT /api/order/orders/:id 500" time="0.025">
+    <testcase classname="POST /api/orderItem/order-items 500" name="POST /api/orderItem/order-items 500" time="0.015">
     </testcase>
   </testsuite>
-  <testsuite name="GET /api/cart" errors="0" failures="0" skipped="0" timestamp="2024-10-04T08:30:02" time="2.888" tests="3">
-    <testcase classname="GET /api/cart 201 - first cart" name="GET /api/cart 201 - first cart" time="0.6">
+  <testsuite name="GET /api/order/orders" errors="0" failures="0" skipped="0" timestamp="2024-10-04T10:06:41" time="2.217" tests="3">
+    <testcase classname="GET /api/order/orders 404" name="GET /api/order/orders 404" time="0.187">
     </testcase>
-    <testcase classname="GET /api/cart 200 - cart already exist" name="GET /api/cart 200 - cart already exist" time="0.008">
+    <testcase classname="GET /api/order/orders 200" name="GET /api/order/orders 200" time="0.011">
     </testcase>
-    <testcase classname="GET /api/cart 500 - create error" name="GET /api/cart 500 - create error" time="0.019">
-    </testcase>
-  </testsuite>
-  <testsuite name="GET /api/order/orders/:id" errors="0" failures="0" skipped="0" timestamp="2024-10-04T08:30:02" time="3.048" tests="3">
-    <testcase classname="GET /api/order/orders/:id 404" name="GET /api/order/orders/:id 404" time="0.639">
-    </testcase>
-    <testcase classname="GET /api/order/orders/:id 200" name="GET /api/order/orders/:id 200" time="0.019">
-    </testcase>
-    <testcase classname="GET /api/order/orders/:id 500" name="GET /api/order/orders/:id 500" time="0.011">
+    <testcase classname="GET /api/order/orders 500" name="GET /api/order/orders 500" time="0.02">
     </testcase>
   </testsuite>
-  <testsuite name="PUT /api/cartItem/cart-items/:id" errors="0" failures="0" skipped="0" timestamp="2024-10-04T08:30:02" time="3.446" tests="3">
-    <testcase classname="PUT /api/cartItem/cart-items/:id 404" name="PUT /api/cartItem/cart-items/:id 404" time="0.023">
+  <testsuite name="GET /api/orderItem/order-items/:id" errors="0" failures="0" skipped="0" timestamp="2024-10-04T10:06:41" time="2.54" tests="3">
+    <testcase classname="GET /api/orderItem/order-items/:id 404" name="GET /api/orderItem/order-items/:id 404" time="0.173">
     </testcase>
-    <testcase classname="PUT /api/cartItem/cart-items/:id 200" name="PUT /api/cartItem/cart-items/:id 200" time="0.092">
+    <testcase classname="GET /api/orderItem/order-items/:id 200" name="GET /api/orderItem/order-items/:id 200" time="0.01">
     </testcase>
-    <testcase classname="PUT /api/cartItem/cart-items/:id 500" name="PUT /api/cartItem/cart-items/:id 500" time="0.11">
-    </testcase>
-  </testsuite>
-  <testsuite name="GET /api/categorie/:id" errors="0" failures="0" skipped="0" timestamp="2024-10-04T08:30:03" time="3.293" tests="3">
-    <testcase classname="GET /api/categorie/:id 200 - should return a category by ID" name="GET /api/categorie/:id 200 - should return a category by ID" time="0.016">
-    </testcase>
-    <testcase classname="GET /api/categorie/:id 404 - should return category not found" name="GET /api/categorie/:id 404 - should return category not found" time="0.016">
-    </testcase>
-    <testcase classname="GET /api/categorie/:id 500 - should return internal server error" name="GET /api/categorie/:id 500 - should return internal server error" time="0.027">
+    <testcase classname="GET /api/orderItem/order-items/:id 500 - Server error while retrieving the order item" name="GET /api/orderItem/order-items/:id 500 - Server error while retrieving the order item" time="0.01">
     </testcase>
   </testsuite>
-  <testsuite name="DELETE /api/orderItem/order-items/:id" errors="0" failures="0" skipped="0" timestamp="2024-10-04T08:30:03" time="3.225" tests="3">
-    <testcase classname="DELETE /api/orderItem/order-items/:id 404" name="DELETE /api/orderItem/order-items/:id 404" time="0.015">
+  <testsuite name="PUT /api/cartItem/cart-items/:id" errors="0" failures="0" skipped="0" timestamp="2024-10-04T10:06:41" time="2.211" tests="3">
+    <testcase classname="PUT /api/cartItem/cart-items/:id 404" name="PUT /api/cartItem/cart-items/:id 404" time="0.021">
     </testcase>
-    <testcase classname="DELETE /api/orderItem/order-items/:id 500 - Should handle server error during deletion" name="DELETE /api/orderItem/order-items/:id 500 - Should handle server error during deletion" time="0.068">
+    <testcase classname="PUT /api/cartItem/cart-items/:id 200" name="PUT /api/cartItem/cart-items/:id 200" time="0.037">
     </testcase>
-    <testcase classname="DELETE /api/orderItem/order-items/:id 200" name="DELETE /api/orderItem/order-items/:id 200" time="0.012">
-    </testcase>
-  </testsuite>
-  <testsuite name="GET /api/categorie/" errors="0" failures="0" skipped="0" timestamp="2024-10-04T08:30:05" time="2.31" tests="2">
-    <testcase classname="GET /api/categorie/ 200 - should return all categories" name="GET /api/categorie/ 200 - should return all categories" time="0.01">
-    </testcase>
-    <testcase classname="GET /api/categorie/ 500 - should return internal server error" name="GET /api/categorie/ 500 - should return internal server error" time="0.006">
+    <testcase classname="PUT /api/cartItem/cart-items/:id 500" name="PUT /api/cartItem/cart-items/:id 500" time="0.164">
     </testcase>
   </testsuite>
-  <testsuite name="GET /api/payment/payment-details" errors="0" failures="0" skipped="0" timestamp="2024-10-04T08:30:05" time="2.524" tests="2">
-    <testcase classname="GET /api/payment/payment-details 200" name="GET /api/payment/payment-details 200" time="0.015">
+  <testsuite name="PUT /api/article/:id" errors="0" failures="0" skipped="0" timestamp="2024-10-04T10:06:41" time="2.258" tests="4">
+    <testcase classname="PUT /api/article/:id 200 " name="PUT /api/article/:id 200 " time="0.133">
     </testcase>
-    <testcase classname="GET /api/payment/payment-details 500" name="GET /api/payment/payment-details 500" time="0.015">
+    <testcase classname="PUT /api/article/:id 404 " name="PUT /api/article/:id 404 " time="0.013">
     </testcase>
-  </testsuite>
-  <testsuite name="PUT /api/cart/cart" errors="0" failures="0" skipped="0" timestamp="2024-10-04T08:30:04" time="3.821" tests="4">
-    <testcase classname="PUT /api/cart/cart 400 " name="PUT /api/cart/cart 400 " time="0.027">
+    <testcase classname="PUT /api/article/:id 403 " name="PUT /api/article/:id 403 " time="0.013">
     </testcase>
-    <testcase classname="PUT /api/cart/cart 404 " name="PUT /api/cart/cart 404 " time="0.033">
-    </testcase>
-    <testcase classname="PUT /api/cart/cart 200 " name="PUT /api/cart/cart 200 " time="0.023">
-    </testcase>
-    <testcase classname="PUT /api/cart/cart 500 " name="PUT /api/cart/cart 500 " time="0.013">
+    <testcase classname="PUT /api/article/:id 500 " name="PUT /api/article/:id 500 " time="0.017">
     </testcase>
   </testsuite>
-  <testsuite name="POST /api/categorie" errors="0" failures="0" skipped="0" timestamp="2024-10-04T08:30:05" time="2.879" tests="3">
-    <testcase classname="POST /api/categorie 201 " name="POST /api/categorie 201 " time="0.017">
+  <testsuite name="POST /api/payment/payment-details" errors="0" failures="0" skipped="0" timestamp="2024-10-04T10:06:42" time="2.703" tests="3">
+    <testcase classname="POST /api/payment/payment-details 400" name="POST /api/payment/payment-details 400" time="0.008">
     </testcase>
-    <testcase classname="POST /api/categorie 400 " name="POST /api/categorie 400 " time="0.006">
+    <testcase classname="POST /api/payment/payment-details 201" name="POST /api/payment/payment-details 201" time="0.082">
     </testcase>
-    <testcase classname="POST /api/categorie 500 " name="POST /api/categorie 500 " time="0.012">
-    </testcase>
-  </testsuite>
-  <testsuite name="DELETE /api/order/orders/:id" errors="0" failures="0" skipped="0" timestamp="2024-10-04T08:30:05" time="2.89" tests="3">
-    <testcase classname="DELETE /api/order/orders/:id 404" name="DELETE /api/order/orders/:id 404" time="0.238">
-    </testcase>
-    <testcase classname="DELETE /api/order/orders/:id 200" name="DELETE /api/order/orders/:id 200" time="0.012">
-    </testcase>
-    <testcase classname="DELETE /api/order/orders/:id 500" name="DELETE /api/order/orders/:id 500" time="0.012">
+    <testcase classname="POST /api/payment/payment-details 500" name="POST /api/payment/payment-details 500" time="0.012">
     </testcase>
   </testsuite>
-  <testsuite name="GET /api/orderItem/order-items/:id" errors="0" failures="0" skipped="0" timestamp="2024-10-04T08:30:06" time="2.41" tests="3">
-    <testcase classname="GET /api/orderItem/order-items/:id 404" name="GET /api/orderItem/order-items/:id 404" time="0.014">
+  <testsuite name="DELETE /api/orderItem/order-items/:id" errors="0" failures="0" skipped="0" timestamp="2024-10-04T10:06:43" time="2.377" tests="3">
+    <testcase classname="DELETE /api/orderItem/order-items/:id 404" name="DELETE /api/orderItem/order-items/:id 404" time="0.129">
     </testcase>
-    <testcase classname="GET /api/orderItem/order-items/:id 200" name="GET /api/orderItem/order-items/:id 200" time="0.009">
+    <testcase classname="DELETE /api/orderItem/order-items/:id 500 - Should handle server error during deletion" name="DELETE /api/orderItem/order-items/:id 500 - Should handle server error during deletion" time="0.015">
     </testcase>
-    <testcase classname="GET /api/orderItem/order-items/:id 500 - Server error while retrieving the order item" name="GET /api/orderItem/order-items/:id 500 - Server error while retrieving the order item" time="0.009">
-    </testcase>
-  </testsuite>
-  <testsuite name="GET /api/cartItem/cart-items" errors="0" failures="0" skipped="0" timestamp="2024-10-04T08:30:06" time="2.792" tests="2">
-    <testcase classname="GET /api/cartItem/cart-items 200" name="GET /api/cartItem/cart-items 200" time="0.021">
-    </testcase>
-    <testcase classname="GET /api/cartItem/cart-items 500" name="GET /api/cartItem/cart-items 500" time="0.005">
+    <testcase classname="DELETE /api/orderItem/order-items/:id 200" name="DELETE /api/orderItem/order-items/:id 200" time="0.015">
     </testcase>
   </testsuite>
-  <testsuite name="GET /api/orderItem/order-items" errors="0" failures="0" skipped="0" timestamp="2024-10-04T08:30:07" time="2.403" tests="2">
-    <testcase classname="GET /api/orderItem/order-items 200" name="GET /api/orderItem/order-items 200" time="0.141">
+  <testsuite name="DELETE /api/cartItem/cart-items/:id" errors="0" failures="0" skipped="0" timestamp="2024-10-04T10:06:43" time="2.305" tests="3">
+    <testcase classname="DELETE /api/cartItem/cart-items/:id 404" name="DELETE /api/cartItem/cart-items/:id 404" time="0.118">
     </testcase>
-    <testcase classname="GET /api/orderItem/order-items 500" name="GET /api/orderItem/order-items 500" time="0.005">
+    <testcase classname="DELETE /api/cartItem/cart-items/:id 500" name="DELETE /api/cartItem/cart-items/:id 500" time="0.015">
     </testcase>
-  </testsuite>
-  <testsuite name="GET /api/cart" errors="0" failures="0" skipped="0" timestamp="2024-10-04T08:30:08" time="2.176" tests="3">
-    <testcase classname="GET /api/cart 200" name="GET /api/cart 200" time="0.019">
-    </testcase>
-    <testcase classname="GET /api/cart 404" name="GET /api/cart 404" time="0.01">
-    </testcase>
-    <testcase classname="GET /api/cart 500" name="GET /api/cart 500" time="0.009">
+    <testcase classname="DELETE /api/cartItem/cart-items/:id 204" name="DELETE /api/cartItem/cart-items/:id 204" time="0.033">
     </testcase>
   </testsuite>
-  <testsuite name="DELETE /api/cartItem/cart-items/:id" errors="0" failures="0" skipped="0" timestamp="2024-10-04T08:30:08" time="2.258" tests="3">
-    <testcase classname="DELETE /api/cartItem/cart-items/:id 404" name="DELETE /api/cartItem/cart-items/:id 404" time="0.01">
+  <testsuite name="GET /api/cartItem/cart-items" errors="0" failures="0" skipped="0" timestamp="2024-10-04T10:06:44" time="2.076" tests="2">
+    <testcase classname="GET /api/cartItem/cart-items 200" name="GET /api/cartItem/cart-items 200" time="0.201">
     </testcase>
-    <testcase classname="DELETE /api/cartItem/cart-items/:id 500" name="DELETE /api/cartItem/cart-items/:id 500" time="0.009">
+    <testcase classname="GET /api/cartItem/cart-items 500" name="GET /api/cartItem/cart-items 500" time="0.007">
     </testcase>
-    <testcase classname="DELETE /api/cartItem/cart-items/:id 204" name="DELETE /api/cartItem/cart-items/:id 204" time="0.014">
+  </testsuite>
+  <testsuite name="GET /api/cart" errors="0" failures="0" skipped="0" timestamp="2024-10-04T10:06:44" time="2.069" tests="3">
+    <testcase classname="GET /api/cart 201 - first cart" name="GET /api/cart 201 - first cart" time="0.167">
+    </testcase>
+    <testcase classname="GET /api/cart 200 - cart already exist" name="GET /api/cart 200 - cart already exist" time="0.007">
+    </testcase>
+    <testcase classname="GET /api/cart 500 - create error" name="GET /api/cart 500 - create error" time="0.005">
+    </testcase>
+  </testsuite>
+  <testsuite name="PUT /api/orderItem/order-items/:id" errors="0" failures="0" skipped="0" timestamp="2024-10-04T10:06:44" time="2.45" tests="3">
+    <testcase classname="PUT /api/orderItem/order-items/:id 404 - Order item not found" name="PUT /api/orderItem/order-items/:id 404 - Order item not found" time="0.11">
+    </testcase>
+    <testcase classname="PUT /api/orderItem/order-items/:id 200 - Successfully updates order item" name="PUT /api/orderItem/order-items/:id 200 - Successfully updates order item" time="0.02">
+    </testcase>
+    <testcase classname="PUT /api/orderItem/order-items/:id 500 - Server error during update" name="PUT /api/orderItem/order-items/:id 500 - Server error during update" time="0.007">
+    </testcase>
+  </testsuite>
+  <testsuite name="DELETE /api/categorie/:id" errors="0" failures="0" skipped="0" timestamp="2024-10-04T10:06:44" time="2.533" tests="3">
+    <testcase classname="DELETE /api/categorie/:id 200 " name="DELETE /api/categorie/:id 200 " time="0.019">
+    </testcase>
+    <testcase classname="DELETE /api/categorie/:id 404 " name="DELETE /api/categorie/:id 404 " time="0.006">
+    </testcase>
+    <testcase classname="DELETE /api/categorie/:id 500 " name="DELETE /api/categorie/:id 500 " time="0.015">
+    </testcase>
+  </testsuite>
+  <testsuite name="POST /api/categorie" errors="0" failures="0" skipped="0" timestamp="2024-10-04T10:06:45" time="2.357" tests="3">
+    <testcase classname="POST /api/categorie 201 " name="POST /api/categorie 201 " time="0.069">
+    </testcase>
+    <testcase classname="POST /api/categorie 400 " name="POST /api/categorie 400 " time="0.008">
+    </testcase>
+    <testcase classname="POST /api/categorie 500 " name="POST /api/categorie 500 " time="0.006">
+    </testcase>
+  </testsuite>
+  <testsuite name="GET /api/payment/payment-details" errors="0" failures="0" skipped="0" timestamp="2024-10-04T10:06:45" time="3.076" tests="2">
+    <testcase classname="GET /api/payment/payment-details 200" name="GET /api/payment/payment-details 200" time="0.402">
+    </testcase>
+    <testcase classname="GET /api/payment/payment-details 500" name="GET /api/payment/payment-details 500" time="0.007">
+    </testcase>
+  </testsuite>
+  <testsuite name="GET /api/cart" errors="0" failures="0" skipped="0" timestamp="2024-10-04T10:06:45" time="2.981" tests="3">
+    <testcase classname="GET /api/cart 204" name="GET /api/cart 204" time="0.332">
+    </testcase>
+    <testcase classname="GET /api/cart 404" name="GET /api/cart 404" time="0.009">
+    </testcase>
+    <testcase classname="GET /api/cart 500" name="GET /api/cart 500" time="0.01">
+    </testcase>
+  </testsuite>
+  <testsuite name="PUT /api/categorie/:id" errors="0" failures="0" skipped="0" timestamp="2024-10-04T10:06:46" time="2.56" tests="3">
+    <testcase classname="PUT /api/categorie/:id 200 - should update a category by ID" name="PUT /api/categorie/:id 200 - should update a category by ID" time="0.015">
+    </testcase>
+    <testcase classname="PUT /api/categorie/:id 404 - should return category not found if ID does not exist" name="PUT /api/categorie/:id 404 - should return category not found if ID does not exist" time="0.01">
+    </testcase>
+    <testcase classname="PUT /api/categorie/:id 500 - should return internal server error on exception" name="PUT /api/categorie/:id 500 - should return internal server error on exception" time="0.008">
+    </testcase>
+  </testsuite>
+  <testsuite name="DELETE /api/order/orders/:id" errors="0" failures="0" skipped="0" timestamp="2024-10-04T10:06:46" time="2.705" tests="3">
+    <testcase classname="DELETE /api/order/orders/:id 404" name="DELETE /api/order/orders/:id 404" time="0.012">
+    </testcase>
+    <testcase classname="DELETE /api/order/orders/:id 200" name="DELETE /api/order/orders/:id 200" time="0.009">
+    </testcase>
+    <testcase classname="DELETE /api/order/orders/:id 500" name="DELETE /api/order/orders/:id 500" time="0.008">
+    </testcase>
+  </testsuite>
+  <testsuite name="GET /api/user/get/:id" errors="0" failures="0" skipped="0" timestamp="2024-10-04T10:06:46" time="2.582" tests="3">
+    <testcase classname="GET /api/user/get/:id 200 - should return a user by ID" name="GET /api/user/get/:id 200 - should return a user by ID" time="0.008">
+    </testcase>
+    <testcase classname="GET /api/user/get/:id 404 - should return user not found" name="GET /api/user/get/:id 404 - should return user not found" time="0.005">
+    </testcase>
+    <testcase classname="GET /api/user/get/:id 500 - should return internal server error" name="GET /api/user/get/:id 500 - should return internal server error" time="0.006">
+    </testcase>
+  </testsuite>
+  <testsuite name="GET /api/categorie/:id" errors="0" failures="0" skipped="0" timestamp="2024-10-04T10:06:46" time="2.653" tests="3">
+    <testcase classname="GET /api/categorie/:id 200 - should return a category by ID" name="GET /api/categorie/:id 200 - should return a category by ID" time="0.013">
+    </testcase>
+    <testcase classname="GET /api/categorie/:id 404 - should return category not found" name="GET /api/categorie/:id 404 - should return category not found" time="0.006">
+    </testcase>
+    <testcase classname="GET /api/categorie/:id 500 - should return internal server error" name="GET /api/categorie/:id 500 - should return internal server error" time="0.013">
+    </testcase>
+  </testsuite>
+  <testsuite name="GET /api/categorie/" errors="0" failures="0" skipped="0" timestamp="2024-10-04T10:06:48" time="1.736" tests="2">
+    <testcase classname="GET /api/categorie/ 200 - should return all categories" name="GET /api/categorie/ 200 - should return all categories" time="0.006">
+    </testcase>
+    <testcase classname="GET /api/categorie/ 500 - should return internal server error" name="GET /api/categorie/ 500 - should return internal server error" time="0.003">
     </testcase>
   </testsuite>
 </testsuites>
