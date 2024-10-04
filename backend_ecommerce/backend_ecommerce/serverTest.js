@@ -1,5 +1,5 @@
 // testServer.js
-import { initializeDatabase, Article, User, Categorie, Cart, CartItem, OrderDetails, OrderItems, PaymentDetails } from './models/index.js';
+import { initializeDatabase, Article, User, Categorie, Cart, CartItem, OrderDetails, OrderItems, PaymentDetails, Review } from './models/index.js';
 import jwt from 'jsonwebtoken';
 import { env } from './config.js'; // Assurez-vous d'importer la configuration correcte
 
@@ -105,6 +105,13 @@ const prepareDatabase = async () => {
 
         })
 
+        const review = await Review.create({
+            user_fk: user3.id,
+            product_fk: article2.id,
+            rating: 4,
+            comment: "exellent"
+        })
+
     } catch (error) {
         console.error('Unable to connect to the database or synchronize:', error);
     }
@@ -120,6 +127,8 @@ const teardownDatabase = async () => {
         await OrderDetails.destroy({ where: {}, truncate: true }); 
         await OrderItems.destroy({ where: {}, truncate: true });  // Dépend de User
         await PaymentDetails.destroy({ where: {}, truncate: true });
+
+        await Review.destroy({ where: {}, truncate: true });
         
         // Supprimer les éléments parents ensuite
         await Cart.destroy({ where: {}, truncate: true });  // Dépend de User
