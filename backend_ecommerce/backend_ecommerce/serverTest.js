@@ -100,7 +100,7 @@ const prepareDatabase = async () => {
         const paiment = await PaymentDetails.create({
             order_fk: newOrder.id,
             amount: 19.99,
-            provider: stripe,
+            provider: "stripe",
             status: "succes"
 
         })
