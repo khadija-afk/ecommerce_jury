@@ -27,7 +27,7 @@ pipeline {
         }
 
         stage('Run Tests') {
-            agent { docker { image 'node:21' } }
+            agent { docker { image 'projet_jury-backend:latest' } }
 
             steps {
                 script {
