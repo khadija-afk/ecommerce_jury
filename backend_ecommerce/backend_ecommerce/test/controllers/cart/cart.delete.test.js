@@ -45,7 +45,7 @@ describe('GET /api/cart', () => {
 
     it('500', async () => {
     
-        const { Cart } = require('models/index.js');
+        const { Cart } = require('src/models/index.js');
 
         const mockCart = {
             id: 1,

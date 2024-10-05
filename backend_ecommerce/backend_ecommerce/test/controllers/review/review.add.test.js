@@ -36,7 +36,7 @@ describe('POST /api/review', () => {
     });
     it('500', async () => {
     
-        const { Review } = require('models/index.js');
+        const { Review } = require('src/models/index.js');
     
         Review.create = jest.fn().mockRejectedValue(new Error('Server error while creating review'))
 

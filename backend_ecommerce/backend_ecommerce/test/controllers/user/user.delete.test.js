@@ -39,7 +39,7 @@ describe('DELETE /api/user/delete/:id', () => {
 
     it('500 - should return internal server error', async () => {
         // Mock de User.destroy pour lever une erreur
-        const { User } = require('models/index.js');
+        const { User } = require('src/models/index.js');
     
         User.destroy= jest.fn().mockRejectedValue(new Error('Erreur de suppression'))
 

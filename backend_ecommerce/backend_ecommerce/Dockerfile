@@ -14,7 +14,7 @@ RUN npm install
 
 # Forcer la reconstruction de bcrypt
 RUN npm rebuild bcrypt --build-from-source
-
+                    
 WORKDIR /app
 
 # Exposer le port sur lequel l'application s'exécute

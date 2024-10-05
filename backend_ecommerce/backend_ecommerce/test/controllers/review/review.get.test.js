@@ -30,7 +30,7 @@ describe('GET /api/review', () => {
     });
     it('500', async () => {
     
-        const { Review } = require('models/index.js');
+        const { Review } = require('src/models/index.js');
     
         Review.findAll = jest.fn().mockRejectedValue(new Error('Server error while getting reviews'))
 

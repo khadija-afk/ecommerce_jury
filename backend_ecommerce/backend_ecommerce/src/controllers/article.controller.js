@@ -1,9 +1,9 @@
 import { Article, User, Categorie } from "../models/index.js";
 import * as Service from "../services/service.js";
-import logger from "../logger.js";
+// import logger from "../../../logger.js";
 
 export const add = async (req, res) => {
-  logger.debug("Controller Add Article start");
+  // logger.debug("Controller Add Article start");
 
   const { categorie_fk, name, content, brand, price, stock, photo } = req.body;
 

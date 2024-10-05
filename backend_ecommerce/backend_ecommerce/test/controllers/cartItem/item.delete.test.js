@@ -28,7 +28,7 @@ describe('DELETE /api/cartItem/cart-items/:id', () => {
     });
 
     it('500', async () => {
-        const { CartItem } = require('models/index.js');
+        const { CartItem } = require('src/models/index.js');
         CartItem.destroy = jest.fn().mockRejectedValue(new Error('Erreur de réseau'));
 
         const response = await request(app)

@@ -41,7 +41,7 @@ describe('GET /api/payment/payment-details/:id', () => {
    
     it('500', async () => {
     
-        const { PaymentDetails } = require('models/index.js');
+        const { PaymentDetails } = require('src/models/index.js');
     
         PaymentDetails.findOne = jest.fn().mockRejectedValue(new Error('Erreur serveur lors de la récupération du détail de paiement'))
 

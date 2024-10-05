@@ -53,7 +53,7 @@ describe('GET /api/order/orders', () => {
 
     it('500', async () => {
     
-        const { OrderDetails } = require('models/index.js');
+        const { OrderDetails } = require('src/models/index.js');
     
         OrderDetails.findAll = jest.fn().mockRejectedValue(new Error('Erreur serveur lors de la récupération des commandes'))
 

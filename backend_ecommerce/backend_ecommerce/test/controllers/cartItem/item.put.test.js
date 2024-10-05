@@ -39,7 +39,7 @@ describe('PUT /api/cartItem/cart-items/:id', () => {
 
     it('500', async () => {
     
-        const { CartItem } = require('models/index.js');
+        const { CartItem } = require('src/models/index.js');
         CartItem.update = jest.fn().mockRejectedValue(new Error('Erreur de réseau'));
 
         const mockCartItem = {

@@ -1,7 +1,7 @@
 import request from 'supertest';
 import { prepareDatabase, teardownDatabase, getUserToken } from 'serverTest.js';
 import { app } from 'server.js';
-import { OrderItems } from 'models/index.js';
+import { OrderItems } from 'src/models/index.js';
 
 describe('POST /api/orderItem/order-items', () => {
     

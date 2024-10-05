@@ -2,7 +2,7 @@
 
 // import * as Service from 'services/service.js'
 
-// import { Article } from 'models/index.js';
+// import { Article } from 'src/models/index.js';
 
 // describe('get', () => {
 

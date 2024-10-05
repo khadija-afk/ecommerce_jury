@@ -46,7 +46,7 @@ describe('PUT /api/review', () => {
     });
     it('500', async () => {
     
-        const { Review } = require('models/index.js');
+        const { Review } = require('src/models/index.js');
 
         const mockreview = {
             id: 1,

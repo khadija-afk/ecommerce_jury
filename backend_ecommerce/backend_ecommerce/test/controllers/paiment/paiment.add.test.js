@@ -50,7 +50,7 @@ describe('POST /api/payment/payment-details', () => {
    
     it('500', async () => {
     
-        const { PaymentDetails } = require('models/index.js');
+        const { PaymentDetails } = require('src/models/index.js');
     
         PaymentDetails.create = jest.fn().mockRejectedValue(new Error("Erreur serveur lors de l'ajout du détail de paiement"))
 

@@ -11,3 +11,4 @@ router.put('/cart', verifieToken, updateCartTotalAmount); // Mettre à jour le m
 router.delete('/cart', verifieToken, deleteCart); // Supprimer le panier d'un utilisateur connecté
 
 export default router;
+

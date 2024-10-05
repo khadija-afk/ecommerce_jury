@@ -39,7 +39,7 @@ describe('GET /api/review/:id', () => {
     });
     it('500', async () => {
     
-        const { Review } = require('models/index.js');
+        const { Review } = require('src/models/index.js');
     
         Review.findByPk = jest.fn().mockRejectedValue(new Error('Server error while getting review'))
 

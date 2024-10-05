@@ -52,7 +52,7 @@ describe('PUT /api/order/orders/:id', () => {
 
     it('500', async () => {
     
-        const { OrderDetails } = require('models/index.js');
+        const { OrderDetails } = require('src/models/index.js');
 
         const mockorder = {
             id: 1,

@@ -1,6 +1,6 @@
 import request from 'supertest';
 import { app } from 'server.js'; // Assurez-vous que le chemin est correct
-import { Categorie } from 'models/index.js'; // Importez votre modèle de catégorie
+import { Categorie } from 'src/models/index.js'; // Importez votre modèle de catégorie
 
 describe('GET /api/categorie/:id', () => {
     afterEach(() => {

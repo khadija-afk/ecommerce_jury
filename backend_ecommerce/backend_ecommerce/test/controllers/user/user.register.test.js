@@ -18,7 +18,7 @@ describe('POST /api/user/add', () => {
     });
 
     it('201 created successfully', async () => {
-        const { User, Cart } = require('models/index.js');
+        const { User, Cart } = require('src/models/index.js');
 
         // Simuler une instance de User et Cart avec des valeurs mockées
         mockUser = {
@@ -80,7 +80,7 @@ describe('POST /api/user/add', () => {
     });
 
     it('500 ', async () => {
-        const { User } = require('models/index.js');
+        const { User } = require('src/models/index.js');
 
         // Simuler une erreur lors de la création de l'utilisateur
         User.create = jest.fn().mockRejectedValue(new Error('Erreur lors de la création de l\'utilisateur'));
