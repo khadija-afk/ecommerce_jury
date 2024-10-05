@@ -47,7 +47,7 @@ describe('GET /api/cart', () => {
 
     it('500 - create error', async () => {
     
-        const { Cart } = require('models/index.js');
+        const { Cart } = require('src/models/index.js');
         Cart.create = jest.fn().mockRejectedValue(new Error('Erreur de suppression'))
 
 

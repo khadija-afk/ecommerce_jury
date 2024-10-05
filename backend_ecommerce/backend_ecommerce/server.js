@@ -1,5 +1,5 @@
 import express from 'express'
-import { env } from './config.js'
+import { env } from './src/config.js'
 import swaggerUi from 'swagger-ui-express'
 import swaggerDocs from './swagger.js'
 import cookieParser from 'cookie-parser'
@@ -7,22 +7,22 @@ import cors from 'cors'
 import Stripe from 'stripe'
 
 // Connexion MySQL
-import './models/index.js'
+import './src/models/index.js'
 
 // // ROUTES
-import routerUser from './routes/user.js'
-import routerArticle from './routes/article.js'
-import routerCategorie from './routes/categorie.js'
-import routerOrder from './routes/orderDetails.js'
-import routerReview from './routes/review.js'
-import routerCart from './routes/cart.js'
-import routerCartItem from './routes/cartItem.js'
-import routerOrderItem from './routes/orderItem.js'
-import routerPaymentDetails from './routes/paymentDetail.js'
-import routerStripe from './routes/stripe.js'
-import routes from './routes/reset.js'
-import routLogout from './routes/logout.js'
-import stripeWebhookRoute from './routes/stripewebhook.js'
+import routerUser from './src/routes/user.js'
+import routerArticle from './src/routes/article.js'
+import routerCategorie from './src/routes/categorie.js'
+import routerOrder from './src/routes/orderDetails.js'
+import routerReview from './src/routes/review.js'
+import routerCart from './src/routes/cart.js'
+import routerCartItem from './src/routes/cartItem.js'
+import routerOrderItem from './src/routes/orderItem.js'
+import routerPaymentDetails from './src/routes/paymentDetail.js'
+import routerStripe from './src/routes/stripe.js'
+import routes from './src/routes/reset.js'
+import routLogout from './src/routes/logout.js'
+import stripeWebhookRoute from './src/routes/stripewebhook.js'
 
 
 

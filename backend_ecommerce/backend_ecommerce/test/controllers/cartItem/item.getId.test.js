@@ -1,7 +1,7 @@
 import request from 'supertest';
 import { prepareDatabase, teardownDatabase, getUserToken } from 'serverTest.js';
 import { app } from 'server.js';
-import { CartItem } from 'models/index.js';
+import { CartItem } from 'src/models/index.js';
 
 describe('GET /api/cartItem/cart-items/:id', () => {
 

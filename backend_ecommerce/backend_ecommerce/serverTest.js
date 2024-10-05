@@ -1,7 +1,7 @@
 // testServer.js
-import { initializeDatabase, Article, User, Categorie, Cart, CartItem, OrderDetails, OrderItems, PaymentDetails, Review } from './models/index.js';
+import { initializeDatabase, Article, User, Categorie, Cart, CartItem, OrderDetails, OrderItems, PaymentDetails, Review } from './src/models/index.js';
 import jwt from 'jsonwebtoken';
-import { env } from './config.js'; // Assurez-vous d'importer la configuration correcte
+import { env } from './src/config.js'; // Assurez-vous d'importer la configuration correcte
 
 
 const prepareDatabase = async () => {

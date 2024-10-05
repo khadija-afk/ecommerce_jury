@@ -42,7 +42,7 @@ describe('DELETE /api/payment/payment-details/:id', () => {
    
     it('500', async () => {
     
-        const { PaymentDetails } = require('models/index.js');
+        const { PaymentDetails } = require('src/models/index.js');
 
         const mockorder = {
             id: 1,

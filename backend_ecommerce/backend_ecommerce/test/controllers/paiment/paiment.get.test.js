@@ -1,7 +1,7 @@
 import request from 'supertest';
 import { app } from 'server.js'; // Assurez-vous que le chemin est correct
 import { prepareDatabase, teardownDatabase, getUserToken,  } from 'serverTest.js';
-import { PaymentDetails } from 'models/index.js';
+import { PaymentDetails } from 'src/models/index.js';
 
 
 

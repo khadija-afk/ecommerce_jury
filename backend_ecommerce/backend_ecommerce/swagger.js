@@ -1,5 +1,5 @@
 import swaggerJsdoc from 'swagger-jsdoc'
-import { env } from './config.js'
+import { env } from './src/config.js'
 const PORT = env.port
 
 // Configuration de Swagger

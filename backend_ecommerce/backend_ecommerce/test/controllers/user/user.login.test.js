@@ -34,7 +34,7 @@ describe('POST /api/user/sign', () => {
     });
 
     it('501', async () => {
-        const { User } = require('models/index.js');
+        const { User } = require('src/models/index.js');
         
         // Mock de Article.findByPk pour retourner l'instance mockée
         User.findOne = jest.fn().mockRejectedValue(new Error('Erreur de Réseau'));
@@ -56,7 +56,7 @@ describe('POST /api/user/sign', () => {
     });
 
     it('400', async () => {
-        const { User } = require('models/index.js');
+        const { User } = require('src/models/index.js');
         
         // Simuler une instance d'article avec une méthode destroy qui lève une erreur
         const mockUser = {
@@ -80,7 +80,7 @@ describe('POST /api/user/sign', () => {
     });
     
     it('200', async () => {
-        const { User } = require('models/index.js');
+        const { User } = require('src/models/index.js');
         
         // Simuler une instance d'article avec une méthode destroy qui lève une erreur
         const mockUser = {

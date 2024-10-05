@@ -9,19 +9,19 @@ import orderDetailsModel from "./orderDetails.model.js";
 import orderItemsModel from "./orderItem.model.js";
 import paymentDetailsModel from "./paymentDetail.model.js";
 import dotenv from "dotenv";
-import logger from "../logger.js";
+// import logger from "../../../logger.js";
 
 dotenv.config();
 let sequelize;
 if (process.env.NODE_ENV === 'test') {
-    logger.info("in Test Mode")
+    // logger.info("in Test Mode")
     // Utiliser SQLite en mémoire pour les tests
     sequelize = new Sequelize({
         dialect: 'sqlite',
         storage: ':memory:' // Base de données en mémoire pour les tests
     });
 } else {
-    logger.info("in Test Mode")
+    // logger.info("in Not Test Mode")
     // Utiliser MySQL pour les autres environnements
     sequelize = new Sequelize(
         process.env.MYSQL_DATABASE, // Nom de la base de données

@@ -47,7 +47,7 @@ describe('GET /api/article/:id', () => {
     });
 
     it('getById - 500', async () => {
-        const { Article } = require('models/index.js');
+        const { Article } = require('src/models/index.js');
     
         // Utiliser jest.spyOn pour intercepter l'appel à findByPk et simuler une erreur
         Article.findByPk = jest.fn().mockRejectedValue(new Error('Erreur de Réseau'))
@@ -106,7 +106,7 @@ describe('GET /api/article/', () => {
     }); 
 
     it('findAll - 500', async () => {
-        const { Article } = require('models/index.js');
+        const { Article } = require('src/models/index.js');
     
         // Utiliser jest.spyOn pour intercepter l'appel à findByPk et simuler une erreur
         Article.findAll = jest.fn().mockRejectedValue(new Error('Erreur de Réseau'))

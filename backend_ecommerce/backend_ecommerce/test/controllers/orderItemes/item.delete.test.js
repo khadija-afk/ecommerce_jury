@@ -28,7 +28,7 @@ describe('DELETE /api/orderItem/order-items/:id', () => {
     });
 
     it('500 - Should handle server error during deletion', async () => {
-        const { OrderItems } = require('models/index.js');
+        const { OrderItems } = require('src/models/index.js');
     
         const mockOrderItem = {
             destroy: jest.fn().mockRejectedValue(new Error('Erreur de réseau'))

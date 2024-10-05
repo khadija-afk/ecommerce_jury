@@ -1,6 +1,6 @@
 import request from 'supertest';
 import { app } from 'server.js'; // Assurez-vous que le chemin est correct
-import { User } from 'models/index.js'; // Importez votre modèle
+import { User } from 'src/models/index.js'; // Importez votre modèle
 import { prepareDatabase, teardownDatabase, getUserToken } from 'serverTest.js';
 
 describe('GET /api/user/all', () => {
