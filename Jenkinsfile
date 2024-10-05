@@ -27,12 +27,13 @@ pipeline {
         }
 
         stage('Run Tests') {
-            agent { docker { image 'projet_jury-backend:latest' } }
+            agent { docker { image 'node:21' } }
 
             steps {
                 script {
                     // Run tests for both frontend and backend
                     dir('backend_ecommerce/backend_ecommerce') {
+                        sh 'pwd'
                         sh 'make test'
                     }
                 }

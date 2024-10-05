@@ -1,8 +1,9 @@
 
 
-ENV_TEST=NODE_ENV=test TOKEN=fake-test-token
+ENV_TEST=NODE_ENV=test TOKEN=fake-test-token NODE_PATH=$(shell pwd)
 OPS= --silent --verbose
 COV= $(OPS) --coverage
+
 
 test:
 	$(ENV_TEST) npx jest $(OPS) $(filter-out $@,$(MAKECMDGOALS))  
