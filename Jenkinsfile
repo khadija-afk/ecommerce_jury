@@ -51,7 +51,7 @@ pipeline {
                         sonar-scanner \
                         -Dsonar.projectKey=ecommerce-backend \
                         -Dsonar.sources=. \
-                        -Dsonar.exclusions=test/**, features/** \
+                        -Dsonar.exclusions=test/**, features \
                         -Dsonar.host.url=${SONAR_HOST_URL} \
                         -Dsonar.login=${SONAR_LOGIN} \
                         -Dsonar.javascript.lcov.reportPaths=./coverage/lcov.info \
