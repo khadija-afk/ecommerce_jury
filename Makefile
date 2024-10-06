@@ -13,11 +13,17 @@ test:
 start-front:
 	docker-compose up --build -d frontend
 
-start-back-build: clean_node_modules
+start-back-build: clean_node_modules build-base
 	docker-compose up --build -d backend
 
-start-back: clean_node_modules
-	docker-compose up -d backend
+build-base:
+	@echo "Building base image from Dockerfile.base..."
+	cd backend_ecommerce/backend_ecommerce/ &&\
+	docker build -f Dockerfile.base -t backend_base:latest .
+
+start-back: clean_node_modules build-base
+	docker-compose down backend
+	docker-compose up  backend 
 
 start-back-logs:
 	docker-compose logs -f backend
@@ -28,7 +34,7 @@ start-j:
 down-all:
 	docker-compose down
 
-start-all: down-all clean_node_modules
+start-all: down-all clean_node_modules build-base
 	docker-compose up --build -d
 
 bash-b:

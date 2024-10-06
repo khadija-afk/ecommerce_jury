@@ -1,0 +1,11 @@
+# Utiliser l'image officielle de Node.js comme image de base
+FROM node:22
+
+# Copier le reste des fichiers de l'application
+COPY package.json .
+
+# Installer les dépendances de l'application
+RUN rm -rf node_modules package-lock.json &&\
+    npm install &&\
+    npm rebuild bcrypt --build-from-source
+
