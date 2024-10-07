@@ -45,7 +45,10 @@ export const get = async (Model, id, options = {}) => {
     let model
     try {
     
-        model = await Model.findByPk(id, options);
+        
+        
+            model = await Model.findByPk(id, options);
+        
 
     } catch (error) {
         logger.error(`Error retrieving ${Model.name}, id: ${id}, status: ${error.status}, details: ${error.message}`);
@@ -63,3 +66,25 @@ export const get = async (Model, id, options = {}) => {
     logger.info(`${Model.name} retrieved, id: ${id}`);
     return model; // Retourner l'article si trouvé
 };
+
+/**
+ * Crée un enregistrement pour n'importe quel modèle passé en paramètre
+ * @param {Object} Model - Le modèle Sequelize à utiliser pour la création (e.g. User, Cart, Product)
+ * @param {Object} data - Les données à insérer dans le modèle
+ * @returns {Object} - L'enregistrement créé
+ * @throws {Object} - Une erreur en cas de problème lors de la création
+ */
+export const create = async (Model, data) => {
+    try {
+      const newRecord = await Model.create(data);
+      logger.info(`${Model.name} created successfully with data: ${JSON.stringify(data)}`);
+      return newRecord;
+    } catch (error) {
+      logger.error(`Error creating ${Model.name}: ${error.message}`);
+      throw {
+        error: `Server error while creating ${Model.name}`,
+        status: error.status || 500,
+        details: error.message,
+      };
+    }
+  }

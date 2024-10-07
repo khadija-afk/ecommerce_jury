@@ -61,7 +61,6 @@ describe('POST /api/user/add', () => {
         // Vérifier le résultat attendu
         expect(response.status).toBe(201);
         expect(response.body).toEqual({
-            message: "User and Cart have been created!",
             user: mockUser,
             cart: mockCart
         });
@@ -97,8 +96,7 @@ describe('POST /api/user/add', () => {
         // Vérifier que le serveur renvoie une erreur 500
         expect(response.status).toBe(500);
         expect(response.body).toEqual({
-            error: "Internal Server Error",
-            mess: "Erreur lors de la création de l'utilisateur"
+            error: "Server error while creating User"
         });
     });
 });

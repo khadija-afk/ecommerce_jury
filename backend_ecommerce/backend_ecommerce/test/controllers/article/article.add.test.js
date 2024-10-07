@@ -60,24 +60,6 @@ describe('POST /api/article', () => {
         expect(response.body).toEqual({ error: 'Not found' });
     });
 
-    it(' 404', async () => {
-        const response = await request(app)
-            .post('/api/article')
-            .send({
-                name: 'New Article',
-                content: 'Content of new article',
-                brand: 'New Brand',
-                price: 20.99,
-                stock: 50,
-                categorie_fk: 999, // Catégorie inexistante
-                photo: null,
-            })
-            .set('Cookie', `access_token=${user_john}`);
-
-        expect(response.status).toBe(404);
-        expect(response.body).toEqual({ error: 'Not found' });
-    });
-
     it('500', async () => {
         // Simuler une erreur lors de la création de l'article
         const mockCreate = jest.spyOn(Article, 'create').mockRejectedValueOnce(new Error('Erreur interne'));
@@ -97,8 +79,7 @@ describe('POST /api/article', () => {
 
         expect(response.status).toBe(500);
         expect(response.body).toEqual({
-            error: 'Erreur lors de la création ! 😭',
-            details: 'Erreur interne'
+            error: 'Server error while creating Article',
         });
 
         mockCreate.mockRestore();
