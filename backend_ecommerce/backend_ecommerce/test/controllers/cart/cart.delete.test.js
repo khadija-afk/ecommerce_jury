@@ -2,7 +2,7 @@ import request from 'supertest';
 import { app } from 'server.js'; 
 import { prepareDatabase, teardownDatabase, getUserToken } from 'serverTest.js';
 
-describe('GET /api/cart', () => {
+describe('DELETE /api/cart', () => {
 
     let user_john;
     let user_John2;
@@ -43,20 +43,24 @@ describe('GET /api/cart', () => {
         expect(response.status).toBe(404);  
     });
 
-    it('500', async () => {
+    it.only('500', async () => {
     
         const { Cart } = require('src/models/index.js');
 
         const mockCart = {
             id: 1,
-            destroy: jest.fn().mockRejectedValue(new Error('Erreur de suppression'))
+            name: "Cart",
+            user_fk: 1,
+            destroy: jest.fn().mockRejectedValue(
+                    { error: 'Erreur de suppression', status: 500 }
+                )
         };
 
        
-        Cart.findOne = jest.fn().mockResolvedValue(mockCart); 
+        Cart.findByPk = jest.fn().mockResolvedValue(mockCart); 
         const response = await request(app)
             .delete('/api/cart/cart/1')
-            .set('Cookie', `access_token=${user_John2}`);  
+            .set('Cookie', `access_token=${user_john}`);  
         
         expect(response.status).toBe(500);  
     });
