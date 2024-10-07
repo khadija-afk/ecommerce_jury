@@ -33,35 +33,27 @@ export const login = async (req, res) => {
 };
 
 export const register = async (req, res) => {
-  try {
-    // Hash du mot de passe de l'utilisateur
-    const hashedPassword = await bcrypt.hash(req.body.password, 10);
-
-    // Créer l'utilisateur
-    const user = await User.create({
-      ...req.body,
-      password: hashedPassword,
-    });
-
-    // Créer un panier pour cet utilisateur
-    const cart = await Cart.create({
-      user_fk: user.id, // Lier le panier au nouvel utilisateur
-      total_amount: 0, // Initialiser le total du panier à 0
-    });
-
-    res.status(201).json({
-      message: "User and Cart have been created!",
-      user,
-      cart, // Retourne aussi le panier
-    });
-  } catch (error) {
-    console.log(error);
-    res
-      .status(500)
-      .json({ error: "Internal Server Error", mess: error.message });
-  }
-};
-
+    try {
+      // Créez d'abord l'utilisateur avec le mot de passe haché
+      const user = await Service.create(User, { 
+        ...req.body, 
+        password: await bcrypt.hash(req.body.password, 10) 
+      });
+  
+      // Créez ensuite un panier pour l'utilisateur nouvellement créé
+      const cart = await Service.create(Cart, { 
+        user_fk: user.id, 
+        total_amount: 0 
+      });
+  
+      return res.status(201).json({
+        user,
+        cart,
+      });
+    } catch (error) {
+      return res.status(error.status).json({error: error.error})
+    }
+  };
 export const getAll = async (req, res) => {
   let users;
   try {

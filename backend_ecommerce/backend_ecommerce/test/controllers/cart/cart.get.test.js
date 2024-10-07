@@ -27,7 +27,7 @@ describe('GET /api/cart', () => {
     
         // Effectuer la requête avec un en-tête Authorization
         const response = await request(app)
-            .get('/api/cart/cart')
+            .get('/api/cart/cart/1')
             .set('Cookie', `access_token=${user_john}`);  // Utilisation de l'en-tête Authorization
         
         expect(response.status).toBe(200);  // Vérifiez bien le statut
@@ -37,7 +37,7 @@ describe('GET /api/cart', () => {
     
         // Effectuer la requête avec un en-tête Authorization
         const response = await request(app)
-            .get('/api/cart/cart')
+            .get('/api/cart/cart/33')
             .set('Cookie', `access_token=${user_John2}`);  // Utilisation de l'en-tête Authorization
         
         expect(response.status).toBe(404);  // Vérifiez bien le statut
@@ -51,7 +51,7 @@ describe('GET /api/cart', () => {
 
         // Effectuer la requête avec un en-tête Authorization
         const response = await request(app)
-            .get('/api/cart/cart')
+            .get('/api/cart/cart/1')
             .set('Cookie', `access_token=${user_John2}`);  // Utilisation de l'en-tête Authorization
         
         expect(response.status).toBe(500);  // Vérifiez bien le statut

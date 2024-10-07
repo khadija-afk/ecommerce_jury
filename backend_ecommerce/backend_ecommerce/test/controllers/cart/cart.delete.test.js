@@ -1,5 +1,5 @@
 import request from 'supertest';
-import { app } from 'server.js'; // Assurez-vous que le chemin est correct
+import { app } from 'server.js'; 
 import { prepareDatabase, teardownDatabase, getUserToken } from 'serverTest.js';
 
 describe('GET /api/cart', () => {
@@ -20,27 +20,27 @@ describe('GET /api/cart', () => {
     });
 
     afterEach(() => {
-        jest.restoreAllMocks(); // Restaurer les mocks après chaque test
+        jest.restoreAllMocks(); 
     });
 
     it('204', async () => {
     
-        // Effectuer la requête avec un en-tête Authorization
-        const response = await request(app)
-            .delete('/api/cart/cart')
-            .set('Cookie', `access_token=${user_john}`);  // Utilisation de l'en-tête Authorization
         
-        expect(response.status).toBe(204);  // Vérifiez bien le statut
+        const response = await request(app)
+            .delete('/api/cart/cart/1')
+            .set('Cookie', `access_token=${user_john}`);  
+        
+        expect(response.status).toBe(204);  
     });
 
     it('404', async () => {
     
-        // Effectuer la requête avec un en-tête Authorization
+       
         const response = await request(app)
-            .delete('/api/cart/cart')
-            .set('Cookie', `access_token=${user_John2}`);  // Utilisation de l'en-tête Authorization
+            .delete('/api/cart/cart/33')
+            .set('Cookie', `access_token=${user_John2}`);  
         
-        expect(response.status).toBe(404);  // Vérifiez bien le statut
+        expect(response.status).toBe(404);  
     });
 
     it('500', async () => {
@@ -52,15 +52,13 @@ describe('GET /api/cart', () => {
             destroy: jest.fn().mockRejectedValue(new Error('Erreur de suppression'))
         };
 
-        // Mock de Categorie.findByPk pour retourner la catégorie simulée
-        Cart.findOne = jest.fn().mockResolvedValue(mockCart); // Mock de la fonction
-
-        // Effectuer la requête avec un en-tête Authorization
+       
+        Cart.findOne = jest.fn().mockResolvedValue(mockCart); 
         const response = await request(app)
-            .delete('/api/cart/cart')
-            .set('Cookie', `access_token=${user_John2}`);  // Utilisation de l'en-tête Authorization
+            .delete('/api/cart/cart/1')
+            .set('Cookie', `access_token=${user_John2}`);  
         
-        expect(response.status).toBe(500);  // Vérifiez bien le statut
+        expect(response.status).toBe(500);  
     });
     
 })

@@ -24,7 +24,7 @@ export const add = async (req, res) => {
 
   try {
     // Créer un nouvel article avec les informations reçues dans le corps de la requête
-    const newArticle = await Article.create({
+    const newArticle = await Service.create(Article, {
       name,
       content,
       brand,
@@ -34,17 +34,9 @@ export const add = async (req, res) => {
       categorie_fk,
       photo,
     });
-
-    // On renvoie le nouvel article avec un statut 201
     res.status(201).json(newArticle);
   } catch (error) {
-    console.error(error); // Log l'erreur pour le débogage
-    res
-      .status(500)
-      .json({
-        error: "Erreur lors de la création ! 😭",
-        details: error.message,
-      });
+    return res.status(error.status).json({error: error.error})
   }
 };
 export const getAll = async (req, res) => {
@@ -103,28 +95,6 @@ export const deleteById = async (req, res) => {
     return res.status(error.status).json({ error: error.error });
   }
 };
-
-// export const getByAsc = async (req, res) => {
-//     try {
-//         const articles = await Article.findAll({
-//             order: [["price", 'ASC']]
-//         });
-//         res.status(200).json(articles);
-//     } catch (err) {
-//         res.status(500).json({ error: "Erreur lors du tri des articles par prix" });
-//     }
-// };
-
-// export const getByDesc = async (req, res) => {
-//     try {
-//         const articles = await Article.findAll({
-//             order: [["price", 'DESC']]
-//         });
-//         res.status(200).json(articles);
-//     } catch (err) {
-//         res.status(500).json({ error: "Erreur lors du tri des articles par prix" });
-//     }
-// };
 
 export const getByUser = async (req, res) => {
   let user;
