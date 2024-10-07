@@ -44,12 +44,7 @@ export const get = async (Model, id, options = {}) => {
     // Rechercher l'article par ID
     let model
     try {
-    
-        
-        
-            model = await Model.findByPk(id, options);
-        
-
+        model = await Model.findByPk(id, options);
     } catch (error) {
         logger.error(`Error retrieving ${Model.name}, id: ${id}, status: ${error.status}, details: ${error.message}`);
         throw Object.assign(

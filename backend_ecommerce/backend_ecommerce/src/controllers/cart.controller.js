@@ -12,7 +12,7 @@ export const getCartByUserId = async (req, res) => {
     cart = await Service.get(Cart, id);
     return res.status(200).json(cart);
   } catch (error) {
-    return res.status(error.status || 500).json({ error: error.error || 'Internal Server Error' });
+    return res.status(error.status).json({ error: error.error});
   }
 };
 
@@ -56,10 +56,10 @@ export const deleteCart = async (req, res) => {
   let cart
   try {
     cart =  await Service.get(Cart, id);
-    await cart.destroy(Cart, id);
+    await Service.destroy(cart, req.user.id);
 
     return res.status(204).send(); 
   } catch (error) {
-    return res.status(error.status || 500).json({ error: error.error });
+    return res.status(error.status).json({ error: error.error });
   }
 };

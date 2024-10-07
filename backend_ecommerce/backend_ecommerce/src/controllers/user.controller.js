@@ -35,16 +35,15 @@ export const login = async (req, res) => {
 export const register = async (req, res) => {
     try {
       // Créez d'abord l'utilisateur avec le mot de passe haché
-      const user = await Service.create(User, { 
-        ...req.body, 
-        password: await bcrypt.hash(req.body.password, 10) 
-      });
+      req.body['password'] = await bcrypt.hash(req.body.password, 10) 
+      const user = await Service.create(User, req.body);
   
       // Créez ensuite un panier pour l'utilisateur nouvellement créé
-      const cart = await Service.create(Cart, { 
+      const body_cart = { 
         user_fk: user.id, 
         total_amount: 0 
-      });
+      }
+      const cart = await Service.create(Cart, body_cart);
   
       return res.status(201).json({
         user,

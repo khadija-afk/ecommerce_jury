@@ -47,7 +47,7 @@ describe('GET /api/cart', () => {
     
         const { Cart } = require('src/models/index.js');
     
-        Cart.findOne = jest.fn().mockRejectedValue(new Error('Erreur de suppression'))
+        Cart.findByPk = jest.fn().mockRejectedValue(new Error('Erreur de suppression'))
 
         // Effectuer la requête avec un en-tête Authorization
         const response = await request(app)
