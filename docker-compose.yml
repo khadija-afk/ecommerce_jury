@@ -52,7 +52,7 @@ services:
       MYSQL_DATABASE: ${MYSQL_DATABASE}
       # MYSQL_USER: ${MYSQL_USER}
       # DB_PORT: ${DB_PORT}
-      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      # MYSQL_PASSWORD: ${MYSQL_PASSWORD}
     volumes:
       - mysql-data:/var/lib/mysql
     networks:

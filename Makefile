@@ -1,5 +1,7 @@
 
 
+include .env.local
+export $(shell sed 's/=.*//' .env.local)
 
 clean_node_modules:
 	@rm -rf backend_ecommerce/backend_ecommerce/node_modules
