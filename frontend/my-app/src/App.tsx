@@ -2,8 +2,8 @@ import React from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-import RegisterForm from './auth/inscription/RegisterForm';
-import SignInForm from './auth/connexion/SignForm';
+import RegisterForm from './pages/auth/inscription/RegisterForm';
+import SignInForm from './pages/auth/connexion/SignForm';
 import ArticleList from './features/article/ArticleList';
 import AddCategoryForm from './features/category/AddCategoryForm';
 import Detail from './features/article/DetailArticle';
@@ -23,6 +23,11 @@ import Checkout from './pages/checkout/Checkout.js'
 // SERVICES
 import PublicRoute  from './utils/helpers/PublicRoute';
 import PrivateRoute from './utils/helpers/PrivateRoute';
+
+//FORGETPASSE
+import ForgotPasswordPage from './pages/forgetPasse/ForgotPasswordPage';
+import OTPVerificationPage from './pages/forgetPasse/OTPVerificationPage';
+import ResetPasswordPage from './pages/forgetPasse/ResetPasswordPage';
 
 
 
@@ -55,6 +60,10 @@ const App = () => {
 
           <Route path="register" element={<RegisterForm />} />
           <Route path="sign" element={<SignInForm />} />
+
+          <Route path="/forgot-password" element={<ForgotPasswordPage />} />
+        <Route path="/verify-otp" element={<OTPVerificationPage />} />
+        <Route path="/reset-password" element={<ResetPasswordPage />} />
 
 
 

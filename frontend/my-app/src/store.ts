@@ -1,7 +1,7 @@
 // src/store.ts
 import { configureStore } from '@reduxjs/toolkit';
-import userReducer from './auth/inscription/userSlice';
-import authReducer from './auth/connexion/authSlice';
+import userReducer from './pages/auth/inscription/userSlice';
+import authReducer from './pages/auth/connexion/authSlice';
 import articleReducer from './features/article/articleSlice'; 
 
 
