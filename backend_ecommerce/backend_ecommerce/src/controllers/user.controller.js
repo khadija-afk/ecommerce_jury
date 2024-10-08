@@ -24,7 +24,12 @@ export const login = async (req, res) => {
     req.body.password,
     user.password,
   );
-  if (!comparePassword) return res.status(400).json("Wrong Credentials!");
+  if (!comparePassword) {
+    return res.status(400).json({ 
+        error: "Wrong Credentials!",
+        details: "Invalid password."
+    });
+}
 
   const token = jwt.sign({ id: user.id }, env.token, { expiresIn: "24h" });
   const { password, ...other } = user.dataValues;
@@ -78,27 +83,33 @@ export const getById = async (req, res) => {
 export const updateById = async (req, res) => {
   let user;
   const id = req.params.id;
+
   try {
+    // Récupérer l'utilisateur par ID
     user = await Service.get(User, id);
   } catch (error) {
-    return res.status(error.status).json({ error: error.error });
+    return res.status(error.status || 500).json({ error: error.error || "Erreur lors de la récupération de l'utilisateur" });
   }
 
   try {
+    // Vérifier si le mot de passe est présent dans les données à mettre à jour
+    if (req.body.password) {
+      // Hacher le mot de passe avant la mise à jour
+      req.body.password = await bcrypt.hash(req.body.password, 10);
+    }
+
+    // Mettre à jour l'utilisateur avec les nouvelles données
     await user.update(req.body);
 
     res.status(200).json({
-      message: "User updated",
+      message: "Utilisateur mis à jour avec succès",
       user,
     });
   } catch (error) {
-    console.log(error);
-    res
-      .status(500)
-      .json({ error: "Internal Server Error", details: error.message });
+    console.error(error);
+    res.status(500).json({ error: "Erreur interne du serveur", details: error.message });
   }
 };
-
 export const deleteById = async (req, res) => {
   let res_destroy;
 
@@ -138,5 +149,40 @@ export const checkAuth = async (req, res) => {
     res
       .status(500)
       .json({ error: "Internal Server Error", details: error.message });
+  }
+};
+
+export const updateByEmail = async (req, res) => {
+  const { email } = req.body; // Récupérer l'e-mail du corps de la requête
+  let user;
+
+  try {
+    // Rechercher l'utilisateur par e-mail directement avec Sequelize
+    user = await User.findOne({ where: { email } });
+    
+    if (!user) {
+      return res.status(404).json({ error: "Utilisateur non trouvé avec cet e-mail" });
+    }
+  } catch (error) {
+    return res.status(500).json({ error: "Erreur lors de la recherche de l'utilisateur", details: error.message });
+  }
+
+  try {
+    // Vérifier si le mot de passe est présent dans les données à mettre à jour
+    if (req.body.password) {
+      // Hacher le mot de passe avant la mise à jour
+      req.body.password = await bcrypt.hash(req.body.password, 10);
+    }
+
+    // Mettre à jour l'utilisateur avec les nouvelles données directement
+    await user.update(req.body);
+
+    res.status(200).json({
+      message: "Utilisateur mis à jour avec succès",
+      user,
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Erreur interne du serveur", details: error.message });
   }
 };

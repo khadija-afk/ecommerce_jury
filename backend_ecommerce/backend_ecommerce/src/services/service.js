@@ -53,7 +53,7 @@ export const get = async (Model, id, options = {}) => {
     }
     // Si l'article n'existe pas, lancer une exception
     if (!model) {
-        logger.warn(`${Model.name} not found id: ${id}`);
+        logger.warn(`${Model.name} Zakaria not found id: ${id}`);
         throw Object.assign(
             { error: 'Not found', status: 404 }
         );
