@@ -1,6 +1,8 @@
 import { Router } from 'express';
 import nodemailer from 'nodemailer';
 
+import { env } from '../config.js';
+
 // Créez un routeur Express
 const router = Router();
 
@@ -10,13 +12,16 @@ const sendEmail = ({ recipient_email, OTP }) => {
     const transporter = nodemailer.createTransport({
       service: 'gmail',
       auth: {
-        user: process.env.MY_EMAIL, // Assurez-vous que la variable d'environnement est correctement définie
-        pass: process.env.MY_PASSWORD, // Assurez-vous que la variable d'environnement est correctement définie
+        user: env.user ,
+        pass: env.pass
       },
+      
     });
+    console.log('khadija motpasse', env.user, env.pass);
+
 
     const mailOptions = {
-      from: process.env.MY_EMAIL,
+      from: env.user,
       to: recipient_email,
       subject: 'KODING 101 PASSWORD RECOVERY',
       html: `
