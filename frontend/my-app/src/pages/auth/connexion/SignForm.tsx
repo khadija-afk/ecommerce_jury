@@ -13,7 +13,7 @@ import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { AppDispatch, RootState } from '../../store';
+import { AppDispatch, RootState } from '../../../store';
 import { signInUser } from './authSlice';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 
@@ -104,7 +104,7 @@ const SignInForm: React.FC = () => {
                         </Button>
                         <Grid container>
                             <Grid item xs>
-                                <Link href="#" variant="body2">
+                                <Link href="/forgot-password" variant="body2">
                                     Mot de passe oublié?
                                 </Link>
                             </Grid>
