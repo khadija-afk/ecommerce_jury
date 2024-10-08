@@ -43,7 +43,7 @@ describe('DELETE /api/cart', () => {
         expect(response.status).toBe(404);  
     });
 
-    it.only('500', async () => {
+    it('500', async () => {
     
         const { Cart } = require('src/models/index.js');
 
