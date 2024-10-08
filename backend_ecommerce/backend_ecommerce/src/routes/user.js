@@ -7,7 +7,8 @@ import express from "express";
   getById,
   updateById,
   deleteById,
-  checkAuth
+  checkAuth, 
+  updateByEmail
 }from "../controllers/user.controller.js";
 
 const router = express.Router();
@@ -20,6 +21,8 @@ router.get("/all", getAll);
 router.get("/get/:id", getById);
 // Route pour mettre à jour un utilisateur spécifique par son ID
 router.put("/update/:id", updateById);
+// Route pour mettre à jour un utilisateur spécifique par son email
+router.put("/update", updateByEmail);
 // Route pour supprimer un utilisateur spécifique par son ID
 router.delete("/delete/:id", deleteById);
 // Route pour la vérification d'authentification

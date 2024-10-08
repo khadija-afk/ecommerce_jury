@@ -43,9 +43,9 @@ const sendEmail = ({ recipient_email, OTP }) => {
               <p style="font-size:0.9em;">Regards,<br />Koding 101</p>
               <hr style="border:none;border-top:1px solid #eee" />
               <div style="float:right;padding:8px 0;color:#aaa;font-size:0.8em;line-height:1;font-weight:300">
-                <p>Koding 101 Inc</p>
-                <p>1600 Amphitheatre Parkway</p>
-                <p>California</p>
+                <p>Bios Boly</p>
+                <p>92000 Nanterre</p>
+                <p>France</p>
               </div>
             </div>
           </div>
