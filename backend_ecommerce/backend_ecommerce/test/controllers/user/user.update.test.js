@@ -33,7 +33,7 @@ describe('PUT /api/user/update/:id', () => {
         const { update, ...userWithoutUpdate } = mockUser; 
     
         expect(response.body).toEqual({
-            message: "User updated",
+            message: "Utilisateur mis à jour avec succès",
             user: userWithoutUpdate, // Comparer l'utilisateur sans la méthode `update`
         });
     

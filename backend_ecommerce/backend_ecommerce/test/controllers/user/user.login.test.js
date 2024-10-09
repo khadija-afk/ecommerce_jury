@@ -75,7 +75,7 @@ describe('POST /api/user/sign', () => {
                         });
         // Vérifier le résultat attendu
         expect(response.status).toBe(400);
-        expect(response.body).toEqual("Wrong Credentials!");
+        expect(response.body).toEqual({"details": "Invalid password.", "error": "Wrong Credentials!"});
 
     });
     
