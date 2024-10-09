@@ -120,6 +120,19 @@ services:
     networks:
       - jenkins_net  # Ajouter au même réseau
 
+  vault:
+    image: hashicorp/vault:1.18
+    container_name: vault
+    restart: always
+    environment:
+      VAULT_DEV_ROOT_TOKEN_ID: "root"  # Token de root pour le mode développement (ne pas utiliser en production)
+      VAULT_ADDR: "http://0.0.0.0:8200"
+    ports:
+      - "8200:8200"  # Expose le port 8200 pour accéder à Vault
+    command: "server -dev"  # Démarre Vault en mode développement
+    volumes:
+      - vault_data:/vault/file  # Utiliser le volume nommé pour stocker les données Vault
+
 volumes:
   mysql-data:
   node_modules:
@@ -130,6 +143,8 @@ volumes:
   postgresql_data:
   postgresql:
   jenkins_data:
+    driver: local
+  vault_data:
     driver: local
 
 networks:
