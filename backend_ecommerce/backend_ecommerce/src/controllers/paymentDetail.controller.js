@@ -59,7 +59,7 @@ export const addPaymentDetail = async (req, res) => {
 export const updatePaymentDetail = async (req, res) => {
 
   let paymentDetail;
-  
+
   try {
 
     paymentDetail = await Service.get(PaymentDetails, req.params.id);
@@ -85,22 +85,14 @@ export const updatePaymentDetail = async (req, res) => {
 
 // Supprimer un détail de paiement (protégé)
 export const deletePaymentDetail = async (req, res) => {
+  const id = req.params.id;
+  let paymentDetail;
   try {
-    const paymentDetail = await PaymentDetails.findByPk(req.params.id);
-    if (!paymentDetail) {
-      return res.status(404).json({ error: "Détail de paiement non trouvé" });
-    }
-    await paymentDetail.destroy();
+    paymentDetail = await Service.get(PaymentDetails, id);
+    await Service.destroy(paymentDetail);
     res.status(204).send();
   } catch (error) {
-    console.error(
-      "Erreur lors de la suppression du détail de paiement :",
-      error,
-    );
-    res
-      .status(500)
-      .json({
-        error: "Erreur serveur lors de la suppression du détail de paiement",
-      });
+    return res.status(error.status).json({ error: error.error });
+   
   }
 };

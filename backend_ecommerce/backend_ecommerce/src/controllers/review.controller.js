@@ -1,6 +1,7 @@
 // controllers/reviewController.js
 import { Sequelize } from "sequelize";
 import { Review } from "../models/index.js";
+import * as Service from "../services/service.js";
 
 // Get all reviews
 export const getAllReviews = async (req, res) => {
@@ -15,15 +16,13 @@ export const getAllReviews = async (req, res) => {
 
 // Get review by ID
 export const getReviewById = async (req, res) => {
+
+  let review;
   try {
-    const review = await Review.findByPk(req.params.id);
-    if (!review) {
-      return res.status(404).json({ error: "Review not found" });
-    }
+    review = await Service.get(Review, req.params.id);
     res.status(200).json(review);
   } catch (error) {
-    console.error("Error getting review:", error);
-    res.status(500).json({ error: "Server error while getting review" });
+    return res.status(error.status).json({ error: error.error });
   }
 };
 
@@ -53,14 +52,19 @@ export const createReview = async (req, res) => {
 
 // Update a review
 export const updateReview = async (req, res) => {
+
+  let review;
+  
+  try {
+
+    review = await Service.get(Review, req.params.id);
+  } catch (error) {
+      return res.status(error.status).json({ error: error.error });
+  }
+
   try {
     const { product_fk, rating, comment } = req.body;
     const user_fk = req.user.id; // Utiliser l'ID de l'utilisateur connecté
-
-    const review = await Review.findByPk(req.params.id);
-    if (!review) {
-      return res.status(404).json({ error: "Review not found" });
-    }
     await review.update({ user_fk, product_fk, rating, comment });
     res.status(200).json(review);
   } catch (error) {
@@ -71,16 +75,14 @@ export const updateReview = async (req, res) => {
 
 // Delete a review
 export const deleteReview = async (req, res) => {
+  const id = req.params.id;
+  let review;
   try {
-    const review = await Review.findByPk(req.params.id);
-    if (!review) {
-      return res.status(404).json({ error: "Review not found" });
-    }
-    await review.destroy();
+    review = await Service.get(Review, id);
+    await Service.destroy(review);
     return res.status(200).json({ message: "avis supprimer" });
   } catch (error) {
-    console.error("Error deleting review:", error);
-    res.status(500).json({ error: "Server error while deleting review" });
+    return res.status(error.status).json({ error: error.error });
   }
 };
 

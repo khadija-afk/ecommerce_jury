@@ -50,7 +50,7 @@ describe('GET /api/user/check_auth', () => {
             email: 'john.doe@example.com',
         });
 
-        expect(User.findByPk).toHaveBeenCalledWith(1);
+        expect(User.findByPk).toHaveBeenCalledWith(1, {});
     });
 
     it('401 - should return access denied if token is missing', async () => {
@@ -72,9 +72,9 @@ describe('GET /api/user/check_auth', () => {
             .set('Cookie', `access_token=${user_john}`);
 
         expect(response.status).toBe(404);
-        expect(response.body).toEqual({ message: "User not found!" });
+        expect(response.body).toEqual({ error: "Not found" });
 
-        expect(User.findByPk).toHaveBeenCalledWith(1);
+        expect(User.findByPk).toHaveBeenCalledWith(1, {});
     });
 
     it('500 - should return internal server error on exception', async () => {
@@ -86,11 +86,10 @@ describe('GET /api/user/check_auth', () => {
 
         expect(response.status).toBe(500);
         expect(response.body).toEqual({
-            error: "Internal Server Error",
-            details: "Erreur lors de la recherche de l'utilisateur"
+            error: "Server error while findByPk",
         });
 
-        expect(User.findByPk).toHaveBeenCalledWith(1);
+        expect(User.findByPk).toHaveBeenCalledWith(1, {});
     });
 
     it('500 - should return invalid signature if token is incorrect', async () => {

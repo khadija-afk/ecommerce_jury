@@ -128,25 +128,37 @@ export const deleteById = async (req, res) => {
 };
 
 export const checkAuth = async (req, res) => {
+
+  let user;
+  let verified;
+  const token = req.cookies.access_token; // Assurez-vous que le token est stocké dans les cookies
+
+  if (!token)
+    return res
+      .status(401)
+      .json({ message: "Access Denied, No Token Provided!" });
+
+
   try {
-    const token = req.cookies.access_token; // Assurez-vous que le token est stocké dans les cookies
-    console.log("___auth", token);
-    if (!token)
-      return res
-        .status(401)
-        .json({ message: "Access Denied, No Token Provided!" });
+    verified = jwt.verify(token, env.token); 
+  } catch (error) {
+    return res
+      .status(500)
+      .json({ error: "Internal Server Error", details: error.message });
+  }
 
-    const verified = jwt.verify(token, env.token); // Vérifiez le token avec votre clé secrète
-    const user = await User.findByPk(verified.id); // Récupérez les informations de l'utilisateur à partir de la base de données
+  try {
+    user = await Service.get(User, verified.id);
+  } catch (error) {
+      return res.status(error.status).json({ error: error.error });
+  }
 
-    if (!user) return res.status(404).json({ message: "User not found!" });
-
+  try {
     const { password, ...other } = user.dataValues; // Évitez d'envoyer le mot de passe dans la réponse
-
-    res.status(200).json(other); // Renvoie les données utilisateur sans le mot de passe
+    return res.status(200).json(other); // Renvoie les données utilisateur sans le mot de passe
   } catch (error) {
     console.log(error);
-    res
+    return res
       .status(500)
       .json({ error: "Internal Server Error", details: error.message });
   }
