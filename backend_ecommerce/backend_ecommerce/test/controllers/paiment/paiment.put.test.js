@@ -28,7 +28,9 @@ describe('PUT /api/payment/payment-details/:id', () => {
             .send({
                 amount: 39.99
             })
-        expect(response.status).toBe(404);  
+
+        expect(response.status).toBe(404);
+        expect(response.body).toEqual({ error: 'Not found' }); 
        
     });
 

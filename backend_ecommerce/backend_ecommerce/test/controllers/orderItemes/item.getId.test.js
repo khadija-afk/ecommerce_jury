@@ -57,7 +57,7 @@ describe('GET /api/orderItem/order-items/:id', () => {
     
         // Vérifier le statut et le message d'erreur
         expect(response.status).toBe(500);
-        expect(response.body).toEqual({ error: 'Server error while retrieving the order item' });
+        expect(response.body).toEqual({ error: 'Server error while findByPk' });
     
         // Restaurer la méthode originale après le test
         mockFindByPk.mockRestore();

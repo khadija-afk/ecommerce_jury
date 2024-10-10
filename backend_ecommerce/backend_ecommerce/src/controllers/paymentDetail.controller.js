@@ -1,4 +1,5 @@
 import { PaymentDetails } from "../models/index.js";
+import * as Service from "../services/service.js";
 
 // Récupérer tous les détails de paiement (protégé)
 export const getAllPaymentDetails = async (req, res) => {
@@ -21,21 +22,10 @@ export const getAllPaymentDetails = async (req, res) => {
 // Récupérer un détail de paiement par son ID (protégé)
 export const getPaymentDetailById = async (req, res) => {
   try {
-    const paymentDetail = await PaymentDetails.findByPk(req.params.id);
-    if (!paymentDetail) {
-      return res.status(404).json({ error: "Détail de paiement non trouvé" });
-    }
+    const paymentDetail = await Service.get(PaymentDetails, req.params.id);
     res.status(200).json(paymentDetail);
   } catch (error) {
-    console.error(
-      "Erreur lors de la récupération du détail de paiement :",
-      error,
-    );
-    res
-      .status(500)
-      .json({
-        error: "Erreur serveur lors de la récupération du détail de paiement",
-      });
+    return res.status(error.status).json({ error: error.error });
   }
 };
 
@@ -67,11 +57,17 @@ export const addPaymentDetail = async (req, res) => {
 
 // Mettre à jour un détail de paiement (protégé)
 export const updatePaymentDetail = async (req, res) => {
+
+  let paymentDetail;
+  
   try {
-    const paymentDetail = await PaymentDetails.findByPk(req.params.id);
-    if (!paymentDetail) {
-      return res.status(404).json({ error: "Détail de paiement non trouvé" });
-    }
+
+    paymentDetail = await Service.get(PaymentDetails, req.params.id);
+  } catch (error) {
+      return res.status(error.status).json({ error: error.error });
+  }
+  try {
+    
     await paymentDetail.update(req.body);
     res.status(200).json(paymentDetail);
   } catch (error) {

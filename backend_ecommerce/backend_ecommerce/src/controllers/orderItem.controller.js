@@ -1,4 +1,5 @@
 import { OrderItems, OrderDetails } from "../models/index.js";
+import * as Service from "../services/service.js";
 
 // Récupérer tous les articles de commande de l'utilisateur connecté
 export const getAllOrderItems = async (req, res) => {
@@ -35,20 +36,12 @@ export const getAllOrderItems = async (req, res) => {
 export const getOrderItemById = async (req, res) => {
   try {
     // Récupérer l'article de commande par son ID
-    const orderItem = await OrderItems.findByPk(req.params.id);
-
-    // Vérifier si l'article de commande existe
-    if (!orderItem) {
-      return res.status(404).json({ error: "Order item not found" });
-    }
+    const orderItem = await Service.get(OrderItems, req.params.id);
 
     // Retourner l'article de commande
     return res.status(200).json(orderItem);
   } catch (error) {
-    console.error("Captured error:", error);
-    return res
-      .status(500)
-      .json({ error: "Server error while retrieving the order item" });
+    return res.status(error.status).json({ error: error.error });
   }
 };
 
