@@ -69,17 +69,14 @@ export const updateCategory = async (req, res) => {
 
 // Supprimer une catégorie
 export const deleteCategory = async (req, res) => {
+  const id = req.params.id;
+  let category;
+
   try {
-    const category = await Categorie.findByPk(req.params.id);
-    if (!category) {
-      return res.status(404).json({ error: "Catégorie non trouvée" });
-    }
-    await category.destroy();
+    category = await Service.get(Categorie, id);
+    await Service.destroy(category);
     res.status(200).json({ message: "Categorie deleted" });
   } catch (error) {
-    console.error("Erreur lors de la suppression de la catégorie:", error);
-    res
-      .status(500)
-      .json({ error: "Erreur serveur lors de la suppression de la catégorie" });
+    return res.status(error.status).json({ error: error.error });
   }
 };

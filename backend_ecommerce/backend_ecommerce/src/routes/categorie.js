@@ -1,5 +1,6 @@
 import express from 'express';
 import * as categorieController from '../controllers/categorie.controller.js';
+import { verifieToken } from '../auth.js';
 
 const router = express.Router();
 

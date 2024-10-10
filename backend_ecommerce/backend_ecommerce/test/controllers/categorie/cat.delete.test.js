@@ -1,8 +1,15 @@
 import request from 'supertest';
 import { app } from 'server.js'; // Assurez-vous que le chemin est correct
 import { Categorie } from 'src/models/index.js'; // Importez votre modèle de catégorie
+import { prepareDatabase, teardownDatabase, getUserToken } from 'serverTest.js';
 
 describe('DELETE /api/categorie/:id', () => {
+    let user_john;
+
+    beforeAll(async () => {
+        await prepareDatabase();
+        user_john = await getUserToken('john.doe@example.com');
+    });
 
     afterEach(() => {
         jest.restoreAllMocks(); // Restaurer les mocks après chaque test
@@ -22,14 +29,15 @@ describe('DELETE /api/categorie/:id', () => {
 
         // Faire la requête DELETE pour supprimer la catégorie
         const response = await request(app)
-            .delete('/api/categorie/1'); // Assurez-vous que l'URL est correcte
+            .delete('/api/categorie/1') // Assurez-vous que l'URL est correcte
+            .set('Cookie', `access_token=${user_john}`);
 
         // Vérifications
         expect(response.status).toBe(200);
         expect(response.body).toEqual({ message: "Categorie deleted" });
 
         // Vérifier que Categorie.findByPk a été appelée avec l'ID correct (chaîne de caractères)
-        expect(findByPkSpy).toHaveBeenCalledWith("1");
+        expect(findByPkSpy).toHaveBeenCalledWith("1", {});
 
         // Vérifier que la méthode destroy a été appelée
         expect(mockCategory.destroy).toHaveBeenCalled();
@@ -41,14 +49,15 @@ describe('DELETE /api/categorie/:id', () => {
 
         // Faire la requête DELETE avec un ID qui n'existe pas
         const response = await request(app)
-            .delete('/api/categorie/999'); // Assurez-vous que l'URL est correcte
+            .delete('/api/categorie/999') // Assurez-vous que l'URL est correcte
+            .set('Cookie', `access_token=${user_john}`);
 
         // Vérifications
         expect(response.status).toBe(404);
-        expect(response.body).toEqual({ error: 'Catégorie non trouvée' });
+        expect(response.body).toEqual({ error: 'Not found' });
 
         // Vérifier que Categorie.findByPk a bien été appelée avec l'ID correct (chaîne de caractères)
-        expect(findByPkSpy).toHaveBeenCalledWith("999");
+        expect(findByPkSpy).toHaveBeenCalledWith("999", {});
     });
 
     it('500 ', async () => {
@@ -61,10 +70,10 @@ describe('DELETE /api/categorie/:id', () => {
 
         // Vérifications
         expect(response.status).toBe(500);
-        expect(response.body).toEqual({ error: 'Erreur serveur lors de la suppression de la catégorie' });
+        expect(response.body).toEqual({ error: 'Server error while findByPk' });
 
         // Vérifier que Categorie.findByPk a bien été appelée avec l'ID correct (chaîne de caractères)
-        expect(findByPkSpy).toHaveBeenCalledWith("1");
+        expect(findByPkSpy).toHaveBeenCalledWith("1", {});
     });
 
 });
