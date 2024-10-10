@@ -28,6 +28,7 @@ import PrivateRoute from './utils/helpers/PrivateRoute';
 import ForgotPasswordPage from './pages/forgetPasse/ForgotPasswordPage';
 import OTPVerificationPage from './pages/forgetPasse/OTPVerificationPage';
 import ResetPasswordPage from './pages/forgetPasse/ResetPasswordPage';
+import ResetPasswordSuccess from './pages/forgetPasse/ReasetPasswordsuccéss';
 
 
 
@@ -64,6 +65,7 @@ const App = () => {
           <Route path="/forgot-password" element={<ForgotPasswordPage />} />
         <Route path="/verify-otp" element={<OTPVerificationPage />} />
         <Route path="/reset-password" element={<ResetPasswordPage />} />
+        <Route path="/reset-password-success" element={<ResetPasswordSuccess />} />
 
 
 
