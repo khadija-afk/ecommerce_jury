@@ -40,6 +40,9 @@ down-all:
 start-all: down-all clean_node_modules build-base
 	docker-compose up --build -d
 
+start-app: down-all clean_node_modules build-base
+	docker-compose up --build -d backend frontend db phpmyadmi
+
 bash-b:
 	@docker exec -it backend bash
 
