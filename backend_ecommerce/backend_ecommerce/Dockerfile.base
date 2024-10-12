@@ -1,11 +1,16 @@
 # Utiliser l'image officielle de Node.js comme image de base
 FROM node:22
 
-# Copier le reste des fichiers de l'application
-COPY package.json .
+# Créer et définir le répertoire de travail
+WORKDIR /app
+
+# Copier uniquement les fichiers package.json et package-lock.json
+# pour installer les dépendances en premier
+COPY package.json package-lock.json ./
 
 # Installer les dépendances de l'application
-RUN rm -rf node_modules package-lock.json &&\
-    npm install &&\
+RUN npm cache clean --force &&\
+    npm ci &&\
+    npm update &&\
     npm rebuild bcrypt --build-from-source
 

@@ -9,6 +9,7 @@ services:
       - "9090:9090"
     volumes:
       - ./backend_ecommerce/backend_ecommerce:/app
+      - /app/node_modules
     environment:
       - NODE_ENV=${NODE_ENV}
       - DB_HOST=${DB_HOST}

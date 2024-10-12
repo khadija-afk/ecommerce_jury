@@ -5,7 +5,7 @@ export $(shell sed 's/=.*//' .env.local)
     
 
 clean_node_modules:
-	@rm -rf backend_ecommerce/backend_ecommerce/node_modules
+	rm -rf backend_ecommerce/backend_ecommerce/node_modules
 
 build-custom-jenkins:
 	docker build -t custom-jenkins . -f Dockerfile-jenkins 
@@ -16,13 +16,13 @@ test:
 start-front:
 	docker-compose up --build -d frontend
 
-start-back-build: clean_node_modules build-base
+start-back-build: clean_node_modules build-backend-base
 	docker-compose up --build -d backend
 
-build-base:
+build-backend-base:
 	@echo "Building base image from Dockerfile.base..."
 	cd backend_ecommerce/backend_ecommerce/ &&\
-	docker build -f Dockerfile.base -t backend_base:latest .
+	docker build -f Dockerfile.base -t backend_base:1.0.1 .
 
 start-back: clean_node_modules build-base
 	docker-compose down backend
