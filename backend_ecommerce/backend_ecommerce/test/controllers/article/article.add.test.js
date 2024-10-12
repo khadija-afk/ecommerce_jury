@@ -19,7 +19,7 @@ describe('POST /api/article', () => {
     });
 
     afterEach(() => {
-        jest.restoreAllMocks(); // Restaurer les mocks après chaque test
+        jest.restoreAllMocks(); 
     });
 
     it('201 ', async () => {
@@ -31,7 +31,7 @@ describe('POST /api/article', () => {
                 brand: 'New Brand',
                 price: 20.99,
                 stock: 50,
-                categorie_fk: 1, // Assurez-vous que cette catégorie existe dans la base de données de test
+                categorie_fk: 1, 
                 photo: null,
             })
             .set('Cookie', `access_token=${user_john}`);
@@ -42,7 +42,7 @@ describe('POST /api/article', () => {
     });
 
     it('404 ', async () => {
-        // Simuler un utilisateur inexistant
+        
         const response = await request(app)
             .post('/api/article')
             .send({
@@ -61,7 +61,7 @@ describe('POST /api/article', () => {
     });
 
     it('500', async () => {
-        // Simuler une erreur lors de la création de l'article
+       
         const mockCreate = jest.spyOn(Article, 'create').mockRejectedValueOnce(new Error('Erreur interne'));
 
         const response = await request(app)

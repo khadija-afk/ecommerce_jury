@@ -22,7 +22,7 @@ const swaggerOptions = {
       },
     ],
   },
-  apis: ['./routes/*.js'], // Chemin des fichiers où Swagger scannera les annotations
+  apis: ['./src/routes/*.js'], // Chemin des fichiers où Swagger scannera les annotations
 };
 
 // Initialisation de SwaggerJSDoc
