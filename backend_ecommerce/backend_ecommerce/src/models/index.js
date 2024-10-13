@@ -9,7 +9,12 @@ import orderDetailsModel from "./orderDetails.model.js";
 import orderItemsModel from "./orderItem.model.js";
 import paymentDetailsModel from "./paymentDetail.model.js";
 import dotenv from "dotenv";
+import AdminJS from 'adminjs'
+import AdminJSSequelize from '@adminjs/sequelize';
+
 // import logger from "../../../logger.js";
+
+
 
 dotenv.config();
 let sequelize;
@@ -34,6 +39,9 @@ if (process.env.NODE_ENV === 'test') {
         }
     );
 }
+
+
+
 
 // Importer les modèles et les associer à la connexion Sequelize
 userModel(sequelize, Sequelize);
@@ -104,8 +112,17 @@ const initializeDatabase = async () => {
   }
 };
 
+// Créer une instance d'AdminJS
+AdminJS.registerAdapter(AdminJSSequelize);
+const adminJs = new AdminJS({
+  databases: [sequelize], // Intégration de la base de données
+  // rootPath: '/admin',     // Chemin d'accès à l'interface d'administration
+});
+
+
 export {
-  sequelize as connection,
+  sequelize,
+  adminJs,
   initializeDatabase,
   User,
   Article,

@@ -3,11 +3,12 @@ import { env } from './src/config.js'
 import swaggerUi from 'swagger-ui-express'
 import swaggerDocs from './swagger.js'
 import cookieParser from 'cookie-parser'
+
 import cors from 'cors'
 import Stripe from 'stripe'
 
-// Connexion MySQL
-import './src/models/index.js'
+
+import './src/models/index.js';
 
 // // ROUTES
 import routerUser from './src/routes/user.js'
@@ -23,14 +24,17 @@ import routerStripe from './src/routes/stripe.js'
 import routes from './src/routes/reset.js'
 import routLogout from './src/routes/logout.js'
 import stripeWebhookRoute from './src/routes/stripewebhook.js'
+import routerAdmin from './src/routes/admin.js'
 
 
 
 
 const app = express()
 
+
 // PORT
 const PORT = env.port
+
 
 
 // Swagger
@@ -43,6 +47,9 @@ app.use(cors({
   origin: 'http://localhost:3000', // Votre frontend
   credentials: true
 }));
+
+// Utiliser le routeur AdminJS
+app.use('/admin', routerAdmin);
 
 // MIDDLEWARE TO ROUTE
 app.use("/api/user", routerUser)
@@ -72,5 +79,6 @@ export { app }
 if (process.env.NODE_ENV !== 'test') {
   app.listen(PORT, () => {
       console.log(`Listening at http://localhost:${PORT}`);
+      console.log(`Server started on http://localhost:${PORT}/admin`);
   });
 }

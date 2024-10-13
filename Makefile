@@ -24,7 +24,7 @@ build-backend-base:
 	cd backend_ecommerce/backend_ecommerce/ &&\
 	docker build -f Dockerfile.base -t backend_base:1.0.1 .
 
-start-back: clean_node_modules build-base
+start-back: clean_node_modules build-backend-base
 	docker-compose down backend
 	docker-compose up  backend 
 
@@ -37,10 +37,10 @@ start-j:
 down-all:
 	docker-compose down
 
-start-all: down-all clean_node_modules build-base
+start-all: down-all clean_node_modules build-backend-base
 	docker-compose up --build -d
 
-start-app: down-all clean_node_modules build-base
+start-app: down-all clean_node_modules build-backend-base
 	docker-compose up --build -d backend frontend db phpmyadmi
 
 bash-b:
