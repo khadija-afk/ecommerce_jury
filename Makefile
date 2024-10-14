@@ -28,7 +28,7 @@ start-back: clean_node_modules build-backend-base
 	docker-compose down backend
 	docker-compose up  backend 
 
-start-back-logs:
+bl:
 	docker-compose logs -f backend
 
 start-j:
@@ -43,7 +43,7 @@ start-all: down-all clean_node_modules build-backend-base
 start-app: down-all clean_node_modules build-backend-base
 	docker-compose up --build -d backend frontend db phpmyadmi
 
-bash-b:
+bb:
 	@docker exec -it backend bash
 
 bash-j:

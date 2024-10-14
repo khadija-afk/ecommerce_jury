@@ -35,28 +35,31 @@
     "winston-daily-rotate-file": "^5.0.0"
   },
   "jest": {
-    "transform": {
-      "^.+\\.jsx?$": "babel-jest"
-    },
-    "reporters": [
-      "default",
-      [
-        "jest-junit",
-        {
-          "outputDirectory": "./reports",
-          "outputName": "junit.xml"
-        }
-      ]
-    ],
-    "testPathIgnorePatterns": [
-      "/node_modules/"
-    ],
-    "moduleFileExtensions": [
-      "js",
-      "json",
-      "es6"
-    ]
+  "transform": {
+    "^.+\\.jsx?$": "babel-jest"
   },
+  "moduleNameMapper": {
+    "^(\\.{1,2}/.*)\\.js$": "$1"
+  },
+  "reporters": [
+    "default",
+    [
+      "jest-junit",
+      {
+        "outputDirectory": "./reports",
+        "outputName": "junit.xml"
+      }
+    ]
+  ],
+  "testPathIgnorePatterns": [
+    "/node_modules/"
+  ],
+  "moduleFileExtensions": [
+    "js",
+    "json",
+    "es6"
+  ]
+},
   "devDependencies": {
     "@babel/preset-env": "^7.25.4",
     "@cucumber/cucumber": "^11.0.1",

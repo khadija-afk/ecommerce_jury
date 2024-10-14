@@ -24,7 +24,7 @@ import routerStripe from './src/routes/stripe.js'
 import routes from './src/routes/reset.js'
 import routLogout from './src/routes/logout.js'
 import stripeWebhookRoute from './src/routes/stripewebhook.js'
-import routerAdmin from './src/routes/admin.js'
+import initializeAdminJS from './src/routes/admin.js'
 
 
 
@@ -49,7 +49,10 @@ app.use(cors({
 }));
 
 // Utiliser le routeur AdminJS
-app.use('/admin', routerAdmin);
+if (process.env.NODE_ENV != 'test') {
+  const admin = await initializeAdminJS()
+  app.use('/admin', admin)
+}
 
 // MIDDLEWARE TO ROUTE
 app.use("/api/user", routerUser)
