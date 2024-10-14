@@ -6,7 +6,7 @@ const router = express.Router();
 
 /**
  * @swagger
- * /api/categories:
+ * /api/categorie:
  *   get:
  *     summary: Récupérer toutes les catégories
  *     description: Renvoie la liste de toutes les catégories disponibles dans le système.
@@ -36,7 +36,7 @@ const router = express.Router();
  *       500:
  *         description: Erreur serveur
  */
-router.get('/', categorieController.getAllCategories);
+router.get('/', verifieToken, categorieController.getAllCategories);
 
 /**
  * @swagger
