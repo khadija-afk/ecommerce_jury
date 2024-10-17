@@ -40,6 +40,7 @@ services:
     environment:
       - NODE_ENV=${NODE_ENV}
       - VITE_PUBLIC_KEY_STRIPE=${VITE_PUBLIC_KEY_STRIPE}
+
     networks:
       - jenkins_net  # Ajouter au même réseau
 
@@ -70,6 +71,20 @@ services:
     networks:
       - jenkins_net  # Ajouter au même réseau
 
+  nginx:
+    image: nginx:latest
+    container_name: nginx-proxy
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+      - ./nginx/nginx_logs:/var/log/nginx
+    depends_on:
+      - backend
+      - frontend
+    networks:
+      - jenkins_net
+
   jenkins:
     image: custom-jenkins:latest
     container_name: jenkins
@@ -86,7 +101,6 @@ services:
       - JAVA_OPTS=-Djenkins.install.runSetupWizard=false  # Désactive l'assistant de configuration initiale
     networks:
       - jenkins_net
-
 
   sonarqube:
     image: sonarqube:community

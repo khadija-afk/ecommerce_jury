@@ -13,3 +13,6 @@ sudo chmod +x /usr/local/bin/docker-compose
 
 # Vérifier l'installation
 docker-compose --version
+
+sudo usermod -aG docker $USER
+sudo systemctl restart docker

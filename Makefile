@@ -37,6 +37,9 @@ start-j:
 down-all:
 	docker-compose down
 
+baws:
+	ssh -i "e-commerce.pem" ec2-user@ec2-13-53-198-233.eu-north-1.compute.amazonaws.com
+
 start-all: down-all clean_node_modules build-backend-base
 	docker-compose up --build -d
 

@@ -7,3 +7,6 @@ lcov-report
 .env.local
 
 e-commerce.pem
+
+error.log
+access.log
