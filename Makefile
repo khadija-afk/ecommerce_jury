@@ -52,6 +52,10 @@ bb:
 bash-j:
 	@docker exec -it jenkins bash
 
+openssl:
+	mkdir ssl &&\
+	openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout ssl/selfsigned.key -out ssl/selfsigned.crt -subj "//CN=localhost"
+
 sequelize-migrate:
 	@npx sequelize-cli db:migrate
 
