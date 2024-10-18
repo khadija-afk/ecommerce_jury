@@ -1,4 +1,4 @@
-const API = 'http://localhost:9090';
+const API = '';
 
 export async function fetchFromApi(endpoint, opts) {
     const { method, body } = { method: 'POST', body: null, ...opts };

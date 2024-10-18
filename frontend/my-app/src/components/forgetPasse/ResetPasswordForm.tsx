@@ -24,7 +24,7 @@ const ResetPasswordPage = () => {
     e.preventDefault();
     try {
       // Envoie la requête pour réinitialiser le mot de passe
-      await axios.put('http://localhost:9090/api/user/update', { email, newPassword });
+      await axios.put('/api/api/user/update', { email, newPassword });
       setMessage('Mot de passe réinitialisé avec succès.');
       setError('');
       navigate('/reset-password-success'); // Rediriger vers la page de connexion après succès

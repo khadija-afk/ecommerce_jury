@@ -56,7 +56,7 @@ const DetailArticle: React.FC = () => {
             }
 
             // Requête pour obtenir ou créer un panier pour cet utilisateur
-            const cartResponse = await axios.get(`http://localhost:9090/api/cart/cart`, {
+            const cartResponse = await axios.get(`/api/cart/cart`, {
                 withCredentials: true, // Envoyer les cookies
             });
 

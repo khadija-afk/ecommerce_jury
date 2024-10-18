@@ -30,7 +30,7 @@ export const signInUser = createAsyncThunk('auth/signInUser', async (credentials
     const instance  = axios.create({
         withCredentials: true
     })
-    const response = await instance.post('http://localhost:9090/api/user/sign', credentials);
+    const response = await instance.post('/api/api/user/sign', credentials);
     const { token } = response.data;
     console.log(token)
     const user = response.data;

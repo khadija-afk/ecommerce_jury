@@ -50,7 +50,7 @@ const UpdateUser: React.FC<UpdateUserProps> = ({ user, setOpen }) => {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
-      await axios.put(`http://localhost:9090/api/user/update/${formData.id}`, formData);
+      await axios.put(`/api/user/update/${formData.id}`, formData);
       setOpen(false);
     } catch (error) {
       console.error('Error updating user:', error);

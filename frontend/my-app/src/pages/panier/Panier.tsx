@@ -10,7 +10,7 @@ const Panier = () => {
     // Récupérer le panier de l'utilisateur
     const fetchCartByUser = async () => {
         try {
-            const response = await axios.get('http://localhost:9090/api/cart/cart', {
+            const response = await axios.get('/api/api/cart/cart', {
                 withCredentials: true // Envoyer les cookies dans la requête
             });
             const data = response.data;
@@ -41,7 +41,7 @@ const Panier = () => {
             const cartItemId = panier[index]?.id;
             if (!cartItemId) return;
 
-            await axios.delete(`http://localhost:9090/api/cartItem/cart-items/${cartItemId}`, {
+            await axios.delete(`/api/cartItem/cart-items/${cartItemId}`, {
                 withCredentials: true
             });
 

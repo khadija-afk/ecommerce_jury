@@ -9,7 +9,7 @@ export interface Review {
 
 export const getReviewsByProductId = async (productId: number): Promise<Review[]> => {
     try {
-        const response = await fetch(`http://localhost:9090/api/review/${productId}`);
+        const response = await fetch(`/api/review/${productId}`);
         if (!response.ok) {
             throw new Error(`Error fetching reviews for product ${productId}`);
         }
@@ -23,7 +23,7 @@ export const getReviewsByProductId = async (productId: number): Promise<Review[]
 
 export const getAverageRating = async (productId: number): Promise<number> => {
     try {
-        const response = await fetch(`http://localhost:9090/api/review/${productId}/average`);
+        const response = await fetch(`/api/review/${productId}/average`);
         if (!response.ok) {
             throw new Error(`Error fetching average rating for product ${productId}`);
         }

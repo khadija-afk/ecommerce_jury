@@ -74,7 +74,7 @@ export const PanierProvider: React.FC<{ children: ReactNode }> = ({ children }) 
   useEffect(() => {
     const loadPanier = async () => {
       try {
-        const response = await axios.get('http://localhost:9090/api/cart/cart', { withCredentials: true });
+        const response = await axios.get('/api/api/cart/cart', { withCredentials: true });
         const panierData = response.data.cartItems || [];
         console.log("Panier chargé depuis le backend: ", panierData);
         setPanier(panierData);
@@ -104,7 +104,7 @@ export const PanierProvider: React.FC<{ children: ReactNode }> = ({ children }) 
 
       setPanier([...panier, newProduct]);
 
-      await axios.post('http://localhost:9090/api/cartItem/cart-items', {
+      await axios.post('/api/api/cartItem/cart-items', {
         product_fk: product.id,
         quantity: 1,
       }, {
@@ -128,7 +128,7 @@ export const PanierProvider: React.FC<{ children: ReactNode }> = ({ children }) 
 
     // Mise à jour du serveur
     try {
-      await axios.put(`http://localhost:9090/api/cartItem/cart-items/${updatedCartItem.id}`, {
+      await axios.put(`/api/cartItem/cart-items/${updatedCartItem.id}`, {
         quantity: updatedCartItem.quantity,
       }, {
         withCredentials: true,
@@ -150,7 +150,7 @@ export const PanierProvider: React.FC<{ children: ReactNode }> = ({ children }) 
     setTotalPrice(recalculateTotalPrice(updatedPanier));
 
     try {
-      await axios.put(`http://localhost:9090/api/cartItem/cart-items/${updatedCartItem.id}`, {
+      await axios.put(`/api/cartItem/cart-items/${updatedCartItem.id}`, {
         quantity: updatedCartItem.quantity,
       }, {
         withCredentials: true,
@@ -169,7 +169,7 @@ export const PanierProvider: React.FC<{ children: ReactNode }> = ({ children }) 
     setTotalPrice(recalculateTotalPrice(updatedPanier));
 
     try {
-      await axios.delete(`http://localhost:9090/api/cartItem/cart-items/${articleToRemove.id}`, {
+      await axios.delete(`/api/cartItem/cart-items/${articleToRemove.id}`, {
         withCredentials: true,
       });
     } catch (error) {

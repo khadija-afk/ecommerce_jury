@@ -44,7 +44,7 @@ const token = localStorage.getItem('token');
 console.log(token)
 
 export const fetchArticles = createAsyncThunk('articles/fetchArticles', async () => {
-    const response = await axios.get('http://localhost:9090/api/article/', {
+    const response = await axios.get('/api/api/article/', {
         headers: {
             'Authorization': `Bearer ${token}`
         }
@@ -58,7 +58,7 @@ export const addArticle = createAsyncThunk('articles/addArticle', async (article
     });
 
     const token = localStorage.getItem('token');
-    const response = await instance.post('http://localhost:9090/api/article/', article, {
+    const response = await instance.post('/api/api/article/', article, {
         headers: {
             'Authorization': `Bearer ${token}`
         }
@@ -73,7 +73,7 @@ export const updateArticle = createAsyncThunk('articles/updateArticle', async (a
     });
   
     const token = localStorage.getItem('token');
-    const response = await instance.put(`http://localhost:9090/api/article/${article.id}`, article, {
+    const response = await instance.put(`/api/article/${article.id}`, article, {
       headers: {
         'Authorization': `Bearer ${token}`
       }
@@ -87,7 +87,7 @@ export const deleteArticle = createAsyncThunk('articles/deleteArticle', async (i
         withCredentials: true
       });
     const token = localStorage.getItem('token');
-    const response = await instance.delete(`http://localhost:9090/api/article/${id}`, {
+    const response = await instance.delete(`/api/article/${id}`, {
         headers: {
             'Authorization': `Bearer ${token}`
           }

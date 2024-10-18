@@ -53,7 +53,7 @@ const Checkout = () => {
     };
 
     try {
-      const response = await axios.post('http://localhost:9090/api/stripe/create-checkout-session', bodyData, {
+      const response = await axios.post('/api/api/stripe/create-checkout-session', bodyData, {
         withCredentials: true,
       });
 

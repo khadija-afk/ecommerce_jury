@@ -11,6 +11,6 @@ COPY package.json package-lock.json ./
 # Installer les dépendances de l'application
 RUN npm cache clean --force &&\
     npm ci &&\
-    npm update &&\
+    # npm update &&\
     npm rebuild bcrypt --build-from-source
 

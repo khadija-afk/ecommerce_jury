@@ -36,7 +36,7 @@ const Users: React.FC = () => {
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const response = await axios.get('http://localhost:9090/api/user/all');
+        const response = await axios.get('/api/api/user/all');
         setUsers(response.data);
       } catch (error) {
         console.error('Error fetching users:', error);
@@ -53,7 +53,7 @@ const Users: React.FC = () => {
 
   const handleDelete = async (id: number) => {
     try {
-      await axios.delete(`http://localhost:9090/api/user/delete/${id}`);
+      await axios.delete(`/api/user/delete/${id}`);
       setUsers(users.filter(user => user.id !== id));
     } catch (error) {
       console.error('Error deleting user:', error);

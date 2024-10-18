@@ -39,7 +39,7 @@ const AddUser: React.FC<AddUserProps> = ({ slug, setOpen, addUser }) => {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
-      const response = await axios.post(`http://localhost:9090/api/user/add`, formData); // Modification de l'URL
+      const response = await axios.post(`/api/user/add`, formData); // Modification de l'URL
       addUser(response.data); // Ajoutez le nouvel utilisateur à la liste
       setOpen(false);
     } catch (error) {

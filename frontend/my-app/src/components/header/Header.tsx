@@ -13,7 +13,7 @@ const Header: React.FC = () => {
     console.log('Total favorites:', totalFavorites());
     const checkAuthStatus = async () => {
       try {
-        const response = await fetch('http://localhost:9090/api/user/check_auth', {
+        const response = await fetch('/api/api/user/check_auth', {
           method: 'GET',
           credentials: 'include' 
         });
@@ -34,7 +34,7 @@ const Header: React.FC = () => {
 
   const handleLogout = async () => {
     try {
-      const response = await fetch('http://localhost:9090/api/Log/logout', {
+      const response = await fetch('/api/api/Log/logout', {
         method: 'POST',
         credentials: 'include'
       });

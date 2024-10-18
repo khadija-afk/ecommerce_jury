@@ -14,7 +14,7 @@ const StripeCheckout = ({ orderId }) => {
     useEffect(() => {
         const fetchUserEmail = async () => {
             try {
-                const response = await axios.get('http://localhost:9090/api/user/check_auth', { withCredentials: true });
+                const response = await axios.get('/api/api/user/check_auth', { withCredentials: true });
                 setEmail(response.data.email);
             } catch (error) {
                 console.error('Erreur lors de la récupération de l\'email de l\'utilisateur', error);

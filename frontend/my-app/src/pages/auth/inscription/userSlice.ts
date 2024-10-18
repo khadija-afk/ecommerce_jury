@@ -23,7 +23,7 @@ const initialState: UserState = {
 };
 
 export const registerUser = createAsyncThunk('user/registerUser', async (userData: UserData) => {
-    const response = await axios.post('http://localhost:9090/api/user/add', userData);
+    const response = await axios.post('/api/api/user/add', userData);
     return response.data;
 });
 
