@@ -23,6 +23,11 @@ start-nginx: down-all build-backend-base
 	@echo "CORS_URL is $(CORS_URL)"
 	docker-compose up --build -d nginx
 
+pull:
+	git pull
+
+deploy-prod: pull start-nginx
+
 start-front:
 	docker-compose up --build -d frontend
 
@@ -69,4 +74,5 @@ openssl:
 sequelize-migrate:
 	@npx sequelize-cli db:migrate
 
+.PHONY pull start-nginx
 
