@@ -74,5 +74,5 @@ openssl:
 sequelize-migrate:
 	@npx sequelize-cli db:migrate
 
-.PHONY pull start-nginx
+.PHONY: pull start-nginx
 
