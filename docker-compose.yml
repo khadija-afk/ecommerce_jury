@@ -10,6 +10,8 @@ services:
     volumes:
       - ./backend_ecommerce/backend_ecommerce:/app
       - /app/node_modules
+    depends_on:
+      - db
     environment:
       - NODE_ENV=${NODE_ENV}
       - DB_HOST=${DB_HOST}
@@ -57,6 +59,8 @@ services:
       # MYSQL_PASSWORD: ${MYSQL_PASSWORD}
     volumes:
       - mysql-data:/var/lib/mysql
+    depends_on:
+      - phpmyadmin
     networks:
       - jenkins_net  # Ajouter au même réseau
 
