@@ -2,7 +2,13 @@
 
 include .env.local
 export $(shell sed 's/=.*//' .env.local)
-    
+
+
+ifeq ($(ENV), DEV)
+	CORS_URL := https://localhost
+else ifeq ($(ENV), PROD)
+	CORS_URL := https://ec2-16-16-64-7.eu-north-1.compute.amazonaws.com
+endif
 
 clean_node_modules:
 	rm -rf backend_ecommerce/backend_ecommerce/node_modules
@@ -14,6 +20,7 @@ test:
 	npx jest
 
 start-nginx: build-backend-base
+	@echo "CORS_URL is $(CORS_URL)"
 	docker-compose up --build -d nginx
 
 start-front:
@@ -57,7 +64,7 @@ bash-j:
 
 openssl:
 	mkdir ssl &&\
-	openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout ssl/selfsigned.key -out ssl/selfsigned.crt -subj "//CN=localhost"
+	openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout ssl/selfsigned.key -out ssl/selfsigned.crt -subj "/CN=localhost"
 
 sequelize-migrate:
 	@npx sequelize-cli db:migrate

@@ -44,7 +44,7 @@ app.use(express.json())
 app.use(cookieParser())
 // Configurer CORS pour autoriser toutes les requêtes
 app.use(cors({
-  origin: 'https://localhost', // Votre frontend
+  origin: process.env.CORS_URL, // Votre frontend
   credentials: true
 }));
 
