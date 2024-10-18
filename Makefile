@@ -13,6 +13,9 @@ build-custom-jenkins:
 test:
 	npx jest
 
+start-nginx:
+	docker-compose up --build -d nginx
+
 start-front:
 	docker-compose up --build -d frontend
 
