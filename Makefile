@@ -13,7 +13,7 @@ build-custom-jenkins:
 test:
 	npx jest
 
-start-nginx:
+start-nginx: build-backend-base
 	docker-compose up --build -d nginx
 
 start-front:
@@ -41,7 +41,7 @@ down-all:
 	docker-compose down
 
 baws:
-	ssh -i "e-commerce.pem" ec2-user@ec2-13-60-245-138.eu-north-1.compute.amazonaws.com
+	ssh -i "e-commerce.pem" ubuntu@ec2-16-16-64-7.eu-north-1.compute.amazonaws.com
 
 start-all: down-all clean_node_modules build-backend-base
 	docker-compose up --build -d
