@@ -19,7 +19,7 @@ build-custom-jenkins:
 test:
 	npx jest
 
-start-nginx: build-backend-base
+start-nginx: down-all build-backend-base
 	@echo "CORS_URL is $(CORS_URL)"
 	docker-compose up --build -d nginx
 
