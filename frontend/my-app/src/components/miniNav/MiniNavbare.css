@@ -1,3 +1,4 @@
+/* Style général pour la barre de navigation */
 .mini-navbar {
   width: 100%;
   background-color: #fff;
@@ -5,11 +6,9 @@
   display: flex;
   align-items: center;
   position: relative;
-  left: 180px; /* Déplace la MiniNavbar vers la droite */
+  left: 180px; /* Déplace la MiniNavbar vers la droite sur les grands écrans */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
-
-
-
 
 .mini-navbar-list {
   display: flex;
@@ -33,4 +32,34 @@
 
 .mini-navbar-item a:hover {
   color: rgb(192, 93, 93);
+}
+
+/* Styles responsive pour les écrans plus petits */
+@media (max-width: 768px) {
+  .mini-navbar {
+    left: 0; /* Enlever le décalage à gauche sur les petits écrans */
+    padding: 10px 10px; /* Réduire le padding sur les petits écrans */
+  }
+
+  .mini-navbar-list {
+    flex-direction: column; /* Empiler les éléments en colonne */
+    align-items: flex-start; /* Aligner les éléments à gauche */
+  }
+
+  .mini-navbar-item {
+    margin: 10px 0; /* Plus d'espace entre les éléments dans la colonne */
+  }
+
+  .mini-navbar-item a {
+    font-size: 1.2rem; /* Agrandir un peu la taille de la police pour le mobile */
+    padding: 10px 16px; /* Plus de padding pour les liens sur mobile */
+  }
+}
+
+/* Style pour les très petits écrans */
+@media (max-width: 480px) {
+  .mini-navbar-item a {
+    font-size: 1rem; /* Ajustement de la taille pour les très petits écrans */
+    padding: 8px; /* Ajustement du padding pour les petits écrans */
+  }
 }

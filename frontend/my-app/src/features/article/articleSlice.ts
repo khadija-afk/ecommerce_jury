@@ -73,7 +73,7 @@ export const updateArticle = createAsyncThunk('articles/updateArticle', async (a
     });
   
     const token = localStorage.getItem('token');
-    const response = await instance.put(`/api/article/${article.id}`, article, {
+    const response = await instance.put(`api/api/article/${article.id}`, article, {
       headers: {
         'Authorization': `Bearer ${token}`
       }
@@ -87,7 +87,7 @@ export const deleteArticle = createAsyncThunk('articles/deleteArticle', async (i
         withCredentials: true
       });
     const token = localStorage.getItem('token');
-    const response = await instance.delete(`/api/article/${id}`, {
+    const response = await instance.delete(`api/api/article/${id}`, {
         headers: {
             'Authorization': `Bearer ${token}`
           }

@@ -1,4 +1,3 @@
-// MiniNavbar.tsx
 import React from 'react';
 import { Link } from 'react-router-dom';
 import './MiniNavbare.css'; // Assurez-vous de créer ce fichier CSS

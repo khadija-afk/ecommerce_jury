@@ -9,7 +9,7 @@ const Favoris = () => {
 
     return (
         <section>
-            {favorites.length > 0 ?
+            {favorites.length > 0 ? (
                 <>
                     <table className="table">
                         <thead>
@@ -20,28 +20,31 @@ const Favoris = () => {
                                 <th>Prix</th>
                                 <th>Date ajoutée</th>
                                 <th>Ajouter au panier</th>
-                                <th> </th>
+                                <th></th>
                             </tr>
                         </thead>
                         <tbody>
                             {favorites.map((article, index) => (
                                 <tr key={index}>
-                                    <td>
-                                        <img
-                                            src={article.photo}
-                                            alt={article.name}
-                                        />
+                                    <td data-label="Photo">
+                                        <img src={article.photo} alt={article.name} />
                                     </td>
-                                    <td>{article.name}</td>
-                                    <td>{article.content}</td>
-                                    <td>{article.price} €</td>
-                                    <td>{new Date().toLocaleDateString()}</td> {/* Supposons que c'est la date actuelle */}
-                                    <td>
-                                        <button className="button" onClick={() => addPanier(article)}>Ajouter au panier</button>
+                                    <td data-label="Nom">{article.name}</td>
+                                    <td data-label="Contenu">{article.content}</td>
+                                    <td data-label="Prix">{article.price} €</td>
+                                    <td data-label="Date ajoutée">
+                                        {new Date().toLocaleDateString()}
                                     </td>
-
-                                    <td>
-                                    <button className="removeButton" onClick={() => removeFavorite(article.id)}></button>
+                                    <td data-label="Ajouter au panier">
+                                        <button className="button" onClick={() => addPanier(article)}>
+                                            Ajouter au panier
+                                        </button>
+                                    </td>
+                                    <td data-label="Supprimer">
+                                        <button
+                                            className="removeButton"
+                                            onClick={() => removeFavorite(article.id)}
+                                        ></button>
                                     </td>
                                 </tr>
                             ))}
@@ -51,11 +54,11 @@ const Favoris = () => {
                         <p>Total des favoris : {totalFavorites()} articles</p>
                     </div>
                 </>
-                :
+            ) : (
                 <p>Pas de favoris !</p>
-            }
+            )}
         </section>
     );
-}
+};
 
 export default Favoris;

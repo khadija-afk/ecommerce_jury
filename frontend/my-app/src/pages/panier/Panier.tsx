@@ -41,7 +41,7 @@ const Panier = () => {
             const cartItemId = panier[index]?.id;
             if (!cartItemId) return;
 
-            await axios.delete(`/api/cartItem/cart-items/${cartItemId}`, {
+            await axios.delete(`api/api/cartItem/cart-items/${cartItemId}`, {
                 withCredentials: true
             });
 

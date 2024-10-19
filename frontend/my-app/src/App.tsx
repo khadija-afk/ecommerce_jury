@@ -20,6 +20,10 @@ import FavorisPage from './pages/favorie/Favorite';
 //ORDRS
 import Checkout from './pages/checkout/Checkout.js'
 
+//SEARCHE
+import SearchResults from './pages/search/SearcheReasulte';
+import NoResults from './pages/search/NoResult';
+
 // SERVICES
 import PublicRoute  from './utils/helpers/PublicRoute';
 import PrivateRoute from './utils/helpers/PrivateRoute';
@@ -52,6 +56,8 @@ const App = () => {
             <Route path = "/success" element = {<Success />} />
             <Route path = "/cancel" element = {<Canceled />} />
             <Route path = "/favoris" element = {<FavorisPage/>} />
+            <Route path = "/search" element = {<SearchResults/>} />
+            <Route path="/no-results" element={<NoResults/>} />
           </Route>
 
           {/* </Route> */}

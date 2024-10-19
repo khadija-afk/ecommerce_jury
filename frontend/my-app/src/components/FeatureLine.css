@@ -1,23 +1,52 @@
-/* FeatureLine.css */
+/* Style de la ligne de fonctionnalités */
 .feature-line {
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-    background-color: white;
-    padding: 10px 0;
-    margin-top: 20px;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  background-color: white;
+  padding: 10px 0;
+  margin-top: 20px;
+  gap: 20px; /* Ajoute un espacement entre les éléments sur grand écran */
+}
+
+.feature-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 14px;
+  color: black;
+}
+
+.feature-icon {
+  font-size: 18px;
+  color: rgb(198, 102, 102);
+}
+
+/* Styles responsive pour les écrans plus petits */
+@media (max-width: 768px) {
+  .feature-line {
+    flex-direction: column; /* Empiler les éléments verticalement sur petit écran */
+    gap: 15px; /* Espacement réduit entre les éléments */
+    padding: 15px 0; /* Augmenter légèrement le padding */
   }
-  
+
   .feature-item {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    font-size: 14px;
-    color: black;
+    font-size: 16px; /* Agrandir un peu la taille du texte pour mobile */
   }
-  
+
   .feature-icon {
-    font-size: 18px;
-    color: rgb(198, 102, 102);
+    font-size: 20px; /* Agrandir un peu les icônes pour les petits écrans */
   }
-  
+}
+
+/* Styles pour les très petits écrans (comme les téléphones) */
+@media (max-width: 480px) {
+  .feature-item {
+    font-size: 14px; /* Réduire légèrement la taille de la police pour les très petits écrans */
+    gap: 8px; /* Réduire l'espace entre les icônes et le texte */
+  }
+
+  .feature-icon {
+    font-size: 18px; /* Taille d'icône adaptée aux petits écrans */
+  }
+}

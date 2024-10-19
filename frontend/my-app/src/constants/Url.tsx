@@ -1,7 +1,7 @@
 // src/utils/constants/URL.ts
 
 // Définir l'URL de base de votre API
-const BASE_URL = '/api';
+const BASE_URL = 'api/api';
 
 // Exporter les URLs pour différentes ressources de votre application
 const URL = {

@@ -60,7 +60,7 @@ const router = express.Router();
  *       500:
  *         description: Erreur serveur
  */
-router.get('/cart/:id', verifieToken, getCartByUserId);
+router.get('/cart', verifieToken, getCartByUserId);
 
 /**
  * @swagger

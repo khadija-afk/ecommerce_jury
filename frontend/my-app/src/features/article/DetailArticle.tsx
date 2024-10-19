@@ -3,7 +3,6 @@ import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import { useDispatch, useSelector } from 'react-redux';
 import { usePanier } from '../../utils/PanierContext';
-import * as ACTIONS from './articleSlice';
 import { RootState, Article } from '../../types/Article';
 import './DetailArticles.css';
 import URL from '../../constants/Url';
@@ -28,17 +27,15 @@ const DetailArticle: React.FC = () => {
 
     useEffect(() => {
         const fetchArticle = async () => {
-            dispatch(ACTIONS.FETCH_ARTICLE_START());
             try {
-                const response = await axios.get(URL.GET_ONE_ARTICLE(id), {
+                const response = await axios.get(`api/api/artcile/${id}`, {
                     headers: {
                         'Authorization': `Bearer ${localStorage.getItem('token')}`
                     }
                 });
-                dispatch(ACTIONS.FETCH_ARTICLE_SUCCEEDED(response.data));
+                
             } catch (error) {
                 console.error(error);
-                dispatch(ACTIONS.FETCH_ARTICLE_FAILED());
             }
         };
 
@@ -56,7 +53,7 @@ const DetailArticle: React.FC = () => {
             }
 
             // Requête pour obtenir ou créer un panier pour cet utilisateur
-            const cartResponse = await axios.get(`/api/cart/cart`, {
+            const cartResponse = await axios.get(`api/api/cart/cart`, {
                 withCredentials: true, // Envoyer les cookies
             });
 
