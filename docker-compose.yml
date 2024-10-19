@@ -42,7 +42,7 @@ services:
     environment:
       - NODE_ENV=${NODE_ENV}
       - VITE_PUBLIC_KEY_STRIPE=${VITE_PUBLIC_KEY_STRIPE}
-
+      - VITE_CORS_URL=${VITE_CORS_URL}
     networks:
       - jenkins_net  # Ajouter au même réseau
 

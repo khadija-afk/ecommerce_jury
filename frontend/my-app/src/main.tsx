@@ -17,7 +17,7 @@ import { loadStripe } from '@stripe/stripe-js';
 // FAVORIE
 import { FavorisProvider } from './utils/FavorieContext';
 
-const stripePromise = loadStripe("pk_test_51Phom3EnHYhhKmcInexE46fzy9I8IPWmwGNlN3LWEAoZjTLCYtKelEVVuAr0Lf1dPc316bGFmxHZRdOevjfK4rT300mcydSb7T")
+const stripePromise = loadStripe(import.meta.env.VITE_PUBLIC_KEY_STRIPE)
 
 const root = document.getElementById('root') as HTMLElement
 

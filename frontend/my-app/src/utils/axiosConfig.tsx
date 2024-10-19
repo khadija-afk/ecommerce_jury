@@ -3,7 +3,7 @@ import axios from 'axios';
 
 // Créer une instance Axios avec une URL de base
 const apiClient = axios.create({
-  baseURL: 'https://localhost/', // Remplace par ton URL de base
+  baseURL: import.meta.env.VITE_CORS_URL, // Remplace par ton URL de base
 });
 
 apiClient.interceptors.response.use(

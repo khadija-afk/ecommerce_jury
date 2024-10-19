@@ -6,6 +6,7 @@ export $(shell sed 's/=.*//' .env.local)
 
 ifeq ($(ENV), DEV)
 	CORS_URL := https://localhost
+	VITE_CORS_URL=https://localhost
 else ifeq ($(ENV), PROD)
 	CORS_URL := https://ec2-16-16-64-7.eu-north-1.compute.amazonaws.com
 endif
@@ -31,6 +32,9 @@ deploy-prod: pull start-nginx
 start-front:
 	docker-compose up --build -d frontend
 
+rf:
+	docker-compose restart frontend
+
 start-back-build: clean_node_modules build-backend-base
 	docker-compose up --build -d backend
 
@@ -46,7 +50,7 @@ start-back: clean_node_modules build-backend-base
 bl:
 	docker-compose logs -f backend
 
-bf:
+lf:
 	docker-compose logs -f frontend
 
 start-j:
@@ -67,6 +71,10 @@ start-app: down-all clean_node_modules build-backend-base
 bb:
 	@docker exec -it backend bash
 
+bf:
+	@docker exec -it frontend bash
+
+
 bash-j:
 	@docker exec -it jenkins bash
 
@@ -77,5 +85,5 @@ openssl:
 sequelize-migrate:
 	@npx sequelize-cli db:migrate
 
-.PHONY: pull start-nginx
+.PHONY: pull start-nginx rf
 
