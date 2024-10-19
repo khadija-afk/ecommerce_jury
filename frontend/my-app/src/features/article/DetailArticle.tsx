@@ -1,11 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import axios from 'axios';
 import { useDispatch, useSelector } from 'react-redux';
 import { usePanier } from '../../utils/PanierContext';
 import { RootState, Article } from '../../types/Article';
 import './DetailArticles.css';
 import URL from '../../constants/Url';
+
+import apiClient from '../../utils/axiosConfig';
+
+
 
 const DetailArticle: React.FC = () => {
     const { addPanier } = usePanier();
@@ -28,7 +31,7 @@ const DetailArticle: React.FC = () => {
     useEffect(() => {
         const fetchArticle = async () => {
             try {
-                const response = await axios.get(`api/api/artcile/${id}`, {
+                const response = await apiClient.get(`api/api/article/${id}`, {
                     headers: {
                         'Authorization': `Bearer ${localStorage.getItem('token')}`
                     }
@@ -53,14 +56,14 @@ const DetailArticle: React.FC = () => {
             }
 
             // Requête pour obtenir ou créer un panier pour cet utilisateur
-            const cartResponse = await axios.get(`api/api/cart/cart`, {
+            const cartResponse = await apiClient.get(`api/api/cart/cart`, {
                 withCredentials: true, // Envoyer les cookies
             });
 
             const cartId = cartResponse.data.id; // Récupérer l'ID du panier
 
             // Ajouter l'article au backend
-            const response = await axios.post(URL.POST_CART_ITEMS, {
+            const response = await apiClient.post(URL.POST_CART_ITEMS, {
                 cart_fk: cartId,  // Utiliser l'ID du panier récupéré
                 product_fk: article.id,
                 quantity: 1

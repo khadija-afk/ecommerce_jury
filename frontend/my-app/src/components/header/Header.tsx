@@ -1,17 +1,20 @@
-import React, { useState, useEffect, useContext } from 'react';
-import { Navbar, Nav, Container, NavDropdown, Form, FormControl, Button, Badge } from 'react-bootstrap';
+import React, { useState, useEffect, useContext, useRef } from 'react';
+import { Navbar, Nav, Container, NavDropdown, Form, FormControl, Button, Badge, ListGroup } from 'react-bootstrap';
 import './Header.css';
 import { PanierContext } from '../../utils/PanierContext';
 import { useFavoris } from '../../utils/FavorieContext';
-import { useNavigate } from 'react-router-dom'; // Utilisé pour rediriger vers la page de résultats
-import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
+import apiClient from '../../utils/axiosConfig';
 
 const Header: React.FC = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [searchTerm, setSearchTerm] = useState(''); // État pour le terme de recherche
+  const [searchTerm, setSearchTerm] = useState(''); 
+  const [suggestions, setSuggestions] = useState([]); 
+  const [showSuggestions, setShowSuggestions] = useState(false); 
   const { totalArticle } = useContext(PanierContext);
   const { totalFavorites } = useFavoris();
-  const navigate = useNavigate(); // Utiliser `useNavigate` pour rediriger
+  const navigate = useNavigate();
+  const searchRef = useRef<HTMLDivElement>(null); // Référence pour la barre de recherche
 
   useEffect(() => {
     const checkAuthStatus = async () => {
@@ -44,41 +47,70 @@ const Header: React.FC = () => {
 
       if (response.ok) {
         const data = await response.json();
-        console.log(data.message);
         setIsLoggedIn(false);
         window.location.href = '/sign';
-      } else {
-        const error = await response.json();
-        console.error('Logout error:', error.message);
       }
     } catch (error) {
       console.error('Network error:', error);
     }
   };
 
-  // Gérer la soumission de la recherche
+  const handleSearchChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const searchTerm = e.target.value;
+    setSearchTerm(searchTerm);
+
+    if (searchTerm.trim() !== '') {
+      try {
+        const response = await apiClient.get(`/api/api/search/search?query=${searchTerm}`);
+        setSuggestions(response.data); 
+        setShowSuggestions(true); 
+      } catch (error) {
+        console.error('Erreur lors de la récupération des suggestions:', error);
+      }
+    } else {
+      setShowSuggestions(false); 
+    }
+  };
+
+  const handleSuggestionClick = (suggestion: string) => {
+    setSearchTerm(suggestion); 
+    setShowSuggestions(false); 
+    navigate(`/search?query=${suggestion}`);
+  };
+
   const handleSearch = async (e: React.FormEvent) => {
-    e.preventDefault(); // Empêcher le rechargement de la page
+    e.preventDefault(); 
 
     if (searchTerm.trim() === '') {
       return;
     }
 
-    // Effectuer la requête à l'API de recherche
     try {
-      const response = await axios.get(`api/api/search/search?query=${searchTerm}`);
+      const response = await apiClient.get(`/api/api/search/search?query=${searchTerm}`);
       if (response.data.length === 0) {
-        // Si aucun résultat n'est trouvé, rediriger vers la page "Aucun résultat trouvé"
         navigate('/no-results');
       } else {
-        // Rediriger vers la page de résultats de recherche (si tu en as une)
         navigate(`/search?query=${searchTerm}`);
       }
     } catch (error) {
       console.error('Erreur lors de la recherche:', error);
-      navigate('/no-results'); // Rediriger vers la page d'erreur en cas de problème
+      navigate('/no-results');
     }
   };
+
+  // Gestion du clic en dehors de la barre de recherche pour fermer les suggestions
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (searchRef.current && !searchRef.current.contains(event.target as Node)) {
+        setShowSuggestions(false); // Fermer les suggestions
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [searchRef]);
 
   return (
     <header>
@@ -88,19 +120,34 @@ const Header: React.FC = () => {
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav">
             <Nav className="me-auto w-100">
-              <Form className="d-flex mx-auto my-2 my-lg-0 w-100" onSubmit={handleSearch}>
+              <Form className="d-flex mx-auto my-2 my-lg-0 w-100" onSubmit={handleSearch} ref={searchRef}>
                 <FormControl
                   type="search"
                   placeholder="Rechercher"
                   className="mr-2 w-100"
                   aria-label="Search"
-                  value={searchTerm} // Liaison avec l'état
-                  onChange={(e) => setSearchTerm(e.target.value)} // Mettre à jour le terme de recherche
+                  value={searchTerm}
+                  onChange={handleSearchChange} 
                 />
                 <Button variant="outline-success" type="submit" className="ml-2">
                   Search
                 </Button>
               </Form>
+
+              {/* Affichage des suggestions */}
+              {showSuggestions && (
+                <ListGroup className="suggestions-list">
+                  {suggestions.map((suggestion) => (
+                    <ListGroup.Item
+                      key={suggestion.id}
+                      onClick={() => handleSuggestionClick(suggestion.name)}
+                      style={{ cursor: 'pointer' }}
+                    >
+                      {suggestion.name}
+                    </ListGroup.Item>
+                  ))}
+                </ListGroup>
+              )}
             </Nav>
             <Nav className="d-flex align-items-center">
               {isLoggedIn ? (

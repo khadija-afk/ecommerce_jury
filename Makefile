@@ -46,6 +46,9 @@ start-back: clean_node_modules build-backend-base
 bl:
 	docker-compose logs -f backend
 
+bf:
+	docker-compose logs -f frontend
+
 start-j:
 	docker-compose up --build -d jenkins
 

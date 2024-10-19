@@ -8,7 +8,8 @@ import './index.css';
 import { PanierProvider } from './utils/PanierContext';
 
 
-//STRIPE
+//STRIPE333333
+
 
 import { Elements } from '@stripe/react-stripe-js';
 import { loadStripe } from '@stripe/stripe-js';
