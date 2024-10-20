@@ -5,10 +5,11 @@ export $(shell sed 's/=.*//' .env.local)
 
 
 ifeq ($(ENV), DEV)
-	CORS_URL := https://localhost
-	VITE_CORS_URL=https://localhost
+include .env.dev
+export $(shell sed 's/=.*//' .env.dev)
 else ifeq ($(ENV), PROD)
-	CORS_URL := https://ec2-16-16-64-7.eu-north-1.compute.amazonaws.com
+include .env.prod
+export $(shell sed 's/=.*//' .env.prod)
 endif
 
 clean_node_modules:
@@ -21,7 +22,7 @@ test:
 	npx jest
 
 start-nginx: down-all build-backend-base
-	@echo "CORS_URL is $(CORS_URL)"
+	
 	docker-compose up --build -d nginx
 
 pull:
@@ -31,6 +32,9 @@ deploy-prod: pull start-nginx
 
 start-front:
 	docker-compose up --build -d frontend
+
+sz:
+	docker-compose up --build zap
 
 rf:
 	docker-compose restart frontend
@@ -52,11 +56,15 @@ bl:
 
 lf:
 	docker-compose logs -f frontend
+lz:
+	docker-compose logs -f zap
 
 start-j:
 	docker-compose up --build -d jenkins
 
 down-all:
+	@echo "CORS_URL is $(CORS_URL)"
+	@echo "VITE_CORS_URL is $(VITE_CORS_URL)"
 	docker-compose down
 
 baws:
@@ -73,6 +81,8 @@ bb:
 
 bf:
 	@docker exec -it frontend bash
+bz:
+	@docker exec -it zap bash
 
 
 bash-j:

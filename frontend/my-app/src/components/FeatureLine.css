@@ -1,3 +1,10 @@
+/* FeatureLine.css */
+
+/* Container pour le bouton toggle */
+.feature-line-container {
+  width: 100%;
+}
+
 /* Style de la ligne de fonctionnalités */
 .feature-line {
   display: flex;
@@ -6,7 +13,9 @@
   background-color: white;
   padding: 10px 0;
   margin-top: 20px;
-  gap: 20px; /* Ajoute un espacement entre les éléments sur grand écran */
+  gap: 20px;
+  transition: max-height 0.3s ease-out; /* Animation pour l'ouverture/fermeture */
+  overflow: hidden; /* Cache le contenu si la hauteur est 0 */
 }
 
 .feature-item {
@@ -22,31 +31,41 @@
   color: rgb(198, 102, 102);
 }
 
-/* Styles responsive pour les écrans plus petits */
+/* Bascule du menu pour petits écrans */
 @media (max-width: 768px) {
-  .feature-line {
-    flex-direction: column; /* Empiler les éléments verticalement sur petit écran */
-    gap: 15px; /* Espacement réduit entre les éléments */
-    padding: 15px 0; /* Augmenter légèrement le padding */
+  .feature-line.closed {
+    max-height: 0; /* Cache la ligne de fonctionnalités */
   }
 
-  .feature-item {
-    font-size: 16px; /* Agrandir un peu la taille du texte pour mobile */
+  .feature-line.open {
+    max-height: 100px; /* Ajustez selon la hauteur de votre contenu */
   }
 
-  .feature-icon {
-    font-size: 20px; /* Agrandir un peu les icônes pour les petits écrans */
+  /* Style du bouton de bascule (toggle) */
+  .feature-line-toggle {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #f8f9fa;
+    padding: 10px;
+    cursor: pointer;
+    border: 1px solid #ddd;
+    margin-bottom: 10px;
+  }
+
+  .toggle-icon {
+    font-size: 18px;
   }
 }
 
-/* Styles pour les très petits écrans (comme les téléphones) */
+/* Styles pour les très petits écrans */
 @media (max-width: 480px) {
   .feature-item {
-    font-size: 14px; /* Réduire légèrement la taille de la police pour les très petits écrans */
-    gap: 8px; /* Réduire l'espace entre les icônes et le texte */
+    font-size: 14px;
+    gap: 8px;
   }
 
   .feature-icon {
-    font-size: 18px; /* Taille d'icône adaptée aux petits écrans */
+    font-size: 18px;
   }
 }

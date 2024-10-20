@@ -34,6 +34,12 @@ import OTPVerificationPage from './pages/forgetPasse/OTPVerificationPage';
 import ResetPasswordPage from './pages/forgetPasse/ResetPasswordPage';
 import ResetPasswordSuccess from './pages/forgetPasse/ReasetPasswordsuccéss';
 
+//CATEGORY
+import VetementsPage from './pages/category/vetement/VetPage';
+import MaquillagePage from './pages/category/maquillage/MaqPage';
+import AccessoiresPage from './pages/category/accessoire/AccPage';
+import ChaussuresPage from './pages/category/chaussure/ChaussPage';
+
 
 
 //styles
@@ -58,6 +64,10 @@ const App = () => {
             <Route path = "/favoris" element = {<FavorisPage/>} />
             <Route path = "/search" element = {<SearchResults/>} />
             <Route path="/no-results" element={<NoResults/>} />
+            <Route path="/categorie/vetements" element={<VetementsPage/>} />
+            <Route path="/categorie/maquillage" element={<MaquillagePage/>} />
+            <Route path="/categorie/accessoires" element={<AccessoiresPage/>} />
+            <Route path="/categorie/chaussures" element={<ChaussuresPage/>} />
           </Route>
 
           {/* </Route> */}

@@ -1,99 +1,53 @@
 /* Header.css */
 
 .header {
-    width: 100%;
-    position: fixed;
-    top: 0;
-    left: 0;
-    z-index: 2000;
-    background-color: #fff;
-    margin-bottom: 20px; /* Ajoute un espace sous la navbar */
-    
+  width: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 2000;
+  background-color: #fff;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  padding: 10px 0;
 }
 
-.form-control {
-    width: 400px; /* Ajuster la longueur de la barre de recherche */
-    max-width: 100%;
-    margin-bottom: 10px; /* Ajoute de l'espace pour les suggestions */
-}
-
-
-.navbar-nav {
-    width: 50%;
-    display: flex;
-    justify-content: center;
-}
-
-.btn-outline-success {
-    margin-left: 5px;
-}
-
-.nav-link .fa-heart {
-    font-size: 1.5rem; /* Ajuste la taille de l'icône */
-    color: white; /* Couleur de l'icône en blanc */
-    text-shadow: 0 0 0.5px black; /* Crée une bordure grise subtile */
-    -webkit-text-stroke: 1px black; /* Bordure externe grise */
-  }
-  
-  .nav-link .fa-heart:hover {
-    color: red; /* Change la couleur au survol */
-    -webkit-text-stroke: 1px red; /* Change la bordure au survol */
+/* Ajustements pour mobile */
+@media (max-width: 767.98px) {
+  .navbar-nav {
+      display: none; /* Cache les icônes sur les petits écrans */
   }
 
-  .nav-link .fa-heart,
+  .offcanvas {
+      width: 250px; /* Largeur du Offcanvas pour mobile */
+  }
+
+  .offcanvas-body .nav-link {
+      font-size: 1.25rem; /* Agrandir les liens dans le Offcanvas */
+  }
+}
+
+/* Icônes et badges */
+.nav-link .fa-heart,
 .nav-link .fa-shopping-cart {
-  font-size: 1.5rem; /* Ajuste la taille de l'icône */
-  color: white; /* Couleur de l'icône en blanc */
-  text-shadow: 0 0 0.5px black; /* Crée une bordure grise subtile */
-  -webkit-text-stroke: 1px black; /* Bordure externe grise */
+  font-size: 1.5rem;
+  color: #fff;
+  text-shadow: 0 0 0.5px black;
+  -webkit-text-stroke: 0.5px black;
 }
 
-.form-inline {
-    position: relative; /* Assurer le positionnement relatif */
-    width: 100%;
-    display: flex;
-    justify-content: center;
+.nav-link .fa-heart:hover,
+.nav-link .fa-shopping-cart:hover {
+  color: red;
 }
 
-.suggestions-list {
-    position: absolute;
-    z-index: 1050;
-    width: 50%;
-    max-height: 200px;
-    overflow-y: auto;
-    background-color: white;
-    border: 1px solid #ddd;
-    margin-top: 5px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    left: 0;
-  }
-  
-  .suggestions-list .list-group-item {
-    cursor: pointer;
-    padding: 10px;
-    border-bottom: 1px solid #eee;
-  }
-  
-  .suggestions-list .list-group-item:hover {
-    background-color: #f8f9fa;
-  }
-
-  
-  
-
-
-  
-
-/* .nav-link .badge {
-    position: absolute;
-    top: 20px; 
-    right: 120px; 
-    background-color: red; 
-    color: white; 
-    padding: 0.3rem 0.5rem; 
-    border-radius: 50%; 
-    font-size: 0.75rem; 
-
-} 
-   
-   */
+.nav-link .badge {
+  position: absolute;
+  top: 0;
+  right: 0;
+  transform: translate(50%, -50%);
+  background-color: red;
+  color: white;
+  padding: 0.3rem 0.5rem;
+  border-radius: 50%;
+  font-size: 0.75rem;
+}

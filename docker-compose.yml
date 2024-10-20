@@ -46,6 +46,19 @@ services:
     networks:
       - jenkins_net  # Ajouter au même réseau
 
+  zap:
+    image: ghcr.io/zaproxy/zaproxy:stable
+    container_name: zap
+    volumes:
+      - ./zap/wrk/:/zap/wrk/  # Monte ton dossier local pour stocker le rapport
+    entrypoint: >
+      zap-baseline.py -t http://frontend:3000
+      -r /zap/wrk/testreport.html
+    networks:
+      - jenkins_net  # S'assurer que ZAP et le frontend sont sur le même réseau
+    environment:
+      - ZAP_LOG_LEVEL=INFO  # Optionnel, pour ajuster le niveau de log
+
   db:
     image: mysql:5.7
     container_name: mysql
