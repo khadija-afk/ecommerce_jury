@@ -9,25 +9,21 @@ const MaquillagePage = () => {
       id: 1,
       name: 'Rouge à lèvres mat',
       price: 14.99,
-      image: 'https://via.placeholder.com/150',
     },
     {
       id: 2,
       name: 'Palette d’ombres à paupières',
       price: 29.99,
-      image: 'https://via.placeholder.com/150',
     },
     {
       id: 3,
       name: 'Fond de teint liquide',
       price: 24.99,
-      image: 'https://via.placeholder.com/150',
     },
     {
       id: 4,
       name: 'Mascara volume intense',
       price: 19.99,
-      image: 'https://via.placeholder.com/150',
     },
     // Ajoutez d'autres produits ici
   ];

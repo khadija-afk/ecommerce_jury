@@ -9,25 +9,21 @@ const VetementsPage = () => {
       id: 1,
       name: 'T-shirt classique',
       price: 19.99,
-      image: 'https://via.placeholder.com/150',
     },
     {
       id: 2,
       name: 'Jeans slim',
       price: 49.99,
-      image: 'https://via.placeholder.com/150',
     },
     {
       id: 3,
       name: 'Blouson en cuir',
       price: 89.99,
-      image: 'https://via.placeholder.com/150',
     },
     {
       id: 4,
       name: 'Robe d’été',
       price: 39.99,
-      image: 'https://via.placeholder.com/150',
     },
     // Ajoutez d'autres produits ici
   ];

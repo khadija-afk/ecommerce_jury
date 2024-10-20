@@ -9,25 +9,21 @@ const AccessoiresPage = () => {
       id: 1,
       name: 'Montre en cuir',
       price: 79.99,
-      image: 'https://via.placeholder.com/150',
     },
     {
       id: 2,
       name: 'Sac à main en cuir',
       price: 129.99,
-      image: 'https://via.placeholder.com/150',
     },
     {
       id: 3,
       name: 'Chapeau de paille',
       price: 34.99,
-      image: 'https://via.placeholder.com/150',
     },
     {
       id: 4,
       name: 'Lunettes de soleil',
       price: 59.99,
-      image: 'https://via.placeholder.com/150',
     },
     // Ajoutez d'autres produits ici
   ];

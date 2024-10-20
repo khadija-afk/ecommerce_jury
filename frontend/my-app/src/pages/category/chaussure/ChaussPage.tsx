@@ -9,25 +9,21 @@ const ChaussuresPage = () => {
       id: 1,
       name: 'Sneakers tendance',
       price: 59.99,
-      image: 'https://via.placeholder.com/150',
     },
     {
       id: 2,
       name: 'Chaussures de ville',
       price: 89.99,
-      image: 'https://via.placeholder.com/150',
     },
     {
       id: 3,
       name: 'Sandales confort',
       price: 39.99,
-      image: 'https://via.placeholder.com/150',
     },
     {
       id: 4,
       name: 'Bottes en cuir',
       price: 119.99,
-      image: 'https://via.placeholder.com/150',
     },
     // Ajoutez d'autres produits ici
   ];
