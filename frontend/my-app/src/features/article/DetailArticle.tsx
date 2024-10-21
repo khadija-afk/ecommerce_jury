@@ -7,8 +7,7 @@ import './DetailArticles.css';
 import URL from '../../constants/Url';
 
 import apiClient from '../../utils/axiosConfig';
-
-
+import { getAverageRating } from '../../services/review/ReviewService'; // Pour récupérer la note moyenne
 
 const DetailArticle: React.FC = () => {
     const { addPanier } = usePanier();
@@ -21,6 +20,8 @@ const DetailArticle: React.FC = () => {
     );
 
     const [mainPhoto, setMainPhoto] = useState<string | null>(null);
+    const [averageRating, setAverageRating] = useState<number | null>(null);
+    const [reviewCount, setReviewCount] = useState<number>(0);
 
     useEffect(() => {
         if (article && article.photo && article.photo.length > 0) {
@@ -29,51 +30,50 @@ const DetailArticle: React.FC = () => {
     }, [article]);
 
     useEffect(() => {
-        const fetchArticle = async () => {
+        const fetchArticleDetails = async () => {
             try {
                 const response = await apiClient.get(`api/api/article/${id}`, {
                     headers: {
                         'Authorization': `Bearer ${localStorage.getItem('token')}`
                     }
                 });
-                
+
+                // Récupérer la note moyenne et le nombre d'avis
+                const rating = await getAverageRating(articleId);
+                setAverageRating(rating.average);
+                setReviewCount(rating.count); // Par exemple, si votre API retourne aussi le nombre d'avis
             } catch (error) {
                 console.error(error);
             }
         };
 
-        fetchArticle();
-    }, [id, dispatch]);
+        fetchArticleDetails();
+    }, [id, articleId, dispatch]);
 
     const handleAddToPanier = async (article: Article) => {
         try {
-            // Récupérer l'utilisateur connecté depuis le localStorage
             const user = JSON.parse(localStorage.getItem('user') || '{}');
-            const userId = user.id;  // Assurez-vous que l'ID utilisateur est bien stocké dans le localStorage
+            const userId = user.id;
 
             if (!userId) {
                 throw new Error("Utilisateur non connecté ou ID manquant");
             }
 
-            // Requête pour obtenir ou créer un panier pour cet utilisateur
             const cartResponse = await apiClient.get(`api/api/cart/cart`, {
-                withCredentials: true, // Envoyer les cookies
+                withCredentials: true,
             });
 
-            const cartId = cartResponse.data.id; // Récupérer l'ID du panier
+            const cartId = cartResponse.data.id;
 
-            // Ajouter l'article au backend
             const response = await apiClient.post(URL.POST_CART_ITEMS, {
-                cart_fk: cartId,  // Utiliser l'ID du panier récupéré
+                cart_fk: cartId,
                 product_fk: article.id,
                 quantity: 1
             }, {
-                withCredentials: true  // Envoyer les cookies avec la requête
+                withCredentials: true
             });
 
-            // Ajouter l'article au contexte (local)
             addPanier(article);
-
             console.log('Article ajouté au panier:', response.data);
         } catch (error) {
             console.error('Erreur lors de l\'ajout de l\'article au panier :', error);
@@ -108,11 +108,19 @@ const DetailArticle: React.FC = () => {
                             />
                         </div>
                     </div>
-                    <div>
+                    <div className="details-container">
                         <h2>{article.name}</h2>
+                        {averageRating && reviewCount && (
+                            <>
+                                <p>{averageRating.toFixed(1)}/5</p>
+                                <p>({reviewCount} avis)</p>
+                            </>
+                        )}
+                        <p className="price">{article.price} €</p>
                         <p>{article.content}</p>
-                        <p>{article.price} €</p>
-                        <button onClick={() => handleAddToPanier(article)}>AJOUTER</button>
+                        <button onClick={() => handleAddToPanier(article)}>
+                            AJOUTER AU PANIER ({article.price} €)
+                        </button>
                     </div>
                 </section>
             }

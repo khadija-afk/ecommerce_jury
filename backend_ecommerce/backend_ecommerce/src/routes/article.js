@@ -7,10 +7,9 @@ import {
   getById,
   updateById,
   deleteById,
-  // getByAsc,
-  // getByDesc,
   getByUser,
-  getReview
+  getReview,
+  getArticlesByCategory
 } from "../controllers/article.controller.js";
 
 /**
@@ -141,8 +140,7 @@ router.put('/:id', verifieToken, updateById);
  *     summary: Récupérer un élément par ID
  */
 router.delete('/:id', verifieToken, deleteById);
-// router.get('/sort/asc', getByAsc);
-// router.get('/sort/desc', getByDesc);
+
 
 /**
  * @swagger
@@ -159,4 +157,6 @@ router.get('/user/articles', verifieToken, getByUser);
  *     summary: Récupérer un éléme
  */
 router.get('/:id/avis', getReview);
+
+router.get('/category/:id', getArticlesByCategory)
 export default router;

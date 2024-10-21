@@ -1,4 +1,4 @@
-// src/services/reviewService.ts
+import apiClient from '../../utils/axiosConfig';
 
 export interface Review {
     id: number;
@@ -9,28 +9,20 @@ export interface Review {
 
 export const getReviewsByProductId = async (productId: number): Promise<Review[]> => {
     try {
-        const response = await fetch(`api/api/review/${productId}`);
-        if (!response.ok) {
-            throw new Error(`Error fetching reviews for product ${productId}`);
-        }
-        const data = await response.json();
-        return data;
+        const response = await apiClient.get(`/api/api/review/${productId}`);
+        return response.data; // Axios gère automatiquement le JSON
     } catch (error) {
-        console.error("Error fetching reviews:", error);
+        console.error(`Error fetching reviews for product ${productId}:`, error);
         throw error;
     }
 };
 
 export const getAverageRating = async (productId: number): Promise<number> => {
     try {
-        const response = await fetch(`api/api/review/${productId}/average`);
-        if (!response.ok) {
-            throw new Error(`Error fetching average rating for product ${productId}`);
-        }
-        const data = await response.json();
-        return parseFloat(data.averageRating);
+        const response = await apiClient.get(`/api/api/review/${productId}/average`);
+        return parseFloat(response.data.averageRating); // Convertir la note moyenne en nombre
     } catch (error) {
-        console.error("Error fetching average rating:", error);
+        console.error(`Error fetching average rating for product ${productId}:`, error);
         throw error;
     }
 };

@@ -1,92 +1,160 @@
 .bloc__detail {
     display: flex;
     flex-direction: row;
-    gap: 20px;
-    margin: 20px 0;
+    gap: 40px; /* Augmentation de l'espace pour une meilleure séparation */
+    margin: 40px 0;
+    align-items: center;
+    padding: 20px;
+    background-color: #f8f9fa; /* Fond léger pour démarquer la section */
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1); /* Légère ombre pour donner du relief */
 }
 
 .photo-container {
     display: flex;
     flex-direction: column;
+    align-items: center;
 }
 
 .thumbnails-container {
     display: flex;
-    flex-direction: column;
-    margin-right: 20px;
+    flex-direction: row; /* Miniatures alignées en ligne */
+    gap: 10px;
+    margin-bottom: 20px;
 }
 
 .main-photo-container {
     display: flex;
     align-items: center;
     justify-content: center;
+    border: 2px solid #dee2e6;
+    padding: 10px;
+    border-radius: 10px;
+    background-color: #fff;
 }
 
 .main-photo {
-    width: 400px;
-    height: 400px;
-    object-fit: cover; /* Pour que l'image couvre toute la zone */
+    width: 450px;
+    height: 450px;
+    object-fit: cover;
+    transition: transform 0.3s ease-in-out;
+    border-radius: 10px;
+}
+
+.main-photo:hover {
+    transform: scale(1.05); /* Zoom sur l'image principale au survol */
 }
 
 .thumbnail {
     width: 100px;
     height: 100px;
-    object-fit: cover; /* Assure une taille uniforme des miniatures */
-    margin-bottom: 10px;
+    object-fit: cover;
     cursor: pointer;
+    transition: all 0.3s ease;
+    border: 2px solid transparent;
+    border-radius: 5px;
 }
 
 .thumbnail:hover {
-    border: 2px solid #007bff;
-    opacity: 0.8;
+    border-color: #007bff; /* Bordure bleue au survol */
+    transform: scale(1.1);
+    opacity: 0.9;
+}
+
+.details-container {
+    max-width: 500px;
+}
+
+.details-container h2 {
+    font-size: 2.5rem;
+    margin-bottom: 20px;
+    color: #343a40;
+}
+
+.details-container .average-rating {
+    font-size: 1.2rem;
+    color: #ffc107; /* Couleur jaune pour la note */
+    margin-bottom: 5px;
+}
+
+.details-container .review-count {
+    font-size: 1rem;
+    color: #6c757d; /* Couleur grise pour le nombre d'avis */
+    margin-bottom: 20px;
+}
+
+.details-container .price {
+    font-size: 1.8rem;
+    font-weight: bold;
+    color: #28a745;
+    margin-bottom: 20px;
+}
+
+.details-container .description {
+    line-height: 1.6;
+    color: #495057;
+    margin-bottom: 20px;
+}
+
+.details-container button {
+    background-color: #001f3f;
+    color: white;
+    padding: 12px 25px;
+    font-size: 1.2rem;
+    border: none;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+    cursor: pointer;
+}
+
+.details-container button:hover {
+    background-color: #001030; /* Bleu marine plus foncé au survol */
 }
 
 /* Responsivité pour les écrans moyens (tablettes) */
 @media (max-width: 768px) {
     .bloc__detail {
-        flex-direction: column; /* Empiler les éléments sur les petits écrans */
+        flex-direction: column;
         align-items: center;
+        padding: 15px;
     }
 
     .main-photo {
-        width: 300px;
-        height: 300px; /* Réduire la taille de l'image principale sur les tablettes */
+        width: 350px;
+        height: 350px;
     }
 
     .thumbnail {
         width: 80px;
-        height: 80px; /* Réduire la taille des miniatures sur tablette */
+        height: 80px;
+    }
+
+    .details-container {
+        text-align: center;
     }
 }
 
-/* Responsivité pour les très petits écrans (mobiles) */
+/* Responsivité pour les petits écrans (mobiles) */
 @media (max-width: 480px) {
-    .bloc__detail {
-        flex-direction: column;
-        align-items: center;
-    }
-
     .main-photo {
-        width: 250px;
-        height: 250px; /* Taille réduite pour les petits écrans */
+        width: 300px;
+        height: 300px;
     }
 
     .thumbnail {
         width: 60px;
-        height: 60px; /* Miniatures encore plus petites pour mobile */
+        height: 60px;
     }
 
-    h2 {
-        font-size: 1.5rem; /* Ajuster la taille des titres */
-        text-align: center;
+    .details-container h2 {
+        font-size: 2rem;
     }
 
-    p {
-        font-size: 1rem; /* Réduire la taille du texte sur mobile */
-        text-align: center;
+    .details-container .price {
+        font-size: 1.5rem;
     }
 
-    button {
+    .details-container button {
         padding: 10px 20px;
         font-size: 1rem;
     }

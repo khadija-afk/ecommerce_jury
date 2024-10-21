@@ -4,6 +4,8 @@ import './Header.css';
 import { PanierContext } from '../../utils/PanierContext';
 import { useFavoris } from '../../utils/FavorieContext';
 import { useNavigate } from 'react-router-dom';
+import 'bootstrap-icons/font/bootstrap-icons.css';
+
 import apiClient from '../../utils/axiosConfig';
 
 const Header: React.FC = () => {
@@ -35,6 +37,22 @@ const Header: React.FC = () => {
     checkAuthStatus();
   }, []);
 
+  const handleLogout = async () => {
+    try {
+      const response = await fetch('/api/api/Log/logout', {
+        method: 'POST',
+        credentials: 'include'
+      });
+
+      if (response.ok) {
+        setIsLoggedIn(false); // Met à jour l'état après la déconnexion
+        navigate('/sign');
+      }
+    } catch (error) {
+      console.error('Error during logout:', error);
+    }
+  };
+
   const handleSearchChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(e.target.value);
   };
@@ -62,24 +80,32 @@ const Header: React.FC = () => {
                 onChange={handleSearchChange}
               />
               <Button variant="outline-primary" type="submit">
-                <i className="fas fa-search"></i>
+                <i className="bi bi-search"></i>
               </Button>
             </Form>
           </div>
 
           {/* Icônes affichées uniquement sur les grands écrans */}
           <Nav className="ms-auto d-none d-md-flex align-items-center">
-            <NavDropdown title="Bonjour, identifiez-vous" id="basic-nav-dropdown">
-              <NavDropdown.Item href="/sign">
-                <i className="fas fa-user"></i> Se connecter
-              </NavDropdown.Item>
-              <NavDropdown.Item href="/register">
-                <i className="fas fa-square"></i> Inscription
-              </NavDropdown.Item>
-            </NavDropdown>
+            {isLoggedIn ? (
+              <NavDropdown title="Mon compte" id="basic-nav-dropdown">
+                <NavDropdown.Item onClick={handleLogout}>
+                  <i className="fas fa-sign-out-alt"></i> Déconnexion
+                </NavDropdown.Item>
+              </NavDropdown>
+            ) : (
+              <NavDropdown title="Bonjour, identifiez-vous" id="basic-nav-dropdown">
+                <NavDropdown.Item href="/sign">
+                  <i className="fas fa-user"></i> Se connecter
+                </NavDropdown.Item>
+                <NavDropdown.Item href="/register">
+                  <i className="fas fa-square"></i> Inscription
+                </NavDropdown.Item>
+              </NavDropdown>
+            )}
 
             <Nav.Link href="/favoris" className="position-relative">
-              <i className="fas fa-heart"></i>
+              <i className="bi bi-heart"></i>
               {totalFavorites() > 0 && (
                 <Badge bg="danger" pill className="position-absolute top-0 start-100 translate-middle">
                   {totalFavorites()}
@@ -88,7 +114,7 @@ const Header: React.FC = () => {
             </Nav.Link>
 
             <Nav.Link href="/panier" className="position-relative mx-3">
-              <i className="fas fa-shopping-cart"></i>
+              <i className="bi bi-cart"></i>
               {totalArticle() > 0 && (
                 <Badge bg="danger" pill className="position-absolute top-0 start-100 translate-middle">
                   {totalArticle()}
@@ -109,14 +135,22 @@ const Header: React.FC = () => {
             </Offcanvas.Header>
             <Offcanvas.Body>
               <Nav className="d-flex flex-column">
-                <NavDropdown title="Bonjour, identifiez-vous" id="basic-nav-dropdown">
-                  <NavDropdown.Item href="/sign">
-                    <i className="fas fa-user"></i> Se connecter
-                  </NavDropdown.Item>
-                  <NavDropdown.Item href="/register">
-                    <i className="fas fa-square"></i> Inscription
-                  </NavDropdown.Item>
-                </NavDropdown>
+                {isLoggedIn ? (
+                  <NavDropdown title="Mon compte" id="offcanvas-nav-dropdown">
+                    <NavDropdown.Item onClick={handleLogout}>
+                      <i className="fas fa-sign-out-alt"></i> Déconnexion
+                    </NavDropdown.Item>
+                  </NavDropdown>
+                ) : (
+                  <NavDropdown title="Bonjour, identifiez-vous" id="offcanvas-nav-dropdown">
+                    <NavDropdown.Item href="/sign">
+                      <i className="fas fa-user"></i> Se connecter
+                    </NavDropdown.Item>
+                    <NavDropdown.Item href="/register">
+                      <i className="fas fa-square"></i> Inscription
+                    </NavDropdown.Item>
+                  </NavDropdown>
+                )}
 
                 <Nav.Link href="/favoris" className="position-relative">
                   <i className="fas fa-heart"></i>

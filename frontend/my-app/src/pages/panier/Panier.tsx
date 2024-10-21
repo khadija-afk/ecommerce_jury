@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { PanierContext } from "../../utils/PanierContext";
-import axios from 'axios';
+import apiClient from '../../utils/axiosConfig';
 import Checkout from '../checkout/Checkout'
 import './Panier.css'; // Importer le fichier CSS
 
@@ -10,12 +10,12 @@ const Panier = () => {
     // Récupérer le panier de l'utilisateur
     const fetchCartByUser = async () => {
         try {
-            const response = await axios.get('/api/api/cart/cart', {
-                withCredentials: true // Envoyer les cookies dans la requête
+            const response = await apiClient.get('/api/api/cart/cart', {
+                withCredentials: true 
             });
             const data = response.data;
             console.log("Données du panier reçues : ", data);
-            setPanier(data.cartItems);  // Mettre à jour le contexte avec les articles du panier
+            setPanier(data.cartItems);  
         } catch (error) {
             console.error('Erreur lors de la récupération du panier', error);
         }
@@ -41,7 +41,7 @@ const Panier = () => {
             const cartItemId = panier[index]?.id;
             if (!cartItemId) return;
 
-            await axios.delete(`api/api/cartItem/cart-items/${cartItemId}`, {
+            await apiClient.delete(`api/api/cartItem/cart-items/${cartItemId}`, {
                 withCredentials: true
             });
 

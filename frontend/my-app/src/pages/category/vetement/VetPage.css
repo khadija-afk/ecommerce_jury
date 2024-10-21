@@ -1,61 +1,46 @@
-/* VetementsPage.css */
-
-/* Style pour la page de vêtements */
 .vetements-page {
-    margin-top: 20px;
-    padding: 20px;
-    background-color: #f8f9fa;
-  }
-  
-  .product-grid {
-    margin-top: 20px;
-  }
-  
-  .product-grid .card {
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    transition: transform 0.3s ease;
-    height: 100%; /* S'assurer que chaque carte prend toute la hauteur possible */
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between; /* S'assurer que les éléments sont bien répartis */
-  }
-  
-  .product-grid .card:hover {
-    transform: translateY(-5px); /* Légère élévation au survol */
-  }
-  
-  .product-grid .card-title {
-    font-size: 18px;
-    font-weight: bold;
-    text-align: center;
-  }
-  
-  .product-grid .card-text {
-    font-size: 16px;
-    text-align: center;
-  }
-  
-  .product-grid .card-body {
-    flex-grow: 1; /* Permet au corps de la carte de s'étendre */
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-  }
-  
-  .product-grid .card-img-top {
-    height: 200px; /* Fixer la hauteur de l'image */
-    object-fit: cover; /* S'assure que l'image ne déborde pas et garde ses proportions */
-  }
-  
-  .product-grid .btn {
-    background-color: rgb(192, 93, 93);
-    border: none;
-    transition: background-color 0.3s ease;
-    align-self: center; /* Centrer le bouton */
-    margin-top: 10px;
-  }
-  
-  .product-grid .btn:hover {
-    background-color: rgb(150, 75, 75);
-  }
-  
+  padding: 20px;
+}
+
+.product-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.custom-card {
+  position: relative;
+  width: 100%;
+  height: 400px;
+  overflow: hidden;
+  cursor: pointer;
+  transition: transform 0.3s ease-in-out;
+}
+
+.custom-card-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s ease-in-out;
+}
+
+.custom-card-body {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: rgba(255, 255, 255, 0.8); /* Fond blanc avec légère transparence */
+  color: #000; /* Texte noir */
+  text-align: center;
+  padding: 10px;
+  opacity: 0;
+  transition: opacity 0.3s ease-in-out;
+}
+
+.custom-card:hover .custom-card-body {
+  opacity: 1;
+}
+
+.custom-card:hover .custom-card-img {
+  transform: scale(1.1);
+}

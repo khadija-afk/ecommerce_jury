@@ -4,7 +4,7 @@ import { usePanier } from '../../utils/PanierContext';
 import { useNavigate } from 'react-router-dom';
 import { fetchFromApi } from '../../utils/helpers/Stripe'; // Remplacez par le bon chemin d'importation
 
-import axios from 'axios';
+import apiClient from '../../utils/axiosConfig';
 
 const Checkout = () => {
   const stripe = useStripe(); // Initialisation de Stripe
@@ -53,7 +53,7 @@ const Checkout = () => {
     };
 
     try {
-      const response = await axios.post('/api/api/stripe/create-checkout-session', bodyData, {
+      const response = await apiClient.post('/api/api/stripe/create-checkout-session', bodyData, {
         withCredentials: true,
       });
 

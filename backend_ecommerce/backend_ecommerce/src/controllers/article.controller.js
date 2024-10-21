@@ -117,3 +117,15 @@ export const getReview = async (req, res) => {
     return res.status(error.status).json({ error: error.error });
   }
 };
+
+export const getArticlesByCategory = async (req, res) => {
+  const categoryId = req.params.id;
+  try {
+    const articles = await Article.findAll({
+      where: { categorie_fk: categoryId },
+    });
+    res.status(200).json(articles);
+  } catch (error) {
+    res.status(500).json({ error: error.message }); // Affiche l'erreur réelle
+  }
+};

@@ -1,5 +1,5 @@
 import React, { createContext, useState, useEffect, ReactNode, useContext } from 'react';
-import axios from 'axios';
+import apiClient from './axiosConfig';
 
 // Définition du type d'article
 interface Article {
@@ -29,7 +29,7 @@ interface PanierContextType {
   decremente: (index: number) => void;
   removeArticle: (index: number) => void;
   priceArticleByQuantity: (price: number, quantity: number) => number;
-  setPanier: React.Dispatch<React.SetStateAction<Article[]>>;
+  setPanier: React.Dispatch<React.SetStateAction<CartItem[]>>;
 }
 
 // Création du contexte
@@ -54,17 +54,7 @@ export const PanierProvider: React.FC<{ children: ReactNode }> = ({ children }) 
     const total = panier.reduce((acc, item) => {
       const price = parseFloat(item.article.price.toString()) || 0; // S'assurer que le prix est un nombre
       const quantity = item.quantity || 1; // Quantité par défaut à 1 si non définie
-      const itemTotal = price * quantity;
-
-      // Debug : Affichage des détails de l'article
-      console.log(
-        "Article:", item.article.name || "Inconnu",
-        "Prix:", price,
-        "Quantité:", quantity,
-        "Total Article:", itemTotal
-      );
-
-      return acc + itemTotal;
+      return acc + price * quantity;
     }, 0);
 
     return parseFloat(total.toFixed(2)); // Arrondir à 2 décimales pour le total
@@ -74,9 +64,8 @@ export const PanierProvider: React.FC<{ children: ReactNode }> = ({ children }) 
   useEffect(() => {
     const loadPanier = async () => {
       try {
-        const response = await axios.get('/api/api/cart/cart', { withCredentials: true });
+        const response = await apiClient.get('/api/api/cart/cart', { withCredentials: true });
         const panierData = response.data.cartItems || [];
-        console.log("Panier chargé depuis le backend: ", panierData);
         setPanier(panierData);
         setTotalPrice(recalculateTotalPrice(panierData));
       } catch (error) {
@@ -95,23 +84,26 @@ export const PanierProvider: React.FC<{ children: ReactNode }> = ({ children }) 
   // Fonction pour ajouter un article au panier
   const addPanier = async (product: Article) => {
     try {
-      const newProduct = {
-        ...product,
-        name: product.name || 'Produit sans nom',
-        price: product.price || 0,
-        quantity: product.quantity || 1,
+      const newCartItem: CartItem = {
+        id: Math.random(), // Utilisation d'un ID temporaire pour l'instant
+        cart_fk: 1, // L'ID du panier peut être récupéré dynamiquement si nécessaire
+        product_fk: product.id,
+        quantity: 1, // Par défaut, 1 article est ajouté
+        article: { ...product }, // L'article ajouté doit inclure toutes les propriétés d'un article
       };
 
-      setPanier([...panier, newProduct]);
+      const updatedPanier = [...panier, newCartItem];
+      setPanier(updatedPanier);
+      setTotalPrice(recalculateTotalPrice(updatedPanier));
 
-      await axios.post('/api/api/cartItem/cart-items', {
+      // Envoi de l'article au backend (API)
+      await apiClient.post('/api/api/cartItem/cart-items', {
         product_fk: product.id,
         quantity: 1,
       }, {
         withCredentials: true
       });
 
-      setTotalPrice(recalculateTotalPrice([...panier, newProduct]));
     } catch (error) {
       console.error('Erreur lors de l\'ajout au panier :', error);
     }
@@ -128,7 +120,7 @@ export const PanierProvider: React.FC<{ children: ReactNode }> = ({ children }) 
 
     // Mise à jour du serveur
     try {
-      await axios.put(`/api/cartItem/cart-items/${updatedCartItem.id}`, {
+      await apiClient.put(`api/api/cartItem/cart-items/${updatedCartItem.id}`, {
         quantity: updatedCartItem.quantity,
       }, {
         withCredentials: true,
@@ -150,7 +142,7 @@ export const PanierProvider: React.FC<{ children: ReactNode }> = ({ children }) 
     setTotalPrice(recalculateTotalPrice(updatedPanier));
 
     try {
-      await axios.put(`/api/cartItem/cart-items/${updatedCartItem.id}`, {
+      await apiClient.put(`api/api/cartItem/cart-items/${updatedCartItem.id}`, {
         quantity: updatedCartItem.quantity,
       }, {
         withCredentials: true,
@@ -169,7 +161,7 @@ export const PanierProvider: React.FC<{ children: ReactNode }> = ({ children }) 
     setTotalPrice(recalculateTotalPrice(updatedPanier));
 
     try {
-      await axios.delete(`/api/cartItem/cart-items/${articleToRemove.id}`, {
+      await apiClient.delete(`api/api/cartItem/cart-items/${articleToRemove.id}`, {
         withCredentials: true,
       });
     } catch (error) {

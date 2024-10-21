@@ -27,16 +27,16 @@
 }
 
 /* Icônes et badges */
-.nav-link .fa-heart,
-.nav-link .fa-shopping-cart {
+.nav-link .bi-heart,
+.nav-link .bi-cart {
   font-size: 1.5rem;
   color: #fff;
   text-shadow: 0 0 0.5px black;
   -webkit-text-stroke: 0.5px black;
 }
 
-.nav-link .fa-heart:hover,
-.nav-link .fa-shopping-cart:hover {
+.nav-link .bi-heart:hover,
+.nav-link .bi-cart:hover {
   color: red;
 }
 
