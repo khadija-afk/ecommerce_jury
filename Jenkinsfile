@@ -47,8 +47,7 @@ pipeline {
                 script {
                     // Run tests for both frontend and backend
                     dir('backend_ecommerce/backend_ecommerce') {
-                        sh 'zap-baseline.py -t https://nginx
-      -r testreport.html'
+                        sh 'zap-baseline.py -t https://nginx -r testreport.html'
                     }
                 }
             }
