@@ -41,7 +41,12 @@ pipeline {
         }
 
         stage('Run Tests Security') {
-            agent { docker { image 'ghcr.io/zaproxy/zaproxy:stable' } }
+            agent { 
+                docker { 
+                    image 'ghcr.io/zaproxy/zaproxy:stable'
+                    args '-v $WORKSPACE/zap-output:/zap/wrk'
+                    }
+                }
 
             steps {
                 script {
@@ -106,6 +111,10 @@ pipeline {
 
         
     }
-
     
+    post {
+    always {
+        archiveArtifacts artifacts: 'zap-output/testreport.html', allowEmptyArchive: true
+    }
+}
     }
