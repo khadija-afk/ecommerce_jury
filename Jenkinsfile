@@ -26,7 +26,35 @@ pipeline {
             }
         }
 
-        stage('Run Tests') {
+        stage('Run Tests Behaver') {
+            agent { docker { image 'node:21' } }
+
+            steps {
+                script {
+                    // Run tests for both frontend and backend
+                    dir('backend_ecommerce/backend_ecommerce') {
+                        sh 'pwd'
+                        sh 'make bdd'
+                    }
+                }
+            }
+        }
+
+        stage('Run Tests Security') {
+            agent { docker { image 'ghcr.io/zaproxy/zaproxy:stable' } }
+
+            steps {
+                script {
+                    // Run tests for both frontend and backend
+                    dir('backend_ecommerce/backend_ecommerce') {
+                        sh 'zap-baseline.py -t https://nginx
+      -r testreport.html'
+                    }
+                }
+            }
+        }
+
+        stage('Run Tests Unitaires') {
             agent { docker { image 'node:21' } }
 
             steps {
