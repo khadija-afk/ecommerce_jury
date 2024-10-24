@@ -7,7 +7,7 @@ import { verifieToken } from '../auth.js';
 const router = express.Router();
 
 // Définir la route pour créer une session de paiement
-router.post("/create-checkout-session", verifieToken, stripe.createCheckoutSession);
+router.post("/create-checkout-session", verifieToken, stripe.checkout);
 
 // Exporter le routeur pour qu'il puisse être utilisé dans l'application principale
 export default router;

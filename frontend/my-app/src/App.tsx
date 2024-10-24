@@ -42,6 +42,8 @@ import ChaussuresPage from './pages/category/chaussure/ChaussPage';
 
 
 
+
+
 //styles
 
 

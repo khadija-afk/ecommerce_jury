@@ -4,7 +4,10 @@ import './Header.css';
 import { PanierContext } from '../../utils/PanierContext';
 import { useFavoris } from '../../utils/FavorieContext';
 import { useNavigate } from 'react-router-dom';
-import 'bootstrap-icons/font/bootstrap-icons.css';
+
+// Import FontAwesome
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faUser, faHeart, faShoppingCart, faBars, faSearch, faSignOutAlt } from '@fortawesome/free-solid-svg-icons';
 
 import apiClient from '../../utils/axiosConfig';
 
@@ -16,7 +19,6 @@ const Header: React.FC = () => {
   const navigate = useNavigate();
   const searchRef = useRef<HTMLDivElement>(null);
 
-  // État pour afficher/cacher l'Offcanvas sur mobile
   const [showOffcanvas, setShowOffcanvas] = useState(false);
 
   const handleCloseOffcanvas = () => setShowOffcanvas(false);
@@ -68,7 +70,6 @@ const Header: React.FC = () => {
     <header>
       <Navbar expand="lg" bg="white" variant="light" className="py-3">
         <Container fluid>
-          {/* Logo et barre de recherche à gauche */}
           <div className="d-flex align-items-center w-50">
             <Navbar.Brand href="/">KenziShop</Navbar.Brand>
             <Form className="d-flex mx-3 w-100" onSubmit={handleSearch} ref={searchRef}>
@@ -80,32 +81,31 @@ const Header: React.FC = () => {
                 onChange={handleSearchChange}
               />
               <Button variant="outline-primary" type="submit">
-                <i className="bi bi-search"></i>
+                <FontAwesomeIcon icon={faSearch} />
               </Button>
             </Form>
           </div>
 
-          {/* Icônes affichées uniquement sur les grands écrans */}
           <Nav className="ms-auto d-none d-md-flex align-items-center">
             {isLoggedIn ? (
               <NavDropdown title="Mon compte" id="basic-nav-dropdown">
                 <NavDropdown.Item onClick={handleLogout}>
-                  <i className="fas fa-sign-out-alt"></i> Déconnexion
+                  <FontAwesomeIcon icon={faSignOutAlt} /> Déconnexion
                 </NavDropdown.Item>
               </NavDropdown>
             ) : (
               <NavDropdown title="Bonjour, identifiez-vous" id="basic-nav-dropdown">
                 <NavDropdown.Item href="/sign">
-                  <i className="fas fa-user"></i> Se connecter
+                  <FontAwesomeIcon icon={faUser} /> Se connecter
                 </NavDropdown.Item>
                 <NavDropdown.Item href="/register">
-                  <i className="fas fa-square"></i> Inscription
+                  <FontAwesomeIcon icon={faUser} /> Inscription
                 </NavDropdown.Item>
               </NavDropdown>
             )}
 
             <Nav.Link href="/favoris" className="position-relative">
-              <i className="bi bi-heart"></i>
+              <FontAwesomeIcon icon={faHeart} />
               {totalFavorites() > 0 && (
                 <Badge bg="danger" pill className="position-absolute top-0 start-100 translate-middle">
                   {totalFavorites()}
@@ -114,7 +114,7 @@ const Header: React.FC = () => {
             </Nav.Link>
 
             <Nav.Link href="/panier" className="position-relative mx-3">
-              <i className="bi bi-cart"></i>
+              <FontAwesomeIcon icon={faShoppingCart} />
               {totalArticle() > 0 && (
                 <Badge bg="danger" pill className="position-absolute top-0 start-100 translate-middle">
                   {totalArticle()}
@@ -123,12 +123,10 @@ const Header: React.FC = () => {
             </Nav.Link>
           </Nav>
 
-          {/* Bouton pour afficher le Offcanvas sur les petits écrans */}
           <Button variant="outline-primary" className="d-md-none" onClick={handleShowOffcanvas}>
-            <i className="fas fa-bars"></i>
+            <FontAwesomeIcon icon={faBars} />
           </Button>
 
-          {/* Offcanvas pour mobile */}
           <Offcanvas show={showOffcanvas} onHide={handleCloseOffcanvas} placement="end">
             <Offcanvas.Header closeButton>
               <Offcanvas.Title>Menu</Offcanvas.Title>
@@ -138,22 +136,22 @@ const Header: React.FC = () => {
                 {isLoggedIn ? (
                   <NavDropdown title="Mon compte" id="offcanvas-nav-dropdown">
                     <NavDropdown.Item onClick={handleLogout}>
-                      <i className="fas fa-sign-out-alt"></i> Déconnexion
+                      <FontAwesomeIcon icon={faSignOutAlt} /> Déconnexion
                     </NavDropdown.Item>
                   </NavDropdown>
                 ) : (
                   <NavDropdown title="Bonjour, identifiez-vous" id="offcanvas-nav-dropdown">
                     <NavDropdown.Item href="/sign">
-                      <i className="fas fa-user"></i> Se connecter
+                      <FontAwesomeIcon icon={faUser} /> Se connecter
                     </NavDropdown.Item>
                     <NavDropdown.Item href="/register">
-                      <i className="fas fa-square"></i> Inscription
+                      <FontAwesomeIcon icon={faUser} /> Inscription
                     </NavDropdown.Item>
                   </NavDropdown>
                 )}
 
                 <Nav.Link href="/favoris" className="position-relative">
-                  <i className="fas fa-heart"></i>
+                  <FontAwesomeIcon icon={faHeart} />
                   {totalFavorites() > 0 && (
                     <Badge bg="danger" pill className="position-absolute top-0 start-100 translate-middle">
                       {totalFavorites()}
@@ -162,7 +160,7 @@ const Header: React.FC = () => {
                 </Nav.Link>
 
                 <Nav.Link href="/panier" className="position-relative mx-3">
-                  <i className="fas fa-shopping-cart"></i>
+                  <FontAwesomeIcon icon={faShoppingCart} />
                   {totalArticle() > 0 && (
                     <Badge bg="danger" pill className="position-absolute top-0 start-100 translate-middle">
                       {totalArticle()}
