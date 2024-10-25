@@ -21,6 +21,13 @@ const Checkout = () => {
 
   const handleCheckout = async (e) => {
     e.preventDefault();
+
+    // Validation des champs obligatoires
+    if (!firstName || !lastName || !address || !city || !phone || !email || !paymentMethod) {
+      alert("Veuillez remplir tous les champs obligatoires.");
+      return;
+    }
+
     setLoading(true);
 
     if (paymentMethod === 'stripe') {
@@ -107,9 +114,7 @@ const Checkout = () => {
     <div className="checkout-container">
       {/* Formulaire de paiement à gauche */}
       <div className="checkout-form">
-        <h2>Validation de la Commande</h2>
         
-        <h3>Informations Personnelles</h3>
         <input 
           type="text" 
           placeholder="Prénom" 
@@ -146,8 +151,6 @@ const Checkout = () => {
           value={email} 
           onChange={e => setEmail(e.target.value)} 
         />
-
-        <h3>Méthode de Paiement</h3>
         <select value={paymentMethod} onChange={e => setPaymentMethod(e.target.value)}>
           <option value="">Sélectionnez une méthode de paiement</option>
           <option value="cheque">Règlement par chèque</option>
@@ -170,14 +173,11 @@ const Checkout = () => {
           </div>
         )}
 
-        <button onClick={handleCheckout} disabled={loading}>
-          {loading ? 'Traitement...' : 'Passer la commande'}
-        </button>
       </div>
 
       {/* Récapitulatif du panier à droite */}
       <div className="checkout-summary">
-        <h3>Résumé de la Commande</h3>
+        <h3>Votre Commande</h3>
         {panier.map((cartItem, index) => (
           <div key={index} className="summary-item">
             <p>{cartItem.article.name} × {cartItem.quantity} — {cartItem.article.price} €</p>
@@ -186,7 +186,12 @@ const Checkout = () => {
         <p>Sous-total: {totalPrice.toFixed(2)} €</p>
         <p>Frais d'expédition: 15.00 € (Tarif forfaitaire)</p>
         <p>Total: {(totalPrice + 15.00).toFixed(2)} €</p>
+
+        <button className="checkout-button" onClick={handleCheckout} disabled={loading}>
+          {loading ? 'Traitement...' : 'Passer la commande'}
+        </button>
       </div>
+
     </div>
   );
 };

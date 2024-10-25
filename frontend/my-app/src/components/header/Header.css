@@ -1,5 +1,3 @@
-/* Header.css */
-
 .header {
   width: 100%;
   position: fixed;
@@ -11,18 +9,27 @@
   padding: 10px 0;
 }
 
+.header-content {
+  max-width: 1200px; /* Limite la largeur du contenu */
+  margin: 0 auto; /* Centre le contenu horizontalement */
+  padding: 0 60px; /* Ajoute du padding à gauche et à droite pour éviter que le contenu touche les bords */
+  display: flex;
+  justify-content: space-between; /* Distribue les éléments de manière uniforme */
+  align-items: center; /* Aligne les éléments verticalement au centre */
+}
+
 /* Ajustements pour mobile */
 @media (max-width: 767.98px) {
   .navbar-nav {
-      display: none; /* Cache les icônes sur les petits écrans */
+    display: none; /* Cache les icônes sur les petits écrans */
   }
 
   .offcanvas {
-      width: 250px; /* Largeur du Offcanvas pour mobile */
+    width: 250px; /* Largeur du Offcanvas pour mobile */
   }
 
   .offcanvas-body .nav-link {
-      font-size: 1.25rem; /* Agrandir les liens dans le Offcanvas */
+    font-size: 1.25rem; /* Agrandir les liens dans le Offcanvas */
   }
 }
 

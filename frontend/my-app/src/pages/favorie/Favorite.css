@@ -1,32 +1,38 @@
 .table {
   width: 100%;
   border-collapse: collapse;
-  margin: 20px 0;
+  margin: 20px auto; /* Centrer la table */
+  margin-top: 80px; /* Ajoute un espace entre le haut de la page et la table */
+  max-width: 1500px; /* Limite la largeur de la table */
 }
 
 .table th, .table td {
   padding: 10px;
-  text-align: left;
+  text-align: center; /* Centre le contenu horizontalement dans les cellules */
+  vertical-align: middle; /* Centre le contenu verticalement dans les cellules */
   border-bottom: 1px solid #ddd;
 }
 
 .table th {
-  background-color: #f4f4f4;
+  background-color: none;
 }
 
 .table img {
-  width: 100px;
-  height: auto;
+  width: 100px;  /* Largeur fixe pour l'image */
+  height: 100px; /* Hauteur fixe pour l'image, la rendant carrée */
+  object-fit: cover; /* L'image garde son ratio tout en couvrant l'espace */
+  border-radius: 4px; /* Coins arrondis (optionnel) */
 }
 
 .table .button {
   margin-right: 10px;
   padding: 5px 10px;
-  background-color: #28a745;
-  color: white;
+  background-color: rgb(248, 245, 245);
+  color: black;
   border: none;
   border-radius: 4px;
   cursor: pointer;
+  text-align: center; /* Centre le texte à l'intérieur du bouton */
 }
 
 .table .removeButton {
@@ -46,7 +52,7 @@
 }
 
 .table .removeButton:hover {
-  background-color: darkred;
+  background-color: #ff6666;
 }
 
 .table .removeButton:focus {
@@ -54,17 +60,13 @@
 }
 
 .table .removeButton::before {
-  content: "×";
+  content: "×"; /* Le caractère de suppression dans le bouton */
   font-family: Arial, sans-serif;
   font-weight: bold;
 }
 
-.totalContainer {
-  margin-top: 20px;
-  text-align: center;
-}
 
-/* Responsivité pour les petits écrans */
+/* Pour la responsivité */
 @media (max-width: 768px) {
   .table, .table tbody, .table tr, .table th, .table td {
     display: block;
@@ -103,17 +105,5 @@
   .table .button {
     padding: 5px 8px;
     font-size: 14px;
-  }
-}
-
-/* Pour les très petits écrans (moins de 480px) */
-@media (max-width: 480px) {
-  .table img {
-    width: 60px;
-  }
-
-  .table .button {
-    padding: 4px 6px;
-    font-size: 12px;
   }
 }

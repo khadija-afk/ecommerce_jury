@@ -23,6 +23,25 @@ const Panier = () => {
         }
     };
 
+    // Fonction pour supprimer un article du panier
+    const handleRemoveCartItem = async (index) => {
+        try {
+            const cartItemId = panier[index]?.id; // Récupère l'ID de l'article à supprimer
+            if (!cartItemId) return;
+
+            // Supprimer l'article via l'API
+            await apiClient.delete(`/api/api/cartItem/cart-items/${cartItemId}`, {
+                withCredentials: true
+            });
+
+            // Mettre à jour le panier localement après suppression
+            const newPanier = panier.filter((_, i) => i !== index);
+            setPanier(newPanier); // Mise à jour de l'état du panier
+        } catch (error) {
+            console.error('Erreur lors de la suppression de l\'article', error);
+        }
+    };
+
     // Recalculer le prix total des articles
     const recalculateTotalPrice = () => {
         const total = panier.reduce((acc, item) => {
@@ -66,7 +85,7 @@ const Panier = () => {
                             </thead>
                             <tbody>
                                 {panier.map((cartItem, index) => (
-                                    <tr key={index}>
+                                <tr key={index}>
                                         <td>
                                             {cartItem?.article?.photo?.[0] ? (
                                                 <img
@@ -87,10 +106,13 @@ const Panier = () => {
                                             </div>
                                         </td>
                                         <td>{(cartItem?.article?.price * cartItem.quantity)?.toFixed(2) || "0.00"} $</td>
-                                        <td>
-                                            <button className="removeButton" onClick={() => handleRemoveArticle(index)}>Supprimer</button>
-                                        </td>
-                                    </tr>
+                                        <td data-label="Supprimer">
+                                            <button
+                                                className="removeButton"
+                                                onClick={() => handleRemoveCartItem(index)}
+                                            ></button>
+                                         </td>
+                                </tr>
                                 ))}
                             </tbody>
                         </table>

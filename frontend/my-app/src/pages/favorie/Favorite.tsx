@@ -15,7 +15,6 @@ const Favoris = () => {
                         <thead>
                             <tr>
                                 <th>Photo</th>
-                                <th>Nom</th>
                                 <th>Contenu</th>
                                 <th>Prix</th>
                                 <th>Date ajoutée</th>
@@ -29,7 +28,6 @@ const Favoris = () => {
                                     <td data-label="Photo">
                                         <img src={article.photo} alt={article.name} />
                                     </td>
-                                    <td data-label="Nom">{article.name}</td>
                                     <td data-label="Contenu">{article.content}</td>
                                     <td data-label="Prix">{article.price} €</td>
                                     <td data-label="Date ajoutée">
@@ -50,9 +48,6 @@ const Favoris = () => {
                             ))}
                         </tbody>
                     </table>
-                    <div className="totalContainer">
-                        <p>Total des favoris : {totalFavorites()} articles</p>
-                    </div>
                 </>
             ) : (
                 <p>Pas de favoris !</p>
