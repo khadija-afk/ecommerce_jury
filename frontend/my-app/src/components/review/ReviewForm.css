@@ -1,0 +1,58 @@
+.review-form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    max-width: 500px;
+    margin-top: 20px;
+}
+
+.review-form h3 {
+    font-size: 1.5rem;
+    margin-bottom: 10px;
+}
+
+.error {
+    color: red;
+    font-size: 0.9rem;
+    margin-bottom: 10px;
+}
+
+.rating {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.rating label {
+    font-size: 1.2rem;
+    color: #333;
+}
+
+.comment label {
+    font-size: 1.2rem;
+    color: #333;
+}
+
+textarea {
+    padding: 10px;
+    font-size: 1rem;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    resize: vertical;
+    min-height: 80px;
+}
+
+button {
+    background-color: #001f3f;
+    color: #fff;
+    padding: 12px 20px;
+    font-size: 1rem;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+button:hover {
+    background-color: #001030;
+}

@@ -17,9 +17,14 @@ export const getReviewsByProductId = async (productId: number): Promise<Review[]
     }
 };
 
+// Pour le retour de getAverageRating, assure-toi que la structure de l'API correspond bien
+interface AverageRatingResponse {
+    averageRating: string;
+}
+
 export const getAverageRating = async (productId: number): Promise<number> => {
     try {
-        const response = await apiClient.get(`/api/api/review/${productId}/average`);
+        const response = await apiClient.get<AverageRatingResponse>(`/api/api/review/${productId}/average`);
         return parseFloat(response.data.averageRating); // Convertir la note moyenne en nombre
     } catch (error) {
         console.error(`Error fetching average rating for product ${productId}:`, error);

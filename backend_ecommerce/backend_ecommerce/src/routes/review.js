@@ -1,6 +1,6 @@
 import express from 'express';
 import { verifieToken } from '../auth.js';
-import { getAllReviews, getReviewById, createReview, updateReview, deleteReview, getAverageRating } from '../controllers/review.controller.js';
+import { getAllReviews, getReviewById, createReview, updateReview, deleteReview, getAverageRating, getReviewsByProductId } from '../controllers/review.controller.js';
 
 const router = express.Router();
 
@@ -242,4 +242,5 @@ router.delete('/:id', verifieToken, deleteReview);
  */
 router.get('/:productId/average', getAverageRating);
 
+router.get('/product/:productId', getReviewsByProductId);
 export default router;

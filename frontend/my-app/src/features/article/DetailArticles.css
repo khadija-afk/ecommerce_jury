@@ -5,9 +5,8 @@
     margin: 40px 0;
     align-items: center;
     padding: 20px;
-    background-color: #f8f9fa; /* Fond léger pour démarquer la section */
     border-radius: 10px;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1); /* Légère ombre pour donner du relief */
+
 }
 
 .photo-container {
@@ -27,10 +26,8 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    border: 2px solid #dee2e6;
     padding: 10px;
     border-radius: 10px;
-    background-color: #fff;
 }
 
 .main-photo {
@@ -159,3 +156,51 @@
         font-size: 1rem;
     }
 }
+
+.reviews-section {
+    margin-top: 40px;
+    padding: 20px;
+    border-radius: 10px;
+}
+
+.reviews-section h3 {
+    font-size: 1.5rem;
+    color: #343a40;
+    margin-bottom: 20px;
+}
+
+.rating-summary {
+    font-size: 1rem;
+    color: #6c757d;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.reviews-link {
+    background: none;
+    border: none;
+    color: #007bff;
+    cursor: pointer;
+    font-size: 1rem;
+    margin-left: 10px;
+    text-decoration: underline;
+}
+
+.reviews-link:hover {
+    color: #0056b3;
+}
+
+.rating-summary {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 1.2rem;
+    color: #6c757d;
+}
+
+.rating-text {
+    margin-left: 10px;
+}
+
+

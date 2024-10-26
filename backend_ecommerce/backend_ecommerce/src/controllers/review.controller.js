@@ -1,18 +1,62 @@
 // controllers/reviewController.js
 import { Sequelize } from "sequelize";
-import { Review } from "../models/index.js";
+import { Review, OrderDetails, OrderItems, Article } from "../models/index.js";
 import * as Service from "../services/service.js";
 
-// Get all reviews
+// Get all reviews grouped by product with product details
 export const getAllReviews = async (req, res) => {
   try {
-    const reviews = await Review.findAll();
+    const reviews = await Review.findAll({
+      include: [
+        {
+          model: Article,
+          attributes: ['id', 'name', 'price'], // Récupère uniquement les champs nécessaires du produit
+        }
+      ],
+      attributes: [
+        'id',
+        'product_fk',
+        'user_fk',
+        'rating',
+        'comment',
+        [Sequelize.fn("AVG", Sequelize.col("rating")), "averageRating"]
+      ],
+      group: ['Review.id', 'Review.product_fk', 'Review.user_fk', 'Review.rating', 'Review.comment', 'Article.id'], // Ajoute toutes les colonnes nécessaires
+      raw: true
+    });
+
     res.status(200).json(reviews);
   } catch (error) {
     console.error("Error getting reviews:", error);
     res.status(500).json({ error: "Server error while getting reviews" });
   }
 };
+
+// Get reviews by product ID
+export const getReviewsByProductId = async (req, res) => {
+  try {
+    const productId = req.params.productId; // Récupère l'ID du produit depuis les paramètres de la requête
+
+    const reviews = await Review.findAll({
+      where: { product_fk: productId },
+      include: [
+        {
+          model: Article,
+          attributes: ['id', 'name', 'price']
+        }
+      ],
+      attributes: ['id', 'product_fk', 'user_fk', 'rating', 'comment'],
+      raw: true
+    });
+
+    res.status(200).json(reviews);
+  } catch (error) {
+    console.error(`Error fetching reviews for product ${productId}:`, error);
+    res.status(500).json({ error: "Server error while fetching reviews for product" });
+  }
+};
+
+
 
 // Get review by ID
 export const getReviewById = async (req, res) => {
@@ -26,27 +70,43 @@ export const getReviewById = async (req, res) => {
   }
 };
 
-// Create a new review
+// Create a new review with purchase verification
 export const createReview = async (req, res) => {
   try {
     const { product_fk, rating, comment } = req.body;
     const user_fk = req.user.id; // Utiliser l'ID de l'utilisateur connecté
 
+    // Vérifie si l'utilisateur a acheté le produit
+    const hasPurchased = await OrderDetails.findOne({
+      where: { user_fk },
+      include: [
+        {
+          model: OrderItems,
+          where: { product_fk },
+          attributes: [], // On ne récupère que les commandes contenant ce produit
+        },
+      ],
+    });
+
+    if (!hasPurchased) {
+      return res.status(403).json({ error: "Vous ne pouvez pas laisser un avis pour un produit non acheté." });
+    }
+
+    // Crée un nouvel avis si l'utilisateur a acheté le produit
     const newReview = await Review.create({
       user_fk,
       product_fk,
       rating,
       comment,
     });
+
     res.status(201).json(newReview);
   } catch (error) {
     console.error("Error creating review:", error);
-    res
-      .status(500)
-      .json({
-        error: "Server error while creating review",
-        detail: error.message,
-      });
+    res.status(500).json({
+      error: "Server error while creating review",
+      detail: error.message,
+    });
   }
 };
 
