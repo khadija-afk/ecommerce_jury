@@ -8,6 +8,7 @@ import cartItemModel from "./cartItem.model.js";
 import orderDetailsModel from "./orderDetails.model.js";
 import orderItemsModel from "./orderItem.model.js";
 import paymentDetailsModel from "./paymentDetail.model.js";
+import favorieModel from "./favorie.model.js";
 import dotenv from "dotenv";
 
 
@@ -56,6 +57,7 @@ cartItemModel(sequelize, Sequelize);
 orderDetailsModel(sequelize, Sequelize);
 orderItemsModel(sequelize, Sequelize);
 paymentDetailsModel(sequelize, Sequelize);
+favorieModel(sequelize, Sequelize);
 
 const {
   User,
@@ -67,6 +69,7 @@ const {
   OrderDetails,
   OrderItems,
   PaymentDetails,
+  Favorite,
 } = sequelize.models;
 
 // Définir les relations ici
@@ -103,12 +106,19 @@ OrderItems.belongsTo(OrderDetails, { foreignKey: "order_fk" });
 OrderItems.belongsTo(Article, { foreignKey: "product_fk" });
 Article.hasMany(OrderItems, { foreignKey: "product_fk" });
 
+// Définir les relations pour Favorie
+User.hasMany(Favorite, { foreignKey: "user_fk" });
+Favorite.belongsTo(User, { foreignKey: "user_fk" });
+
+Article.hasMany(Favorite, { foreignKey: "product_fk" });
+Favorite.belongsTo(Article, { foreignKey: "product_fk" });
+
 const initializeDatabase = async () => {
   try {
     await sequelize.authenticate();
     console.log("Connection has been established successfully.");
 
-    await sequelize.sync({ alter: true });
+    await sequelize.sync({ force: true });
     console.log("All models were synchronized successfully.");
   } catch (error) {
     console.error("Unable to connect to the database or synchronize:", error);
@@ -130,4 +140,5 @@ export {
   OrderDetails,
   OrderItems,
   PaymentDetails,
+  Favorite,
 };

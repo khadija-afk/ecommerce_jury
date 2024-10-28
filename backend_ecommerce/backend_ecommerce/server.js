@@ -20,6 +20,7 @@ import routerCart from './src/routes/cart.js'
 import routerCartItem from './src/routes/cartItem.js'
 import routerOrderItem from './src/routes/orderItem.js'
 import routerPaymentDetails from './src/routes/paymentDetail.js'
+import routerFavorie from './src/routes/favorie.js'
 import routerStripe from './src/routes/stripe.js'
 import routes from './src/routes/reset.js'
 import routLogout from './src/routes/logout.js'
@@ -65,6 +66,7 @@ app.use("/api/cart", routerCart)
 app.use("/api/cartItem", routerCartItem)
 app.use("/api/orderItem", routerOrderItem)
 app.use("/api/payment", routerPaymentDetails)
+app.use("/api/favorie", routerFavorie)
 app.use("/api/stripe", routerStripe)
 app.use("/api", routes);
 app.use("/api/Log", routLogout)

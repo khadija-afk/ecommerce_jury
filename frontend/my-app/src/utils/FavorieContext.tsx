@@ -1,4 +1,5 @@
 import React, { createContext, useState, useContext, ReactNode, useEffect } from 'react';
+import apiClient from './axiosConfig'; // Importez votre configuration Axios
 
 interface Article {
   id: number;
@@ -25,35 +26,38 @@ export const useFavoris = () => {
 };
 
 export const FavorisProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
-  const [favorites, setFavorites] = useState<Article[]>(() => {
-    // Charger les favoris depuis localStorage
-    const storedFavorites = localStorage.getItem('favorites');
-    return storedFavorites ? JSON.parse(storedFavorites) : [];
-  });
+  const [favorites, setFavorites] = useState<Article[]>([]);
 
   useEffect(() => {
-    // Sauvegarder les favoris dans localStorage à chaque mise à jour
-    localStorage.setItem('favorites', JSON.stringify(favorites));
-  }, [favorites]);
-
-  const addFavorite = (article: Article) => {
-    setFavorites((prevFavorites) => {
-      const isAlreadyFavorite = prevFavorites.some(fav => fav.id === article.id);
-      if (!isAlreadyFavorite) {
-        const updatedFavorites = [...prevFavorites, article];
-        localStorage.setItem('favorites', JSON.stringify(updatedFavorites));
-        return updatedFavorites;
+    // Charger les favoris depuis le backend au chargement du composant
+    const fetchFavorites = async () => {
+      try {
+        const response = await apiClient.get('api/api/favorie'); // Remplacez par l'endpoint de votre API
+        setFavorites(response.data);
+      } catch (error) {
+        console.error("Erreur lors de la récupération des favoris :", error);
       }
-      return prevFavorites;
-    });
+    };
+
+    fetchFavorites();
+  }, []);
+
+  const addFavorite = async (article: Article) => {
+    try {
+      await apiClient.post('api/api/favorie', { product_fk: article.id }); // Ajoutez l'article aux favoris via l'API
+      setFavorites((prevFavorites) => [...prevFavorites, article]);
+    } catch (error) {
+      console.error("Erreur lors de l'ajout aux favoris :", error);
+    }
   };
 
-  const removeFavorite = (id: number) => {
-    setFavorites((prevFavorites) => {
-      const updatedFavorites = prevFavorites.filter(fav => fav.id !== id);
-      localStorage.setItem('favorites', JSON.stringify(updatedFavorites));
-      return updatedFavorites;
-    });
+  const removeFavorite = async (id: number) => {
+    try {
+      await apiClient.delete(`api/api/favorie/${id}`); // Supprimez l'article des favoris via l'API
+      setFavorites((prevFavorites) => prevFavorites.filter((fav) => fav.id !== id));
+    } catch (error) {
+      console.error("Erreur lors de la suppression du favori :", error);
+    }
   };
 
   const totalFavorites = () => {
