@@ -45,7 +45,7 @@ export const getReviewsByProductId = async (req, res) => {
           attributes: ['id', 'name', 'price']
         }
       ],
-      attributes: ['id', 'product_fk', 'user_fk', 'rating', 'comment'],
+      attributes: ['id', 'product_fk', 'user_fk', 'rating', 'comment', 'createdAt'],
       raw: true
     });
 

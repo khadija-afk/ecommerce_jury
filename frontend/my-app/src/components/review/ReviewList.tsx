@@ -40,7 +40,7 @@ const ReviewsList = ({ productId }) => {
             <h3>Note moyenne : {averageRating} / 5</h3>
             {reviews.length > 0 ? (
                 reviews.map((review) => {
-                    console.log("Created at:", review.createdAt); // Vérifiez ici la valeur de createdAt pour chaque avis
+                   
                     return (
                         <div key={review.id} className="review" style={{ marginBottom: '20px', paddingBottom: '10px', borderBottom: '1px solid #ccc' }}>
                             <div className="review-header" style={{ display: 'flex', alignItems: 'center', marginBottom: '8px' }}>
