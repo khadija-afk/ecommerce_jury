@@ -27,6 +27,7 @@ import routLogout from './src/routes/logout.js'
 import stripeWebhookRoute from './src/routes/stripewebhook.js'
 import initializeAdminJS from './src/routes/admin.js'
 import serachroute from './src/routes/searche.js'
+import routerUserPrefernec from './src/routes/userPreference.js'
 
 
 
@@ -71,6 +72,7 @@ app.use("/api/stripe", routerStripe)
 app.use("/api", routes);
 app.use("/api/Log", routLogout)
 app.use("/api/search", serachroute);
+app.use("/api/userPre", routerUserPrefernec);
 
 //stripe
 app.use('/api/webhook', stripeWebhookRoute);

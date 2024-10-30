@@ -9,6 +9,7 @@ import orderDetailsModel from "./orderDetails.model.js";
 import orderItemsModel from "./orderItem.model.js";
 import paymentDetailsModel from "./paymentDetail.model.js";
 import favorieModel from "./favorie.model.js";
+import userPreferenceModel from "./userPreference.js";
 import dotenv from "dotenv";
 
 
@@ -39,9 +40,6 @@ if (process.env.NODE_ENV === 'test') {
             logging: false               // Désactiver les logs SQL (peut être activé si nécessaire)
         }
     );
-
-    
-
 }
 
 
@@ -58,6 +56,7 @@ orderDetailsModel(sequelize, Sequelize);
 orderItemsModel(sequelize, Sequelize);
 paymentDetailsModel(sequelize, Sequelize);
 favorieModel(sequelize, Sequelize);
+userPreferenceModel(sequelize, Sequelize);
 
 const {
   User,
@@ -70,6 +69,7 @@ const {
   OrderItems,
   PaymentDetails,
   Favorite,
+  UserPreference
 } = sequelize.models;
 
 // Définir les relations ici
@@ -125,7 +125,7 @@ const initializeDatabase = async () => {
   }
 };
 
-
+initializeDatabase();
 
 
 export {
@@ -141,4 +141,5 @@ export {
   OrderItems,
   PaymentDetails,
   Favorite,
+  UserPreference
 };
