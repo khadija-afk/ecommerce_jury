@@ -1,6 +1,6 @@
 // controllers/reviewController.js
 import { Sequelize } from "sequelize";
-import { Review, OrderDetails, OrderItems, Article } from "../models/index.js";
+import { Review, OrderDetails, OrderItems, Article, User } from "../models/index.js";
 import * as Service from "../services/service.js";
 
 // Get all reviews grouped by product with product details
@@ -40,6 +40,10 @@ export const getReviewsByProductId = async (req, res) => {
     const reviews = await Review.findAll({
       where: { product_fk: productId },
       include: [
+        {
+          model: User,
+          attributes: ['firstName', 'lastName'] // Récupérer le nom et prénom
+        },
         {
           model: Article,
           attributes: ['id', 'name', 'price']

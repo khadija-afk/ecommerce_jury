@@ -1,3 +1,4 @@
+/* Header.css */
 .header {
   width: 100%;
   position: fixed;
@@ -8,6 +9,11 @@
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   padding: 10px 0;
 }
+
+.navbar-custom {
+  margin-left: 60px; /* Ajustez ici pour le décalage */
+}
+
 
 .header-content {
   max-width: 1200px; /* Limite la largeur du contenu */

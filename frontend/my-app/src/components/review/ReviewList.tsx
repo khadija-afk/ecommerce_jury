@@ -32,44 +32,44 @@ const ReviewsList = ({ productId }) => {
 
     const formatDate = (dateString) => {
         const options = { year: 'numeric', month: 'long', day: 'numeric' };
-        return new Date(dateString).toLocaleDateString('en-US', options);
+        return new Date(dateString).toLocaleDateString('fr-FR', options);
     };
 
     return (
         <div className="reviews-list">
             <h3>Note moyenne : {averageRating} / 5</h3>
             {reviews.length > 0 ? (
-                reviews.map((review) => {
-                   
-                    return (
-                        <div key={review.id} className="review" style={{ marginBottom: '20px', paddingBottom: '10px', borderBottom: '1px solid #ccc' }}>
-                            <div className="review-header" style={{ display: 'flex', alignItems: 'center', marginBottom: '8px' }}>
-                                <FontAwesomeIcon icon={faUserCircle} size="2x" style={{ marginRight: '10px', color: '#888' }} />
-                                <div>
-                                    <p style={{ margin: 0, fontWeight: 'bold' }}>{review.user_fk || 'Utilisateur Anonyme'}</p>
-                                    <p style={{ margin: 0, color: '#888' }}>{formatDate(review.createdAt)}</p>
-                                </div>
+                reviews.map((review) => (
+                    <div key={review.id} className="review" style={{ marginBottom: '20px', paddingBottom: '10px', borderBottom: '1px solid #ccc' }}>
+                        <div className="review-header" style={{ display: 'flex', alignItems: 'center', marginBottom: '8px' }}>
+                            <FontAwesomeIcon icon={faUserCircle} size="2x" style={{ marginRight: '10px', color: '#888' }} />
+                            <div>
+                            <p style={{ margin: 0, fontWeight: 'bold' }}>
+                                    {review['User.firstName'] && review['User.lastName'] 
+                                        ? `${review['User.firstName']} ${review['User.lastName']}` 
+                                        : 'Utilisateur Anonyme'}
+                                </p>
+                                <p style={{ margin: 0, color: '#888' }}>{formatDate(review.createdAt)}</p>
                             </div>
-                            <p style={{ margin: '5px 0' }}>
-                                <strong>Note : {review.rating} / 5</strong>{' '}
-                                {Array.from({ length: 5 }, (_, i) => (
-                                    <FontAwesomeIcon
-                                        key={i}
-                                        icon={faStar}
-                                        color={i < review.rating ? '#ffc107' : '#e4e5e9'}
-                                    />
-                                ))}
-                            </p>
-                            <p style={{ margin: '5px 0', fontStyle: 'italic' }}>{review.comment}</p>
                         </div>
-                    );
-                })
+                        <p style={{ margin: '5px 0' }}>
+                            <strong>Note : {review.rating} / 5</strong>{' '}
+                            {Array.from({ length: 5 }, (_, i) => (
+                                <FontAwesomeIcon
+                                    key={i}
+                                    icon={faStar}
+                                    color={i < review.rating ? '#ffc107' : '#e4e5e9'}
+                                />
+                            ))}
+                        </p>
+                        <p style={{ margin: '5px 0', fontStyle: 'italic' }}>{review.comment}</p>
+                    </div>
+                ))
             ) : (
                 <p>Aucun avis pour ce produit.</p>
             )}
         </div>
     );
-    
 };
 
 export default ReviewsList;

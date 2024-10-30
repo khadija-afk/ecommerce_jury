@@ -68,7 +68,7 @@ const Header: React.FC = () => {
 
   return (
     <header>
-      <Navbar expand="lg" bg="white" variant="light" className="py-3">
+      <Navbar expand="lg" bg="white" variant="light" className="py-3 navbar-custom">
         <Container fluid>
           <div className="d-flex align-items-center w-50">
             <Navbar.Brand href="/">KenziShop</Navbar.Brand>

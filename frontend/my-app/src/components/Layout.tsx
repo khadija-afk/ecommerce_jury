@@ -1,33 +1,21 @@
-import React from 'react'
-
+import React from 'react';
 import { Outlet } from 'react-router-dom';
-//import { Container } from 'react-bootstrap'
 
-
-import Header from './header/Header'
+import Header from './header/Header';
 import MiniNavbar from './miniNav/MiniNavbare';
-import Footer from './footer/Footer'
+import Footer from './footer/Footer';
 
 const Layout = () => {
   return (
     <>
-    <Header/>
-    <MiniNavbar/>
-    <section >
-       
-       <Outlet />
-
-        
-    </section>
-
-    <Footer/>
-    
-    
-    
-    
-    
+      <Header />
+      <MiniNavbar />
+      <section style={{ margin: '20px 0' }}> {/* Ajout de marge pour espacement */}
+        <Outlet /> {/* Home.js sera chargé ici */}
+      </section>
+      <Footer />
     </>
-  )
-}
+  );
+};
 
-export default Layout
+export default Layout;
