@@ -1,21 +1,74 @@
 /* Footer.css */
 .footer {
-    background-color: #fff;
-    color: white;
-    text-align: center;
-    padding: 1rem 0;
-    position: relative;
-    bottom: 0;
-    width: 100%;
-}
-
-/* Assurez-vous que le conteneur principal prend toute la hauteur de la page */
-.main-container {
+    background-color: #222;
+    color: #fff;
+    padding: 20px 40px;
+  }
+  
+  .footer-sections {
     display: flex;
-    flex-direction: column;
-    min-height: 100vh;
-}
-
-.content {
-    flex: 1; /* Prend tout l'espace disponible pour pousser le footer en bas */
-}
+    flex-wrap: wrap;
+    justify-content: space-between;
+    margin-bottom: 20px;
+  }
+  
+  .footer-links,
+  .footer-about,
+  .footer-contact {
+    flex: 1;
+    min-width: 250px;
+    margin: 10px;
+  }
+  
+  .footer-links h4,
+  .footer-about h4,
+  .footer-contact h4 {
+    font-size: 1.2em;
+    margin-bottom: 10px;
+  }
+  
+  .footer-links ul {
+    list-style: none;
+    padding: 0;
+  }
+  
+  .footer-links li {
+    margin: 5px 0;
+  }
+  
+  .footer-links a,
+  .footer-about a,
+  .footer-contact a {
+    color: #ddd;
+    text-decoration: none;
+  }
+  
+  .footer-links a:hover,
+  .footer-about a:hover,
+  .footer-contact a:hover {
+    color: #fff;
+    text-decoration: underline;
+  }
+  
+  .footer-bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top: 1px solid #444;
+    padding-top: 10px;
+  }
+  
+  .footer-bottom p {
+    margin: 0;
+  }
+  
+  .social-icons a {
+    color: #ddd;
+    margin: 0 5px;
+    text-decoration: none;
+  }
+  
+  .social-icons a:hover {
+    color: #fff;
+  }
+  

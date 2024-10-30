@@ -70,23 +70,25 @@ const Header: React.FC = () => {
     <header>
       <Navbar expand="lg" bg="white" variant="light" className="py-3 navbar-custom">
         <Container fluid>
-          <div className="d-flex align-items-center w-50">
+          <div>
             <Navbar.Brand href="/">KenziShop</Navbar.Brand>
-            <Form className="d-flex mx-3 w-100" onSubmit={handleSearch} ref={searchRef}>
-              <FormControl
-                type="search"
-                placeholder="Rechercher"
-                className="me-2 w-75"
-                value={searchTerm}
-                onChange={handleSearchChange}
-              />
-              <Button variant="outline-primary" type="submit">
-                <FontAwesomeIcon icon={faSearch} />
-              </Button>
+          </div>
+        <div className="d-flex align-items-center w-50">
+            <Form className="d-flex mx-auto search-center w-" onSubmit={handleSearch} ref={searchRef}>
+                <FormControl
+                  type="search"
+                  placeholder="Rechercher"
+                  className="search-bar"  // Applique la classe pour plus de largeur
+                  value={searchTerm}
+                  onChange={handleSearchChange}
+                />
+                <Button variant="outline-primary" type="submit">
+                  <FontAwesomeIcon icon={faSearch} />
+                </Button>
             </Form>
           </div>
 
-          <Nav className="ms-auto d-none d-md-flex align-items-center">
+          <Nav className="d-none d-md-flex align-items-center">
             {isLoggedIn ? (
               <NavDropdown title="Mon compte" id="basic-nav-dropdown">
                 <NavDropdown.Item onClick={handleLogout}>

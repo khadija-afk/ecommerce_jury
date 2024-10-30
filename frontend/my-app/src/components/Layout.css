@@ -1,0 +1,12 @@
+/* Layout.css */
+.page-container {
+    margin-left: 100px; /* Ajustez ici pour un alignement uniforme */
+    margin-right: 100px;
+  }
+  
+  /* Styles supplémentaires pour assurer l'uniformité */
+  .page-container > * {
+    max-width: 100%;
+    box-sizing: border-box;
+  }
+  

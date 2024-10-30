@@ -8,10 +8,12 @@
   background-color: #fff;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   padding: 10px 0;
+ 
 }
 
 .navbar-custom {
-  margin-left: 60px; /* Ajustez ici pour le décalage */
+  margin-left: 100px; /* Ajustez ici pour le décalage */
+  margin-right: 100px; /* Ajoute un espacement de 80px à droite */
 }
 
 
@@ -63,4 +65,23 @@
   padding: 0.3rem 0.5rem;
   border-radius: 50%;
   font-size: 0.75rem;
+}
+
+
+/* Ajoute un conteneur plus large et centre la barre de recherche */
+.search-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+
+.search-bar-container {
+  width: 100%;
+  max-width: 600px; /* Limite maximale */
+}
+
+.search-bar {
+  width: 100%; /* Permet à la barre de recherche d’occuper toute la largeur de son conteneur */
+  padding: 0.5rem; /* Optionnel : ajoute de l'espace intérieur */
 }

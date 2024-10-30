@@ -1,16 +1,33 @@
 /* MiniNavbar.css */
 
-/* Centrage de la MiniNavbar sur grands écrans */
 .mini-navbar {
   width: 100%;
   background-color: #fff;
   padding: 10px 20px;
   display: flex;
-  justify-content: center; /* Centre le contenu sur grands écrans */
+  justify-content: flex-start;
   align-items: center;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   position: relative;
+  margin-left: 100px; /* Décalage à gauche */
 }
+
+.mini-navbar::before {
+  content: "";
+  position: absolute;
+  top: 100%; /* Place la ligne en bas du mini-navbar */
+  left: -100px; /* Compense le margin-left pour débuter la ligne au bord de la page */
+  width: calc(100% + 100px); /* Étend la ligne pour couvrir tout l'espace */
+  height: 1px;
+  background-color: #e3e1e1; /* Couleur de la ligne */
+}
+
+/* Appliquer le décalage à gauche sur les écrans moyens et grands */
+@media (min-width: 768px) {
+  .mini-navbar {
+    margin-left: 100px;
+  }
+}
+
 
 .mini-navbar-list {
   display: flex;

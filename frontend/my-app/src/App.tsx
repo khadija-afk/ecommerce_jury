@@ -41,6 +41,12 @@ import AccessoiresPage from './pages/category/accessoire/AccPage';
 import ChaussuresPage from './pages/category/chaussure/ChaussPage';
 
 
+//Confidentialite
+import PrivacyPolicy from './pages/confidentialite/PrivacyPolic';
+import CookieSettings from './pages/confidentialite/CookieSetting';
+import TermsAndConditions from './pages/confidentialite/TermeAndCondition';
+
+
 
 
 
@@ -70,6 +76,12 @@ const App = () => {
             <Route path="/categorie/maquillage" element={<MaquillagePage/>} />
             <Route path="/categorie/accessoires" element={<AccessoiresPage/>} />
             <Route path="/categorie/chaussures" element={<ChaussuresPage/>} />
+
+            {/* confidentialite */}
+            <Route path="/privacy-policy" element={<PrivacyPolicy/>} />
+            <Route path="/cookie-settings" element={<CookieSettings/>} />
+            <Route path="/terms-conditions" element={<TermsAndConditions/>} />
+
           </Route>
 
           {/* </Route> */}
