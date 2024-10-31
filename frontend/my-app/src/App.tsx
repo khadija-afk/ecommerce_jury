@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
@@ -49,6 +49,7 @@ import TermsAndConditions from './pages/confidentialite/TermeAndCondition';
 
 //COOKIECONSENT
 import CookieConsentModal from './components/cookieModel/CookieConsentModel';
+import CookieSettingsModal from './components/cookieModel/CookieSettingModel';
 
 
 
@@ -58,9 +59,21 @@ import CookieConsentModal from './components/cookieModel/CookieConsentModel';
 
 
 const App = () => {
+  const [showCookieSettings, setShowCookieSettings] = useState(false);
+
+  // Fonction pour afficher le modal de réglage des cookies
+  const openCookieSettings = () => setShowCookieSettings(true);
+
   return (
     <Router>
-      <CookieConsentModal /> {/* Affichage global du modal */}
+                {/* Modal de consentement avec bouton pour ouvrir les paramètres */}
+                <CookieConsentModal onOpenSettings={openCookieSettings} />
+
+            {/* Modal de paramétrage des cookies, contrôlé par l'état */}
+            {showCookieSettings && (
+              <CookieSettingsModal onClose={() => setShowCookieSettings(false)} />
+            )}
+
       <Routes>
        
         <Route path = '/' element = {<Layout/>}>  {/* Nav pour les anonymous utilisateur */}
@@ -86,6 +99,7 @@ const App = () => {
             <Route path="/privacy-policy" element={<PrivacyPolicy/>} />
             <Route path="/cookie-settings" element={<CookieSettings/>} />
             <Route path="/terms-conditions" element={<TermsAndConditions/>} />
+            
 
           </Route>
 

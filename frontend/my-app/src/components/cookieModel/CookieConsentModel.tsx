@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { Modal, Button } from 'react-bootstrap';
-import CookieConsent from 'react-cookie-consent';
 import apiClient from '../../utils/axiosConfig';
 
-// Générer un ID temporaire pour les utilisateurs non connectés
-const generateTempId = () => `temp_${Date.now()}_${Math.floor(Math.random() * 1000)}`;
+interface CookieConsentModalProps {
+  onOpenSettings: () => void; // Prop pour ouvrir les paramètres
+}
 
-const CookieConsentModal: React.FC = () => {
+const CookieConsentModal: React.FC<CookieConsentModalProps> = ({ onOpenSettings }) => {
   const [showModal, setShowModal] = useState(false);
 
   useEffect(() => {
@@ -16,57 +16,48 @@ const CookieConsentModal: React.FC = () => {
     }
   }, []);
 
-  const handleAccept = async () => {
-    localStorage.setItem('userCookieConsent', 'accepted');
+  const saveConsent = async (consent: boolean) => {
+    localStorage.setItem('userCookieConsent', JSON.stringify({ consent, date: new Date() }));
     setShowModal(false);
-
-    const userId = localStorage.getItem('tempUserId') || generateTempId();
-    localStorage.setItem('tempUserId', userId); // Sauvegarde de l'identifiant temporaire
-
     try {
-      await apiClient.post('api/api/cookie/save-consent', { userId, consent: true });
+      await apiClient.post('/api/api/cookie/save-consent', { consent });
     } catch (error) {
       console.error('Erreur lors de la sauvegarde du consentement:', error);
     }
   };
 
-  const handleDecline = async () => {
-    localStorage.setItem('userCookieConsent', 'declined');
-    setShowModal(false);
+  const handleAccept = () => saveConsent(true);
 
-    const userId = localStorage.getItem('tempUserId') || generateTempId();
-    localStorage.setItem('tempUserId', userId);
-
-    try {
-      await apiClient.post('api/api/cookie/save-consent', { userId, consent: false });
-    } catch (error) {
-      console.error('Erreur lors de la sauvegarde du refus:', error);
-    }
-  };
+  const handleDecline = () => saveConsent(false);
 
   return (
     <Modal show={showModal} onHide={() => setShowModal(false)} centered>
       <Modal.Header closeButton>
-        <Modal.Title>Paramètres de Cookies</Modal.Title>
+        <Modal.Title>Gérer mes cookies</Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        <p>Ce site utilise des cookies pour améliorer votre expérience utilisateur.</p>
-        <CookieConsent
-          enableDeclineButton
-          onAccept={handleAccept}
-          onDecline={handleDecline}
-          buttonText="Accepter"
-          declineButtonText="Refuser"
-          style={{ background: "#2B373B", color: "white" }}
-          buttonStyle={{ color: "#4e503b", fontSize: "13px" }}
-          declineButtonStyle={{ color: "white", background: "red" }}
-        >
-          <p>En acceptant, vous consentez à l'utilisation de cookies pour optimiser votre expérience.</p>
-        </CookieConsent>
+        <p>
+          Kiabi et ses partenaires utilisent des cookies pour adapter le contenu de notre site à vos préférences, 
+          vous donner accès à des solutions de la relation client (chat et avis client), vous proposer des offres 
+          et publicités personnalisées ou encore pour réaliser des mesures de performance.
+        </p>
+        <p>
+          Une fois votre choix réalisé, nous le conserverons pendant 6 mois. Vous pouvez changer d’avis à tout moment 
+          depuis le lien « Les cookies » en bas à gauche de chaque page de notre site.
+        </p>
+        <a href="/privacy-policy" target="_blank" rel="noopener noreferrer">
+          Consulter la politique cookies
+        </a>
       </Modal.Body>
       <Modal.Footer>
-        <Button variant="secondary" onClick={() => setShowModal(false)}>
-          Fermer
+        <Button variant="secondary" onClick={onOpenSettings}>
+          Paramétrer
+        </Button>
+        <Button variant="primary" onClick={handleAccept}>
+          Accepter
+        </Button>
+        <Button variant="outline-secondary" onClick={handleDecline}>
+          Continuer sans accepter
         </Button>
       </Modal.Footer>
     </Modal>
