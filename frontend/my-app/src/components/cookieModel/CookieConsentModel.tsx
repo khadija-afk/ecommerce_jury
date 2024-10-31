@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { Modal, Button } from 'react-bootstrap';
-import apiClient from '../../utils/axiosConfig';
 
 interface CookieConsentModalProps {
   onOpenSettings: () => void; // Prop pour ouvrir les paramètres
@@ -16,14 +15,9 @@ const CookieConsentModal: React.FC<CookieConsentModalProps> = ({ onOpenSettings 
     }
   }, []);
 
-  const saveConsent = async (consent: boolean) => {
+  const saveConsent = (consent: boolean) => {
     localStorage.setItem('userCookieConsent', JSON.stringify({ consent, date: new Date() }));
     setShowModal(false);
-    try {
-      await apiClient.post('/api/api/cookie/save-consent', { consent });
-    } catch (error) {
-      console.error('Erreur lors de la sauvegarde du consentement:', error);
-    }
   };
 
   const handleAccept = () => saveConsent(true);

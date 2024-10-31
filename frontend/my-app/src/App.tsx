@@ -59,6 +59,8 @@ import CookieSettingsModal from './components/cookieModel/CookieSettingModel';
 
 
 const App = () => {
+
+  
   const [showCookieSettings, setShowCookieSettings] = useState(false);
 
   // Fonction pour afficher le modal de réglage des cookies
