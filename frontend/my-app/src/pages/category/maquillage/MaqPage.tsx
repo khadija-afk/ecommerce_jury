@@ -20,7 +20,7 @@ const MaquillagePage = () => {
   useEffect(() => {
     const fetchArticles = async () => {
       try {
-        const response = await apiClient.get('api/api/article/category/3'); // Utilise la catégorie maquillage (ID = 3)
+        const response = await apiClient.get('api/api/article/category/4'); // Utilise la catégorie maquillage (ID = 3)
         if (response.headers['content-type'] && response.headers['content-type'].includes('application/json')) {
           setMaquillages(response.data);  // Met à jour l'état avec les articles
         } else {

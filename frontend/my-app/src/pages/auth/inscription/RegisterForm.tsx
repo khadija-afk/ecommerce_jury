@@ -1,14 +1,16 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../../../store';
 import { registerUser, UserData } from './userSlice';
 import { Button, TextField, Typography, Grid, Box, Container } from '@mui/material';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { useNavigate } from 'react-router-dom';
 
 const defaultTheme = createTheme();
 
 const RegisterForm: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
+  const navigate = useNavigate(); // Hook pour la redirection
   const userStatus = useSelector((state: RootState) => state.user.status);
   const error = useSelector((state: RootState) => state.user.error);
 
@@ -31,6 +33,13 @@ const RegisterForm: React.FC = () => {
     e.preventDefault();
     dispatch(registerUser(formData));
   };
+
+  // Redirection après inscription réussie
+  useEffect(() => {
+    if (userStatus === 'succeeded') {
+      navigate('/'); // Redirige vers la page d'accueil
+    }
+  }, [userStatus, navigate]);
 
   return (
     <ThemeProvider theme={defaultTheme}>

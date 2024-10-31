@@ -9,7 +9,7 @@ import orderDetailsModel from "./orderDetails.model.js";
 import orderItemsModel from "./orderItem.model.js";
 import paymentDetailsModel from "./paymentDetail.model.js";
 import favorieModel from "./favorie.model.js";
-import userPreferenceModel from "./userPreference.js";
+import userPreferenceModel from "./userPreference.model.js";
 import dotenv from "dotenv";
 
 
@@ -56,7 +56,8 @@ orderDetailsModel(sequelize, Sequelize);
 orderItemsModel(sequelize, Sequelize);
 paymentDetailsModel(sequelize, Sequelize);
 favorieModel(sequelize, Sequelize);
-userPreferenceModel(sequelize, Sequelize);
+// Initialisez le modèle UserPreferences
+const UserPreferences = userPreferenceModel(sequelize, Sequelize);
 
 const {
   User,
@@ -69,7 +70,6 @@ const {
   OrderItems,
   PaymentDetails,
   Favorite,
-  UserPreference
 } = sequelize.models;
 
 // Définir les relations ici
@@ -141,5 +141,5 @@ export {
   OrderItems,
   PaymentDetails,
   Favorite,
-  UserPreference
+  UserPreferences
 };

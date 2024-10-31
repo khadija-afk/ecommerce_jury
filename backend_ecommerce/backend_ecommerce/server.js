@@ -72,7 +72,7 @@ app.use("/api/stripe", routerStripe)
 app.use("/api", routes);
 app.use("/api/Log", routLogout)
 app.use("/api/search", serachroute);
-app.use("/api/userPre", routerUserPrefernec);
+app.use("/api/cookie", routerUserPrefernec);
 
 //stripe
 app.use('/api/webhook', stripeWebhookRoute);

@@ -1,5 +1,5 @@
 import React, { createContext, useState, useContext, ReactNode, useEffect } from 'react';
-import apiClient from './axiosConfig'; // Importez votre configuration Axios
+import apiClient from './axiosConfig';
 
 interface Article {
   id: number;
@@ -25,14 +25,21 @@ export const useFavoris = () => {
   return context;
 };
 
+// Fonction pour vérifier si le cookie d'authentification existe
+const isAuthenticated = () => {
+  return document.cookie.split(';').some((cookie) => cookie.trim().startsWith('authCookie='));
+};
+
 export const FavorisProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [favorites, setFavorites] = useState<Article[]>([]);
 
   useEffect(() => {
-    // Charger les favoris depuis le backend au chargement du composant
+    // Ne pas effectuer la récupération si l'utilisateur n'est pas authentifié
+    if (!isAuthenticated()) return;
+
     const fetchFavorites = async () => {
       try {
-        const response = await apiClient.get('api/api/favorie'); // Remplacez par l'endpoint de votre API
+        const response = await apiClient.get('api/api/favorie');
         setFavorites(response.data);
       } catch (error) {
         console.error("Erreur lors de la récupération des favoris :", error);
@@ -43,8 +50,12 @@ export const FavorisProvider: React.FC<{ children: ReactNode }> = ({ children })
   }, []);
 
   const addFavorite = async (article: Article) => {
+    if (!isAuthenticated()) {
+      console.warn("Non authentifié : impossible d'ajouter aux favoris.");
+      return;
+    }
     try {
-      await apiClient.post('api/api/favorie', { product_fk: article.id }); // Ajoutez l'article aux favoris via l'API
+      await apiClient.post('api/api/favorie', { product_fk: article.id });
       setFavorites((prevFavorites) => [...prevFavorites, article]);
     } catch (error) {
       console.error("Erreur lors de l'ajout aux favoris :", error);
@@ -52,8 +63,12 @@ export const FavorisProvider: React.FC<{ children: ReactNode }> = ({ children })
   };
 
   const removeFavorite = async (id: number) => {
+    if (!isAuthenticated()) {
+      console.warn("Non authentifié : impossible de supprimer des favoris.");
+      return;
+    }
     try {
-      await apiClient.delete(`api/api/favorie/${id}`); // Supprimez l'article des favoris via l'API
+      await apiClient.delete(`api/api/favorie/${id}`);
       setFavorites((prevFavorites) => prevFavorites.filter((fav) => fav.id !== id));
     } catch (error) {
       console.error("Erreur lors de la suppression du favori :", error);

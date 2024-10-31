@@ -1,6 +1,5 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import CookieConsent from 'react-cookie-consent'; // Import du composant
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 import RegisterForm from './pages/auth/inscription/RegisterForm';
@@ -48,6 +47,10 @@ import CookieSettings from './pages/confidentialite/CookieSetting';
 import TermsAndConditions from './pages/confidentialite/TermeAndCondition';
 
 
+//COOKIECONSENT
+import CookieConsentModal from './components/cookieModel/CookieConsentModel';
+
+
 
 
 
@@ -57,6 +60,7 @@ import TermsAndConditions from './pages/confidentialite/TermeAndCondition';
 const App = () => {
   return (
     <Router>
+      <CookieConsentModal /> {/* Affichage global du modal */}
       <Routes>
        
         <Route path = '/' element = {<Layout/>}>  {/* Nav pour les anonymous utilisateur */}
@@ -110,21 +114,6 @@ const App = () => {
 
       </Routes>
 
-      <CookieConsent
-        location="bottom"
-        buttonText="Accepter"
-        declineButtonText="Refuser"
-        cookieName="userCookieConsent"
-        style={{ background: "#2B373B", color: "white" }}
-        buttonStyle={{ color: "#4e503b", fontSize: "13px" }}
-        declineButtonStyle={{ color: "white", background: "red" }}
-        expires={365}
-        enableDeclineButton
-        onAccept={() => console.log("Cookies acceptés")}
-        onDecline={() => console.log("Cookies refusés")}
-      >
-        Ce site utilise des cookies pour améliorer votre expérience utilisateur.
-      </CookieConsent>
     </Router>
   );
 };

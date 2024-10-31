@@ -20,7 +20,7 @@ const AccessoiresPage = () => {
   useEffect(() => {
     const fetchArticles = async () => {
       try {
-        const response = await apiClient.get('api/api/article/category/4'); // Utilise la catégorie Accessoires (ID = 4)
+        const response = await apiClient.get('api/api/article/category/3'); // Utilise la catégorie Accessoires (ID = 4)
         if (response.headers['content-type'] && response.headers['content-type'].includes('application/json')) {
           setAccessoires(response.data);  // Met à jour l'état avec les articles
         } else {

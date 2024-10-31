@@ -1,22 +1,18 @@
 // controllers/cookieConsentController.js
-
-import { UserPreference } from "../models/index.js";
+import {UserPreferences} from '../models/index.js';
 
 // Enregistrer le consentement de l'utilisateur pour les cookies
 export const saveConsent = async (req, res) => {
   const { userId, consent } = req.body;
 
   try {
-    // Vérifier si une préférence de consentement existe déjà pour cet utilisateur
-    let preference = await UserPreference.findOne({ where: { userId } });
+    let preference = await UserPreferences.findOne({ where: { userId } });
 
     if (preference) {
-      // Mettre à jour le consentement existant
       preference.consent = consent;
       await preference.save();
     } else {
-      // Créer une nouvelle entrée si elle n'existe pas
-      await UserPreference.create({ userId, consent });
+      await UserPreferences.create({ userId, consent });
     }
 
     res.status(200).json({ message: 'Consentement sauvegardé.' });
@@ -25,13 +21,12 @@ export const saveConsent = async (req, res) => {
     res.status(500).json({ error: 'Erreur lors de la sauvegarde du consentement.' });
   }
 };
-
 // Récupérer le consentement de l'utilisateur
 export const getConsent = async (req, res) => {
   const { userId } = req.params;
 
   try {
-    const preference = await UserPreference.findOne({ where: { userId } });
+    const preference = await UserPreferences.findOne({ where: { userId } });
 
     if (preference) {
       res.status(200).json({ consent: preference.consent });

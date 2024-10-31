@@ -19,7 +19,7 @@ const ChaussuresPage = () => {
   useEffect(() => {
     const fetchArticles = async () => {
       try {
-        const response = await apiClient.get('api/api/article/category/5');
+        const response = await apiClient.get('api/api/article/category/2');
         if (response.headers['content-type'] && response.headers['content-type'].includes('application/json')) {
           setChaussures(response.data);  // Met à jour l'état avec les articles
         } else {
