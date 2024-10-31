@@ -125,7 +125,7 @@ const initializeDatabase = async () => {
   }
 };
 
-initializeDatabase();
+// initializeDatabase();
 
 
 export {
