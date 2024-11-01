@@ -76,6 +76,12 @@ start-all: down-all clean_node_modules build-backend-base
 start-app: down-all clean_node_modules build-backend-base
 	docker-compose up --build -d backend frontend db phpmyadmi
 
+re2e:
+	cd frontend/my-app/ && 	npx cypress run
+
+oe2e:
+	cd frontend/my-app/ && 	npx cypress open
+
 bb:
 	@docker exec -it backend bash
 

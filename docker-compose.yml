@@ -37,8 +37,8 @@ services:
     ports:
       - "3000:3000"
     volumes:
-      - ./frontend/my-app/src:/app/src
-      - ./frontend/my-app/package.json:/app/package.json
+      - ./frontend/my-app:/app
+      - /app/node_modules
     environment:
       - NODE_ENV=${NODE_ENV}
       - VITE_PUBLIC_KEY_STRIPE=${VITE_PUBLIC_KEY_STRIPE}

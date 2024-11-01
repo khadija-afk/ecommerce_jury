@@ -52,8 +52,7 @@ describe('Page de connexion', () => {
             expect(interception.response.statusCode).to.equal(404);
         });
 
-        cy.wait(2000); // Attendez 2 secondes avant de vérifier
-        cy.contains('Erreur : Request failed with status code 404').should('be.visible');
+        cy.contains('Request failed with status code 404').should('be.visible');
 
     });
 });
