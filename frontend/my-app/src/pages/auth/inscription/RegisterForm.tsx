@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../../../store';
 import { registerUser, UserData } from './userSlice';
-import { Button, TextField, Typography, Grid, Box, Container, Link } from '@mui/material';
+import { Button, TextField, Typography, Grid, Box, Container, Link, Alert } from '@mui/material';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { useNavigate } from 'react-router-dom';
 
@@ -10,7 +10,7 @@ const defaultTheme = createTheme();
 
 const RegisterForm: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
-  const navigate = useNavigate(); // Hook pour la redirection
+  const navigate = useNavigate();
   const userStatus = useSelector((state: RootState) => state.user.status);
   const error = useSelector((state: RootState) => state.user.error);
 
@@ -19,25 +19,48 @@ const RegisterForm: React.FC = () => {
     lastName: '',
     email: '',
     password: '',
-    role: 'user' // Ajout du champ rôle si nécessaire
+    role: 'user'
   });
+
+  const [fieldErrors, setFieldErrors] = useState<Partial<UserData> & { general?: string }>({});
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({
       ...formData,
       [e.target.name]: e.target.value
     });
+    setFieldErrors({
+      ...fieldErrors,
+      [e.target.name]: '' // Efface l'erreur lorsqu'on commence à taper
+    });
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    dispatch(registerUser(formData));
+    setFieldErrors({}); // Réinitialise les erreurs
+
+    try {
+      await dispatch(registerUser(formData)).unwrap();
+    } catch (error: any) {
+      console.log('Erreur capturée :', error); // Log pour vérifier la structure de l'erreur
+
+      if (error.response && error.response.data && error.response.data.error) {
+        // Affiche le message d'erreur détaillé du backend
+        setFieldErrors({ general: error.response.data.error });
+      } else if (error.message) {
+        // Affiche un message générique si `error.response.data.error` n'est pas disponible
+        setFieldErrors({ general: error.message });
+      } else {
+        // Affiche un message par défaut si aucun autre message n'est disponible
+        setFieldErrors({ general: 'Une erreur est survenue. Veuillez réessayer.' });
+      }
+    }
   };
 
   useEffect(() => {
     if (userStatus === 'succeeded') {
-      // Ne pas rediriger automatiquement
-      // navigate('/sign'); // Si vous souhaitez rediriger automatiquement, décommentez cette ligne
+      // Redirige vers la page de connexion après succès
+      // navigate('/sign');
     }
   }, [userStatus, navigate]);
 
@@ -61,6 +84,8 @@ const RegisterForm: React.FC = () => {
                   autoFocus
                   onChange={handleChange}
                   value={formData.firstName}
+                  error={!!fieldErrors.firstName}
+                  helperText={fieldErrors.firstName}
                 />
               </Grid>
               <Grid item xs={12} sm={6}>
@@ -73,6 +98,8 @@ const RegisterForm: React.FC = () => {
                   autoComplete="family-name"
                   onChange={handleChange}
                   value={formData.lastName}
+                  error={!!fieldErrors.lastName}
+                  helperText={fieldErrors.lastName}
                 />
               </Grid>
               <Grid item xs={12}>
@@ -80,11 +107,13 @@ const RegisterForm: React.FC = () => {
                   required
                   fullWidth
                   id="email"
-                  label="Email Address"
+                  label="Adresse e-mail"
                   name="email"
                   autoComplete="email"
                   onChange={handleChange}
                   value={formData.email}
+                  error={!!fieldErrors.email}
+                  helperText={fieldErrors.email}
                 />
               </Grid>
               <Grid item xs={12}>
@@ -98,6 +127,8 @@ const RegisterForm: React.FC = () => {
                   autoComplete="new-password"
                   onChange={handleChange}
                   value={formData.password}
+                  error={!!fieldErrors.password}
+                  helperText={fieldErrors.password}
                 />
               </Grid>
               <Grid item xs={12}>
@@ -115,6 +146,9 @@ const RegisterForm: React.FC = () => {
               S'inscrire
             </Button>
           </Box>
+          {fieldErrors.general && (
+            <Alert severity="error" sx={{ mt: 2 }}>{fieldErrors.general}</Alert>
+          )}
           {userStatus === 'loading' && <Typography variant="body2" color="text.secondary">Chargement...</Typography>}
           {userStatus === 'succeeded' && (
             <Box sx={{ mt: 2, textAlign: 'center' }}>
@@ -124,7 +158,9 @@ const RegisterForm: React.FC = () => {
               </Link>
             </Box>
           )}
-          {userStatus === 'failed' && <Typography variant="body2" color="error.main">{error}</Typography>}
+          {userStatus === 'failed' && error && (
+            <Alert severity="error" sx={{ mt: 2 }}>{error}</Alert>
+          )}
         </Box>
       </Container>
     </ThemeProvider>

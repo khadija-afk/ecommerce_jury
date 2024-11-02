@@ -40,27 +40,43 @@ describe('Page d\'inscription', () => {
         cy.contains('Cliquez ici pour vous connecter').should('be.visible');
     });
 
-    it('Affiche une erreur lors de l\'inscription avec des données invalides', () => {
+    it('Affiche une erreur lorsque l\'email est déjà utilisé', () => {
         cy.intercept('POST', '/api/api/user/add', {
-            statusCode: 400,
-            body: { error: 'Données invalides' },
+            statusCode: 409,
+            body: { error: 'Cet email est déjà utilisé' },
         }).as('registerRequestFailed');
-    
+
         cy.get('input[name="firstName"]').type('Jane', { force: true });
-        // Assurez-vous que vous ne passez pas de chaîne vide à `cy.type()`
-        // Si vous voulez tester un champ vide, ne faites pas `cy.type('')` :
-        // cy.get('input[name="lastName"]').type('', { force: true }); <-- ceci est l'erreur
-        cy.get('input[name="lastName"]').clear(); // Utilisez `clear()` pour simuler un champ vide
-    
+        cy.get('input[name="lastName"]').type('Doe', { force: true });
         cy.get('input[name="email"]').type('janedoe@example.com', { force: true });
         cy.get('input[name="password"]').type('password123', { force: true });
         cy.contains('S\'inscrire').click({ force: true });
-    
+
         cy.wait('@registerRequestFailed').then((interception) => {
+            expect(interception.response.statusCode).to.equal(409);
+        });
+
+        // Vérifiez que le message d'erreur compréhensible est affiché
+        cy.contains('Cet email est déjà utilisé').should('be.visible');
+    });
+
+    it('Affiche une erreur de validation pour le mot de passe', () => {
+        cy.intercept('POST', '/api/api/user/add', {
+            statusCode: 400,
+            body: { error: 'Le mot de passe doit comporter au moins 8 caractères, une majuscule, un caractère spécial et un chiffre.' },
+        }).as('registerPasswordError');
+
+        cy.get('input[name="firstName"]').type('Jane', { force: true });
+        cy.get('input[name="lastName"]').type('Doe', { force: true });
+        cy.get('input[name="email"]').type('janedoe@example.com', { force: true });
+        cy.get('input[name="password"]').type('short', { force: true }); // Mot de passe non conforme
+        cy.contains('S\'inscrire').click({ force: true });
+
+        cy.wait('@registerPasswordError').then((interception) => {
             expect(interception.response.statusCode).to.equal(400);
         });
-    
-        cy.contains('Données invalides').should('be.visible');
+
+        // Vérifiez que le message d'erreur de validation est affiché
+        cy.contains('Le mot de passe doit comporter au moins 8 caractères, une majuscule, un caractère spécial et un chiffre.').should('be.visible');
     });
-    
 });

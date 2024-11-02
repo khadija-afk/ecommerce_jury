@@ -70,34 +70,36 @@ const sendWelcomeEmail = (recipient_email, firstName, lastName) => {
     const mailOptions = {
       from: env.user,
       to: recipient_email,
-      subject: 'Bienvenue sur notre plateforme !',
-      html: `
-        <!DOCTYPE html>
-        <html lang="en">
-        <head>
-          <meta charset="UTF-8">
-          <title>Bienvenue</title>
-        </head>
-        <body>
-          <div style="font-family: Helvetica,Arial,sans-serif;min-width:1000px;overflow:auto;line-height:2">
-            <div style="margin:50px auto;width:70%;padding:20px 0">
-              <div style="border-bottom:1px solid #eee">
-                <a href="#" style="font-size:1.4em;color: #00466a;text-decoration:none;font-weight:600">Votre Plateforme</a>
-              </div>
-              <p style="font-size:1.1em">Bonjour ${firstName} ${lastName},</p>
-              <p>Nous sommes ravis de vous accueillir sur notre plateforme. Profitez pleinement de nos services et n'hésitez pas à nous contacter si vous avez des questions.</p>
-              <p style="font-size:0.9em;">Cordialement,<br />L'équipe</p>
-              <hr style="border:none;border-top:1px solid #eee" />
-              <div style="float:right;padding:8px 0;color:#aaa;font-size:0.8em;line-height:1;font-weight:300">
-                <p>Votre Plateforme</p>
-                <p>92000 Nanterre</p>
-                <p>France</p>
-              </div>
-            </div>
-          </div>
-        </body>
-        </html>
-      `,
+      subject: 'Bienvenue chez E-Commerce khadija !',
+html: `
+  <!DOCTYPE html>
+  <html lang="fr">
+  <head>
+    <meta charset="UTF-8">
+    <title>Bienvenue sur E-Commerce khadija</title>
+  </head>
+  <body>
+    <div style="font-family: Helvetica, Arial, sans-serif; line-height: 1.6; background-color: #f9f9f9; padding: 20px;">
+      <div style="max-width: 600px; margin: auto; background-color: #ffffff; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+        <header style="background-color: #4CAF50; padding: 15px; text-align: center; color: #ffffff;">
+          <h1 style="margin: 0; font-size: 24px;">E-Commerce khadija</h1>
+        </header>
+        <section style="padding: 20px;">
+          <p style="font-size: 16px; color: #333;">Bonjour ${firstName} ${lastName},</p>
+          <p style="font-size: 16px; color: #333;">Nous sommes heureux de vous accueillir parmi nos nouveaux utilisateurs ! Votre compte a été créé avec succès.</p>
+          <p style="font-size: 16px; color: #333;">Découvrez dès maintenant notre large gamme de produits et profitez de nos offres exclusives.</p>
+          <p style="font-size: 16px; color: #333;">Si vous avez la moindre question, n'hésitez pas à nous contacter. Nous sommes là pour vous aider !</p>
+        </section>
+        <footer style="background-color: #f1f1f1; padding: 10px; text-align: center; font-size: 14px; color: #555;">
+          <p>Cordialement,</p>
+          <p>L'équipe E-Commerce khadija</p>
+          <p style="margin: 0;">E-Commerce khadija, 92000 Nanterre, France</p>
+        </footer>
+      </div>
+    </div>
+  </body>
+  </html>
+`,
     };
 
      // Ajoutez un console.log ici pour voir les détails avant l'envoi
