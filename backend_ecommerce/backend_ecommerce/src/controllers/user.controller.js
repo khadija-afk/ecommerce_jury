@@ -1,3 +1,4 @@
+import nodemailer from 'nodemailer';
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import { User, Cart } from "../models/index.js";
@@ -37,27 +38,134 @@ export const login = async (req, res) => {
   res.cookie("access_token", token, { httpOnly: true }).status(200).json(other);
 };
 
-export const register = async (req, res) => {
-    try {
-      // Créez d'abord l'utilisateur avec le mot de passe haché
-      req.body['password'] = await bcrypt.hash(req.body.password, 10) 
-      const user = await Service.create(User, req.body);
-  
-      // Créez ensuite un panier pour l'utilisateur nouvellement créé
-      const body_cart = { 
-        user_fk: user.id, 
-        total_amount: 0 
+// Fonction pour vérifier le format de l'email
+const isValidEmail = (email) => {
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  return emailRegex.test(email);
+};
+
+// Fonction pour vérifier la complexité du mot de passe
+const isValidPassword = (password) => {
+  const passwordRegex = /^(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*(),.?":{}|<>]).{8,}$/;
+  return passwordRegex.test(password);
+};
+
+// Configuration du transporteur Nodemailer (réutilisation de la configuration existante)
+const transporter = nodemailer.createTransport({
+  service: 'gmail',
+  auth: {
+    user: env.user, 
+    pass: env.pass
+  },
+});
+
+// Ajoutez des logs pour vérifier l'authentification
+console.log('Informations de connexion à l\'e-mail :');
+console.log('Utilisateur (email) :', env.user);
+console.log('Mot de passe (attention, ne pas afficher en production) :', env.pass);
+
+// Fonction pour envoyer un email de bienvenue
+const sendWelcomeEmail = (recipient_email, firstName, lastName) => {
+  return new Promise((resolve, reject) => {
+    const mailOptions = {
+      from: env.user,
+      to: recipient_email,
+      subject: 'Bienvenue sur notre plateforme !',
+      html: `
+        <!DOCTYPE html>
+        <html lang="en">
+        <head>
+          <meta charset="UTF-8">
+          <title>Bienvenue</title>
+        </head>
+        <body>
+          <div style="font-family: Helvetica,Arial,sans-serif;min-width:1000px;overflow:auto;line-height:2">
+            <div style="margin:50px auto;width:70%;padding:20px 0">
+              <div style="border-bottom:1px solid #eee">
+                <a href="#" style="font-size:1.4em;color: #00466a;text-decoration:none;font-weight:600">Votre Plateforme</a>
+              </div>
+              <p style="font-size:1.1em">Bonjour ${firstName} ${lastName},</p>
+              <p>Nous sommes ravis de vous accueillir sur notre plateforme. Profitez pleinement de nos services et n'hésitez pas à nous contacter si vous avez des questions.</p>
+              <p style="font-size:0.9em;">Cordialement,<br />L'équipe</p>
+              <hr style="border:none;border-top:1px solid #eee" />
+              <div style="float:right;padding:8px 0;color:#aaa;font-size:0.8em;line-height:1;font-weight:300">
+                <p>Votre Plateforme</p>
+                <p>92000 Nanterre</p>
+                <p>France</p>
+              </div>
+            </div>
+          </div>
+        </body>
+        </html>
+      `,
+    };
+
+     // Ajoutez un console.log ici pour voir les détails avant l'envoi
+     console.log('Détails de l\'e-mail :', {
+      from: mailOptions.from,
+      to: mailOptions.to,
+      subject: mailOptions.subject,
+      content: mailOptions.html,
+    });
+
+    transporter.sendMail(mailOptions, (error, info) => {
+      if (error) {
+        console.error('Erreur lors de l\'envoi de l\'email:', error);
+        return reject({ message: 'Une erreur est survenue lors de l\'envoi de l\'email.' });
       }
-      const cart = await Service.create(Cart, body_cart);
-  
-      return res.status(201).json({
-        user,
-        cart,
-      });
-    } catch (error) {
-      return res.status(error.status).json({error: error.error})
+      console.log('Email envoyé:', info.response);
+      resolve({ message: 'Email envoyé avec succès.' });
+    });
+  });
+};
+
+// Fonction d'enregistrement de l'utilisateur
+export const register = async (req, res) => {
+  try {
+    const { email, password, firstName, lastName } = req.body;
+
+    // Vérification du format de l'email
+    if (!isValidEmail(email)) {
+      return res.status(400).json({ error: "L'email n'est pas valide. Veuillez entrer un email correct." });
     }
-  };
+
+    // Vérification de la complexité du mot de passe
+    if (!isValidPassword(password)) {
+      return res.status(400).json({ error: "Le mot de passe doit comporter au moins 8 caractères, une majuscule, un caractère spécial et un chiffre." });
+    }
+
+    // Vérification si l'email existe déjà
+    const existingUser = await User.findOne({ where: { email } });
+    if (existingUser) {
+      return res.status(409).json({ error: "Cet email est déjà utilisé" });
+    }
+
+    // Hachage du mot de passe
+    req.body['password'] = await bcrypt.hash(password, 10);
+    const user = await Service.create(User, req.body);
+
+    // Création d'un panier pour l'utilisateur
+    const body_cart = {
+      user_fk: user.id,
+      total_amount: 0,
+    };
+    const cart = await Service.create(Cart, body_cart);
+
+    // Envoi de l'email de bienvenue
+    await sendWelcomeEmail(email, firstName, lastName);
+
+    res.status(201).json({
+      user,
+      cart,
+      message: 'Utilisateur créé avec succès et email de bienvenue envoyé.',
+    });
+  } catch (error) {
+    console.error('Erreur lors de l\'enregistrement de l\'utilisateur :', error);
+    res.status(500).json({ error: 'Erreur serveur lors de l\'inscription.', details: error.message });
+  }
+};
+
+
 export const getAll = async (req, res) => {
   let users;
   try {

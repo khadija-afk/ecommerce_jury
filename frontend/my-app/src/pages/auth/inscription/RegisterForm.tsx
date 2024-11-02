@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../../../store';
 import { registerUser, UserData } from './userSlice';
-import { Button, TextField, Typography, Grid, Box, Container } from '@mui/material';
+import { Button, TextField, Typography, Grid, Box, Container, Link } from '@mui/material';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { useNavigate } from 'react-router-dom';
 
@@ -34,10 +34,10 @@ const RegisterForm: React.FC = () => {
     dispatch(registerUser(formData));
   };
 
-  // Redirection après inscription réussie
   useEffect(() => {
     if (userStatus === 'succeeded') {
-      navigate('/'); // Redirige vers la page d'accueil
+      // Ne pas rediriger automatiquement
+      // navigate('/sign'); // Si vous souhaitez rediriger automatiquement, décommentez cette ligne
     }
   }, [userStatus, navigate]);
 
@@ -116,7 +116,14 @@ const RegisterForm: React.FC = () => {
             </Button>
           </Box>
           {userStatus === 'loading' && <Typography variant="body2" color="text.secondary">Chargement...</Typography>}
-          {userStatus === 'succeeded' && <Typography variant="body2" color="success.main">Utilisateur créé avec succès!</Typography>}
+          {userStatus === 'succeeded' && (
+            <Box sx={{ mt: 2, textAlign: 'center' }}>
+              <Typography variant="body2" color="success.main">Votre compte a été créé avec succès !</Typography>
+              <Link href="/sign" variant="body2" sx={{ display: 'block', mt: 1 }}>
+                Cliquez ici pour vous connecter
+              </Link>
+            </Box>
+          )}
           {userStatus === 'failed' && <Typography variant="body2" color="error.main">{error}</Typography>}
         </Box>
       </Container>
