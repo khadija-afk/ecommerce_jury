@@ -40,7 +40,7 @@ describe('Page de connexion', () => {
     it('Affiche une erreur avec des identifiants incorrects', () => {
         cy.intercept('POST', '/api/api/user/sign', {
             statusCode: 404,
-            body: { message: 'Request failed with status code 404' },
+            body: { message: 'Utilisateur non trouvé. Veuillez vérifier vos identifiants.' },
         }).as('signInRequestFailed');
         
         cy.get('input[name="email"]').type('wronguser@example.com', { force: true });
@@ -52,7 +52,25 @@ describe('Page de connexion', () => {
             expect(interception.response.statusCode).to.equal(404);
         });
 
-        cy.contains('Request failed with status code 404').should('be.visible');
+        cy.contains('Utilisateur non trouvé. Veuillez vérifier vos identifiants.').should('be.visible');
 
     });
+
+    it('Affiche une erreur lorsque le mot de passe est incorrect', () => {
+        cy.intercept('POST', '/api/api/user/sign', {
+            statusCode: 400,
+            body: { message: 'Mot de passe incorrect. Veuillez réessayer.' },
+        }).as('signInRequestFailed');
+
+        cy.get('input[name="email"]').type('johndoe@example.com', { force: true });
+        cy.get('input[name="password"]').type('wrongpassword', { force: true });
+        cy.contains('Se connecter').click({ force: true });
+
+        cy.wait('@signInRequestFailed').then((interception) => {
+            expect(interception.response.statusCode).to.equal(400);
+        });
+
+        cy.contains('Mot de passe incorrect. Veuillez réessayer.').should('be.visible'); // Assurez-vous que le message d'erreur affiché est celui attendu.
+    });
 });
+

@@ -73,7 +73,7 @@ const SignInForm: React.FC = () => {
                             required
                             fullWidth
                             id="email"
-                            label="Email Address"
+                            label="Adresse e-mail"
                             name="email"
                             autoComplete="email"
                             autoFocus
@@ -84,7 +84,7 @@ const SignInForm: React.FC = () => {
                             required
                             fullWidth
                             name="password"
-                            label="Password"
+                            label="Mot de passe"
                             type="password"
                             id="password"
                             autoComplete="current-password"
@@ -92,7 +92,7 @@ const SignInForm: React.FC = () => {
                         />
                         <FormControlLabel
                             control={<Checkbox value="remember" color="primary" />}
-                            label="Remember me"
+                            label="Se souvenir de moi"
                         />
                         <Button
                             type="submit"
@@ -105,25 +105,25 @@ const SignInForm: React.FC = () => {
                         <Grid container>
                             <Grid item xs>
                                 <Link href="/forgot-password" variant="body2">
-                                    Mot de passe oublié?
+                                    Mot de passe oublié ?
                                 </Link>
                             </Grid>
                             <Grid item>
                                 <Link href="register" variant="body2">
-                                    {"Vous n'avez pas de compte? Inscrivez-vous"}
+                                    {"Vous n'avez pas de compte ? Inscrivez-vous"}
                                 </Link>
                             </Grid>
                         </Grid>
                     </Box>
                     {authStatus === 'loading' && <Typography variant="body2" color="text.secondary">Chargement...</Typography>}
-                    {authStatus === 'succeeded' && <Typography variant="body2" color="success.main">Connexion réussie!</Typography>}
-                    {authStatus === 'failed' && <Typography variant="body2" color="error.main">{error}</Typography>}
+                    {authStatus === 'succeeded' && <Typography variant="body2" color="success.main">Connexion réussie !</Typography>}
+                    {authStatus === 'failed' && error && <Typography variant="body2" color="error.main">{error}</Typography>}
                 </Box>
                 <Box sx={{ mt: 8, mb: 4 }} component="footer">
                     <Typography variant="body2" color="text.secondary" align="center">
                         {'Copyright © '}
                         <Link color="inherit" href="https://mui.com/">
-                            Your Website
+                            Votre site
                         </Link>{' '}
                         {new Date().getFullYear()}
                         {'.'}

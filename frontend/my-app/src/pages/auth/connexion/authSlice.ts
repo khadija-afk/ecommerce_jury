@@ -26,21 +26,30 @@ const initialState: AuthState = {
     error: null,
 };
 
-export const signInUser = createAsyncThunk('auth/signInUser', async (credentials: { email: string; password: string }) => {
-    const instance  = axios.create({
-        withCredentials: true
-    })
-    const response = await instance.post('/api/api/user/sign', credentials);
-    const { token } = response.data;
-    console.log(token)
-    const user = response.data;
-    console.log(user)
-    console.log(response)
-    localStorage.setItem('token', token);
-    localStorage.setItem('user', JSON.stringify(user));
-    return response.data;
-    
-});
+export const signInUser = createAsyncThunk(
+    'auth/signInUser',
+    async (credentials: { email: string; password: string }, { rejectWithValue }) => {
+        try {
+            const instance = axios.create({
+                withCredentials: true
+            });
+            const response = await instance.post('/api/api/user/sign', credentials);
+            const { token } = response.data;
+            localStorage.setItem('token', token);
+            localStorage.setItem('user', JSON.stringify(response.data));
+            return response.data;
+        } catch (error) {
+            if (axios.isAxiosError(error) && error.response) {
+                if (error.response.status === 404) {
+                    return rejectWithValue('Utilisateur non trouvé. Veuillez vérifier vos identifiants.');
+                } else if (error.response.status === 400) {
+                    return rejectWithValue('Mot de passe incorrect. Veuillez réessayer.');
+                }
+            }
+            return rejectWithValue('Une erreur inattendue s\'est produite. Veuillez réessayer plus tard.');
+        }
+    }
+);
 
 const authSlice = createSlice({
     name: 'auth',
@@ -48,7 +57,6 @@ const authSlice = createSlice({
     reducers: {
         signOut(state) {
             state.user = null;
-            
         }
     },
     extraReducers: (builder) => {
@@ -63,7 +71,7 @@ const authSlice = createSlice({
             })
             .addCase(signInUser.rejected, (state, action) => {
                 state.status = 'failed';
-                state.error = action.error.message || null;
+                state.error = action.payload as string;
             });
     },
 });
