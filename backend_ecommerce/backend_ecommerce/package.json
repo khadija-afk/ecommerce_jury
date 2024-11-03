@@ -27,7 +27,8 @@
     "mariadb": "^3.3.1",
     "mysql2": "^3.9.7",
     "nodemailer": "^6.9.14",
-    "sequelize": "^6.37.3",
+    "sequelize": "^6.37.5",
+    "sequelize-cli": "^6.6.2",
     "stripe": "^16.6.0",
     "swagger-jsdoc": "^6.2.8",
     "swagger-ui-express": "^5.0.1",
@@ -35,31 +36,31 @@
     "winston-daily-rotate-file": "^5.0.0"
   },
   "jest": {
-  "transform": {
-    "^.+\\.jsx?$": "babel-jest"
-  },
-  "moduleNameMapper": {
-    "^(\\.{1,2}/.*)\\.js$": "$1"
-  },
-  "reporters": [
-    "default",
-    [
-      "jest-junit",
-      {
-        "outputDirectory": "./reports",
-        "outputName": "junit.xml"
-      }
+    "transform": {
+      "^.+\\.jsx?$": "babel-jest"
+    },
+    "moduleNameMapper": {
+      "^(\\.{1,2}/.*)\\.js$": "$1"
+    },
+    "reporters": [
+      "default",
+      [
+        "jest-junit",
+        {
+          "outputDirectory": "./reports",
+          "outputName": "junit.xml"
+        }
+      ]
+    ],
+    "testPathIgnorePatterns": [
+      "/node_modules/"
+    ],
+    "moduleFileExtensions": [
+      "js",
+      "json",
+      "es6"
     ]
-  ],
-  "testPathIgnorePatterns": [
-    "/node_modules/"
-  ],
-  "moduleFileExtensions": [
-    "js",
-    "json",
-    "es6"
-  ]
-},
+  },
   "devDependencies": {
     "@babel/preset-env": "^7.25.4",
     "@cucumber/cucumber": "^11.0.1",

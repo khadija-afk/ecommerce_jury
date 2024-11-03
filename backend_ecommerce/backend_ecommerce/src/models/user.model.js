@@ -27,6 +27,14 @@ export default (connection, DataTypes) => {
                 default: ['user'],
                 allowNull: false
             },
+            resetPasswordToken: {
+                type: DataTypes.STRING,
+                allowNull: true,
+              },
+              resetPasswordExpires: {
+                type: DataTypes.DATE,
+                allowNull: true,
+              },
         },
         { timestamps: true }
     );

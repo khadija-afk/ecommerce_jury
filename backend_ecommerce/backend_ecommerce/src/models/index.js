@@ -127,6 +127,21 @@ const initializeDatabase = async () => {
 
 // initializeDatabase();
 
+// Initialisation du modèle `User`
+
+// Fonction pour synchroniser uniquement le modèle `User`
+const syncUserTable = async () => {
+  try {
+    await User.sync({ alter: true }); // Utilise `force: true` si vous souhaitez recréer la table, `alter: true` pour appliquer les modifications sans perte de données
+    console.log('Table `User` synchronisée avec succès.');
+  } catch (error) {
+    console.error('Erreur lors de la synchronisation de la table `User` :', error);
+  }
+};
+
+// Appeler la fonction pour synchroniser la table `User`
+syncUserTable();
+
 
 export {
   sequelize,

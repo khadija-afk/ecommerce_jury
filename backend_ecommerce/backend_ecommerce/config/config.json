@@ -1,0 +1,10 @@
+{
+  "development": {
+    "username":"root",
+    "password":"rootpassword",
+    "database":"e_commerce",
+    "host":"db",
+    "dialect":"mysql"
+   }
+ 
+}
