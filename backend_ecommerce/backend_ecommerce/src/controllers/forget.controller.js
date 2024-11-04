@@ -16,6 +16,8 @@ const sendEmail = ({ recipient_email, OTP }) => {
       },
     });
 
+    const frontendUrl = `https://localhost/reset-password?token=${OTP}`; // Lien pointant vers le frontend sécurisé
+
     const mailOptions = {
       from: env.user,
       to: recipient_email,
@@ -35,7 +37,7 @@ const sendEmail = ({ recipient_email, OTP }) => {
               </div>
               <p style="font-size:1.1em">Bonjour,</p>
               <p>Vous avez demandé à réinitialiser votre mot de passe. Utilisez le lien ci-dessous pour définir un nouveau mot de passe. Ce lien est valable pendant 1 heure.</p>
-              <a href="http://localhost:9090/api/forget/verify-token?token=${OTP}" style="background: #00466a;color: #fff;padding: 10px 20px;text-decoration: none;border-radius: 5px;">Réinitialiser le mot de passe</a>
+              <a href="${frontendUrl}" style="background: #00466a;color: #fff;padding: 10px 20px;text-decoration: none;border-radius: 5px;">Réinitialiser le mot de passe</a>
               <p style="font-size:0.9em;">Cordialement,<br />L'équipe de Votre Application</p>
               <hr style="border:none;border-top:1px solid #eee" />
               <div style="float:right;padding:8px 0;color:#aaa;font-size:0.8em;line-height:1;font-weight:300">
@@ -60,6 +62,7 @@ const sendEmail = ({ recipient_email, OTP }) => {
     });
   });
 };
+
 
 // Contrôleur pour demander la réinitialisation du mot de passe
 export const requestPasswordReset = async (req, res) => {
@@ -130,6 +133,13 @@ export const verifyResetToken = async (req, res) => {
   }
 };
 
+
+// Fonction pour vérifier la complexité du mot de passe
+const isValidPassword = (password) => {
+  const passwordRegex = /^(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*(),.?":{}|<>]).{8,}$/;
+  return passwordRegex.test(password);
+};
+
 // Contrôleur pour réinitialiser le mot de passe
 export const resetPassword = async (req, res) => {
   const { token, newPassword } = req.body;
@@ -138,12 +148,19 @@ export const resetPassword = async (req, res) => {
     const user = await User.findOne({
       where: {
         resetPasswordToken: token,
-        resetPasswordExpires: { [Op.gt]: new Date() }, // Utilisation correcte de l'opérateur Op.gt
+        resetPasswordExpires: { [Op.gt]: new Date() },
       },
     });
 
     if (!user) {
       return res.status(400).json({ error: 'Token invalide ou expiré.' });
+    }
+
+    // Vérification de la complexité du nouveau mot de passe
+    if (!isValidPassword(newPassword)) {
+      return res.status(400).json({ 
+        error: 'Le mot de passe doit comporter au moins 8 caractères, une majuscule, un chiffre et un caractère spécial.' 
+      });
     }
 
     // Hacher le nouveau mot de passe et le sauvegarder
