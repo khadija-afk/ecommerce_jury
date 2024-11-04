@@ -33,10 +33,10 @@ export const getAllReviews = async (req, res) => {
 };
 
 // Get reviews by product ID
+// Get reviews by product ID
 export const getReviewsByProductId = async (req, res) => {
+  const productId = req.params.productId; // Récupère l'ID du produit depuis les paramètres de la requête
   try {
-    const productId = req.params.productId; // Récupère l'ID du produit depuis les paramètres de la requête
-
     const reviews = await Review.findAll({
       where: { product_fk: productId },
       include: [

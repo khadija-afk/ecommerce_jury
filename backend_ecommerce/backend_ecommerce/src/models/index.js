@@ -140,7 +140,7 @@ const syncUserTable = async () => {
 };
 
 // Appeler la fonction pour synchroniser la table `User`
-syncUserTable();
+// syncUserTable();
 
 
 export {

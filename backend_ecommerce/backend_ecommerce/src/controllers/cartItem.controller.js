@@ -133,3 +133,35 @@ export const updateCartItem = async (req, res) => {
   }
   return res.status(200).json(cartItem);
 };
+
+// Fonction pour vider le panier d'un utilisateur
+// Fonction pour vider le panier d'un utilisateur et réinitialiser le total_amount
+export const clearUserCart = async (req, res) => {
+  try {
+    const userId = req.user.id; // ID de l'utilisateur connecté
+
+    // Récupérer l'ID du panier associé à l'utilisateur
+    const userCart = await Cart.findOne({
+      where: { user_fk: userId },
+      attributes: ['id', 'total_amount'], // Récupère l'ID et le total_amount du panier
+    });
+
+    if (!userCart) {
+      return res.status(404).json({ error: "Panier non trouvé pour cet utilisateur." });
+    }
+
+    // Supprimer tous les articles du panier en utilisant `cart_fk`
+    await CartItem.destroy({
+      where: { cart_fk: userCart.id },
+    });
+
+    // Réinitialiser le total_amount à zéro
+    userCart.total_amount = 0;
+    await userCart.save();
+
+    res.status(200).json({ message: "Le panier a été vidé avec succès." });
+  } catch (error) {
+    console.error("Erreur lors de la suppression des articles du panier :", error);
+    res.status(500).json({ error: "Erreur serveur lors de la suppression des articles du panier." });
+  }
+};

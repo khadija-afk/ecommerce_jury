@@ -1,5 +1,5 @@
 import express from 'express';
-import { getAllCartItems, getCartItemById, addCartItem, updateCartItem, deleteCartItem } from '../controllers/cartItem.controller.js';
+import { getAllCartItems, getCartItemById, addCartItem, updateCartItem, deleteCartItem, clearUserCart} from '../controllers/cartItem.controller.js';
 import { verifieToken } from '../auth.js';
 
 const router = express.Router();
@@ -193,4 +193,6 @@ router.put('/cart-items/:id', verifieToken, updateCartItem);
  */
 router.delete('/cart-items/:id', verifieToken, deleteCartItem);
 
+
+router.post('/cart-items/clear', verifieToken, clearUserCart);
 export default router;

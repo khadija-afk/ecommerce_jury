@@ -12,8 +12,8 @@ import HomePage from './pages/home/home';
 import Layout from './components/Layout';
 import Users from './dashbord/user/Users';
 import Articles from './dashbord/article/Articles';
-import Success from './components/stripe/Successe';
-import Canceled from './components/stripe/Canceled';
+import PaymentSuccessPage from './components/stripe/Successe';
+import PaymentFailedPage from './components/stripe/Canceled';
 import Page from './dashbord/page';
 import FavorisPage from './pages/favorie/Favorite';
 
@@ -86,8 +86,8 @@ const App = () => {
             <Route path="api/article/:id" element={<Detail />} />
             <Route path = "/panier" element = {<Panier />} />
             <Route path ="/checkout" element ={<Checkout />} />
-            <Route path = "/success" element = {<Success />} />
-            <Route path = "/cancel" element = {<Canceled />} />
+            <Route path = "/success" element = {<PaymentSuccessPage />} />
+            <Route path = "/cancel" element = {<PaymentFailedPage />} />
             <Route path = "/favoris" element = {<FavorisPage/>} />
             <Route path = "/search" element = {<SearchResults/>} />
             <Route path="/no-results" element={<NoResults/>} />
