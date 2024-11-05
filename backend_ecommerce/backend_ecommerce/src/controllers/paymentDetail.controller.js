@@ -1,5 +1,6 @@
-import { PaymentDetails } from "../models/index.js";
+import { PaymentDetails, OrderDetails, Article, User, CartItem, OrderItems } from "../models/index.js";
 import * as Service from "../services/service.js";
+import { sendConfirmationEmail } from "./email.controller.js";
 
 // Récupérer tous les détails de paiement (protégé)
 export const getAllPaymentDetails = async (req, res) => {
@@ -30,6 +31,7 @@ export const getPaymentDetailById = async (req, res) => {
 };
 
 // Ajouter un nouveau détail de paiement (protégé)
+// Ajouter un nouveau détail de paiement (protégé)
 export const addPaymentDetail = async (req, res) => {
   try {
     const { order_fk, amount, provider, status } = req.body;
@@ -40,12 +42,39 @@ export const addPaymentDetail = async (req, res) => {
         .json({ error: "Tous les champs obligatoires doivent être remplis" });
     }
 
+    // Créer le détail du paiement
     const newPaymentDetail = await PaymentDetails.create({
       order_fk,
       amount,
       provider,
       status,
     });
+
+    // Récupérer les détails de l'utilisateur et de la commande
+    const order = await OrderDetails.findByPk(order_fk, {
+      include: [
+        {
+          model: User,
+          attributes: ['firstName', 'lastName', 'email'], // Ajouter les champs nécessaires
+        },
+        {
+          model: OrderItems,
+          include: [
+            {
+              model: Article,
+              attributes: ['name', 'price', 'photo'], // Récupérer les détails des articles
+            },
+          ],
+        },
+      ],
+    });
+
+    if (order && order.User) {
+      // Appeler la fonction d'envoi d'e-mail avec les détails de l'utilisateur et de la commande
+      await sendConfirmationEmail(order.User, order, newPaymentDetail);
+      console.log('E-mail de confirmation envoyé.');
+    }
+
     res.status(201).json(newPaymentDetail);
   } catch (error) {
     console.error("Erreur lors de l'ajout du détail de paiement :", error);

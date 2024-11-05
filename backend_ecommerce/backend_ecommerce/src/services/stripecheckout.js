@@ -1,5 +1,5 @@
 import stripe from './stripe.js';
-import { OrderDetails, OrderItems, PaymentDetails, Cart, CartItem, Article } from "../models/index.js";
+import { OrderDetails, OrderItems, PaymentDetails, Cart, CartItem, Article, User } from "../models/index.js";
 import jwt from 'jsonwebtoken';
 import { env } from '../config.js';
 
@@ -12,6 +12,13 @@ export const createStripeSession = async (req, res) => {
 
         const decoded = jwt.verify(token, env.token);
         const userId = decoded.id;
+
+        // Vérifiez la présence d'email, sinon récupérez depuis la base de données
+        const user = await User.findByPk(userId, { attributes: ['email'] });
+        const customerEmail = user ? user.email : null;
+        if (!customerEmail) {
+            return res.status(400).json({ error: 'Email utilisateur introuvable' });
+        }
 
         const { address } = req.body;
         if (!address) {
@@ -31,6 +38,17 @@ export const createStripeSession = async (req, res) => {
             return res.status(404).json({ error: 'Panier vide ou non trouvé' });
         }
 
+        // Calcul du montant total
+        const totalAmount = panier.cartItems.reduce((total, item) => total + item.article.price * item.quantity, 0);
+
+        // Enregistrer la commande avant la création de la session Stripe
+        const newOrder = await OrderDetails.create({
+            user_fk: userId,
+            total: totalAmount,
+            address: address,
+            paymentMethod: 'stripe',
+        });
+
         // Créer la session Stripe
         const session = await stripe.checkout.sessions.create({
             payment_method_types: ['card'],
@@ -45,23 +63,16 @@ export const createStripeSession = async (req, res) => {
                 },
                 quantity: item.quantity,
             })),
-            customer_email: decoded.email,
+            customer_email: customerEmail,
             mode: 'payment',
-            success_url: `https://localhost/success?session_id={CHECKOUT_SESSION_ID}`,
+            success_url: `https://localhost/success?session_id={CHECKOUT_SESSION_ID}&order_fk=${newOrder.id}&amount=${totalAmount}`,
             cancel_url: `https://localhost/cancel`,
             shipping_address_collection: {
                 allowed_countries: ['FR', 'US'],
             },
         });
 
-        // Enregistrer la commande
-        const newOrder = await OrderDetails.create({
-            user_fk: decoded.id,
-            total: panier.cartItems.reduce((total, item) => total + item.article.price * item.quantity, 0),
-            address: address,
-            paymentMethod: 'stripe',
-        });
-
+        // Enregistrement des articles de commande après la création de la session
         await Promise.all(panier.cartItems.map(async item => {
             await OrderItems.create({
                 order_fk: newOrder.id,
@@ -70,13 +81,6 @@ export const createStripeSession = async (req, res) => {
                 price: item.article.price,
             });
         }));
-
-        await PaymentDetails.create({
-            order_fk: newOrder.id,
-            amount: panier.total_amount,
-            provider: 'Stripe',
-            status: 'Pending',
-        });
 
         res.status(200).json({ sessionId: session.id });
     } catch (error) {

@@ -1,35 +1,58 @@
-import React, {useEffect} from 'react';
+import React, { useEffect, useState } from 'react';
 import { Container, Box, Typography, Button, Avatar } from '@mui/material';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import apiClient from '../../utils/axiosConfig';
 
 const theme = createTheme({
   palette: {
     primary: {
-      main: '#4caf50', // Vert pour la réussite
+      main: '#4caf50',
     },
   },
 });
 
 const PaymentSuccessPage = () => {
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const order_fk = searchParams.get('order_fk');
+  const amount = searchParams.get('amount');
+  const [isRecorded, setIsRecorded] = useState(false); // Indicateur pour éviter les doublons
 
   useEffect(() => {
-    // Appeler l'API pour vider le panier de l'utilisateur
-    const clearCart = async () => {
+    const recordPaymentDetails = async () => {
+      if (!order_fk || !amount) {
+        console.error("Erreur: order_fk ou amount est manquant.");
+        return;
+      }
+
       try {
-        await apiClient.post('api/api/cartItem/cart-items/clear'); // Assurez-vous que cette route pointe vers le bon endpoint backend
-        console.log('Le panier a été vidé.');
+        const paymentDetails = {
+          order_fk,
+          amount,
+          provider: "Stripe",
+          status: "success",
+        };
+
+        // Enregistrer les détails du paiement s'il n'a pas été fait
+        if (!isRecorded) {
+          const response = await apiClient.post('/api/api/payment/payment-details', paymentDetails);
+          console.log("Détails de paiement enregistrés :", response.data);
+          setIsRecorded(true); // Marque comme enregistré
+
+          // Vider le panier de l'utilisateur après enregistrement du paiement
+          await apiClient.post('/api/api/cartItem/cart-items/clear');
+          console.log("Le panier a été vidé.");
+        }
+
       } catch (error) {
-        console.error('Erreur lors de la suppression des articles du panier :', error);
+        console.error("Erreur lors de l'enregistrement des détails de paiement ou de la suppression du panier :", error);
       }
     };
 
-    // Appeler la fonction lorsque la page de succès du paiement est chargée
-    clearCart();
-  }, []);
+    recordPaymentDetails();
+  }, [order_fk, amount, isRecorded]);
 
   return (
     <ThemeProvider theme={theme}>
