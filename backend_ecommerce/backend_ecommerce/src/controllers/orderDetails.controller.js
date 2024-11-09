@@ -40,10 +40,10 @@ export const getOrderById = async (req, res) => {
 export const createOrder = async (req, res) => {
   try {
     const userId = req.user.id; // Utiliser l'ID de l'utilisateur connecté
-    const { total, address, paymentMethod } = req.body;
+    const { total } = req.body;
 
     // Vérification des paramètres
-    if (!total || !address || !paymentMethod) {
+    if (!total ) {
       return res
         .status(400)
         .json({
@@ -53,9 +53,7 @@ export const createOrder = async (req, res) => {
 
     const newOrder = await OrderDetails.create({
       user_fk: userId,
-      total,
-      address,
-      paymentMethod,
+      total
     });
 
     res.status(201).json({ orderId: newOrder.id });
@@ -70,7 +68,7 @@ export const createOrder = async (req, res) => {
 export const updateOrder = async (req, res) => {
   try {
     const userId = req.user.id; // Utiliser l'ID de l'utilisateur connecté
-    const { total, address, paymentMethod } = req.body;
+    const { total, status } = req.body;
 
     const order = await OrderDetails.findOne({
       where: { id: req.params.id, user_fk: userId },
@@ -79,7 +77,7 @@ export const updateOrder = async (req, res) => {
       return res.status(404).json({ error: "Commande non trouvée" });
     }
 
-    await order.update({ total, address, paymentMethod });
+    await order.update({ total, status });
     res.status(200).json(order);
   } catch (error) {
     res

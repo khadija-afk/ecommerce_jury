@@ -85,8 +85,8 @@ const App = () => {
             <Route path="article" element={<ArticleList />} />
             <Route path="api/article/:id" element={<Detail />} />
             <Route path = "/panier" element = {<Panier />} />
-            <Route path ="/checkout" element ={<Checkout />} />
-            <Route path = "/success" element = {<PaymentSuccessPage />} />
+            <Route path="/checkout/:orderId" element={<Checkout />} />
+            <Route path="/success" element={<PaymentSuccessPage />} />
             <Route path = "/cancel" element = {<PaymentFailedPage />} />
             <Route path = "/favoris" element = {<FavorisPage/>} />
             <Route path = "/search" element = {<SearchResults/>} />

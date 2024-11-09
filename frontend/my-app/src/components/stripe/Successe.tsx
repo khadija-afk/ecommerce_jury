@@ -16,43 +16,50 @@ const theme = createTheme({
 const PaymentSuccessPage = () => {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
-  const order_fk = searchParams.get('order_fk');
-  const amount = searchParams.get('amount');
-  const [isRecorded, setIsRecorded] = useState(false); // Indicateur pour éviter les doublons
+  const orderId = searchParams.get('orderId') || localStorage.getItem('orderId');
+  const paymentDetailId = searchParams.get('paymentDetailId') || localStorage.getItem('paymentDetailId');
+  const [isRecorded, setIsRecorded] = useState(false);
 
   useEffect(() => {
-    const recordPaymentDetails = async () => {
-      if (!order_fk || !amount) {
-        console.error("Erreur: order_fk ou amount est manquant.");
+    const processOrderAndPayment = async () => {
+      console.log("orderId:", orderId);
+      console.log("paymentDetailId:", paymentDetailId);
+      console.log("isRecorded:", isRecorded);
+
+      if (!orderId || !paymentDetailId || isRecorded) {
+        console.log("Paramètres manquants ou enregistrement déjà effectué.");
         return;
       }
 
       try {
-        const paymentDetails = {
-          order_fk,
-          amount,
-          provider: "Stripe",
-          status: "success",
-        };
+        // Mettre à jour le statut de PaymentDetail à "Paid"
+        await apiClient.put(`/api/api/payment/payment-details/${paymentDetailId}`, {
+          status: 'Paid'
+        });
+        console.log("Statut du paiement mis à jour à 'Paid'.");
 
-        // Enregistrer les détails du paiement s'il n'a pas été fait
-        if (!isRecorded) {
-          const response = await apiClient.post('/api/api/payment/payment-details', paymentDetails);
-          console.log("Détails de paiement enregistrés :", response.data);
-          setIsRecorded(true); // Marque comme enregistré
+        // Mettre à jour le statut de la commande à "Validé"
+        await apiClient.put(`/api/api/order/orders/${orderId}`, {
+          status: 'Validé'
+        });
+        console.log("Statut de la commande mis à jour à 'Validé'.");
 
-          // Vider le panier de l'utilisateur après enregistrement du paiement
-          await apiClient.post('/api/api/cartItem/cart-items/clear');
-          console.log("Le panier a été vidé.");
-        }
+        // Vider le panier après la mise à jour des statuts
+        await apiClient.post('/api/api/cartItem/cart-items/clear');
+        console.log("Le panier a été vidé.");
 
+        // Supprimer les valeurs du localStorage après traitement
+        localStorage.removeItem('orderId');
+        localStorage.removeItem('paymentDetailId');
+
+        setIsRecorded(true); // Marquer l'enregistrement comme effectué
       } catch (error) {
-        console.error("Erreur lors de l'enregistrement des détails de paiement ou de la suppression du panier :", error);
+        console.error("Erreur lors de la mise à jour du paiement, de la commande ou du panier :", error);
       }
     };
 
-    recordPaymentDetails();
-  }, [order_fk, amount, isRecorded]);
+    processOrderAndPayment();
+  }, [orderId, paymentDetailId, isRecorded]);
 
   return (
     <ThemeProvider theme={theme}>

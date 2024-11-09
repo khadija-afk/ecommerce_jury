@@ -17,14 +17,14 @@ export default (connection, DataTypes) => {
                 type: DataTypes.DECIMAL(10, 2),
                 allowNull: false
             },
-            address: {
+            
+            status: {
                 type: DataTypes.STRING,
-                allowNull: false,  // L'adresse de livraison est obligatoire
-            },
-            paymentMethod: {
-                type: DataTypes.STRING,
-                allowNull: false,  // La méthode de paiement est obligatoire
+                allowNull: false, // Par exemple : 'en attent', 'valide'
+                defaultValue: 'en attent'
+
             }
+            
         },
         { timestamps: true }
     );

@@ -13,7 +13,12 @@ const ReviewsList = ({ productId }) => {
                 const response = await apiClient.get(`api/api/review/product/${productId}`);
                 setReviews(response.data);
             } catch (error) {
-                console.error("Erreur lors de la récupération des avis :", error);
+                // Vérifier si l'erreur est due à une absence d'avis ou un autre problème
+                if (error.response && error.response.status !== 500) {
+                    console.warn("Aucun avis pour ce produit.");
+                } else {
+                    console.error("Erreur lors de la récupération des avis :", error);
+                }
             }
         };
 
@@ -22,7 +27,11 @@ const ReviewsList = ({ productId }) => {
                 const response = await apiClient.get(`api/api/review/${productId}/average`);
                 setAverageRating(response.data.averageRating);
             } catch (error) {
-                console.error("Erreur lors du calcul de la note moyenne :", error);
+                if (error.response && error.response.status !== 500) {
+                    console.warn("Pas de note moyenne disponible pour ce produit.");
+                } else {
+                    console.error("Erreur lors du calcul de la note moyenne :", error);
+                }
             }
         };
 
@@ -37,14 +46,14 @@ const ReviewsList = ({ productId }) => {
 
     return (
         <div className="reviews-list">
-            <h3>Note moyenne : {averageRating} / 5</h3>
+            <h3>Note moyenne : {averageRating || "N/A"} / 5</h3>
             {reviews.length > 0 ? (
                 reviews.map((review) => (
                     <div key={review.id} className="review" style={{ marginBottom: '20px', paddingBottom: '10px', borderBottom: '1px solid #ccc' }}>
                         <div className="review-header" style={{ display: 'flex', alignItems: 'center', marginBottom: '8px' }}>
                             <FontAwesomeIcon icon={faUserCircle} size="2x" style={{ marginRight: '10px', color: '#888' }} />
                             <div>
-                            <p style={{ margin: 0, fontWeight: 'bold' }}>
+                                <p style={{ margin: 0, fontWeight: 'bold' }}>
                                     {review['User.firstName'] && review['User.lastName'] 
                                         ? `${review['User.firstName']} ${review['User.lastName']}` 
                                         : 'Utilisateur Anonyme'}

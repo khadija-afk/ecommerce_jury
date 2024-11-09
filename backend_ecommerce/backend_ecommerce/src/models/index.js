@@ -139,8 +139,18 @@ const syncUserTable = async () => {
   }
 };
 
+const syncOrderTabe = async () => {
+  try {
+    await OrderDetails.sync({ alter: true }); // Utilise `force: true` si vous souhaitez recréer la table, `alter: true` pour appliquer les modifications sans perte de données
+    console.log('Table `Order` synchronisée avec succès.');
+  } catch (error) {
+    console.error('Erreur lors de la synchronisation de la table `Order` :', error);
+  }
+};
+
 // Appeler la fonction pour synchroniser la table `User`
 // syncUserTable();
+// syncOrderTabe();
 
 
 export {
