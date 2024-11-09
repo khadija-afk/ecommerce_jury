@@ -69,48 +69,79 @@ export const addPaymentDetail = async (req, res) => {
       ],
     });
 
-    if (order && order.User) {
-      // Appeler la fonction d'envoi d'e-mail avec les détails de l'utilisateur et de la commande
-      await sendConfirmationEmail(order.User, order, newPaymentDetail);
-      console.log('E-mail de confirmation envoyé.');
-    }
-
-    res.status(201).json(newPaymentDetail);
-  } catch (error) {
-    console.error("Erreur lors de l'ajout du détail de paiement :", error);
-    res
-      .status(500)
-      .json({ error: "Erreur serveur lors de l'ajout du détail de paiement" });
+   // Vérifiez que le paiement est "Paid" avant d'envoyer l'e-mail
+   if (status === 'Paid' && order && order.User) {
+    await sendConfirmationEmail(order.User, order, newPaymentDetail);
+    console.log('E-mail de confirmation envoyé.');
+  } else {
+    console.log('Statut non "Paid", aucun e-mail envoyé.');
   }
+
+  res.status(201).json(newPaymentDetail);
+} catch (error) {
+  console.error("Erreur lors de l'ajout du détail de paiement :", error);
+  res
+    .status(500)
+    .json({ error: "Erreur serveur lors de l'ajout du détail de paiement" });
+}
 };
 
 // Mettre à jour un détail de paiement (protégé)
 export const updatePaymentDetail = async (req, res) => {
-
   let paymentDetail;
 
   try {
-
+    // Récupérer les détails du paiement existant
     paymentDetail = await Service.get(PaymentDetails, req.params.id);
   } catch (error) {
-      return res.status(error.status).json({ error: error.error });
+    return res.status(error.status).json({ error: error.error });
   }
+
   try {
-    
+    // Mettre à jour les détails du paiement avec les données reçues
     await paymentDetail.update(req.body);
+
+    // Si le statut est mis à jour en "Paid", envoyer l'e-mail de confirmation
+    if (req.body.status === 'Paid') {
+      // Récupérer les détails de l'utilisateur et de la commande associés
+      const order = await OrderDetails.findByPk(paymentDetail.order_fk, {
+        include: [
+          {
+            model: User,
+            attributes: ['firstName', 'lastName', 'email'],
+          },
+          {
+            model: OrderItems,
+            include: [
+              {
+                model: Article,
+                attributes: ['name', 'price', 'photo'],
+              },
+            ],
+          },
+        ],
+      });
+
+      if (order && order.User) {
+        // Appeler la fonction d'envoi d'e-mail avec les détails de l'utilisateur, de la commande et du paiement
+        await sendConfirmationEmail(order.User, order, paymentDetail);
+        console.log('E-mail de confirmation envoyé après mise à jour en "Paid".');
+      }
+    }
+
+    // Envoyer la réponse au client avec les détails mis à jour
     res.status(200).json(paymentDetail);
   } catch (error) {
     console.error(
       "Erreur lors de la mise à jour du détail de paiement :",
       error,
     );
-    res
-      .status(500)
-      .json({
-        error: "Erreur serveur lors de la mise à jour du détail de paiement",
-      });
+    res.status(500).json({
+      error: "Erreur serveur lors de la mise à jour du détail de paiement",
+    });
   }
 };
+
 
 // Supprimer un détail de paiement (protégé)
 export const deletePaymentDetail = async (req, res) => {
