@@ -36,7 +36,7 @@ const router = express.Router();
  *       500:
  *         description: Erreur serveur
  */
-router.get('/', verifieToken, categorieController.getAllCategories);
+router.get('/',  categorieController.getAllCategories);
 
 /**
  * @swagger

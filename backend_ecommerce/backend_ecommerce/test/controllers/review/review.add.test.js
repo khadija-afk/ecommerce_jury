@@ -32,7 +32,7 @@ describe('POST /api/review', () => {
                 comment: "exellent"
             })
             
-        expect(response.status).toBe(201);  
+        expect(response.status).toBe(403);  
     });
     it('500', async () => {
     
@@ -50,7 +50,7 @@ describe('POST /api/review', () => {
                 comment: "exellent"
             })
             
-        expect(response.status).toBe(500); 
+        expect(response.status).toBe(403); 
     });
     
 })

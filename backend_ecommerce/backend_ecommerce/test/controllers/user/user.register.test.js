@@ -1,6 +1,7 @@
 import request from 'supertest';
 import { app } from 'server.js';
 import { prepareDatabase, teardownDatabase } from 'serverTest.js';
+import { User, Cart } from 'src/models/index.js';
 
 describe('POST /api/user/add', () => {
     let mockUser, mockCart;
@@ -13,24 +14,21 @@ describe('POST /api/user/add', () => {
         await teardownDatabase();
     });
 
-    afterEach(() => {
+    afterEach(async () => {
         jest.restoreAllMocks(); // Restaurer les mocks après chaque test
     });
 
-    it('201 created successfully', async () => {
-        const { User, Cart } = require('src/models/index.js');
-
-        // Simuler une instance de User et Cart avec des valeurs mockées
+    it('201 - Created successfully', async () => {
         mockUser = {
             id: 1,
-            email: "john.doe@example.com",
+            email: "lafnech@gmail.com",
             firstName: "John",
             lastName: "Doe",
-            password: "$2b$10$IhUnpwV/GCHV9U/V4lElKOD6FqZkuYUkBjvbL7hfeu3uIJlmBp4Ji", // hashed password
+            password: "$2b$10$IhUnpwV/GCHV9U/V4lElKOD6FqZkuYUkBjvbL7hfeu3uIJlmBp4Ji",
             role: 'user',
             dataValues: {
                 id: 1,
-                email: "john.doe@example.com",
+                email: "lafnech@gmail.com",
                 firstName: "John",
                 lastName: "Doe",
                 role: 'user'
@@ -43,34 +41,32 @@ describe('POST /api/user/add', () => {
             total_amount: 0
         };
 
-        // Mock de User.create pour retourner l'utilisateur simulé
         User.create = jest.fn().mockResolvedValue(mockUser);
-
-        // Mock de Cart.create pour retourner un panier simulé
         Cart.create = jest.fn().mockResolvedValue(mockCart);
 
         const response = await request(app)
             .post('/api/user/add')
             .send({
-                email: "john.doe@example.com",
+                email: "lafnech@gmail.com",
                 firstName: "John",
                 lastName: "Doe",
-                password: "123456" // un mot de passe non hashé
+                password: "khadija1234@Kenzi"
             });
 
         // Vérifier le résultat attendu
         expect(response.status).toBe(201);
         expect(response.body).toEqual({
             user: mockUser,
-            cart: mockCart
+            cart: mockCart,
+            message: "Utilisateur créé avec succès et email de bienvenue envoyé."
         });
 
         // Vérifier que User.create et Cart.create ont été appelés
         expect(User.create).toHaveBeenCalledWith({
-            email: "john.doe@example.com",
+            email: "lafnech@gmail.com",
             firstName: "John",
             lastName: "Doe",
-            password: expect.any(String) // le mot de passe doit être hashé
+            password: expect.any(String)
         });
         expect(Cart.create).toHaveBeenCalledWith({
             user_fk: mockUser.id,
@@ -78,25 +74,22 @@ describe('POST /api/user/add', () => {
         });
     });
 
-    it('500 ', async () => {
-        const { User } = require('src/models/index.js');
-
-        // Simuler une erreur lors de la création de l'utilisateur
+    it('500 - Server error when creating user', async () => {
         User.create = jest.fn().mockRejectedValue(new Error('Erreur lors de la création de l\'utilisateur'));
 
         const response = await request(app)
             .post('/api/user/add')
             .send({
-                email: "john.doe@example.com",
+                email: "lafnech@gmail.com",
                 firstName: "John",
                 lastName: "Doe",
-                password: "123456"
+                password: "Doe1234?@KENZI"
             });
 
         // Vérifier que le serveur renvoie une erreur 500
         expect(response.status).toBe(500);
         expect(response.body).toEqual({
-            error: "Server error while creating User"
+            error: "Erreur serveur lors de l'inscription."
         });
     });
 });

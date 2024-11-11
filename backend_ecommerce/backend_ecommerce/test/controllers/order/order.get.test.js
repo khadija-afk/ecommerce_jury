@@ -44,8 +44,7 @@ describe('GET /api/order/orders', () => {
             [
                 expect.objectContaining({
                     total: 100,
-                    address: "11 rue du bois joly",
-                    paymentMethod: "stripe"
+                    
                 })
             ]
         );

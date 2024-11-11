@@ -80,8 +80,7 @@ const prepareDatabase = async () => {
         const newOrder = await OrderDetails.create({
             user_fk: user2.id,
             total: 100,
-            address: '11 rue du bois joly',
-            paymentMethod: 'stripe'
+           
         });
         const newOrder2 = await OrderDetails.create({
             user_fk: user3.id,

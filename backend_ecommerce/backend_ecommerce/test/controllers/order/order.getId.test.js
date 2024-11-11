@@ -1,18 +1,15 @@
 import request from 'supertest';
-import { app } from 'server.js'; // Assurez-vous que le chemin est correct
+import { app } from 'server.js';
 import { prepareDatabase, teardownDatabase, getUserToken } from 'serverTest.js';
 
 describe('GET /api/order/orders/:id', () => {
-
     let user_john;
     let user_john2;
-   
-    
+
     beforeAll(async () => {
         await prepareDatabase();
         user_john = await getUserToken('john.doe@example.com');
         user_john2 = await getUserToken('john2.doe2@example.com');
-        
     });
 
     afterAll(async () => {
@@ -23,46 +20,44 @@ describe('GET /api/order/orders/:id', () => {
         jest.restoreAllMocks(); // Restaurer les mocks après chaque test
     });
 
-    it('404', async () => {
-    
-        // Effectuer la requête avec un en-tête Authorization
+    it('404 - Order not found', async () => {
         const response = await request(app)
             .get('/api/order/orders/33')
-            .set('Cookie', `access_token=${user_john}`);  // Utilisation de l'en-tête Authorization
+            .set('Cookie', `access_token=${user_john}`);
         
-        expect(response.status).toBe(404);  // Vérifiez bien le statut
+        expect(response.status).toBe(404);  
     });
 
-    it('200', async () => {
+    it('200 - Successful order retrieval', async () => {
         const response = await request(app)
             .get('/api/order/orders/1')
-            .set('Cookie', `access_token=${user_john2}`);  // Utilisation du token valide
+            .set('Cookie', `access_token=${user_john2}`);
     
-        console.log(response.body);  // Debugging: pour voir ce que la route retourne exactement
-        expect(response.status).toBe(200);  // Vérifiez bien le statut
+        expect(response.status).toBe(200);
+
+        // Vérification partielle pour les champs clés seulement
         expect(response.body).toEqual(
-            
-                expect.objectContaining({
-                    total: 100,
-                    address: "11 rue du bois joly",
-                    paymentMethod: "stripe"
-                })
-            
+            expect.objectContaining({
+                id: 1,
+                user_fk: 2,
+                total: 100,
+                
+            })
         );
+
+        // Si vous souhaitez ignorer certaines valeurs, les ajouter pour `createdAt` et `updatedAt`
+        expect(response.body.createdAt).toBeDefined();
+        expect(response.body.updatedAt).toBeDefined();
     });
 
-    it('500', async () => {
-    
+    it('500 - Server error simulated during order retrieval', async () => {
         const { OrderDetails } = require('src/models/index.js');
-    
-        OrderDetails.findOne = jest.fn().mockRejectedValue(new Error('Erreur serveur lors de la récupération des commandes'))
+        OrderDetails.findOne = jest.fn().mockRejectedValue(new Error('Erreur serveur lors de la récupération des commandes'));
 
-        // Effectuer la requête avec un en-tête Authorization
         const response = await request(app)
             .get('/api/order/orders/1')
-            .set('Cookie', `access_token=${user_john2}`);  // Utilisation de l'en-tête Authorization
+            .set('Cookie', `access_token=${user_john2}`);
         
-        expect(response.status).toBe(500);  // Vérifiez bien le statut
+        expect(response.status).toBe(500);
     });
-    
-})
+});

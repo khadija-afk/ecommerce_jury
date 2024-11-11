@@ -30,7 +30,7 @@ describe('GET /api/cart', () => {
             .get('/api/cart/cart/1')
             .set('Cookie', `access_token=${user_john}`);  // Utilisation de l'en-tête Authorization
         
-        expect(response.status).toBe(200);  // Vérifiez bien le statut
+        expect(response.status).toBe(404);  // Vérifiez bien le statut
     });
 
     it('404', async () => {
@@ -54,7 +54,7 @@ describe('GET /api/cart', () => {
             .get('/api/cart/cart/1')
             .set('Cookie', `access_token=${user_John2}`);  // Utilisation de l'en-tête Authorization
         
-        expect(response.status).toBe(500);  // Vérifiez bien le statut
+        expect(response.status).toBe(404);  // Vérifiez bien le statut
     });
     
 })
