@@ -10,21 +10,21 @@ pipeline {
 
     stages {
 
-        stage('Install Dependencies') {
-            agent { docker { image 'node:21' } }
+        // stage('Install Dependencies') {
+        //     agent { docker { image 'node:21' } }
             
-            steps {
-                script {
-                    // Install Node.js dependencies for both frontend and backend
-                    dir('frontend/my-app') {
-                        sh 'npm install'
-                    }
-                    dir('backend_ecommerce/backend_ecommerce') {
-                        sh 'npm install'
-                    }
-                }
-            }
-        }
+        //     steps {
+        //         script {
+        //             // Install Node.js dependencies for both frontend and backend
+        //             dir('frontend/my-app') {
+        //                 sh 'npm install'
+        //             }
+        //             dir('backend_ecommerce/backend_ecommerce') {
+        //                 sh 'npm install'
+        //             }
+        //         }
+        //     }
+        // }
 
         stage('Run Tests Behaver') {
             agent { docker { image 'node:22' } }
