@@ -40,34 +40,6 @@ pipeline {
             }
         }
 
-        stage('Run Security Tests') {
-            agent { 
-                docker { 
-                    image 'ghcr.io/zaproxy/zaproxy:stable'
-                    args '-v $WORKSPACE/zap-output:/zap/wrk'
-                }
-            }
-            steps {
-                script {
-                    // Assurez-vous que l'URL cible est accessible pour le conteneur ZAP
-                    dir('backend_ecommerce/backend_ecommerce') {
-                        sh 'zap-baseline.py -t http://nginx -r /zap/wrk/testreport.html'
-                    }
-                }
-            }
-            post {
-                always {
-                    // Archive le rapport généré pour consultation dans Jenkins
-                    archiveArtifacts artifacts: 'zap-output/testreport.html', allowEmptyArchive: true
-                }
-                success {
-                    echo 'ZAP scan completed successfully.'
-                }
-                failure {
-                    echo 'ZAP scan failed. Check the test report for details.'
-                }
-            }
-        }
 
         stage('Run Tests Unitaires') {
             agent { docker { image 'node:21' } }
@@ -117,6 +89,35 @@ pipeline {
                         -Dsonar.login=${SONAR_LOGIN} \
                         -Dsonar.javascript.jstest.reportsPath=./reports \
                         -Dsonar.junit.reportPaths=./reports/junit.xml"
+            }
+        }
+
+         stage('Run Security Tests') {
+            agent { 
+                docker { 
+                    image 'ghcr.io/zaproxy/zaproxy:stable'
+                    args '-v $WORKSPACE/zap-output:/zap/wrk'
+                }
+            }
+            steps {
+                script {
+                    // Assurez-vous que l'URL cible est accessible pour le conteneur ZAP
+                    dir('backend_ecommerce/backend_ecommerce') {
+                        sh 'zap-baseline.py -t http://nginx -r /zap/wrk/testreport.html'
+                    }
+                }
+            }
+            post {
+                always {
+                    // Archive le rapport généré pour consultation dans Jenkins
+                    archiveArtifacts artifacts: 'zap-output/testreport.html', allowEmptyArchive: true
+                }
+                success {
+                    echo 'ZAP scan completed successfully.'
+                }
+                failure {
+                    echo 'ZAP scan failed. Check the test report for details.'
+                }
             }
         }
 
