@@ -2,8 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../../../store';
 import { registerUser, UserData } from './userSlice';
-import { Button, TextField, Typography, Grid, Box, Container, Link, Alert } from '@mui/material';
+import { Button, TextField, Typography, Grid, Box, Container, Link, Alert, IconButton, InputAdornment } from '@mui/material';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { Visibility, VisibilityOff } from '@mui/icons-material';
 import { useNavigate } from 'react-router-dom';
 
 const defaultTheme = createTheme();
@@ -14,15 +15,18 @@ const RegisterForm: React.FC = () => {
   const userStatus = useSelector((state: RootState) => state.user.status);
   const error = useSelector((state: RootState) => state.user.error);
 
-  const [formData, setFormData] = useState<UserData>({
+  const [formData, setFormData] = useState<UserData & { confirmPassword: string }>({
     firstName: '',
     lastName: '',
     email: '',
     password: '',
+    confirmPassword: '',
     role: 'user'
   });
 
-  const [fieldErrors, setFieldErrors] = useState<Partial<UserData> & { general?: string }>({});
+  const [fieldErrors, setFieldErrors] = useState<Partial<UserData> & { confirmPassword?: string; general?: string }>({});
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({
@@ -35,23 +39,47 @@ const RegisterForm: React.FC = () => {
     });
   };
 
+  const validateEmail = (email: string) => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+  };
+
+  const validatePassword = (password: string) => {
+    const passwordRegex = /^(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+    return passwordRegex.test(password);
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setFieldErrors({}); // Réinitialise les erreurs
 
+    // Vérifications de validation
+    const errors: Partial<UserData> & { confirmPassword?: string } = {};
+    if (!validateEmail(formData.email)) {
+      errors.email = "Adresse e-mail invalide";
+    }
+    if (!validatePassword(formData.password)) {
+      errors.password = "Le mot de passe doit comporter au moins 8 caractères, une majuscule, un caractère spécial et un chiffre.";
+    }
+    if (formData.password !== formData.confirmPassword) {
+      errors.confirmPassword = "Les mots de passe ne correspondent pas";
+    }
+    
+    if (Object.keys(errors).length > 0) {
+      setFieldErrors(errors);
+      return;
+    }
+
     try {
       await dispatch(registerUser(formData)).unwrap();
     } catch (error: any) {
-      console.log('Erreur capturée :', error); // Log pour vérifier la structure de l'erreur
+      console.log('Erreur capturée :', error);
 
       if (error.response && error.response.data && error.response.data.error) {
-        // Affiche le message d'erreur détaillé du backend
         setFieldErrors({ general: error.response.data.error });
       } else if (error.message) {
-        // Affiche un message générique si `error.response.data.error` n'est pas disponible
         setFieldErrors({ general: error.message });
       } else {
-        // Affiche un message par défaut si aucun autre message n'est disponible
         setFieldErrors({ general: 'Une erreur est survenue. Veuillez réessayer.' });
       }
     }
@@ -59,8 +87,7 @@ const RegisterForm: React.FC = () => {
 
   useEffect(() => {
     if (userStatus === 'succeeded') {
-      // Redirige vers la page de connexion après succès
-      // navigate('/sign');
+      navigate('/sign');
     }
   }, [userStatus, navigate]);
 
@@ -122,23 +149,51 @@ const RegisterForm: React.FC = () => {
                   fullWidth
                   name="password"
                   label="Mot de passe"
-                  type="password"
+                  type={showPassword ? "text" : "password"}
                   id="password"
                   autoComplete="new-password"
                   onChange={handleChange}
                   value={formData.password}
                   error={!!fieldErrors.password}
                   helperText={fieldErrors.password}
+                  InputProps={{
+                    endAdornment: (
+                      <InputAdornment position="end">
+                        <IconButton
+                          onClick={() => setShowPassword(!showPassword)}
+                          edge="end"
+                        >
+                          {showPassword ? <VisibilityOff /> : <Visibility />}
+                        </IconButton>
+                      </InputAdornment>
+                    )
+                  }}
                 />
               </Grid>
               <Grid item xs={12}>
                 <TextField
+                  required
                   fullWidth
-                  name="role"
-                  label="Rôle"
-                  id="role"
+                  name="confirmPassword"
+                  label="Confirmer le mot de passe"
+                  type={showConfirmPassword ? "text" : "password"}
+                  id="confirmPassword"
                   onChange={handleChange}
-                  value={formData.role}
+                  value={formData.confirmPassword}
+                  error={!!fieldErrors.confirmPassword}
+                  helperText={fieldErrors.confirmPassword}
+                  InputProps={{
+                    endAdornment: (
+                      <InputAdornment position="end">
+                        <IconButton
+                          onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                          edge="end"
+                        >
+                          {showConfirmPassword ? <VisibilityOff /> : <Visibility />}
+                        </IconButton>
+                      </InputAdornment>
+                    )
+                  }}
                 />
               </Grid>
             </Grid>

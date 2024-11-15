@@ -68,28 +68,56 @@ const SignInForm: React.FC = () => {
                         Connexion
                     </Typography>
                     <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
-                        <TextField
-                            margin="normal"
-                            required
-                            fullWidth
-                            id="email"
-                            label="Adresse e-mail"
-                            name="email"
-                            autoComplete="email"
-                            autoFocus
-                            onChange={handleChange}
-                        />
-                        <TextField
-                            margin="normal"
-                            required
-                            fullWidth
-                            name="password"
-                            label="Mot de passe"
-                            type="password"
-                            id="password"
-                            autoComplete="current-password"
-                            onChange={handleChange}
-                        />
+                    <TextField
+                                margin="normal"
+                                required
+                                fullWidth
+                                id="email"
+                                label="Adresse e-mail"
+                                name="email"
+                                autoComplete="email"
+                                autoFocus
+                                onChange={handleChange}
+                                sx={{
+                                    '& .MuiOutlinedInput-root': {
+                                        '& fieldset': {
+                                            borderColor: '#311C52', // Couleur du cadre par défaut
+                                        },
+                                        '&:hover fieldset': {
+                                            borderColor: '#311C52', // Couleur au survol
+                                        },
+                                        '&.Mui-focused fieldset': {
+                                            borderColor: '#311C52', // Couleur lorsqu'en focus
+                                        },
+                                    },
+                                }}
+                            />
+
+                           <TextField
+                                margin="normal"
+                                required
+                                fullWidth
+                                 name="password"
+                                label="Mot de passe"
+                                type="password"
+                                id="password"
+                                autoComplete="current-password"
+                                onChange={handleChange}
+                                sx={{
+                                    '& .MuiOutlinedInput-root': {
+                                        '& fieldset': {
+                                            borderColor: '#311C52', // Couleur du cadre par défaut
+                                        },
+                                        '&:hover fieldset': {
+                                            borderColor: '#311C52', // Couleur au survol
+                                        },
+                                        '&.Mui-focused fieldset': {
+                                            borderColor: '#311C52', // Couleur lorsqu'en focus
+                                        },
+                                    },
+                                }}
+                            />
+
                         <FormControlLabel
                             control={<Checkbox value="remember" color="primary" />}
                             label="Se souvenir de moi"
@@ -98,22 +126,30 @@ const SignInForm: React.FC = () => {
                             type="submit"
                             fullWidth
                             variant="contained"
-                            sx={{ mt: 3, mb: 2 }}
+                            sx={{
+                                mt: 3,
+                                mb: 2,
+                                backgroundColor: '#311C52',  // Applique la couleur #311C52
+                                ':hover': {
+                                    backgroundColor: '#251040'  // Optionnel : couleur plus foncée au survol
+                                }
+                            }}
                         >
                             Se connecter
                         </Button>
-                        <Grid container>
-                            <Grid item xs>
-                                <Link href="/forgot-password" variant="body2">
-                                    Mot de passe oublié ?
-                                </Link>
-                            </Grid>
-                            <Grid item>
-                                <Link href="register" variant="body2">
-                                    {"Vous n'avez pas de compte ? Inscrivez-vous"}
-                                </Link>
-                            </Grid>
+
+                    <Grid container>
+                        <Grid item xs>
+                            <Link href="/forgot-password" variant="body2" sx={{ color: 'rgba(49, 28, 82, 0.5)' }}>
+                                Mot de passe oublié ?
+                            </Link>
                         </Grid>
+                    <Grid item>
+                        <Link href="register" variant="body2" sx={{ color: 'rgba(49, 28, 82, 0.5)' }}>
+                            {"Vous n'avez pas de compte ? Inscrivez-vous"}
+                        </Link>
+                    </Grid>
+                </Grid>
                     </Box>
                     {authStatus === 'loading' && <Typography variant="body2" color="text.secondary">Chargement...</Typography>}
                     {authStatus === 'succeeded' && <Typography variant="body2" color="success.main">Connexion réussie !</Typography>}

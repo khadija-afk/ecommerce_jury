@@ -18,7 +18,7 @@ export const login = async (req, res) => {
       .status(501)
       .json({ error: "Erreur lors de la recherche de user" });
   }
-  if (!user) return res.status(404).json("User not found!");
+  if (!user) return res.status(404).json("User n'est pas trouvé!");
 
   // step 2: validate password
   const comparePassword = await bcrypt.compare(
