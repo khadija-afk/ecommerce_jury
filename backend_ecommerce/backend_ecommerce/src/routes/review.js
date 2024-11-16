@@ -1,6 +1,7 @@
 import express from 'express';
 import { verifieToken } from '../auth.js';
-import { getAllReviews, getReviewById, createReview, updateReview, deleteReview, getAverageRating, getReviewsByProductId } from '../controllers/review.controller.js';
+import { verifyRole } from '../authMidlleware.js';
+import { getAllReviews, getReviewById, createReview, updateReview, deleteReview, getAverageRating, getReviewsByProductId, getPendingReviews, approveReview , rejectReview} from '../controllers/review.controller.js';
 
 const router = express.Router();
 
@@ -243,4 +244,12 @@ router.delete('/:id', verifieToken, deleteReview);
 router.get('/:productId/average', getAverageRating);
 
 router.get('/product/:productId', getReviewsByProductId);
+router.get('/pending', verifieToken, verifyRole(['admin']), getPendingReviews);
+
+// Approuver un avis
+router.patch('/:id/approve', verifieToken, verifyRole(['admin']), approveReview);
+
+// Rejeter un avis
+router.patch('/:id/reject', verifieToken, verifyRole(['admin']), rejectReview);
+
 export default router;

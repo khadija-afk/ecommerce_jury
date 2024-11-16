@@ -38,7 +38,7 @@ export const getReviewsByProductId = async (req, res) => {
   const productId = req.params.productId; // Récupère l'ID du produit depuis les paramètres de la requête
   try {
     const reviews = await Review.findAll({
-      where: { product_fk: productId },
+      where: { product_fk: productId, status: 'approved'},
       include: [
         {
           model: User,
@@ -188,3 +188,43 @@ export const getAverageRating = async (req, res) => {
       .json({ error: "Server error while calculating average rating" });
   }
 };
+export const getPendingReviews = async (req, res) => {
+  try {
+    const reviews = await Review.findAll({ where: { status: 'pending' } });
+    res.status(200).json(reviews);
+  } catch (error) {
+    console.error("Erreur lors de la récupération des avis en attente :", error);
+    res.status(500).json({ error: "Erreur serveur lors de la récupération des avis en attente." });
+  }
+};
+export const approveReview = async (req, res) => {
+  try {
+    const review = await Review.findByPk(req.params.id);
+
+    if (!review) {
+      return res.status(404).json({ error: "Avis introuvable" });
+    }
+
+    await review.update({ status: 'approved' });
+    res.status(200).json({ message: "Avis approuvé avec succès", review });
+  } catch (error) {
+    console.error("Erreur lors de l'approbation de l'avis :", error);
+    res.status(500).json({ error: "Erreur serveur lors de l'approbation de l'avis." });
+  }
+};
+export const rejectReview = async (req, res) => {
+  try {
+    const review = await Review.findByPk(req.params.id);
+
+    if (!review) {
+      return res.status(404).json({ error: "Avis introuvable" });
+    }
+
+    await review.update({ status: 'rejected' });
+    res.status(200).json({ message: "Avis rejeté avec succès", review });
+  } catch (error) {
+    console.error("Erreur lors du rejet de l'avis :", error);
+    res.status(500).json({ error: "Erreur serveur lors du rejet de l'avis." });
+  }
+};
+

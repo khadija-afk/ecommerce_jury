@@ -1,36 +1,57 @@
+import { Sequelize } from "sequelize";
+
 export default (connection, DataTypes) => {
     const Review = connection.define(
-        'Review',
+        "Review",
         {
             user_fk: {
                 type: DataTypes.INTEGER,
                 allowNull: false,
-                // references: {
-                //     model: 'users', // Name of the target model
-                //     key: 'id' // Key in the target model that this refers to
-                // }
+                references: {
+                    model: "users", // Nom du modèle cible (optionnel, à activer si vous utilisez les associations Sequelize)
+                    key: "id", // Clé de référence dans le modèle cible
+                },
             },
             product_fk: {
                 type: DataTypes.INTEGER,
                 allowNull: false,
-                // references: {
-                //     model: 'articles', // Name of the target model
-                //     key: 'id' // Key in the target model that this refers to
-                // }
+                references: {
+                    model: "articles", // Nom du modèle cible (optionnel, à activer si vous utilisez les associations Sequelize)
+                    key: "id", // Clé de référence dans le modèle cible
+                },
             },
             rating: {
                 type: DataTypes.INTEGER,
-                allowNull: false
+                allowNull: false,
+                validate: {
+                    min: 1, // Note minimale
+                    max: 5, // Note maximale
+                    isInt: true, // Valide uniquement les entiers
+                },
             },
             comment: {
                 type: DataTypes.TEXT,
-                allowNull: true
+                allowNull: true,
             },
-
+            status: {
+                type: DataTypes.ENUM("pending", "approved", "rejected"),
+                defaultValue: "pending", // Valeur par défaut
+                allowNull: false,
+            },
+            createdAt: {
+                type: DataTypes.DATE,
+                defaultValue: Sequelize.literal('CURRENT_TIMESTAMP'), // Utilisation de CURRENT_TIMESTAMP valide
+                allowNull: false,
+            },
+            updatedAt: {
+                type: DataTypes.DATE,
+                defaultValue: Sequelize.literal('CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'), // Auto-mise à jour
+                allowNull: false,
+            },
         },
         {
-            timestamps: false,
-            tableName: 'reviews'
+            tableName: "reviews",
+            timestamps: true,
         }
     );
 
