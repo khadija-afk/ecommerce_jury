@@ -86,7 +86,7 @@ router.get('/cart-items', verifieToken, getAllCartItems);
  *       500:
  *         description: Erreur serveur
  */
-router.get('/cart-items/:id', getCartItemById);
+router.get('/cart-items/:id', verifieToken,  getCartItemById);
 
 /**
  * @swagger

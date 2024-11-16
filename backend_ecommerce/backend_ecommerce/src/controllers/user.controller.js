@@ -32,7 +32,7 @@ export const login = async (req, res) => {
     });
 }
 
-  const token = jwt.sign({ id: user.id }, env.token, { expiresIn: "24h" });
+  const token = jwt.sign({ id: user.id, role: user.role }, env.token, { expiresIn: "24h" });
   const { password, ...other } = user.dataValues;
 
   res.cookie("access_token", token, { httpOnly: true }).status(200).json(other);
@@ -59,12 +59,6 @@ const transporter = nodemailer.createTransport({
   },
 });
 
-// Ajoutez des logs pour vérifier l'authentification
-console.log('Informations de connexion à l\'e-mail :');
-console.log('Utilisateur (email) :', env.user);
-console.log('Mot de passe (attention, ne pas afficher en production) :', env.pass);
-
-// Fonction pour envoyer un email de bienvenue
 const sendWelcomeEmail = (recipient_email, firstName, lastName) => {
   return new Promise((resolve, reject) => {
     const mailOptions = {

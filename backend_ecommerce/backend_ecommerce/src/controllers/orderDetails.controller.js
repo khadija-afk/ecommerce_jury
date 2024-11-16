@@ -47,7 +47,7 @@ export const createOrder = async (req, res) => {
       return res
         .status(400)
         .json({
-          error: "Le total, l'adresse et la méthode de paiement sont requis",
+          error: "Le total de paiement est requis",
         });
     }
 

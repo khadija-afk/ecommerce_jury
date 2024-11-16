@@ -1,6 +1,7 @@
 // routes/article.js
 import express from 'express';
 import { verifieToken } from '../auth.js';
+import { verifyRole } from '../authMidlleware.js';
 import {
   add,
   getAll,
@@ -107,7 +108,7 @@ const router = express.Router();
  *   get:
  *     summary: Récupérer un élément par ID
  */
-router.post('/', verifieToken, add);
+router.post('/', verifieToken, verifyRole(['admin']), add);
 
 /**
  * @swagger
@@ -131,7 +132,7 @@ router.get('/:id', getById);
  *   put:
  *     summary: Récupérer un élément par ID
  */
-router.put('/:id', verifieToken, updateById);
+router.put('/:id', verifieToken, verifyRole(['admin']), updateById);
 
 /**
  * @swagger
@@ -139,7 +140,7 @@ router.put('/:id', verifieToken, updateById);
  *   get:
  *     summary: Récupérer un élément par ID
  */
-router.delete('/:id', verifieToken, deleteById);
+router.delete('/:id', verifieToken,verifyRole(['admin']), deleteById);
 
 
 /**

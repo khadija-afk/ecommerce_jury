@@ -1,6 +1,7 @@
 import express from 'express';
 import * as categorieController from '../controllers/categorie.controller.js';
 import { verifieToken } from '../auth.js';
+import { verifyRole } from '../authMidlleware.js';
 
 const router = express.Router();
 
@@ -36,7 +37,7 @@ const router = express.Router();
  *       500:
  *         description: Erreur serveur
  */
-router.get('/',  categorieController.getAllCategories);
+router.get('/', categorieController.getAllCategories);
 
 /**
  * @swagger
@@ -112,7 +113,7 @@ router.get('/:id', categorieController.getCategoryById);
  *       500:
  *         description: Erreur serveur
  */
-router.post('/', categorieController.createCategory);
+router.post('/', verifieToken, verifyRole(['admin']), categorieController.createCategory);
 
 /**
  * @swagger
@@ -153,7 +154,7 @@ router.post('/', categorieController.createCategory);
  *       500:
  *         description: Erreur serveur
  */
-router.put('/:id', categorieController.updateCategory);
+router.put('/:id', verifieToken, verifyRole(['admin']), categorieController.updateCategory);
 
 /**
  * @swagger
@@ -179,6 +180,6 @@ router.put('/:id', categorieController.updateCategory);
  *       500:
  *         description: Erreur serveur
  */
-router.delete('/:id', categorieController.deleteCategory);
+router.delete('/:id', verifieToken, verifyRole(['admin']), categorieController.deleteCategory);
 
 export default router;
