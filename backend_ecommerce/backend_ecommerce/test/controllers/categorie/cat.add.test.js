@@ -1,87 +1,75 @@
 import request from 'supertest';
-import { app } from 'server.js'; // Assurez-vous que le chemin est correct
-import { Categorie } from 'src/models/index.js'; // Importez votre modèle de catégorie
+import { prepareDatabase, teardownDatabase, getUserToken } from 'serverTest.js';
+import { app } from 'server.js';
+import { Categorie } from 'src/models/index.js';
 
 describe('POST /api/categorie', () => {
+    let user_admin; // Utilisateur avec le rôle admin
+
+    beforeAll(async () => {
+        await prepareDatabase();
+        user_admin = await getUserToken('john.doe@example.com'); // Rôle admin
+    });
+
+    afterAll(async () => {
+        await teardownDatabase();
+    });
 
     afterEach(() => {
         jest.restoreAllMocks(); // Restaurer les mocks après chaque test
     });
 
-    it('201 ', async () => {
-        // Données simulées pour la nouvelle catégorie
-        const newCategory = {
-            id: 1,
-            name: 'Electronics',
-            description: 'Devices and gadgets'
-        };
-
-        // Spy sur Categorie.create pour surveiller les appels et les mocker
-        const createSpy = jest.spyOn(Categorie, 'create').mockResolvedValue(newCategory);
-
-        // Faire la requête POST avec des données valides
+    it('201 - Success (Catégorie créée avec succès)', async () => {
         const response = await request(app)
-            .post('/api/categorie') // Assurez-vous que l'URL est correcte
+            .post('/api/categorie')
             .send({
-                name: 'Electronics',
-                description: 'Devices and gadgets'
-            });
+                name: 'Nouvelle Catégorie',
+                description: 'Description de la nouvelle catégorie',
+            })
+            .set('Cookie', `access_token=${user_admin}`); // Utilisateur admin
 
-        // Assertions
         expect(response.status).toBe(201);
-        expect(response.body).toEqual(newCategory);
+        expect(response.body).toHaveProperty('id');
+        expect(response.body).toHaveProperty('name', 'Nouvelle Catégorie');
+        expect(response.body).toHaveProperty('description', 'Description de la nouvelle catégorie');
 
-        // Vérifier que Categorie.create a bien été appelé avec les bons paramètres
-        expect(createSpy).toHaveBeenCalledWith({
-            name: 'Electronics',
-            description: 'Devices and gadgets'
-        });
+        // Vérifier que la catégorie a été créée dans la base de données
+        const createdCategory = await Categorie.findByPk(response.body.id);
+        expect(createdCategory.name).toBe('Nouvelle Catégorie');
+        expect(createdCategory.description).toBe('Description de la nouvelle catégorie');
     });
 
-    it('400 ', async () => {
-        // Spy sur Categorie.create pour surveiller les appels sans les mocker
-        const createSpy = jest.spyOn(Categorie, 'create');
-
-        // Faire la requête POST sans le champ 'name'
+    it('400 - Bad Request (Données invalides)', async () => {
         const response = await request(app)
-            .post('/api/categorie') // Assurez-vous que l'URL est correcte
+            .post('/api/categorie')
             .send({
-                description: 'Devices and gadgets'
-            });
+                description: 'Description sans nom', // Champ `name` manquant
+            })
+            .set('Cookie', `access_token=${user_admin}`); // Utilisateur admin
 
-        // Assertions
         expect(response.status).toBe(400);
         expect(response.body).toEqual({
-            error: 'Le nom de la catégorie est requis'
+            error: 'Le nom de la catégorie est requis',
         });
-
-        // Vérifier que Categorie.create n'a pas été appelé
-        expect(createSpy).not.toHaveBeenCalled();
     });
 
-    it('500 ', async () => {
-        // Spy sur Categorie.create pour lever une erreur
-        const createSpy = jest.spyOn(Categorie, 'create').mockRejectedValue(new Error('Erreur lors de la création'));
+    it('500 - Internal Server Error', async () => {
+        // Simuler une erreur lors de la création
+        const mockCreate = jest.spyOn(Categorie, 'create').mockRejectedValueOnce(new Error('Erreur lors de la création'));
 
-        // Faire la requête POST avec des données valides
         const response = await request(app)
-            .post('/api/categorie') // Assurez-vous que l'URL est correcte
+            .post('/api/categorie')
             .send({
-                name: 'Electronics',
-                description: 'Devices and gadgets'
-            });
+                name: 'Erreur Catégorie',
+                description: 'Catégorie qui génère une erreur',
+            })
+            .set('Cookie', `access_token=${user_admin}`); // Utilisateur admin
 
-        // Assertions
         expect(response.status).toBe(500);
         expect(response.body).toEqual({
-            error: 'Erreur serveur lors de la création de la catégorie'
+            error: 'Erreur serveur lors de la création de la catégorie',
         });
 
-        // Vérifier que Categorie.create a bien été appelé avec les bons paramètres
-        expect(createSpy).toHaveBeenCalledWith({
-            name: 'Electronics',
-            description: 'Devices and gadgets'
-        });
+        mockCreate.mockRestore();
     });
-
 });

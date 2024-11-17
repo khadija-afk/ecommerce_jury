@@ -1,89 +1,67 @@
 import request from 'supertest';
-import { app } from 'server.js'; // Assurez-vous que le chemin est correct
-import { Categorie } from 'src/models/index.js'; // Importez votre modèle de catégorie
+import { prepareDatabase, teardownDatabase, getUserToken } from 'serverTest.js';
+import { app } from 'server.js';
+import { Categorie } from 'src/models/index.js';
 
 describe('PUT /api/categorie/:id', () => {
+    let user_admin; // Utilisateur avec le rôle admin
+
+    beforeAll(async () => {
+        await prepareDatabase();
+        user_admin = await getUserToken('john.doe@example.com'); // Rôle admin
+    });
+
+    afterAll(async () => {
+        await teardownDatabase();
+    });
 
     afterEach(() => {
         jest.restoreAllMocks(); // Restaurer les mocks après chaque test
     });
 
-    it('200 - should update a category by ID', async () => {
-        // Catégorie simulée avant mise à jour
-        const mockCategory = {
-            id: 1,
-            name: 'Old Electronics',
-            description: 'Old devices and gadgets',
-            update: jest.fn() // Simuler la méthode update
-        };
-
-        // Mock de Categorie.findByPk pour retourner la catégorie simulée
-        const findByPkSpy = jest.spyOn(Categorie, 'findByPk').mockResolvedValue(mockCategory);
-
-        // Faire la requête PUT pour mettre à jour la catégorie
+    it('404 - Not Found (Catégorie inexistante)', async () => {
         const response = await request(app)
-            .put('/api/categorie/1') // Assurez-vous que l'URL est correcte
-            .send({
-                name: 'New Electronics',
-                description: 'Updated description for devices and gadgets'
-            });
+            .put('/api/categorie/999') // ID inexistant
+            .send({ name: 'Catégorie mise à jour', description: 'Description mise à jour' })
+            .set('Cookie', `access_token=${user_admin}`); // Utilisateur admin
 
-        // Vérifications
-        expect(response.status).toBe(200);
-
-        // Créer un nouvel objet sans la fonction 'update'
-        const { update, ...categoryWithoutUpdate } = mockCategory;
-
-        expect(response.body).toEqual(categoryWithoutUpdate); // Vérifier que la réponse renvoie la catégorie simulée mise à jour
-
-        // Vérifier que Categorie.findByPk a été appelée avec l'ID correct (chaîne de caractères)
-        expect(findByPkSpy).toHaveBeenCalledWith("1", {});
-
-        // Vérifier que la méthode update a été appelée avec les bons paramètres
-        expect(mockCategory.update).toHaveBeenCalledWith({
-            name: 'New Electronics',
-            description: 'Updated description for devices and gadgets'
-        });
-    });
-
-    it('404 - should return category not found if ID does not exist', async () => {
-        // Mock de Categorie.findByPk pour retourner null (catégorie non trouvée)
-        const findByPkSpy = jest.spyOn(Categorie, 'findByPk').mockResolvedValue(null);
-
-        // Faire la requête PUT avec un ID qui n'existe pas
-        const response = await request(app)
-            .put('/api/categorie/999') // Assurez-vous que l'URL est correcte
-            .send({
-                name: 'Non-existent Category',
-                description: 'This category does not exist'
-            });
-
-        // Vérifications
         expect(response.status).toBe(404);
         expect(response.body).toEqual({ error: 'Not found' });
-
-        // Vérifier que Categorie.findByPk a bien été appelée avec l'ID correct (chaîne de caractères)
-        expect(findByPkSpy).toHaveBeenCalledWith("999", {});
     });
 
-    it('500 - should return internal server error on exception', async () => {
-        // Mock de Categorie.findByPk pour lever une erreur
-        const findByPkSpy = jest.spyOn(Categorie, 'findByPk').mockRejectedValue(new Error('Erreur lors de la mise à jour'));
+    it('200 - Success (Catégorie mise à jour avec succès)', async () => {
+        const category = await Categorie.create({
+            name: 'Ancienne Catégorie',
+            description: 'Ancienne Description',
+        });
 
-        // Faire la requête PUT avec un ID existant
         const response = await request(app)
-            .put('/api/categorie/1') // Assurez-vous que l'URL est correcte
-            .send({
-                name: 'Should not update',
-                description: 'Should throw an error'
-            });
+            .put(`/api/categorie/${category.id}`)
+            .send({ name: 'Nouvelle Catégorie', description: 'Nouvelle Description' })
+            .set('Cookie', `access_token=${user_admin}`); // Utilisateur admin
 
-        // Vérifications
-        expect(response.status).toBe(500);
-        expect(response.body).toEqual({ error: 'Server error while findByPk' });
+        expect(response.status).toBe(200);
+        expect(response.body).toHaveProperty('name', 'Nouvelle Catégorie');
+        expect(response.body).toHaveProperty('description', 'Nouvelle Description');
 
-        // Vérifier que Categorie.findByPk a bien été appelée avec l'ID correct (chaîne de caractères)
-        expect(findByPkSpy).toHaveBeenCalledWith("1", {});
+        // Vérifier que la catégorie a été mise à jour dans la base de données
+        const updatedCategory = await Categorie.findByPk(category.id);
+        expect(updatedCategory.name).toBe('Nouvelle Catégorie');
+        expect(updatedCategory.description).toBe('Nouvelle Description');
     });
 
+    it('500 - Internal Server Error', async () => {
+        // Simuler une erreur lors de la mise à jour
+        const mockUpdate = jest.spyOn(Categorie.prototype, 'update').mockRejectedValueOnce(new Error('Erreur de mise à jour'));
+
+        const response = await request(app)
+            .put('/api/categorie/1')
+            .send({ name: 'Nouvelle Catégorie', description: 'Nouvelle Description' })
+            .set('Cookie', `access_token=${user_admin}`);
+
+        expect(response.status).toBe(500);
+        expect(response.body).toEqual({ error: 'Erreur serveur lors de la mise à jour de la catégorie' });
+
+        mockUpdate.mockRestore();
+    });
 });

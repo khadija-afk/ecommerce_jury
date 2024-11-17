@@ -4,76 +4,66 @@ import { Categorie } from 'src/models/index.js'; // Importez votre modèle de ca
 import { prepareDatabase, teardownDatabase, getUserToken } from 'serverTest.js';
 
 describe('DELETE /api/categorie/:id', () => {
-    let user_john;
+    let user_admin; // Utilisateur avec le rôle admin
+    let user_standard; // Utilisateur avec un rôle standard
 
     beforeAll(async () => {
         await prepareDatabase();
-        user_john = await getUserToken('john.doe@example.com');
+        user_admin = await getUserToken('john.doe@example.com'); // Rôle admin
+        user_standard = await getUserToken('john2.doe2@example.com'); // Rôle standard
     });
 
-    afterEach(() => {
-        jest.restoreAllMocks(); // Restaurer les mocks après chaque test
+    afterAll(async () => {
+        await teardownDatabase();
     });
 
-    it('200 ', async () => {
-        // Catégorie simulée avant suppression
-        const mockCategory = {
-            id: 1,
-            name: 'Old Electronics',
-            description: 'Old devices and gadgets',
-            destroy: jest.fn() // Simuler la méthode destroy
-        };
-
-        // Mock de Categorie.findByPk pour retourner la catégorie simulée
-        const findByPkSpy = jest.spyOn(Categorie, 'findByPk').mockResolvedValue(mockCategory);
-
-        // Faire la requête DELETE pour supprimer la catégorie
+    it('403 - Forbidden (Utilisateur sans autorisation)', async () => {
         const response = await request(app)
-            .delete('/api/categorie/1') // Assurez-vous que l'URL est correcte
-            .set('Cookie', `access_token=${user_john}`);
+            .delete('/api/categorie/1')
+            .set('Cookie', `access_token=${user_standard}`); // Utilisateur standard
 
-        // Vérifications
-        expect(response.status).toBe(200);
-        expect(response.body).toEqual({ message: "Categorie deleted" });
-
-        // Vérifier que Categorie.findByPk a été appelée avec l'ID correct (chaîne de caractères)
-        expect(findByPkSpy).toHaveBeenCalledWith("1", {});
-
-        // Vérifier que la méthode destroy a été appelée
-        expect(mockCategory.destroy).toHaveBeenCalled();
+        expect(response.status).toBe(403);
+        expect(response.body).toEqual({ error: 'Accès interdit' });
     });
 
-    it('404 ', async () => {
-        // Mock de Categorie.findByPk pour retourner null (catégorie non trouvée)
-        const findByPkSpy = jest.spyOn(Categorie, 'findByPk').mockResolvedValue(null);
-
-        // Faire la requête DELETE avec un ID qui n'existe pas
+    it('404 - Not Found (Catégorie inexistante)', async () => {
         const response = await request(app)
-            .delete('/api/categorie/999') // Assurez-vous que l'URL est correcte
-            .set('Cookie', `access_token=${user_john}`);
+            .delete('/api/categorie/999') // ID inexistant
+            .set('Cookie', `access_token=${user_admin}`); // Utilisateur admin
 
-        // Vérifications
         expect(response.status).toBe(404);
         expect(response.body).toEqual({ error: 'Not found' });
-
-        // Vérifier que Categorie.findByPk a bien été appelée avec l'ID correct (chaîne de caractères)
-        expect(findByPkSpy).toHaveBeenCalledWith("999", {});
     });
 
-    it('500 ', async () => {
-        // Mock de Categorie.findByPk pour lever une erreur
+    it('200 - Success (Catégorie supprimée avec succès)', async () => {
+        const category = await Categorie.create({
+            name: 'Test Catégorie',
+            description: 'Catégorie pour test de suppression',
+        });
+
+        const response = await request(app)
+            .delete(`/api/categorie/${category.id}`)
+            .set('Cookie', `access_token=${user_admin}`); // Utilisateur admin
+
+        expect(response.status).toBe(200);
+        expect(response.body).toEqual({ message: 'Categorie deleted' });
+
+        // Vérifiez que la catégorie est supprimée
+        const deletedCategory = await Categorie.findByPk(category.id);
+        expect(deletedCategory).toBeNull();
+    });
+
+    it('500 - Internal Server Error', async () => {
+        // Mock pour simuler une erreur serveur
         const findByPkSpy = jest.spyOn(Categorie, 'findByPk').mockRejectedValue(new Error('Erreur lors de la suppression'));
 
-        // Faire la requête DELETE avec un ID existant
         const response = await request(app)
-            .delete('/api/categorie/1'); // Assurez-vous que l'URL est correcte
+            .delete('/api/categorie/1')
+            .set('Cookie', `access_token=${user_admin}`); // Utilisateur admin
 
-        // Vérifications
         expect(response.status).toBe(500);
         expect(response.body).toEqual({ error: 'Server error while findByPk' });
 
-        // Vérifier que Categorie.findByPk a bien été appelée avec l'ID correct (chaîne de caractères)
-        expect(findByPkSpy).toHaveBeenCalledWith("1", {});
+        findByPkSpy.mockRestore(); // Restaurer la méthode originale
     });
-
 });

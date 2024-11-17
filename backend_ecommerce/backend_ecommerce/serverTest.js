@@ -13,7 +13,7 @@ const prepareDatabase = async () => {
             lastName: 'Doe',
             email: 'john.doe@example.com',
             password: 'password123',
-            role: 'user',
+            role: 'admin',
         });
 
         
@@ -140,12 +140,22 @@ const teardownDatabase = async () => {
 };
 
 const getUserToken = async (user_email) => {
-    const user = await User.findOne({ where: { email: user_email } });
-    if (user_email == 'token.invalid@example.com') return jwt.sign({ id: 100, email: user_email }, "token.invalid");
-    if(!user) return jwt.sign({ id: 100, email: user_email }, env.token);
-    return jwt.sign({ id: user.id, email: user.email }, env.token);
-};
+    const user = await User.findOne({
+        where: { email: user_email },
+        attributes: ['id', 'email', 'role'], // Inclure explicitement le champ "role"
+    });
 
+    if (user_email === 'token.invalid@example.com') {
+        return jwt.sign({ id: 100, email: user_email }, "token.invalid");
+    }
+
+    if (!user) {
+        return jwt.sign({ id: 100, email: user_email }, env.token);
+    }
+
+    // Inclure le rôle dans le token
+    return jwt.sign({ id: user.id, email: user.email, role: user.role }, env.token);
+};
 
 export {
     prepareDatabase,
