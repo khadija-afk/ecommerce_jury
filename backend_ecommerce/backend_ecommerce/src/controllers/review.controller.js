@@ -80,9 +80,12 @@ export const createReview = async (req, res) => {
     const { product_fk, rating, comment } = req.body;
     const user_fk = req.user.id; // Utiliser l'ID de l'utilisateur connecté
 
-    // Vérifie si l'utilisateur a acheté le produit
+    // Vérifie si l'utilisateur a acheté le produit dans une commande validée
     const hasPurchased = await OrderDetails.findOne({
-      where: { user_fk },
+      where: { 
+        user_fk,
+        status: 'validé' // Vérifie que la commande est validée
+      },
       include: [
         {
           model: OrderItems,
@@ -93,7 +96,7 @@ export const createReview = async (req, res) => {
     });
 
     if (!hasPurchased) {
-      return res.status(403).json({ error: "Vous ne pouvez pas laisser un avis pour un produit non acheté." });
+      return res.status(403).json({ error: "Vous ne pouvez pas laisser un avis pour un produit non acheté ou commande non validée." });
     }
 
     // Vérifie si un avis existe déjà pour cet utilisateur et ce produit
@@ -164,12 +167,17 @@ export const deleteReview = async (req, res) => {
 };
 
 // Calculate average rating for a product
+// Calculate average rating for a product
 export const getAverageRating = async (req, res) => {
   try {
     const productId = req.params.productId;
 
+    // Inclure la condition "status: 'approved'"
     const reviews = await Review.findAll({
-      where: { product_fk: productId },
+      where: {
+        product_fk: productId,
+        status: 'approved', // Seules les évaluations approuvées sont prises en compte
+      },
       attributes: [
         [Sequelize.fn("AVG", Sequelize.col("rating")), "averageRating"],
       ],
@@ -180,7 +188,11 @@ export const getAverageRating = async (req, res) => {
 
     res
       .status(200)
-      .json({ averageRating: parseFloat(averageRating).toFixed(1) });
+      .json({ 
+        averageRating: averageRating 
+          ? parseFloat(averageRating).toFixed(1) 
+          : "0", // Retourner "N/A" si aucune évaluation approuvée
+      });
   } catch (error) {
     console.error("Error calculating average rating:", error);
     res
@@ -188,6 +200,7 @@ export const getAverageRating = async (req, res) => {
       .json({ error: "Server error while calculating average rating" });
   }
 };
+
 export const getPendingReviews = async (req, res) => {
   try {
     const reviews = await Review.findAll({ where: { status: 'pending' } });

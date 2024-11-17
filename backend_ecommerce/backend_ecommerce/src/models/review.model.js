@@ -38,16 +38,6 @@ export default (connection, DataTypes) => {
                 defaultValue: "pending", // Valeur par défaut
                 allowNull: false,
             },
-            createdAt: {
-                type: DataTypes.DATE,
-                defaultValue: Sequelize.literal('CURRENT_TIMESTAMP'), // Utilisation de CURRENT_TIMESTAMP valide
-                allowNull: false,
-            },
-            updatedAt: {
-                type: DataTypes.DATE,
-                defaultValue: Sequelize.literal('CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'), // Auto-mise à jour
-                allowNull: false,
-            },
         },
         {
             tableName: "reviews",
