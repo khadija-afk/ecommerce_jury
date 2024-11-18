@@ -46,7 +46,7 @@ describe('POST /api/orderItem/order-items', () => {
                 quantity: 50,
                 price:19.99
             })
-            .set('Cookie', `access_token=${user_John}`);
+            .set('Cookie', `access_token=${user_John2}`);
 
         expect(response.status).toBe(403);
         
@@ -61,7 +61,7 @@ describe('POST /api/orderItem/order-items', () => {
                 quantity: 50,
                 price:19.99
             })
-            .set('Cookie', `access_token=${user_John2}`);
+            .set('Cookie', `access_token=${user_John}`);
 
         expect(response.status).toBe(201);
         
@@ -81,7 +81,7 @@ describe('POST /api/orderItem/order-items', () => {
                 quantity: 50,
                 price:19.99
             })
-            .set('Cookie', `access_token=${user_John2}`);
+            .set('Cookie', `access_token=${user_John}`);
 
         expect(response.status).toBe(500);
         expect(response.body).toEqual({

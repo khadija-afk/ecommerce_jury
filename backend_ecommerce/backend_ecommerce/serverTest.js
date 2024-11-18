@@ -78,20 +78,20 @@ const prepareDatabase = async () => {
         })
 
         const newOrder = await OrderDetails.create({
-            user_fk: user2.id,
+            user_fk: user.id,
             total: 100,
+            status: "en attent"
            
         });
         const newOrder2 = await OrderDetails.create({
             user_fk: user3.id,
             total: 100,
-            address: '11 rue du bois joly',
-            paymentMethod: 'stripe'
+            status: "en attent"
         });
 
         const orderItem = await OrderItems.create({
-            order_fk: newOrder2.id,
-            product_fk: article2.id,
+            order_fk: newOrder.id,
+            product_fk: article.id,
             quantity: 10,
             price: 100.99
         });
@@ -105,10 +105,11 @@ const prepareDatabase = async () => {
         })
 
         const review = await Review.create({
-            user_fk: user3.id,
+            user_fk: user.id,
             product_fk: article2.id,
             rating: 4,
-            comment: "exellent"
+            comment: "exellent",
+            status: "approved"
         })
 
     } catch (error) {

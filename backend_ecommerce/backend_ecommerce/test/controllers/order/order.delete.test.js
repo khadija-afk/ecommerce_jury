@@ -5,11 +5,13 @@ import { prepareDatabase, teardownDatabase, getUserToken } from 'serverTest.js';
 describe('DELETE /api/order/orders/:id', () => {
 
     let user_john2;
+    let user_john;
    
     
     beforeAll(async () => {
         await prepareDatabase();
         user_john2 = await getUserToken('john2.doe2@example.com');
+        user_john = await getUserToken('john.doe@example.com');
         
     });
 
@@ -34,7 +36,7 @@ describe('DELETE /api/order/orders/:id', () => {
         // Effectuer la requête avec un en-tête Authorization
         const response = await request(app)
             .delete('/api/order/orders/1')
-            .set('Cookie', `access_token=${user_john2}`)
+            .set('Cookie', `access_token=${user_john}`)
 
             expect(response.status).toBe(200);  
             

@@ -31,7 +31,7 @@ describe('GET /api/order/orders/:id', () => {
     it('200 - Successful order retrieval', async () => {
         const response = await request(app)
             .get('/api/order/orders/1')
-            .set('Cookie', `access_token=${user_john2}`);
+            .set('Cookie', `access_token=${user_john}`);
     
         expect(response.status).toBe(200);
 
@@ -39,8 +39,9 @@ describe('GET /api/order/orders/:id', () => {
         expect(response.body).toEqual(
             expect.objectContaining({
                 id: 1,
-                user_fk: 2,
+                user_fk: 1,
                 total: 100,
+                status: "en attent"
                 
             })
         );

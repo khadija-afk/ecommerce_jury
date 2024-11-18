@@ -50,7 +50,7 @@ describe('PUT /api/article/:id', () => {
             .set('Cookie', `access_token=${fake_user}`);
 
         expect(response.status).toBe(403);
-        expect(response.body).toEqual({ error: "Seul le créateur peut modifier !" });
+        expect(response.body).toEqual({ error: "Accès interdit" });
     });
 
     it('500 ', async () => {

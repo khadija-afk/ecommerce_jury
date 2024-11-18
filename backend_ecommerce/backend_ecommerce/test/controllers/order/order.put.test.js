@@ -42,7 +42,7 @@ describe('PUT /api/order/orders/:id', () => {
         // Effectuer la requête avec un en-tête Authorization
         const response = await request(app)
             .put('/api/order/orders/1')
-            .set('Cookie', `access_token=${user_john2}`)
+            .set('Cookie', `access_token=${user_john}`)
             .send({
                    total: 19.99,
             })   

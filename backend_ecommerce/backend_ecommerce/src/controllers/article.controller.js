@@ -83,18 +83,46 @@ export const updateById = async (req, res) => {
 };
 
 export const deleteById = async (req, res) => {
-  const id = req.params.id;
+  const articleId = req.params.id;
   const userId = req.user.id;
-  let article;
-  try {
-    article = await Service.get(Article, id);
-    await Service.destroy(article, userId);
+  const userRole = req.user.role;
 
-    return res.status(200).json("Article deleted !");
+  try {
+      // Récupérer l'article
+      const article = await Service.get(Article, articleId);
+
+      if (!article) {
+          return res.status(404).json({ error: "Article introuvable" });
+      }
+
+      // Vérifier si l'utilisateur est le créateur ou un admin
+      if (article.user_fk !== userId && userRole !== 'admin') {
+          return res.status(403).json({ error: "Accès interdit" });
+      }
+
+      // Supprimer les références dans OrderItems
+      const { OrderItems } = require('../models/index.js');
+      await OrderItems.destroy({ where: { product_fk: articleId } });
+
+      // Supprimer l'article
+      await Service.destroy(article);
+
+      return res.status(200).json("Article deleted !");
   } catch (error) {
-    return res.status(error.status).json({ error: error.error });
+      if (error.status === 404) {
+          console.warn(`Article introuvable, id: ${articleId}`);
+          return res.status(404).json({ error: error.error });
+      }
+
+      console.error("Erreur lors de la suppression de l'article :", error);
+      return res.status(500).json({
+          error: "Erreur serveur lors de la suppression",
+          details: error.message,
+      });
   }
 };
+
+
 
 export const getByUser = async (req, res) => {
   let user;

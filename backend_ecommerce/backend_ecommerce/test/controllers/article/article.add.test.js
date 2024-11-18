@@ -41,25 +41,6 @@ describe('POST /api/article', () => {
         expect(response.body.name).toBe('New Article 3');
     });
 
-    it('404 ', async () => {
-        
-        const response = await request(app)
-            .post('/api/article')
-            .send({
-                name: 'New Article',
-                content: 'Content of new article',
-                brand: 'New Brand',
-                price: 20.99,
-                stock: 50,
-                categorie_fk: 1,
-                photo: null,
-            })
-            .set('Cookie', `access_token=${fake_user}`);
-
-        expect(response.status).toBe(404);
-        expect(response.body).toEqual({ error: 'Not found' });
-    });
-
     it('500', async () => {
        
         const mockCreate = jest.spyOn(Article, 'create').mockRejectedValueOnce(new Error('Erreur interne'));

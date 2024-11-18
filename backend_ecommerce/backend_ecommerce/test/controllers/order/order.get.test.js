@@ -28,7 +28,7 @@ describe('GET /api/order/orders', () => {
         // Effectuer la requête avec un en-tête Authorization
         const response = await request(app)
             .get('/api/order/orders')
-            .set('Cookie', `access_token=${user_john}`);  // Utilisation de l'en-tête Authorization
+            .set('Cookie', `access_token=${user_john2}`);  // Utilisation de l'en-tête Authorization
         
         expect(response.status).toBe(404);  // Vérifiez bien le statut
     });
@@ -36,7 +36,7 @@ describe('GET /api/order/orders', () => {
     it('200', async () => {
         const response = await request(app)
             .get('/api/order/orders')
-            .set('Cookie', `access_token=${user_john2}`);  // Utilisation du token valide
+            .set('Cookie', `access_token=${user_john}`);  // Utilisation du token valide
     
         console.log(response.body);  // Debugging: pour voir ce que la route retourne exactement
         expect(response.status).toBe(200);  // Vérifiez bien le statut

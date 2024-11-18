@@ -132,39 +132,84 @@ export const createReview = async (req, res) => {
 
 // Update a review
 export const updateReview = async (req, res) => {
-
   let review;
-  
-  try {
 
-    review = await Service.get(Review, req.params.id);
+  try {
+    // Récupérer l'ID de l'avis
+    const reviewId = req.params.id;
+    if (!reviewId) {
+      return res.status(400).json({ error: "ID de l'avis manquant." });
+    }
+
+    // Trouver l'avis
+    review = await Service.get(Review, reviewId);
+    if (!review) {
+      return res.status(404).json({ error: "Avis introuvable." });
+    }
+
+    // Vérifier si l'utilisateur connecté est le créateur de l'avis
+    if (review.user_fk !== req.user.id) {
+      return res.status(403).json({ error: "Vous n'êtes pas autorisé à modifier cet avis." });
+    }
   } catch (error) {
-      return res.status(error.status).json({ error: error.error });
+    console.error("Erreur lors de la récupération de l'avis :", error);
+    return res.status(500).json({ error: "Erreur serveur lors de la récupération de l'avis." });
   }
 
   try {
+    // Mettre à jour l'avis
     const { product_fk, rating, comment } = req.body;
-    const user_fk = req.user.id; // Utiliser l'ID de l'utilisateur connecté
-    await review.update({ user_fk, product_fk, rating, comment });
-    res.status(200).json(review);
+    if (!rating || !comment) {
+      return res.status(400).json({ error: "Les champs rating et comment sont requis." });
+    }
+
+    // Mettre à jour l'avis et redéfinir le statut sur 'pending'
+    const updatedReview = await review.update({
+      product_fk,
+      rating,
+      comment,
+      status: "pending", // Réinitialise le statut après modification
+    });
+
+    res.status(200).json(updatedReview);
   } catch (error) {
-    console.error("Error updating review:", error);
-    res.status(500).json({ error: "Server error while updating review" });
+    console.error("Erreur lors de la mise à jour de l'avis :", error);
+    res.status(500).json({ error: "Erreur serveur lors de la mise à jour de l'avis." });
   }
 };
+
 
 // Delete a review
 export const deleteReview = async (req, res) => {
-  const id = req.params.id;
+  const reviewId = req.params.id;
   let review;
+
   try {
-    review = await Service.get(Review, id);
+    // Récupérer l'avis
+    review = await Service.get(Review, reviewId);
+
+    if (!review) {
+      return res.status(404).json({ error: "Avis introuvable." });
+    }
+
+    // Vérifier si l'utilisateur connecté est autorisé à supprimer l'avis
+    const isAdmin = req.user.role === 'admin'; // Vérifie si l'utilisateur est un administrateur
+    const isOwner = review.user_fk === req.user.id; // Vérifie si l'utilisateur est le créateur de l'avis
+
+    if (!isAdmin && !isOwner) {
+      return res.status(403).json({ error: "Vous n'êtes pas autorisé à supprimer cet avis." });
+    }
+
+    // Supprimer l'avis
     await Service.destroy(review);
-    return res.status(200).json({ message: "avis supprimer" });
+    return res.status(200).json({ message: "Avis supprimé avec succès." });
+
   } catch (error) {
-    return res.status(error.status).json({ error: error.error });
+    console.error("Erreur lors de la suppression de l'avis :", error);
+    return res.status(500).json({ error: "Erreur serveur lors de la suppression de l'avis." });
   }
 };
+
 
 // Calculate average rating for a product
 // Calculate average rating for a product

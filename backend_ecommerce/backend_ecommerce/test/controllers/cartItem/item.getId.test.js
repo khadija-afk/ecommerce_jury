@@ -9,7 +9,7 @@ describe('GET /api/cartItem/cart-items/:id', () => {
     
     beforeAll(async () => {
         await prepareDatabase();
-        // user_john = await getUserToken('john.doe@example.com');
+        user_john = await getUserToken('john.doe@example.com');
     });
     
     afterAll(async () => {
@@ -24,7 +24,7 @@ describe('GET /api/cartItem/cart-items/:id', () => {
 
         const response = await request(app)
                                 .get('/api/cartItem/cart-items/1')
-                                // .set('Cookie', `access_token=${user_john}`);
+                                .set('Cookie', `access_token=${user_john}`);
         expect(response.status).toBe(200);
         expect(response.body).toEqual({
             id: 1,
@@ -37,6 +37,7 @@ describe('GET /api/cartItem/cart-items/:id', () => {
     it('404', async () => {
         const response = await request(app)
                 .get('/api/cartItem/cart-items/999')
+                .set('Cookie', `access_token=${user_john}`)
         expect(response.status).toBe(404);
         expect(response.body).toEqual({ error: 'Not found' });
     });
@@ -47,7 +48,10 @@ describe('GET /api/cartItem/cart-items/:id', () => {
         // Utiliser jest.spyOn pour intercepter l'appel à findByPk et simuler une erreur
         CartItem.findByPk = jest.fn().mockRejectedValue(new Error('Erreur de Réseau'))
     
-        const response = await request(app).get('/api/cartItem/cart-items/1');
+        const response = await request(app)
+        .get('/api/cartItem/cart-items/1')
+        .set('Cookie', `access_token=${user_john}`)
+        
         
         expect(response.status).toBe(500);
         expect(response.body).toEqual({ error: 'Server error while findByPk' });

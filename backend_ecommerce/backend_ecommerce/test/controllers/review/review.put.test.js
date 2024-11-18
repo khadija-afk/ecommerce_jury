@@ -1,70 +1,70 @@
 import request from 'supertest';
-import { app } from 'server.js'; // Assurez-vous que le chemin est correct
+import { app } from 'server.js';
 import { prepareDatabase, teardownDatabase, getUserToken } from 'serverTest.js';
+import { Review } from 'src/models/index.js';
 
-describe('PUT /api/review', () => {
+describe('PUT /api/review/:id', () => {
+  let userCreator; // Utilisateur ayant créé l'avis
+  let userOther;   // Un autre utilisateur
 
-    let user_john;
+  beforeAll(async () => {
+    await prepareDatabase();
+    userCreator = await getUserToken('john.doe@example.com');
+    userOther = await getUserToken('john2.doe2@example.com');
+  });
 
-    beforeAll(async () => {
-        await prepareDatabase();
-        user_john = await getUserToken('john.doe@example.com');
-    });
+  afterAll(async () => {
+    await teardownDatabase();
+  });
 
-    afterAll(async () => {
-        await teardownDatabase();
-    });
+  afterEach(() => {
+    jest.restoreAllMocks();
+  });
 
-    afterEach(() => {
-        jest.restoreAllMocks(); // Restaurer les mocks après chaque test
-    });
+  it('403 - Non autorisé (autre utilisateur)', async () => {
 
-    it('404', async () => {
+    const response = await request(app)
+      .put('/api/review/1')
+      .set('Cookie', `access_token=${userOther}`) // Utilisateur non créateur
+      .send({
+        rating: 3,
+        comment: 'Tentative de modification',
+      });
+
+    expect(response.status).toBe(403);
+    expect(response.body).toEqual({ error: "Vous n'êtes pas autorisé à modifier cet avis." });
+  });
+
+  it('200 - Mise à jour réussie par le créateur', async () => {
     
-        // Effectuer la requête avec un en-tête Authorization
-        const response = await request(app)
-            .put('/api/review/33')
-            .set('Cookie', `access_token=${user_john}`)
-            .send({
-                rating: 3.5,
-            })
-            
-        expect(response.status).toBe(404);  
-    });
+    const response = await request(app)
+      .put('/api/review/1')
+      .set('Cookie', `access_token=${userCreator}`) // Créateur de l'avis
+      .send({
+        rating: 5,
+        comment: 'Commentaire mis à jour',
+      });
 
-    it('200', async () => {
-    
-        // Effectuer la requête avec un en-tête Authorization
-        const response = await request(app)
-            .put('/api/review/1')
-            .set('Cookie', `access_token=${user_john}`)
-            .send({
-                rating: 3.5,
-            })
-            
-        expect(response.status).toBe(200);  
-    });
-    it('500', async () => {
-    
-        const { Review } = require('src/models/index.js');
+    expect(response.status).toBe(200);
+    expect(response.body.rating).toBe(5);
+    expect(response.body.comment).toBe('Commentaire mis à jour');
+    expect(response.body.status).toBe('pending'); // Vérifie que le statut est réinitialisé à "pending"
+  });
 
-        const mockreview = {
-            id: 1,
-            update: jest.fn().mockRejectedValue(new Error('Erreur de réseau'))
-        };
+  it('500 - Erreur serveur', async () => {
     
-        Review.findByPk = jest.fn().mockResolvedValue(mockreview); 
 
-        const response = await request(app)
-            .put('/api/review/1')
-            .set('Cookie', `access_token=${user_john}`)
-            .send({
-               
-                rating: 4.5,
-                
-            })
-            
-        expect(response.status).toBe(500); 
-    });
-    
-})
+    jest.spyOn(Review, 'findByPk').mockResolvedValue();
+
+    const response = await request(app)
+      .put('/api/review/1')
+      .set('Cookie', `access_token=${userCreator}`)
+      .send({
+        rating: 4,
+        comment: 'Erreur de mise à jour',
+      });
+
+    expect(response.status).toBe(500);
+    expect(response.body).toEqual({ error: "Erreur serveur lors de la récupération de l'avis." });
+  });
+});

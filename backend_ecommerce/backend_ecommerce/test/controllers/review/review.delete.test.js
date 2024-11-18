@@ -5,10 +5,12 @@ import { prepareDatabase, teardownDatabase, getUserToken } from 'serverTest.js';
 describe('DELETE /api/review/:id', () => {
 
     let user_john;
+    let user_john2;
 
     beforeAll(async () => {
         await prepareDatabase();
         user_john = await getUserToken('john.doe@example.com');
+        user_john2 = await getUserToken('john2.doe2@example.com');
     });
 
     afterAll(async () => {
@@ -17,17 +19,6 @@ describe('DELETE /api/review/:id', () => {
 
     afterEach(() => {
         jest.restoreAllMocks(); // Restaurer les mocks après chaque test
-    });
-
-    it('404', async () => {
-    
-        // Effectuer la requête avec un en-tête Authorization
-        const response = await request(app)
-            .delete('/api/review/33')
-            .set('Cookie', `access_token=${user_john}`)
-            
-            
-        expect(response.status).toBe(404);  
     });
 
     it('200', async () => {

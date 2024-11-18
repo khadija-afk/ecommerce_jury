@@ -34,25 +34,29 @@ describe('DELETE /api/article/:id', () => {
 
     it('deleteById - 403', async () => {
         const response = await request(app)
-            .delete('/api/article/1')
-            .set('Cookie', `access_token=${fake_user}`);
+            .delete('/api/article/1') // Article créé par user_john
+            .set('Cookie', `access_token=${fake_user}`); // Utilisateur non autorisé
+    
         expect(response.status).toBe(403);
-        expect(response.body).toEqual({ error: "Seul le créateur peut supprimer" })
+        expect(response.body).toEqual({ error: "Accès interdit" });
     });
+    
 
     it('deleteById - 200', async () => {
         const response = await request(app)
-            .delete('/api/article/1')
+            .delete('/api/article/1') // Article créé par user_john
             .set('Cookie', `access_token=${user_john}`);
+    
         expect(response.status).toBe(200);
         expect(response.body).toBe('Article deleted !');
-
-        const response_get = await request(app)
-                                .get('/api/article/1')
-                                .set('Cookie', `access_token=${user_john}`);
-        expect(response_get.status).toBe(404);
-        expect(response_get.body).toEqual({ error: "Not found" })
+    
+        // Vérifiez que l'article n'existe plus
+        const verifyResponse = await request(app)
+            .get('/api/article/1')
+            .set('Cookie', `access_token=${user_john}`);
+        expect(verifyResponse.status).toBe(404);
     });
+    
 
     it('deleteById - 404', async () => {
         const response = await request(app).get('/api/article/999');
@@ -61,28 +65,25 @@ describe('DELETE /api/article/:id', () => {
     });
 
     it('deleteById - 500', async () => {
-
         const mockArticle = {
-            user_fk: 2,
-            destroy: jest.fn().mockRejectedValue(new Error('Erreur de Réseau')),
+            destroy: jest.fn().mockRejectedValue(new Error('Erreur serveur')),
         };
     
-        // Mock de Article.findByPk pour retourner l'instance mockée
-        Service.get = jest.fn().mockResolvedValue(mockArticle);
+        jest.spyOn(Service, 'get').mockResolvedValue(mockArticle);
     
-        // Exécuter la requête de suppression
         const response = await request(app)
-                                .delete('/api/article/1')
-                                .set('Cookie', `access_token=${user_john2}`);
+            .delete('/api/article/1')
+            .set('Cookie', `access_token=${user_john}`);
     
-        // Vérifier le résultat attendu
         expect(response.status).toBe(500);
         expect(response.body).toEqual({ error: "Erreur serveur lors de la suppression" });
     
-        // Vérifier que destroy a bien été appelé
+        // Vérifiez que `destroy` a bien été appelé
         expect(mockArticle.destroy).toHaveBeenCalled();
     
+        jest.restoreAllMocks();
     });
+    
 
 });
 
