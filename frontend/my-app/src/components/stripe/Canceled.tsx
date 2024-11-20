@@ -1,19 +1,55 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Container, Box, Typography, Button, Avatar } from '@mui/material';
 import ErrorIcon from '@mui/icons-material/Error';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
+import apiClient from '../../utils/axiosConfig';
 
 const theme = createTheme({
   palette: {
     error: {
-      main: '#f44336', // Rouge pour l'échec
+      main: '#f44336',
     },
   },
 });
 
 const PaymentFailedPage = () => {
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const orderId = searchParams.get('orderId') || localStorage.getItem('orderId');
+  const paymentDetailId = searchParams.get('paymentDetailId') || localStorage.getItem('paymentDetailId');
+  const [isRecorded, setIsRecorded] = useState(false);
+
+  useEffect(() => {
+    const processFailedPayment = async () => {
+      console.log("orderId:", orderId);
+      console.log("paymentDetailId:", paymentDetailId);
+      console.log("isRecorded:", isRecorded);
+
+      if (!orderId || !paymentDetailId || isRecorded) {
+        console.log("Paramètres manquants ou enregistrement déjà effectué.");
+        return;
+      }
+
+      try {
+        // Mettre à jour le statut de PaymentDetail à "Failed"
+        await apiClient.put(`/api/api/payment/payment-details/${paymentDetailId}`, {
+          status: 'Failed'
+        });
+        console.log("Statut du paiement mis à jour à 'Failed'.");
+
+        // Supprimer les valeurs du localStorage après traitement
+        localStorage.removeItem('orderId');
+        localStorage.removeItem('paymentDetailId');
+
+        setIsRecorded(true); // Marquer l'enregistrement comme effectué
+      } catch (error) {
+        console.error("Erreur lors de la mise à jour du paiement :", error);
+      }
+    };
+
+    processFailedPayment();
+  }, [orderId, paymentDetailId, isRecorded]);
 
   return (
     <ThemeProvider theme={theme}>

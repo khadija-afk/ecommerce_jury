@@ -1,0 +1,21 @@
+.profile-navbar {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-bottom: 20px;
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 10px;
+  }
+  
+  .profile-navbar button {
+    background-color: transparent;
+    border: none;
+    color: #311C52;
+    font-size: 16px;
+    cursor: pointer;
+  }
+  
+  .profile-navbar button:hover {
+    text-decoration: underline;
+  }
+  

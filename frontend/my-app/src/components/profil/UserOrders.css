@@ -1,0 +1,79 @@
+.orders-container {
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Centre le contenu horizontalement */
+    /* background-color: #f5f5f5; Fond légèrement gris */
+}
+
+.order-card {
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    padding: 15px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    width: 90%; /* Réduit la largeur pour qu'elle soit plus compacte */
+    max-width: 1200px; /* Limite la largeur maximale de la carte */
+}
+
+.order-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+    font-size: 14px; /* Police plus petite */
+}
+
+.order-items {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 15px;
+}
+
+.order-item {
+    display: flex;
+    gap: 10px;
+    padding: 10px;
+    align-items: center;
+    position: relative; /* Nécessaire pour la ligne */
+    border-bottom: 1px solid #ddd; /* Ligne de séparation */
+}
+
+.order-item:last-child {
+    border-bottom: none; /* Supprime la ligne pour le dernier élément */
+}
+
+.product-photo {
+    width: 60px; /* Taille réduite pour une image compacte */
+    height: 60px;
+    object-fit: cover;
+    border-radius: 4px;
+    border: 1px solid #ddd;
+}
+
+.order-actions {
+    display: flex;
+    justify-content: space-between; /* Éloigne les boutons */
+    gap: 10px;
+}
+
+.action-button {
+    background-color: #311C52;
+    color: #fff;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 4px;
+    font-size: 12px;
+    cursor: pointer;
+}
+
+.action-button:hover {
+    background-color: #432f6d;
+}
+
+.order-summary {
+    font-size: 12px;
+    color: #666;
+    text-align: right; /* Aligne les informations à droite */
+}

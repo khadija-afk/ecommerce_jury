@@ -1,15 +1,15 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useStripe, useElements } from '@stripe/react-stripe-js';
-import { usePanier } from '../../utils/PanierContext';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams, useLocation } from 'react-router-dom';
 import apiClient from '../../utils/axiosConfig';
 import './Checkout.css';
 
 const Checkout = () => {
   const stripe = useStripe();
   const elements = useElements();
-  const { totalPrice, panier } = usePanier();
   const { orderId } = useParams();
+  const { state } = useLocation(); // Récupérer le total depuis le state de la navigation
+  const [total, setTotal] = useState(state?.total || 0); // Total initial
   const [address, setAddress] = useState('');
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
@@ -20,103 +20,84 @@ const Checkout = () => {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
+  // Si le total n'est pas fourni, le récupérer depuis l'API
+  useEffect(() => {
+    if (!state?.total) {
+      apiClient
+        .get(`/api/api/order/${orderId}`, { withCredentials: true })
+        .then((response) => setTotal(response.data.total))
+        .catch((err) => console.error("Erreur lors de la récupération des détails de la commande :", err));
+    }
+  }, [orderId, state]);
+
   const handleCheckout = async (e) => {
     e.preventDefault();
 
     if (!firstName || !lastName || !address || !city || !phone || !email || !paymentMethod) {
-      alert("Please fill in all required fields.");
+      alert("Veuillez remplir tous les champs obligatoires.");
       return;
     }
 
     setLoading(true);
 
     try {
-      const calculatedTotalPrice = panier.reduce((acc, item) => acc + item.article.price * item.quantity, 0);
-
       // Création de `PaymentDetail`
-      const paymentDetailResponse = await apiClient.post('/api/api/payment/payment-details', {
-        order_fk: orderId,
-        amount: calculatedTotalPrice,
-        provider: paymentMethod,
-        status: 'Pending'
-      }, { withCredentials: true });
+      const paymentDetailResponse = await apiClient.post(
+        '/api/api/payment/payment-details',
+        {
+          order_fk: orderId,
+          amount: total, // Utiliser le total récupéré
+          provider: paymentMethod,
+          status: 'Pending',
+        },
+        { withCredentials: true }
+      );
 
       const paymentDetailId = paymentDetailResponse.data.id;
-      
-      // Stocker les ID dans le local storage
+
+      // Stocker les ID dans le localStorage
       localStorage.setItem('orderId', orderId);
       localStorage.setItem('paymentDetailId', paymentDetailId);
 
       if (paymentMethod === 'stripe') {
         if (!stripe || !elements) {
-          console.error("Stripe.js is not loaded yet.");
+          console.error("Stripe.js n'est pas encore chargé.");
           setLoading(false);
           return;
         }
 
-        const line_items = panier.map(cartItem => {
-          const imgUrl = cartItem.article.photo?.[0] || '';
-          const priceInCents = Math.round(cartItem.article.price * 100);
-
-          return {
-            quantity: cartItem.quantity,
-            price_data: {
-              currency: "usd",
-              unit_amount: priceInCents,
-              product_data: {
-                name: cartItem.article.name || "Produit sans nom",
-                description: cartItem.article.description || "Description non disponible",
-                images: [imgUrl]
-              }
-            }
-          };
-        });
-
-        const addressData = {
-          line1: address,
-          city: city,
-          state: "CA",
-          postal_code: "94111",
-          country: "US"
-        };
-
-        const bodyData = {
-          paymentMethod: "stripe",
-          line_items,
-          customer_email: email,
-          address: addressData
-        };
-
-        const response = await apiClient.post('/api/api/stripe/create-checkout-session', bodyData, {
-          withCredentials: true,
-        });
+        const response = await apiClient.post(
+          '/api/api/stripe/create-checkout-session',
+          {
+            paymentMethod: 'stripe',
+            line_items: [],
+            customer_email: email,
+            address: {
+              line1: address,
+              city,
+              state: 'CA',
+              postal_code: '94111',
+              country: 'US',
+            },
+          },
+          { withCredentials: true }
+        );
 
         const { sessionId, error } = response.data;
 
         if (error) {
-          console.error("API Error:", error);
+          console.error("Erreur API :", error);
           setLoading(false);
           return;
         }
 
-        try {
-          console.log("Redirection vers Stripe Checkout avec sessionId :", sessionId);
-          const result = await stripe.redirectToCheckout({ sessionId });
-          
-          if (result?.error) {
-              console.error("Stripe redirect error:", result.error.message);
-          }
-        } catch (error) {
-          console.error("Erreur lors de la redirection vers Stripe :", error);
-        }
+        await stripe.redirectToCheckout({ sessionId });
       } else if (paymentMethod === 'cheque') {
-        alert("Thank you for your order. Please send your cheque to the provided address.");
+        alert("Merci pour votre commande. Veuillez envoyer votre chèque à l'adresse indiquée.");
         navigate(`/success`);
-      } else {
-        console.error("Please select a payment method.");
       }
     } catch (error) {
-      console.error("Error creating payment:", error);
+      console.error("Erreur lors de la création du paiement :", error);
     }
 
     setLoading(false);
@@ -125,48 +106,27 @@ const Checkout = () => {
   return (
     <div className="checkout-container">
       <div className="checkout-form">
-        <input type="text" placeholder="First Name" value={firstName} onChange={e => setFirstName(e.target.value)} />
-        <input type="text" placeholder="Last Name" value={lastName} onChange={e => setLastName(e.target.value)} />
-        <input type="text" placeholder="Shipping Address" value={address} onChange={e => setAddress(e.target.value)} />
-        <input type="text" placeholder="City" value={city} onChange={e => setCity(e.target.value)} />
-        <input type="text" placeholder="Phone" value={phone} onChange={e => setPhone(e.target.value)} />
-        <input type="email" placeholder="Email" value={email} onChange={e => setEmail(e.target.value)} />
-        <select value={paymentMethod} onChange={e => setPaymentMethod(e.target.value)}>
-          <option value="">Select a payment method</option>
-          <option value="cheque">Cheque Payment</option>
+        <input type="text" placeholder="Prénom" value={firstName} onChange={(e) => setFirstName(e.target.value)} />
+        <input type="text" placeholder="Nom" value={lastName} onChange={(e) => setLastName(e.target.value)} />
+        <input type="text" placeholder="Adresse de livraison" value={address} onChange={(e) => setAddress(e.target.value)} />
+        <input type="text" placeholder="Ville" value={city} onChange={(e) => setCity(e.target.value)} />
+        <input type="text" placeholder="Téléphone" value={phone} onChange={(e) => setPhone(e.target.value)} />
+        <input type="email" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} />
+        <select value={paymentMethod} onChange={(e) => setPaymentMethod(e.target.value)}>
+          <option value="">Choisir une méthode de paiement</option>
+          <option value="cheque">Paiement par chèque</option>
           <option value="stripe">Stripe</option>
         </select>
-
-        {paymentMethod === 'cheque' && (
-          <div>
-            <h4>Instructions for cheque payment:</h4>
-            <p>
-              Please send your cheque to the following address:
-              <br />
-              <strong>KenziShop</strong>
-              <br />
-              123, Example Street
-              <br />
-              75001 Paris, France
-            </p>
-            <p>Your order will be processed upon receipt of your cheque.</p>
-          </div>
-        )}
       </div>
 
       <div className="checkout-summary">
-        <h3>Your Order</h3>
-        {panier.map((cartItem, index) => (
-          <div key={index} className="summary-item">
-            <p>{cartItem.article.name} × {cartItem.quantity} — {cartItem.article.price} €</p>
-          </div>
-        ))}
-        <p>Subtotal: {totalPrice.toFixed(2)} €</p>
-        <p>Shipping Fee: 15.00 € (Flat Rate)</p>
-        <p>Total: {(totalPrice + 15.00).toFixed(2)} €</p>
+        <h3>Résumé de votre commande</h3>
+        <p>Sous-total : {total} €</p>
+        <p>Frais de livraison : 15.00 €</p>
+        <p>Total : {(parseFloat(total) + 15.0)} €</p>
 
         <button className="checkout-button" onClick={handleCheckout} disabled={loading}>
-          {loading ? 'Processing...' : 'Place Order'}
+          {loading ? 'Traitement...' : 'Valider la commande'}
         </button>
       </div>
     </div>

@@ -1,19 +1,50 @@
-import { OrderDetails } from "../models/index.js";
+import { OrderDetails, OrderItems, Article } from "../models/index.js";
 import { verifieToken } from "../auth.js"; // Middleware pour vérifier le token d'authentification
 
+import PDFDocument from 'pdfkit';
+import fs from 'fs';
+import path from 'path';
+import { fileURLToPath } from 'url';
 // Récupérer toutes les commandes d'un utilisateur authentifié
+
+
+// Récupération de __dirname dans un module ES
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+
 export const getAllOrders = async (req, res) => {
   try {
     const userId = req.user.id; // Obtenir l'ID de l'utilisateur connecté
-    const orders = await OrderDetails.findAll({ where: { user_fk: userId } });
+
+    // Récupérer les commandes avec leurs items et les détails des articles
+    const orders = await OrderDetails.findAll({
+      where: { user_fk: userId },
+      include: [
+        {
+          model: OrderItems,
+          as: "OrderItems", // Assurez-vous que l'alias est correct dans vos associations Sequelize
+          include: [
+            {
+              model: Article, // Inclure les détails de l'article
+              as: "Article", // Assurez-vous que l'alias est correct dans vos associations Sequelize
+              attributes: ["id", "name", "price", "photo"], // Limiter les attributs retournés
+            },
+          ],
+        },
+      ],
+    });
+
+    // Vérifier si des commandes existent
     if (!orders.length) {
       return res.status(404).json({ error: "Aucune commande trouvée" });
     }
+
+    // Retourner les commandes avec leurs items
     res.status(200).json(orders);
   } catch (error) {
-    res
-      .status(500)
-      .json({ error: "Erreur serveur lors de la récupération des commandes" });
+    console.error("Erreur lors de la récupération des commandes :", error);
+    res.status(500).json({ error: "Erreur serveur lors de la récupération des commandes" });
   }
 };
 
@@ -105,5 +136,56 @@ export const deleteOrder = async (req, res) => {
     res
       .status(500)
       .json({ error: "Erreur serveur lors de la suppression de la commande" });
+  }
+};
+
+// API pour générer et télécharger la facture
+export const downloadInvoice = async (req, res) => {
+  try {
+    const { orderId } = req.params;
+
+    // Récupérer les détails de la commande depuis la base de données
+    const order = await OrderDetails.findOne({
+      where: { id: orderId },
+      include: [{ model: OrderItems, include: [Article] }],
+    });
+
+    if (!order) {
+      return res.status(404).json({ error: "Commande non trouvée" });
+    }
+
+    // Créer un document PDF
+    const doc = new PDFDocument();
+
+    // Définir les en-têtes HTTP pour le téléchargement
+    res.setHeader('Content-Type', 'application/pdf');
+    res.setHeader(
+      'Content-Disposition',
+      `attachment; filename=invoice-${orderId}.pdf`
+    );
+
+    // Pipe le document PDF directement à la réponse
+    doc.pipe(res);
+
+    // Contenu de la facture
+    doc.fontSize(18).text(`Facture - Commande N° ${order.id}`, { align: 'center' });
+    doc.text('\n');
+    doc.fontSize(14).text(`Date : ${new Date(order.createdAt).toLocaleDateString()}`);
+    doc.text(`Total : ${order.total} €`);
+    doc.text(`Statut : ${order.status}`);
+    doc.text('\nArticles :\n');
+
+    order.OrderItems.forEach((item, index) => {
+      doc.text(
+        `${index + 1}. ${item.Article.name} - ${item.quantity} × ${item.price} €`,
+        { indent: 20 }
+      );
+    });
+
+    // Finaliser et fermer le document
+    doc.end();
+  } catch (error) {
+    console.error('Erreur lors de la génération de la facture :', error);
+    res.status(500).json({ error: 'Erreur lors de la génération de la facture' });
   }
 };

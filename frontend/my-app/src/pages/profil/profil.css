@@ -1,0 +1,12 @@
+.user-profile-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 20px;
+  }
+  
+  .user-profile-content {
+    margin-top: 20px;
+    width: 100%;
+  }
+  

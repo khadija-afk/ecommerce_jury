@@ -1,7 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import { Navigate } from "react-router-dom";
+
 import 'bootstrap/dist/css/bootstrap.min.css';
 
+// Pages principales
 import RegisterForm from './pages/auth/inscription/RegisterForm';
 import SignInForm from './pages/auth/connexion/SignForm';
 import ArticleList from './features/article/ArticleList';
@@ -13,114 +16,114 @@ import PaymentSuccessPage from './components/stripe/Successe';
 import PaymentFailedPage from './components/stripe/Canceled';
 import FavorisPage from './pages/favorie/Favorite';
 
-//ORDRS
-import Checkout from './pages/checkout/Checkout.js'
+// Checkout
+import Checkout from './pages/checkout/Checkout';
 
-//SEARCHE
+// Recherche
 import SearchResults from './pages/search/SearcheReasulte';
 import NoResults from './pages/search/NoResult';
 
-// SERVICES
-import PublicRoute  from './utils/helpers/PublicRoute';
-import PrivateRoute from './utils/helpers/PrivateRoute';
+// Services
+import PrivacyPolicy from './pages/confidentialite/PrivacyPolic';
+import CookieSettings from './pages/confidentialite/CookieSetting';
+import TermsAndConditions from './pages/confidentialite/TermeAndCondition';
 
-//FORGETPASSE
-import ForgotPasswordPage from './pages/forgetPasse/ForgotPasswordPage';
-import ResetPasswordPage from './pages/forgetPasse/ResetPasswordPage';
-import ResetPasswordSuccess from './pages/forgetPasse/ReasetPasswordsuccéss';
+// Cookies
+import CookieConsentModal from './components/cookieModel/CookieConsentModel';
+import CookieSettingsModal from './components/cookieModel/CookieSettingModel';
 
-//CATEGORY
+// Profil
+import UserProfilePage from './pages/profil/profil';
+import UserOrders from './components/profil/userOrder';
+import UserProfile from './components/profil/profil'; 
+
+// Autres catégories
 import VetementsPage from './pages/category/vetement/VetPage';
 import MaquillagePage from './pages/category/maquillage/MaqPage';
 import AccessoiresPage from './pages/category/accessoire/AccPage';
 import ChaussuresPage from './pages/category/chaussure/ChaussPage';
 
-
-//Confidentialite
-import PrivacyPolicy from './pages/confidentialite/PrivacyPolic';
-import CookieSettings from './pages/confidentialite/CookieSetting';
-import TermsAndConditions from './pages/confidentialite/TermeAndCondition';
-
-
-//COOKIECONSENT
-import CookieConsentModal from './components/cookieModel/CookieConsentModel';
-import CookieSettingsModal from './components/cookieModel/CookieSettingModel';
-
-
-
-
-
-//styles
-
+// Forget password
+import ForgotPasswordPage from './pages/forgetPasse/ForgotPasswordPage';
+import ResetPasswordPage from './pages/forgetPasse/ResetPasswordPage';
+import ResetPasswordSuccess from './pages/forgetPasse/ReasetPasswordsuccéss';
 
 const App = () => {
-
-  
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [showCookieSettings, setShowCookieSettings] = useState(false);
 
-  // Fonction pour afficher le modal de réglage des cookies
+  // Vérification de l'authentification
+  useEffect(() => {
+    const checkAuthStatus = async () => {
+      try {
+        const response = await fetch('/api/api/user/check_auth', {
+          method: 'GET',
+          credentials: 'include',
+        });
+        setIsLoggedIn(response.ok);
+      } catch (error) {
+        console.error('Erreur lors de la vérification de l\'authentification :', error);
+      }
+    };
+
+    checkAuthStatus();
+  }, []);
+
+  // Ouverture du modal pour les réglages des cookies
   const openCookieSettings = () => setShowCookieSettings(true);
 
   return (
     <Router>
-                {/* Modal de consentement avec bouton pour ouvrir les paramètres */}
-                <CookieConsentModal onOpenSettings={openCookieSettings} />
+      {/* Modal de consentement */}
+      <CookieConsentModal onOpenSettings={openCookieSettings} />
 
-            {/* Modal de paramétrage des cookies, contrôlé par l'état */}
-            {showCookieSettings && (
-              <CookieSettingsModal onClose={() => setShowCookieSettings(false)} />
-            )}
+      {/* Modal de réglages des cookies */}
+      {showCookieSettings && (
+        <CookieSettingsModal onClose={() => setShowCookieSettings(false)} />
+      )}
 
       <Routes>
-       
-        <Route path = '/' element = {<Layout/>}>  {/* Nav pour les anonymous utilisateur */}
+        {/* Routes principales */}
+        <Route path="/" element={<Layout />}>
+          <Route index element={<HomePage />} />
+          <Route path="article" element={<ArticleList />} />
+          <Route path="api/article/:id" element={<Detail />} />
+          <Route path="panier" element={<Panier />} />
+          <Route path="checkout/:orderId" element={<Checkout />} />
+          <Route path="success" element={<PaymentSuccessPage />} />
+          <Route path="cancel" element={<PaymentFailedPage />} />
+          <Route path="favoris" element={<FavorisPage />} />
+          <Route path="search" element={<SearchResults />} />
+          <Route path="no-results" element={<NoResults />} />
+          <Route path="categorie/vetements" element={<VetementsPage />} />
+          <Route path="categorie/maquillage" element={<MaquillagePage />} />
+          <Route path="categorie/accessoires" element={<AccessoiresPage />} />
+          <Route path="categorie/chaussures" element={<ChaussuresPage />} />
 
-         {/* <Route element={<PublicRoute/>}>    Route pour les utilisateur  */}
-
-            <Route index element={<HomePage />} /> 
-            <Route path="article" element={<ArticleList />} />
-            <Route path="api/article/:id" element={<Detail />} />
-            <Route path = "/panier" element = {<Panier />} />
-            <Route path="/checkout/:orderId" element={<Checkout />} />
-            <Route path="/success" element={<PaymentSuccessPage />} />
-            <Route path = "/cancel" element = {<PaymentFailedPage />} />
-            <Route path = "/favoris" element = {<FavorisPage/>} />
-            <Route path = "/search" element = {<SearchResults/>} />
-            <Route path="/no-results" element={<NoResults/>} />
-            <Route path="/categorie/vetements" element={<VetementsPage/>} />
-            <Route path="/categorie/maquillage" element={<MaquillagePage/>} />
-            <Route path="/categorie/accessoires" element={<AccessoiresPage/>} />
-            <Route path="/categorie/chaussures" element={<ChaussuresPage/>} />
-
-            {/* confidentialite */}
-            <Route path="/privacy-policy" element={<PrivacyPolicy/>} />
-            <Route path="/cookie-settings" element={<CookieSettings/>} />
-            <Route path="/terms-conditions" element={<TermsAndConditions/>} />
-            
-
+          {/* Profil avec sous-routes */}
+          <Route path="profil" element={<UserProfilePage />}>
+            <Route index element={<Navigate to="orders" replace />} /> {/* Redirection */}
+            <Route path="orders" element={<UserOrders />} />
+            <Route path="security" element={<UserProfile />} />
+            {/* <Route path="addresses" element={<h3>Vos Adresses</h3>} />
+            <Route path="shipping" element={<h3>Expédition</h3>} /> */}
           </Route>
 
-          {/* </Route> */}
+          {/* Politique de confidentialité */}
+          <Route path="privacy-policy" element={<PrivacyPolicy />} />
+          <Route path="cookie-settings" element={<CookieSettings />} />
+          <Route path="terms-conditions" element={<TermsAndConditions />} />
+        </Route>
 
+        {/* Authentification */}
+        <Route path="register" element={<RegisterForm />} />
+        <Route path="sign" element={<SignInForm />} />
 
-          {/* // connexion */}
-
-          <Route path="register" element={<RegisterForm />} />
-          <Route path="sign" element={<SignInForm />} />
-
-          <Route path="/forgot-password" element={<ForgotPasswordPage />} />
-        <Route path="/reset-password" element={<ResetPasswordPage />} />
-        <Route path="/reset-password-success" element={<ResetPasswordSuccess />} />
-
-
-
-            {/* <Route element={<PrivateRoute/>}>   Route pour admin */}
-          
-
-          {/* </Route> */}
-
+        {/* Mot de passe oublié */}
+        <Route path="forgot-password" element={<ForgotPasswordPage />} />
+        <Route path="reset-password" element={<ResetPasswordPage />} />
+        <Route path="reset-password-success" element={<ResetPasswordSuccess />} />
       </Routes>
-
     </Router>
   );
 };

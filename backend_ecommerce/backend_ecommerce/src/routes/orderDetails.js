@@ -5,6 +5,7 @@ import {
     createOrder,
     updateOrder,
     deleteOrder,
+    downloadInvoice
 } from '../controllers/orderDetails.controller.js'; // Assurez-vous que le nom est correct
 import { verifieToken } from '../auth.js'; // Middleware pour vérifier le token
 
@@ -219,5 +220,6 @@ router.put('/orders/:id', verifieToken, updateOrder);
  *         description: Erreur serveur
  */
 router.delete('/orders/:id', verifieToken, deleteOrder);
+router.get('/order/:orderId/invoice', verifieToken, downloadInvoice);
 
 export default router;

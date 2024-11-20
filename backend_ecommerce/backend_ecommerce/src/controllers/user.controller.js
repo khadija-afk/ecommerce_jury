@@ -302,3 +302,46 @@ export const updateByEmail = async (req, res) => {
     res.status(500).json({ error: "Erreur interne du serveur", details: error.message });
   }
 };
+
+export const getProfile = async (req, res) => {
+  try {
+    const userId = req.user.id; // Obtenez l'ID de l'utilisateur connecté à partir du middleware d'authentification
+    const user = await User.findByPk(userId, {
+      attributes: ['id', 'firstName', 'lastName', 'email'], // Sélectionnez uniquement les champs nécessaires
+    });
+
+    if (!user) {
+      return res.status(404).json({ error: 'Utilisateur non trouvé.' });
+    }
+
+    res.status(200).json(user);
+  } catch (error) {
+    console.error('Erreur lors de la récupération du profil utilisateur :', error);
+    res.status(500).json({ error: 'Erreur serveur lors de la récupération du profil utilisateur.' });
+  }
+};
+
+export const updateProfile = async (req, res) => {
+  try {
+    const userId = req.user.id; // Obtenez l'ID de l'utilisateur connecté
+    const { firstName, lastName, email } = req.body;
+
+    const user = await User.findByPk(userId);
+    if (!user) {
+      return res.status(404).json({ error: 'Utilisateur non trouvé.' });
+    }
+
+    // Mettez à jour uniquement les champs fournis dans la requête
+    await user.update({
+      firstName: firstName || user.firstName,
+      lastName: lastName || user.lastName,
+      email: email || user.email,
+      // profilePicture: profilePicture || user.profilePicture,
+    });
+
+    res.status(200).json({ message: 'Profil mis à jour avec succès.', user });
+  } catch (error) {
+    console.error('Erreur lors de la mise à jour du profil utilisateur :', error);
+    res.status(500).json({ error: 'Erreur serveur lors de la mise à jour du profil utilisateur.' });
+  }
+};

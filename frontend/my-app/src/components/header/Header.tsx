@@ -7,12 +7,13 @@ import { useNavigate } from 'react-router-dom';
 
 // Import FontAwesome
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faUser, faHeart, faShoppingCart, faBars, faSearch, faSignOutAlt } from '@fortawesome/free-solid-svg-icons';
+import { faUser, faHeart, faShoppingCart, faBars, faSearch, faSignOutAlt, faUserCircle } from '@fortawesome/free-solid-svg-icons';
 
 import apiClient from '../../utils/axiosConfig';
 
 const Header: React.FC = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [userFirstName, setUserFirstName] = useState('');
   const [searchTerm, setSearchTerm] = useState('');
   const { totalArticle } = useContext(PanierContext);
   const { totalFavorites } = useFavoris();
@@ -29,13 +30,22 @@ const Header: React.FC = () => {
       try {
         const response = await fetch('/api/api/user/check_auth', {
           method: 'GET',
-          credentials: 'include'
+          credentials: 'include',
         });
-        setIsLoggedIn(response.ok);
+
+        if (response.ok) {
+          const userData = await response.json(); // Supposons que le backend renvoie l'utilisateur connecté
+          setIsLoggedIn(true);
+          setUserFirstName(userData.firstName); // Assurez-vous que le prénom est inclus dans la réponse
+        } else {
+          setIsLoggedIn(false);
+          setUserFirstName('');
+        }
       } catch (error) {
         console.error('Error checking authentication status:', error);
       }
     };
+
     checkAuthStatus();
   }, []);
 
@@ -43,11 +53,12 @@ const Header: React.FC = () => {
     try {
       const response = await fetch('/api/api/Log/logout', {
         method: 'POST',
-        credentials: 'include'
+        credentials: 'include',
       });
 
       if (response.ok) {
-        setIsLoggedIn(false); // Met à jour l'état après la déconnexion
+        setIsLoggedIn(false);
+        setUserFirstName('');
         navigate('/sign');
       }
     } catch (error) {
@@ -55,7 +66,7 @@ const Header: React.FC = () => {
     }
   };
 
-  const handleSearchChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(e.target.value);
   };
 
@@ -73,24 +84,27 @@ const Header: React.FC = () => {
           <div>
             <Navbar.Brand href="/">KenziShop</Navbar.Brand>
           </div>
-        <div className="d-flex align-items-center w-50">
+          <div className="d-flex align-items-center w-50">
             <Form className="d-flex mx-auto search-center w-" onSubmit={handleSearch} ref={searchRef}>
-                <FormControl
-                  type="search"
-                  placeholder="Rechercher"
-                  className="search-bar"  // Applique la classe pour plus de largeur
-                  value={searchTerm}
-                  onChange={handleSearchChange}
-                />
-                <Button variant="outline-primary" type="submit">
-                  <FontAwesomeIcon icon={faSearch} />
-                </Button>
+              <FormControl
+                type="search"
+                placeholder="Rechercher"
+                className="search-bar"
+                value={searchTerm}
+                onChange={handleSearchChange}
+              />
+              <Button variant="outline-primary" type="submit">
+                <FontAwesomeIcon icon={faSearch} />
+              </Button>
             </Form>
           </div>
 
           <Nav className="d-none d-md-flex align-items-center">
             {isLoggedIn ? (
-              <NavDropdown title="Mon compte" id="basic-nav-dropdown">
+              <NavDropdown title={`Salut, ${userFirstName}`} id="basic-nav-dropdown">
+                 <NavDropdown.Item href="/profil">
+                      <FontAwesomeIcon icon={faUserCircle} /> Mon compte
+                  </NavDropdown.Item>
                 <NavDropdown.Item onClick={handleLogout}>
                   <FontAwesomeIcon icon={faSignOutAlt} /> Déconnexion
                 </NavDropdown.Item>
@@ -124,54 +138,6 @@ const Header: React.FC = () => {
               )}
             </Nav.Link>
           </Nav>
-
-          <Button variant="outline-primary" className="d-md-none" onClick={handleShowOffcanvas}>
-            <FontAwesomeIcon icon={faBars} />
-          </Button>
-
-          <Offcanvas show={showOffcanvas} onHide={handleCloseOffcanvas} placement="end">
-            <Offcanvas.Header closeButton>
-              <Offcanvas.Title>Menu</Offcanvas.Title>
-            </Offcanvas.Header>
-            <Offcanvas.Body>
-              <Nav className="d-flex flex-column">
-                {isLoggedIn ? (
-                  <NavDropdown title="Mon compte" id="offcanvas-nav-dropdown">
-                    <NavDropdown.Item onClick={handleLogout}>
-                      <FontAwesomeIcon icon={faSignOutAlt} /> Déconnexion
-                    </NavDropdown.Item>
-                  </NavDropdown>
-                ) : (
-                  <NavDropdown title="Bonjour, identifiez-vous" id="offcanvas-nav-dropdown">
-                    <NavDropdown.Item href="/sign">
-                      <FontAwesomeIcon icon={faUser} /> Se connecter
-                    </NavDropdown.Item>
-                    <NavDropdown.Item href="/register">
-                      <FontAwesomeIcon icon={faUser} /> Inscription
-                    </NavDropdown.Item>
-                  </NavDropdown>
-                )}
-
-                <Nav.Link href="/favoris" className="position-relative">
-                  <FontAwesomeIcon icon={faHeart} />
-                  {totalFavorites() > 0 && (
-                    <Badge bg="danger" pill className="position-absolute top-0 start-100 translate-middle">
-                      {totalFavorites()}
-                    </Badge>
-                  )}
-                </Nav.Link>
-
-                <Nav.Link href="/panier" className="position-relative mx-3">
-                  <FontAwesomeIcon icon={faShoppingCart} />
-                  {totalArticle() > 0 && (
-                    <Badge bg="danger" pill className="position-absolute top-0 start-100 translate-middle">
-                      {totalArticle()}
-                    </Badge>
-                  )}
-                </Nav.Link>
-              </Nav>
-            </Offcanvas.Body>
-          </Offcanvas>
         </Container>
       </Navbar>
     </header>

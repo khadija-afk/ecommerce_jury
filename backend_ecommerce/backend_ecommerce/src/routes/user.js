@@ -8,8 +8,11 @@ import express from "express";
   updateById,
   deleteById,
   checkAuth, 
-  updateByEmail
+  updateByEmail,
+  getProfile,
+  updateProfile
 }from "../controllers/user.controller.js";
+import { verifieToken } from '../auth.js';
 
 const router = express.Router();
 
@@ -85,6 +88,8 @@ router.put("/update", updateByEmail);
 router.delete("/delete/:id", deleteById);
 // Route pour la vérification d'authentification
 router.get('/check_auth', checkAuth);
+router.get('/profil', verifieToken, getProfile);
+router.put('/updateProfil', verifieToken, updateProfile);
 
 
 export default router;
