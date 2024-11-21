@@ -1,7 +1,7 @@
 import React, { createContext, useState, useEffect, ReactNode, useContext } from 'react';
 import apiClient from './axiosConfig';
+import { useAuth } from './AuthCantext';
 
-// Définition du type d'article
 interface Article {
   id: number;
   name: string;
@@ -26,7 +26,6 @@ interface PanierContextType {
   incremente: (index: number) => void;
   decremente: (index: number) => void;
   removeArticle: (index: number) => void;
-  priceArticleByQuantity: (price: number, quantity: number) => number;
   setPanier: React.Dispatch<React.SetStateAction<CartItem[]>>;
 }
 
@@ -40,145 +39,56 @@ export const usePanier = () => {
   return context;
 };
 
-// Fonction pour vérifier si l'utilisateur est authentifié
-const isAuthenticated = () => {
-  return document.cookie.split(';').some((cookie) => cookie.trim().startsWith('authCookie='));
-};
-
 export const PanierProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
+  const { isAuthenticated } = useAuth();
   const [panier, setPanier] = useState<CartItem[]>([]);
   const [totalPrice, setTotalPrice] = useState(0);
 
   const recalculateTotalPrice = (panier: CartItem[]) => {
-    const total = panier.reduce((acc, item) => {
-      const price = parseFloat(item.article.price.toString()) || 0;
-      const quantity = item.quantity || 1;
-      return acc + price * quantity;
-    }, 0);
-    return parseFloat(total.toFixed(2));
+    return panier.reduce((acc, item) => acc + item.article.price * item.quantity, 0);
   };
 
   useEffect(() => {
-    // Charger le panier uniquement si l'utilisateur est authentifié
-    if (!isAuthenticated()) return;
+    if (!isAuthenticated) {
+      setPanier([]); // Réinitialisez le panier si déconnecté
+      setTotalPrice(0);
+      return;
+    }
 
     const loadPanier = async () => {
       try {
         const response = await apiClient.get('/api/api/cart/cart', { withCredentials: true });
-        const panierData = response.data.cartItems || [];
-        setPanier(panierData);
-        setTotalPrice(recalculateTotalPrice(panierData));
+        setPanier(response.data.cartItems || []);
+        setTotalPrice(recalculateTotalPrice(response.data.cartItems || []));
       } catch (error) {
-        console.error('Erreur lors du chargement du panier:', error);
+        console.error('Erreur lors du chargement du panier :', error);
       }
     };
 
     loadPanier();
-  }, []);
+  }, [isAuthenticated]);
 
   const totalArticle = () => panier.reduce((acc, item) => acc + item.quantity, 0);
 
-  const priceArticleByQuantity = (price: number, quantity: number) =>
-    parseFloat((price * quantity).toFixed(2));
-
   const addPanier = async (product: Article) => {
-    if (!isAuthenticated()) {
-      console.warn("Non authentifié : impossible d'ajouter au panier.");
+    if (!isAuthenticated) {
+      console.warn('Non authentifié : impossible d\'ajouter au panier.');
       return;
     }
     try {
-      const newCartItem: CartItem = {
-        id: Math.random(),
-        cart_fk: 1,
-        product_fk: product.id,
-        quantity: 1,
-        article: { ...product },
-      };
-
-      const updatedPanier = [...panier, newCartItem];
-      setPanier(updatedPanier);
-      setTotalPrice(recalculateTotalPrice(updatedPanier));
-
-      await apiClient.post(
+      const response = await apiClient.post(
         '/api/api/cartItem/cart-items',
         { product_fk: product.id, quantity: 1 },
         { withCredentials: true }
       );
+      setPanier((prev) => [...prev, { ...response.data, article: product }]);
     } catch (error) {
-      console.error("Erreur lors de l'ajout au panier :", error);
-    }
-  };
-
-  const incremente = async (index: number) => {
-    const updatedCartItem = { ...panier[index], quantity: panier[index].quantity + 1 };
-    const updatedPanier = [...panier];
-    updatedPanier[index] = updatedCartItem;
-
-    setPanier(updatedPanier);
-    setTotalPrice(recalculateTotalPrice(updatedPanier));
-
-    try {
-      await apiClient.put(
-        `api/api/cartItem/cart-items/${updatedCartItem.id}`,
-        { quantity: updatedCartItem.quantity },
-        { withCredentials: true }
-      );
-    } catch (error) {
-      console.error('Erreur lors de la mise à jour de la quantité sur le serveur :', error);
-    }
-  };
-
-  const decremente = async (index: number) => {
-    if (panier[index].quantity <= 1) return;
-
-    const updatedCartItem = { ...panier[index], quantity: panier[index].quantity - 1 };
-    const updatedPanier = [...panier];
-    updatedPanier[index] = updatedCartItem;
-
-    setPanier(updatedPanier);
-    setTotalPrice(recalculateTotalPrice(updatedPanier));
-
-    try {
-      await apiClient.put(
-        `api/api/cartItem/cart-items/${updatedCartItem.id}`,
-        { quantity: updatedCartItem.quantity },
-        { withCredentials: true }
-      );
-    } catch (error) {
-      console.error('Erreur lors de la mise à jour de la quantité sur le serveur :', error);
-    }
-  };
-
-  const removeArticle = async (index: number) => {
-    const articleToRemove = panier[index];
-
-    const updatedPanier = panier.filter((_, i) => i !== index);
-    setPanier(updatedPanier);
-    setTotalPrice(recalculateTotalPrice(updatedPanier));
-
-    try {
-      await apiClient.delete(`api/api/cartItem/cart-items/${articleToRemove.id}`, {
-        withCredentials: true,
-      });
-    } catch (error) {
-      console.error("Erreur lors de la suppression de l'article du panier :", error);
+      console.error('Erreur lors de l\'ajout au panier :', error);
     }
   };
 
   return (
-    <PanierContext.Provider
-      value={{
-        panier,
-        totalPrice,
-        totalArticle,
-        addPanier,
-        incremente,
-        decremente,
-        removeArticle,
-        priceArticleByQuantity,
-        setPanier,
-      }}
-    >
+    <PanierContext.Provider value={{ panier, totalPrice, totalArticle, addPanier, incremente: () => {}, decremente: () => {}, removeArticle: () => {}, setPanier }}>
       {children}
     </PanierContext.Provider>
   );

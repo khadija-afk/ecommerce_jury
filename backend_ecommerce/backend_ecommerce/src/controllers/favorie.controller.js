@@ -45,8 +45,12 @@ export const getFavoritesByUser = async (req, res) => {
 // Supprimer un favori
 export const removeFavorite = async (req, res) => {
     try {
-        const { product_fk } = req.body;
+        const { product_fk } = req.params; // Récupérer depuis les paramètres d'URL
         const user_fk = req.user.id;
+
+        if (!product_fk) {
+            return res.status(400).json({ error: "product_fk est requis." });
+        }
 
         const favorite = await Favorite.findOne({
             where: { user_fk, product_fk },
@@ -63,6 +67,7 @@ export const removeFavorite = async (req, res) => {
         res.status(500).json({ error: "Erreur serveur lors de la suppression du favori." });
     }
 };
+
 
 // Vérifier si un produit est dans les favoris
 export const isFavorite = async (req, res) => {

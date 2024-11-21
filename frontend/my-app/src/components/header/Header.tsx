@@ -1,53 +1,60 @@
 import React, { useState, useEffect, useContext, useRef } from 'react';
-import { Navbar, Nav, Container, Form, FormControl, Button, Badge, NavDropdown, Offcanvas } from 'react-bootstrap';
-import './Header.css';
+import { Navbar, Nav, Container, Form, FormControl, Button, Badge, NavDropdown } from 'react-bootstrap';
+import { useNavigate } from 'react-router-dom';
 import { PanierContext } from '../../utils/PanierContext';
 import { useFavoris } from '../../utils/FavorieContext';
-import { useNavigate } from 'react-router-dom';
-
-// Import FontAwesome
+import { useAuth } from '../../utils/AuthCantext'; // Import du AuthContext
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faUser, faHeart, faShoppingCart, faBars, faSearch, faSignOutAlt, faUserCircle } from '@fortawesome/free-solid-svg-icons';
-
-import apiClient from '../../utils/axiosConfig';
+import { faUser, faHeart, faShoppingCart, faSearch, faSignOutAlt, faUserCircle } from '@fortawesome/free-solid-svg-icons';
+import './Header.css';
 
 const Header: React.FC = () => {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [userFirstName, setUserFirstName] = useState('');
+  const { isAuthenticated, setIsAuthenticated } = useAuth(); // Utilisez l'état global
+  const [userFirstName, setUserFirstName] = useState(''); // Par défaut, aucun prénom
   const [searchTerm, setSearchTerm] = useState('');
   const { totalArticle } = useContext(PanierContext);
   const { totalFavorites } = useFavoris();
   const navigate = useNavigate();
   const searchRef = useRef<HTMLDivElement>(null);
 
-  const [showOffcanvas, setShowOffcanvas] = useState(false);
-
-  const handleCloseOffcanvas = () => setShowOffcanvas(false);
-  const handleShowOffcanvas = () => setShowOffcanvas(true);
-
+  // Vérification de l'authentification au montage
   useEffect(() => {
     const checkAuthStatus = async () => {
       try {
         const response = await fetch('/api/api/user/check_auth', {
           method: 'GET',
-          credentials: 'include',
+          credentials: 'include', // Inclure les cookies HttpOnly
         });
-
+  
         if (response.ok) {
-          const userData = await response.json(); // Supposons que le backend renvoie l'utilisateur connecté
-          setIsLoggedIn(true);
-          setUserFirstName(userData.firstName); // Assurez-vous que le prénom est inclus dans la réponse
+          const responseData = await response.json();
+          console.log('Données utilisateur reçues :', responseData);
+  
+          // Vérifiez que la réponse contient des données valides
+          if (responseData && responseData.id && responseData.firstName) {
+            setIsAuthenticated(true); // Met à jour l'état global
+            setUserFirstName(responseData.firstName); // Définit le prénom
+          } else {
+            console.warn('Aucune donnée utilisateur valide reçue.');
+            setIsAuthenticated(false); // Met à jour l'état global
+            setUserFirstName('');
+          }
         } else {
-          setIsLoggedIn(false);
+          console.warn('Réponse non OK du serveur, utilisateur non connecté.');
+          setIsAuthenticated(false); // Met à jour l'état global
           setUserFirstName('');
         }
       } catch (error) {
-        console.error('Error checking authentication status:', error);
+        console.error('Erreur lors de la vérification de l\'authentification :', error);
+        setIsAuthenticated(false); // Considère l'utilisateur comme non connecté en cas d'erreur
+        setUserFirstName('');
       }
     };
-
+  
     checkAuthStatus();
-  }, []);
+  }, [setIsAuthenticated]);
+  
+  
 
   const handleLogout = async () => {
     try {
@@ -57,12 +64,12 @@ const Header: React.FC = () => {
       });
 
       if (response.ok) {
-        setIsLoggedIn(false);
-        setUserFirstName('');
-        navigate('/sign');
+        setIsAuthenticated(false); // Mettre à jour l'état global
+        setUserFirstName(''); // Réinitialise le prénom
+        // navigate('/sign'); // Redirige vers la page de connexion
       }
     } catch (error) {
-      console.error('Error during logout:', error);
+      console.error('Erreur lors de la déconnexion :', error);
     }
   };
 
@@ -81,9 +88,8 @@ const Header: React.FC = () => {
     <header>
       <Navbar expand="lg" bg="white" variant="light" className="py-3 navbar-custom">
         <Container fluid>
-          <div>
-            <Navbar.Brand href="/">KenziShop</Navbar.Brand>
-          </div>
+          <Navbar.Brand href="/">KenziShop</Navbar.Brand>
+
           <div className="d-flex align-items-center w-50">
             <Form className="d-flex mx-auto search-center w-" onSubmit={handleSearch} ref={searchRef}>
               <FormControl
@@ -100,11 +106,11 @@ const Header: React.FC = () => {
           </div>
 
           <Nav className="d-none d-md-flex align-items-center">
-            {isLoggedIn ? (
+            {isAuthenticated ? (
               <NavDropdown title={`Salut, ${userFirstName}`} id="basic-nav-dropdown">
-                 <NavDropdown.Item href="/profil">
-                      <FontAwesomeIcon icon={faUserCircle} /> Mon compte
-                  </NavDropdown.Item>
+                <NavDropdown.Item href="/profil">
+                  <FontAwesomeIcon icon={faUserCircle} /> Mon compte
+                </NavDropdown.Item>
                 <NavDropdown.Item onClick={handleLogout}>
                   <FontAwesomeIcon icon={faSignOutAlt} /> Déconnexion
                 </NavDropdown.Item>
