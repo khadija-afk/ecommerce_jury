@@ -90,4 +90,33 @@
     padding: 10px 0;
     border-bottom: 1px solid #ddd;
   }
+
+  .checkout-address {
+    margin-bottom: 20px;
+  }
+  
+  .address-options {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  .address-option {
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  .address-option input[type="radio"] {
+    margin-right: 10px;
+  }
+  
+  .address-details {
+    margin-top: 20px;
+    padding: 15px;
+    background-color: #f9f9f9;
+    border-radius: 4px;
+  }
+  
   

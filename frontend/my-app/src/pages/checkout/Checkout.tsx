@@ -8,17 +8,35 @@ const Checkout = () => {
   const stripe = useStripe();
   const elements = useElements();
   const { orderId } = useParams();
-  const { state } = useLocation(); // Récupérer le total depuis le state de la navigation
-  const [total, setTotal] = useState(state?.total || 0); // Total initial
-  const [address, setAddress] = useState('');
-  const [firstName, setFirstName] = useState('');
-  const [lastName, setLastName] = useState('');
-  const [city, setCity] = useState('');
-  const [phone, setPhone] = useState('');
-  const [email, setEmail] = useState('');
+  const { state } = useLocation();
+  const [total, setTotal] = useState(state?.total || 0);
+  const [addresses, setAddresses] = useState([]);
+  const [selectedAddressId, setSelectedAddressId] = useState(null);
+  const [selectedAddressDetails, setSelectedAddressDetails] = useState(null);
   const [paymentMethod, setPaymentMethod] = useState('');
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+
+  // Charger les adresses utilisateur
+  useEffect(() => {
+    const fetchAddresses = async () => {
+      try {
+        const response = await apiClient.get('/api/api/adresse/addresses', {
+          withCredentials: true, // Inclut l'authentification
+        });
+        setAddresses(response.data);
+
+        if (response.data.length > 0) {
+          setSelectedAddressId(response.data[0].id); // Pré-sélectionne la première adresse
+          setSelectedAddressDetails(response.data[0]);
+        }
+      } catch (error) {
+        console.error('Erreur lors du chargement des adresses utilisateur :', error);
+      }
+    };
+
+    fetchAddresses();
+  }, []);
 
   // Si le total n'est pas fourni, le récupérer depuis l'API
   useEffect(() => {
@@ -26,27 +44,32 @@ const Checkout = () => {
       apiClient
         .get(`/api/api/order/orders/${orderId}`, { withCredentials: true })
         .then((response) => setTotal(response.data.total))
-        .catch((err) => console.error("Erreur lors de la récupération des détails de la commande :", err));
+        .catch((err) => console.error('Erreur lors de la récupération des détails de la commande :', err));
     }
   }, [orderId, state]);
+
+  const handleAddressSelection = (addressId) => {
+    setSelectedAddressId(addressId);
+    const address = addresses.find((addr) => addr.id === addressId);
+    setSelectedAddressDetails(address);
+  };
 
   const handleCheckout = async (e) => {
     e.preventDefault();
 
-    if (!firstName || !lastName || !address || !city || !phone || !email || !paymentMethod) {
-      alert("Veuillez remplir tous les champs obligatoires.");
+    if (!selectedAddressId || !paymentMethod) {
+      alert('Veuillez sélectionner une adresse et une méthode de paiement.');
       return;
     }
 
     setLoading(true);
 
     try {
-      // Création de `PaymentDetail`
       const paymentDetailResponse = await apiClient.post(
         '/api/api/payment/payment-details',
         {
           order_fk: orderId,
-          amount: total, // Utiliser le total récupéré
+          amount: total,
           provider: paymentMethod,
           status: 'Pending',
         },
@@ -55,7 +78,6 @@ const Checkout = () => {
 
       const paymentDetailId = paymentDetailResponse.data.id;
 
-      // Stocker les ID dans le localStorage
       localStorage.setItem('orderId', orderId);
       localStorage.setItem('paymentDetailId', paymentDetailId);
 
@@ -71,13 +93,12 @@ const Checkout = () => {
           {
             paymentMethod: 'stripe',
             line_items: [],
-            customer_email: email,
+            customer_email: selectedAddressDetails.email || '',
             address: {
-              line1: address,
-              city,
-              state: 'CA',
-              postal_code: '94111',
-              country: 'US',
+              line1: selectedAddressDetails.address_line1,
+              city: selectedAddressDetails.city,
+              postal_code: selectedAddressDetails.postal_code,
+              country: selectedAddressDetails.country,
             },
           },
           { withCredentials: true }
@@ -86,18 +107,18 @@ const Checkout = () => {
         const { sessionId, error } = response.data;
 
         if (error) {
-          console.error("Erreur API :", error);
+          console.error('Erreur API :', error);
           setLoading(false);
           return;
         }
 
         await stripe.redirectToCheckout({ sessionId });
       } else if (paymentMethod === 'cheque') {
-        alert("Merci pour votre commande. Veuillez envoyer votre chèque à l'adresse indiquée.");
+        alert('Merci pour votre commande. Veuillez envoyer votre chèque à l\'adresse indiquée.');
         navigate(`/success`);
       }
     } catch (error) {
-      console.error("Erreur lors de la création du paiement :", error);
+      console.error('Erreur lors de la création du paiement :', error);
     }
 
     setLoading(false);
@@ -105,26 +126,55 @@ const Checkout = () => {
 
   return (
     <div className="checkout-container">
-      <div className="checkout-form">
-        <input type="text" placeholder="Prénom" value={firstName} onChange={(e) => setFirstName(e.target.value)} />
-        <input type="text" placeholder="Nom" value={lastName} onChange={(e) => setLastName(e.target.value)} />
-        <input type="text" placeholder="Adresse de livraison" value={address} onChange={(e) => setAddress(e.target.value)} />
-        <input type="text" placeholder="Ville" value={city} onChange={(e) => setCity(e.target.value)} />
-        <input type="text" placeholder="Téléphone" value={phone} onChange={(e) => setPhone(e.target.value)} />
-        <input type="email" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} />
-        <select value={paymentMethod} onChange={(e) => setPaymentMethod(e.target.value)}>
-          <option value="">Choisir une méthode de paiement</option>
-          <option value="cheque">Paiement par chèque</option>
-          <option value="stripe">Stripe</option>
-        </select>
+      <div className="checkout-address">
+        <h3>Sélectionnez une adresse de livraison</h3>
+        {addresses.length > 0 ? (
+          <div className="address-options">
+            {addresses.map((address) => (
+              <label key={address.id} className="address-option">
+                <input
+                  type="radio"
+                  name="selectedAddress"
+                  value={address.id}
+                  onChange={() => handleAddressSelection(address.id)}
+                  checked={selectedAddressId === address.id}
+                />
+                {address.address_line1}, {address.city} ({address.postal_code})
+              </label>
+            ))}
+          </div>
+        ) : (
+          <p>Aucune adresse enregistrée. Veuillez en ajouter une depuis votre profil.</p>
+        )}
+        {selectedAddressDetails && (
+          <div className="address-details">
+            <h4>Détails de l'adresse sélectionnée</h4>
+            <p><strong>Adresse :</strong> {selectedAddressDetails.address_line1}</p>
+            {selectedAddressDetails.address_line2 && (
+              <p><strong>Complément :</strong> {selectedAddressDetails.address_line2}</p>
+            )}
+            <p><strong>Ville :</strong> {selectedAddressDetails.city}</p>
+            <p><strong>Code Postal :</strong> {selectedAddressDetails.postal_code}</p>
+            <p><strong>Pays :</strong> {selectedAddressDetails.country}</p>
+          </div>
+        )}
       </div>
 
       <div className="checkout-summary">
         <h3>Résumé de votre commande</h3>
         <p>Sous-total : {total} €</p>
 
+        <select
+          value={paymentMethod}
+          onChange={(e) => setPaymentMethod(e.target.value)}
+        >
+          <option value="">Choisir une méthode de paiement</option>
+          <option value="cheque">Paiement par chèque</option>
+          <option value="stripe">Stripe</option>
+        </select>
+
         <button className="checkout-button" onClick={handleCheckout} disabled={loading}>
-          {loading ? 'Traitement...' : 'Valider la commande'}
+          {loading ? 'Traitement...' : `Valider la commande - Total : ${total} €`}
         </button>
       </div>
     </div>
