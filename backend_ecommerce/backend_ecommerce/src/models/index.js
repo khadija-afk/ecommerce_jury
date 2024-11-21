@@ -10,6 +10,7 @@ import orderItemsModel from "./orderItem.model.js";
 import paymentDetailsModel from "./paymentDetail.model.js";
 import favorieModel from "./favorie.model.js";
 import userPreferenceModel from "./userPreference.model.js";
+import adresseModel from "./adresse.model.js"
 import dotenv from "dotenv";
 
 
@@ -56,6 +57,7 @@ orderDetailsModel(sequelize, Sequelize);
 orderItemsModel(sequelize, Sequelize);
 paymentDetailsModel(sequelize, Sequelize);
 favorieModel(sequelize, Sequelize);
+adresseModel(sequelize, Sequelize)
 // Initialisez le modèle UserPreferences
 const UserPreferences = userPreferenceModel(sequelize, Sequelize);
 
@@ -70,6 +72,7 @@ const {
   OrderItems,
   PaymentDetails,
   Favorite,
+  Address
 } = sequelize.models;
 
 // Définir les relations ici
@@ -105,6 +108,10 @@ OrderItems.belongsTo(OrderDetails, { foreignKey: "order_fk" });
 
 OrderItems.belongsTo(Article, { foreignKey: "product_fk" });
 Article.hasMany(OrderItems, { foreignKey: "product_fk" });
+
+
+User.hasMany(Address, { foreignKey: 'user_fk' });
+Address.belongsTo(User, { foreignKey: 'user_fk' });
 
 // Définir les relations pour Favorie
 User.hasMany(Favorite, { foreignKey: "user_fk" });
@@ -176,5 +183,6 @@ export {
   OrderItems,
   PaymentDetails,
   Favorite,
-  UserPreferences
+  UserPreferences,
+  Address
 };

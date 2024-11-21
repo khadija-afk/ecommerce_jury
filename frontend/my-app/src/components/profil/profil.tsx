@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
 import apiClient from '../../utils/axiosConfig';
+import './profil.css';
 
 const UserProfile = () => {
   const [user, setUser] = useState(null);
@@ -33,30 +33,33 @@ const UserProfile = () => {
   if (!user) return <p>Chargement...</p>;
 
   return (
-    <div>
+    <div className="profile-container">
       <h2>Mon Profil</h2>
       {isEditing ? (
-        <>
+        <div className="edit-mode">
           <input
             type="text"
             name="firstName"
             value={updatedData.firstName}
             onChange={handleInputChange}
+            placeholder="Prénom"
           />
           <input
             type="text"
             name="lastName"
             value={updatedData.lastName}
             onChange={handleInputChange}
+            placeholder="Nom"
           />
           <input
             type="email"
             name="email"
             value={updatedData.email}
             onChange={handleInputChange}
+            placeholder="Email"
           />
           <button onClick={handleSave}>Enregistrer</button>
-        </>
+        </div>
       ) : (
         <>
           <p><strong>Nom :</strong> {user.firstName} {user.lastName}</p>

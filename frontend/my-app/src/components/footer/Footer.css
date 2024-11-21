@@ -1,74 +1,161 @@
-/* Footer.css */
+/* Footer global styles */
 .footer {
-    background-color: #222;
-    color: #fff;
-    padding: 20px 40px;
-  }
-  
-  .footer-sections {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    margin-bottom: 20px;
-  }
-  
-  .footer-links,
-  .footer-about,
-  .footer-contact {
-    flex: 1;
-    min-width: 250px;
-    margin: 10px;
-  }
-  
-  .footer-links h4,
-  .footer-about h4,
-  .footer-contact h4 {
-    font-size: 1.2em;
-    margin-bottom: 10px;
-  }
-  
-  .footer-links ul {
-    list-style: none;
-    padding: 0;
-  }
-  
-  .footer-links li {
-    margin: 5px 0;
-  }
-  
-  .footer-links a,
-  .footer-about a,
-  .footer-contact a {
-    color: #ddd;
-    text-decoration: none;
-  }
-  
-  .footer-links a:hover,
-  .footer-about a:hover,
-  .footer-contact a:hover {
-    color: #fff;
-    text-decoration: underline;
-  }
-  
-  .footer-bottom {
-    display: flex;
-    justify-content: space-between;
+  width: 100%; /* Occupe toute la largeur */
+  background-color: #E6D5F3; /* Couleur de fond violet clair */
+  padding: 40px 70px; /* Ajoute un padding général (haut/bas : 40px, gauche/droite : 70px) */
+  color: #000; /* Couleur du texte noir */
+  font-family: Arial, sans-serif;
+  line-height: 1.5;
+  position: relative; /* Important pour aligner */
+  bottom: 0;
+  box-shadow: 0 -4px 6px rgba(0, 0, 0, 0.1); /* Ajoute une ombre */
+}
+
+.footer-content {
+  max-width: 1200px; /* Correspond à la largeur maximale du header */
+  margin: 0 auto; /* Centre horizontalement */
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start; /* Aligne les sections en haut */
+  gap: 50px; /* Ajoute de l'espace entre les sections */
+}
+
+/* Section des liens légaux */
+.footer-links {
+  text-align: left; /* Aligne le texte des liens à gauche */
+  margin-left: 20px; /* Décale légèrement la section vers la gauche */
+}
+
+.footer-links h4 {
+  font-size: 18px;
+  margin-bottom: 10px;
+  color: #311C52; /* Violet foncé */
+}
+
+.footer-links ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.footer-links li {
+  margin-bottom: 10px;
+}
+
+.footer-links a {
+  text-decoration: none;
+  color: #311C52; /* Violet foncé */
+  transition: color 0.3s ease;
+}
+
+.footer-links a:hover {
+  color: #5F4B8B; /* Violet plus clair */
+}
+
+/* Section contact */
+.footer-contact {
+  flex: 1; /* Prend la place nécessaire */
+  text-align: center; /* Aligne au centre */
+}
+
+.footer-contact h4 {
+  font-size: 18px;
+  margin-bottom: 10px;
+  color: #311C52;
+}
+
+.footer-contact p {
+  margin: 5px 0;
+}
+
+/* Formulaire de contact */
+.footer-form {
+  flex: 1; /* Prend la place nécessaire */
+  max-width: 300px; /* Largeur maximale */
+  margin-left: auto; /* Décale vers la droite */
+}
+
+.footer-form form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.footer-form input,
+.footer-form textarea {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+}
+
+.footer-form textarea {
+  resize: none;
+  height: 80px;
+}
+
+.footer-form button {
+  padding: 10px;
+  background-color: #311C52; /* Couleur violette */
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background-color 0.3s ease;
+}
+
+.footer-form button:hover {
+  background-color: #5F4B8B; /* Violet clair */
+}
+
+/* Bas de page */
+.footer-bottom {
+  border-top: 1px solid #D0C0E8;
+  margin-top: 20px;
+  padding-top: 20px;
+  text-align: center;
+  font-size: 14px;
+  color: #311C52;
+}
+
+.footer-bottom p {
+  margin: 5px 0;
+}
+
+/* Icônes des réseaux sociaux */
+.social-icons {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  margin-top: 10px;
+}
+
+.social-icons a {
+  text-decoration: none;
+  color: #311C52;
+  font-size: 16px;
+  transition: color 0.3s ease;
+}
+
+.social-icons a:hover {
+  color: #5F4B8B; /* Violet clair */
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .footer-content {
+    flex-direction: column;
     align-items: center;
-    border-top: 1px solid #444;
-    padding-top: 10px;
+    text-align: center;
+    padding: 0 20px; /* Réduit le padding sur petit écran */
   }
-  
-  .footer-bottom p {
-    margin: 0;
+
+  .footer-links ul {
+    text-align: center;
   }
-  
-  .social-icons a {
-    color: #ddd;
-    margin: 0 5px;
-    text-decoration: none;
+
+  .footer-form {
+    margin: 20px auto; /* Centre le formulaire sur petit écran */
   }
-  
-  .social-icons a:hover {
-    color: #fff;
-  }
-  
+}
