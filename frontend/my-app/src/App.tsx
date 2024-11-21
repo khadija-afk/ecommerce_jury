@@ -36,6 +36,7 @@ import CookieSettingsModal from './components/cookieModel/CookieSettingModel';
 import UserProfilePage from './pages/profil/profil';
 import UserOrders from './components/profil/userOrder';
 import UserProfile from './components/profil/profil'; 
+import UserAddresses from './components/profil/AdresseUser';
 
 // Autres catégories
 import VetementsPage from './pages/category/vetement/VetPage';
@@ -105,6 +106,7 @@ const App = () => {
             <Route index element={<Navigate to="orders" replace />} /> {/* Redirection */}
             <Route path="orders" element={<UserOrders />} />
             <Route path="security" element={<UserProfile />} />
+            <Route path="adresse" element={<UserAddresses />} />
             {/* <Route path="addresses" element={<h3>Vos Adresses</h3>} />
             <Route path="shipping" element={<h3>Expédition</h3>} /> */}
           </Route>
