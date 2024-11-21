@@ -84,6 +84,19 @@
   background-color: #ff6666; /* Rouge clair au survol */
 }
 
+.empty-cart {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 50vh; /* Ajuste la hauteur pour centrer verticalement */
+  text-align: center;
+}
+
+.empty-cart p {
+  font-size: 1.5rem;
+  color: #555; /* Couleur du texte */
+}
+
 
 @media (max-width: 768px) {
   .table, .table tbody, .table tr, .table th, .table td {

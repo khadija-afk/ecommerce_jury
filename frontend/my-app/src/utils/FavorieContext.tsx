@@ -15,6 +15,7 @@ interface FavorisContextType {
   removeFavorite: (product_fk: number) => void; // Supprimer un favori par ID
   isFavorite: (product_fk: number) => boolean; // Vérifier si un article est dans les favoris
   totalFavorites: () => number; // Nombre total de favoris
+  setFavorites: React.Dispatch<React.SetStateAction<Article[]>>; // Fonction pour mettre à jour les favoris
 }
 
 export const FavorisContext = createContext<FavorisContextType | undefined>(undefined);
@@ -112,7 +113,14 @@ export const FavorisProvider: React.FC<{ children: ReactNode }> = ({ children })
 
   return (
     <FavorisContext.Provider
-      value={{ favorites, addFavorite, removeFavorite, isFavorite, totalFavorites }}
+      value={{
+        favorites,
+        addFavorite,
+        removeFavorite,
+        isFavorite,
+        totalFavorites,
+        setFavorites,
+      }}
     >
       {children}
     </FavorisContext.Provider>

@@ -1,9 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react'; 
 import { Container, Box, Typography, Button, Avatar } from '@mui/material';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import apiClient from '../../utils/axiosConfig';
+import { usePanier } from '../../utils/PanierContext';
+import { useFavoris } from '../../utils/FavorieContext';
 
 const theme = createTheme({
   palette: {
@@ -19,6 +21,9 @@ const PaymentSuccessPage = () => {
   const orderId = searchParams.get('orderId') || localStorage.getItem('orderId');
   const paymentDetailId = searchParams.get('paymentDetailId') || localStorage.getItem('paymentDetailId');
   const [isRecorded, setIsRecorded] = useState(false);
+
+  const { setPanier } = usePanier(); // Mise à jour du panier via PanierContext
+  const { setFavorites } = useFavoris(); // Mise à jour des favoris via FavorisContext
 
   useEffect(() => {
     const processOrderAndPayment = async () => {
@@ -47,6 +52,11 @@ const PaymentSuccessPage = () => {
         // Vider le panier après la mise à jour des statuts
         await apiClient.post('/api/api/cartItem/cart-items/clear');
         console.log("Le panier a été vidé.");
+        setPanier([]); // Mettre à jour le panier dans PanierContext
+
+        // Réinitialiser les favoris (facultatif selon votre logique)
+        setFavorites([]);
+        console.log("Les favoris ont été réinitialisés.");
 
         // Supprimer les valeurs du localStorage après traitement
         localStorage.removeItem('orderId');
@@ -59,7 +69,7 @@ const PaymentSuccessPage = () => {
     };
 
     processOrderAndPayment();
-  }, [orderId, paymentDetailId, isRecorded]);
+  }, [orderId, paymentDetailId, isRecorded, setPanier, setFavorites]);
 
   return (
     <ThemeProvider theme={theme}>

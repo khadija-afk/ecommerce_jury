@@ -98,7 +98,9 @@ const Panier = () => {
                     </div>
                 </>
             ) : (
-                <p>Votre panier est vide !</p>
+                <div className="empty-cart">
+                    <p>Votre panier est vide !</p>
+                </div>
             )}
 
             {errorMessage && <p className="error-message">{errorMessage}</p>}
