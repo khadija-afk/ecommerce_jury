@@ -24,7 +24,7 @@ const Checkout = () => {
   useEffect(() => {
     if (!state?.total) {
       apiClient
-        .get(`/api/api/order/${orderId}`, { withCredentials: true })
+        .get(`/api/api/order/orders/${orderId}`, { withCredentials: true })
         .then((response) => setTotal(response.data.total))
         .catch((err) => console.error("Erreur lors de la récupération des détails de la commande :", err));
     }
@@ -122,8 +122,6 @@ const Checkout = () => {
       <div className="checkout-summary">
         <h3>Résumé de votre commande</h3>
         <p>Sous-total : {total} €</p>
-        <p>Frais de livraison : 15.00 €</p>
-        <p>Total : {(parseFloat(total) + 15.0)} €</p>
 
         <button className="checkout-button" onClick={handleCheckout} disabled={loading}>
           {loading ? 'Traitement...' : 'Valider la commande'}

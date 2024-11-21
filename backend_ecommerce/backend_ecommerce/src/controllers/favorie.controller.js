@@ -3,11 +3,25 @@
 import { Favorite, Article } from '../models/index.js';
 
 // Ajouter un favori
+// Ajouter un favori
 export const addFavorite = async (req, res) => {
     try {
         const { product_fk } = req.body;
         const user_fk = req.user.id;
 
+        // Vérifier si l'article est déjà dans les favoris
+        const existingFavorite = await Favorite.findOne({
+            where: {
+                user_fk,
+                product_fk,
+            },
+        });
+
+        if (existingFavorite) {
+            return res.status(400).json({ message: "L'article est déjà dans vos favoris." });
+        }
+
+        // Si non existant, créer un nouveau favori
         const favorite = await Favorite.create({
             user_fk,
             product_fk,
@@ -16,9 +30,10 @@ export const addFavorite = async (req, res) => {
         res.status(201).json(favorite);
     } catch (error) {
         console.error("Erreur lors de l'ajout aux favoris :", error);
-        res.status(500).json({ error: error.message });
+        res.status(500).json({ error: "Erreur interne du serveur" });
     }
 };
+
 
 // Récupérer les favoris d'un utilisateur
 export const getFavoritesByUser = async (req, res) => {
