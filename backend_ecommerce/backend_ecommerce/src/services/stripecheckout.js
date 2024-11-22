@@ -4,7 +4,6 @@ import jwt from 'jsonwebtoken';
 import { env } from '../config.js';
 
 export const createStripeSession = async (req, res) => {
-    
     try {
         const token = req.cookies.access_token;
         if (!token) {
@@ -18,11 +17,6 @@ export const createStripeSession = async (req, res) => {
         const customerEmail = user ? user.email : null;
         if (!customerEmail) {
             return res.status(400).json({ error: 'Email utilisateur introuvable' });
-        }
-
-        const { address } = req.body;
-        if (!address) {
-            return res.status(400).json({ error: 'Adresse de livraison manquante' });
         }
 
         const panier = await Cart.findOne({
@@ -43,9 +37,6 @@ export const createStripeSession = async (req, res) => {
         const totalAmount = panier.cartItems.reduce((total, item) => total + item.article.price * item.quantity, 0);
         console.log("Montant total calculé:", totalAmount);
 
-        
-
-
         const session = await stripe.checkout.sessions.create({
             payment_method_types: ['card'],
             line_items: panier.cartItems.map(item => ({
@@ -54,6 +45,7 @@ export const createStripeSession = async (req, res) => {
                     product_data: {
                         name: item.article.name,
                         description: item.article.description || 'Description non disponible',
+                        images: [item.article.photo[0]],
                     },
                     unit_amount: Math.round(item.article.price * 100),
                 },
@@ -63,9 +55,6 @@ export const createStripeSession = async (req, res) => {
             mode: 'payment',
             success_url: `https://localhost/success?session_id={CHECKOUT_SESSION_ID}&amount=${totalAmount}`,
             cancel_url: `https://localhost/cancel`,
-            shipping_address_collection: {
-                allowed_countries: ['FR', 'US'],
-            },
         });
 
         console.log("Stripe session créée:", session);
