@@ -22,8 +22,8 @@ const PaymentSuccessPage = () => {
   const paymentDetailId = searchParams.get('paymentDetailId') || localStorage.getItem('paymentDetailId');
   const [isRecorded, setIsRecorded] = useState(false);
 
-  const { setPanier } = usePanier(); // Mise à jour du panier via PanierContext
-  const { setFavorites } = useFavoris(); // Mise à jour des favoris via FavorisContext
+  const { setPanier, recalculateTotals } = usePanier(); // Extraction de recalculateTotals
+  const { setFavorites } = useFavoris();
 
   useEffect(() => {
     const processOrderAndPayment = async () => {
@@ -52,12 +52,13 @@ const PaymentSuccessPage = () => {
         // Vider le panier après la mise à jour des statuts
         await apiClient.post('/api/api/cartItem/cart-items/clear');
         console.log("Le panier a été vidé.");
-        setPanier([]); // Mettre à jour le panier dans PanierContext
+        setPanier([]); // Vider le panier
+        recalculateTotals([]); // Recalculer les totaux
 
         // Supprimer tous les favoris
         await apiClient.delete('/api/api/favorie/clear/api');
         console.log("Tous les favoris ont été supprimés.");
-        setFavorites([]); // Mettre à jour les favoris dans FavorisContext
+        setFavorites([]);
 
         // Supprimer les valeurs du localStorage après traitement
         localStorage.removeItem('orderId');
@@ -70,7 +71,7 @@ const PaymentSuccessPage = () => {
     };
 
     processOrderAndPayment();
-  }, [orderId, paymentDetailId, isRecorded, setPanier, setFavorites]);
+  }, [orderId, paymentDetailId, isRecorded, setPanier, recalculateTotals, setFavorites]);
 
   return (
     <ThemeProvider theme={theme}>

@@ -53,35 +53,35 @@ const DetailArticle: React.FC = () => {
         }
     }, [article]);
 
-    const handleAddToPanier = async (article: Article) => {
-        try {
-            const user = JSON.parse(localStorage.getItem('user') || '{}');
-            const userId = user.id;
+    // const handleAddToPanier = async (article: Article) => {
+    //     try {
+    //         const user = JSON.parse(localStorage.getItem('user') || '{}');
+    //         const userId = user.id;
 
-            if (!userId) {
-                throw new Error("Utilisateur non connecté ou ID manquant");
-            }
+    //         if (!userId) {
+    //             throw new Error("Utilisateur non connecté ou ID manquant");
+    //         }
 
-            const cartResponse = await apiClient.get(`api/api/cart/cart`, {
-                withCredentials: true,
-            });
+    //         const cartResponse = await apiClient.get(`api/api/cart/cart`, {
+    //             withCredentials: true,
+    //         });
 
-            const cartId = cartResponse.data.id;
+    //         const cartId = cartResponse.data.id;
 
-            await apiClient.post(URL.POST_CART_ITEMS, {
-                cart_fk: cartId,
-                product_fk: article.id,
-                quantity: 1
-            }, {
-                withCredentials: true
-            });
+    //         await apiClient.post(URL.POST_CART_ITEMS, {
+    //             cart_fk: cartId,
+    //             product_fk: article.id,
+    //             quantity: 1
+    //         }, {
+    //             withCredentials: true
+    //         });
 
-            addPanier(article);
-            console.log('Article ajouté au panier');
-        } catch (error) {
-            console.error("Erreur lors de l'ajout de l'article au panier :", error);
-        }
-    };
+    //         addPanier(article);
+    //         console.log('Article ajouté au panier');
+    //     } catch (error) {
+    //         console.error("Erreur lors de l'ajout de l'article au panier :", error);
+    //     }
+    // };
 
     const handleThumbnailClick = (photo: string) => {
         setMainPhoto(photo);
@@ -145,7 +145,7 @@ const DetailArticle: React.FC = () => {
                         )}
                         <p className="price">{article.price} €</p>
                         <p>{article.content}</p>
-                        <button onClick={() => handleAddToPanier(article)}>
+                        <button onClick={() => addPanier(article)}>
                             AJOUTER AU PANIER ({article.price} €)
                         </button>
                     </div>

@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext, useRef } from 'react';
 import { Navbar, Nav, Container, Form, FormControl, Button, Badge, NavDropdown } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
-import { PanierContext } from '../../utils/PanierContext';
+import { usePanier } from '../../utils/PanierContext';
 import { useFavoris } from '../../utils/FavorieContext';
 import { useAuth } from '../../utils/AuthCantext'; // Import du AuthContext
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -9,15 +9,15 @@ import { faUser, faHeart, faShoppingCart, faSearch, faSignOutAlt, faUserCircle }
 import './Header.css';
 
 const Header: React.FC = () => {
-  const { isAuthenticated, setIsAuthenticated } = useAuth(); // Utilisez l'état global
-  const [userFirstName, setUserFirstName] = useState(''); // Par défaut, aucun prénom
+  const { isAuthenticated, setIsAuthenticated } = useAuth();
+  const [userFirstName, setUserFirstName] = useState('');
   const [searchTerm, setSearchTerm] = useState('');
-  const { totalArticle } = useContext(PanierContext);
+  const { totalArticle } = usePanier(); // Utilisation du hook personnalisé pour extraire les données
   const { totalFavorites } = useFavoris();
   const navigate = useNavigate();
   const searchRef = useRef<HTMLDivElement>(null);
 
-  // Vérification de l'authentification au montage
+  // Vérification de l'authentification
   useEffect(() => {
     const checkAuthStatus = async () => {
       try {
@@ -25,36 +25,31 @@ const Header: React.FC = () => {
           method: 'GET',
           credentials: 'include', // Inclure les cookies HttpOnly
         });
-  
+
         if (response.ok) {
           const responseData = await response.json();
           console.log('Données utilisateur reçues :', responseData);
-  
-          // Vérifiez que la réponse contient des données valides
+
           if (responseData && responseData.id && responseData.firstName) {
-            setIsAuthenticated(true); // Met à jour l'état global
-            setUserFirstName(responseData.firstName); // Définit le prénom
+            setIsAuthenticated(true);
+            setUserFirstName(responseData.firstName);
           } else {
-            console.warn('Aucune donnée utilisateur valide reçue.');
-            setIsAuthenticated(false); // Met à jour l'état global
+            setIsAuthenticated(false);
             setUserFirstName('');
           }
         } else {
-          console.warn('Réponse non OK du serveur, utilisateur non connecté.');
-          setIsAuthenticated(false); // Met à jour l'état global
+          setIsAuthenticated(false);
           setUserFirstName('');
         }
       } catch (error) {
         console.error('Erreur lors de la vérification de l\'authentification :', error);
-        setIsAuthenticated(false); // Considère l'utilisateur comme non connecté en cas d'erreur
+        setIsAuthenticated(false);
         setUserFirstName('');
       }
     };
-  
+
     checkAuthStatus();
   }, [setIsAuthenticated]);
-  
-  
 
   const handleLogout = async () => {
     try {
@@ -64,9 +59,8 @@ const Header: React.FC = () => {
       });
 
       if (response.ok) {
-        setIsAuthenticated(false); // Mettre à jour l'état global
-        setUserFirstName(''); // Réinitialise le prénom
-        // navigate('/sign'); // Redirige vers la page de connexion
+        setIsAuthenticated(false);
+        setUserFirstName('');
       }
     } catch (error) {
       console.error('Erreur lors de la déconnexion :', error);
@@ -91,7 +85,7 @@ const Header: React.FC = () => {
           <Navbar.Brand href="/">KenziShop</Navbar.Brand>
 
           <div className="d-flex align-items-center w-50">
-            <Form className="d-flex mx-auto search-center w-" onSubmit={handleSearch} ref={searchRef}>
+            <Form className="d-flex mx-auto search-center" onSubmit={handleSearch} ref={searchRef}>
               <FormControl
                 type="search"
                 placeholder="Rechercher"
@@ -129,7 +123,19 @@ const Header: React.FC = () => {
             <Nav.Link href="/favoris" className="position-relative">
               <FontAwesomeIcon icon={faHeart} />
               {totalFavorites() > 0 && (
-                <Badge bg="danger" pill className="position-absolute top-0 start-100 translate-middle">
+                <Badge  bg="danger"
+                pill
+                style={{
+                  minWidth: '24px',
+                  minHeight: '24px',
+                  fontSize: '14px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  borderRadius: '50%',
+                }}
+                className="position-absolute top-0 start-100 translate-middle"
+              >
                   {totalFavorites()}
                 </Badge>
               )}
@@ -137,9 +143,21 @@ const Header: React.FC = () => {
 
             <Nav.Link href="/panier" className="position-relative mx-3">
               <FontAwesomeIcon icon={faShoppingCart} />
-              {totalArticle() > 0 && (
-                <Badge bg="danger" pill className="position-absolute top-0 start-100 translate-middle">
-                  {totalArticle()}
+              {totalArticle > 0 && (
+                <Badge bg="danger"
+                pill
+                style={{
+                  minWidth: '24px',
+                  minHeight: '24px',
+                  fontSize: '14px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  borderRadius: '50%',
+                }}
+                className="position-absolute top-0 start-100 translate-middle"
+              >
+                  {totalArticle}
                 </Badge>
               )}
             </Nav.Link>
