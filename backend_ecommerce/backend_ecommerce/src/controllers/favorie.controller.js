@@ -100,3 +100,25 @@ export const isFavorite = async (req, res) => {
         res.status(500).json({ error: "Erreur serveur lors de la vérification du favori." });
     }
 };
+
+export const clearFavorites = async (req, res) => {
+    try {
+        const user_fk = req.user.id;
+        console.log(`Utilisateur authentifié : ${user_fk}`);
+
+        // Vérifiez les favoris existants
+        const favorites = await Favorite.findAll({ where: { user_fk } });
+        console.log(`Favoris trouvés : ${favorites.length}`);
+
+        if (favorites.length === 0) {
+            return res.status(404).json({ error: "Aucun favori à supprimer pour cet utilisateur." });
+        }
+
+        await Favorite.destroy({ where: { user_fk } });
+        res.status(200).json({ message: "Tous les favoris ont été supprimés avec succès." });
+    } catch (error) {
+        console.error("Erreur lors de la suppression des favoris :", error);
+        res.status(500).json({ error: "Erreur serveur lors de la suppression des favoris." });
+    }
+};
+
