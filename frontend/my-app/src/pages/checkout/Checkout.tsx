@@ -22,12 +22,12 @@ const Checkout = () => {
     const fetchAddresses = async () => {
       try {
         const response = await apiClient.get('/api/api/adresse/addresses', {
-          withCredentials: true, // Inclut l'authentification
+          withCredentials: true,
         });
         setAddresses(response.data);
 
         if (response.data.length > 0) {
-          setSelectedAddressId(response.data[0].id); // Pré-sélectionne la première adresse
+          setSelectedAddressId(response.data[0].id);
           setSelectedAddressDetails(response.data[0]);
         }
       } catch (error) {
@@ -38,13 +38,15 @@ const Checkout = () => {
     fetchAddresses();
   }, []);
 
-  // Si le total n'est pas fourni, le récupérer depuis l'API
+  // Récupérer le total si non fourni
   useEffect(() => {
     if (!state?.total) {
       apiClient
         .get(`/api/api/order/orders/${orderId}`, { withCredentials: true })
         .then((response) => setTotal(response.data.total))
-        .catch((err) => console.error('Erreur lors de la récupération des détails de la commande :', err));
+        .catch((err) =>
+          console.error('Erreur lors de la récupération des détails de la commande :', err)
+        );
     }
   }, [orderId, state]);
 
@@ -72,6 +74,7 @@ const Checkout = () => {
           amount: total,
           provider: paymentMethod,
           status: 'Pending',
+          fk_addr_fk: selectedAddressId, // Ajout de l'ID de l'adresse sélectionnée
         },
         { withCredentials: true }
       );
