@@ -13,6 +13,14 @@ const Checkout = () => {
   const [addresses, setAddresses] = useState([]);
   const [selectedAddressId, setSelectedAddressId] = useState(null);
   const [selectedAddressDetails, setSelectedAddressDetails] = useState(null);
+  const [newAddress, setNewAddress] = useState({
+    address_line1: '',
+    address_line2: '',
+    city: '',
+    postal_code: '',
+    country: 'France',
+  });
+  const [showNewAddressForm, setShowNewAddressForm] = useState(false);
   const [paymentMethod, setPaymentMethod] = useState('');
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
@@ -56,6 +64,27 @@ const Checkout = () => {
     setSelectedAddressDetails(address);
   };
 
+  const handleAddNewAddress = async () => {
+    try {
+      const response = await apiClient.post('/api/api/adresse/addresses', newAddress, {
+        withCredentials: true,
+      });
+      setAddresses([...addresses, response.data]); // Ajouter la nouvelle adresse à la liste
+      setShowNewAddressForm(false); // Masquer le formulaire après ajout
+      setSelectedAddressId(response.data.id); // Sélectionner la nouvelle adresse
+      setSelectedAddressDetails(response.data); // Définir les détails de la nouvelle adresse
+      setNewAddress({
+        address_line1: '',
+        address_line2: '',
+        city: '',
+        postal_code: '',
+        country: 'France',
+      }); // Réinitialiser le formulaire
+    } catch (error) {
+      console.error('Erreur lors de l\'ajout de la nouvelle adresse :', error);
+    }
+  };
+
   const handleCheckout = async (e) => {
     e.preventDefault();
 
@@ -74,7 +103,7 @@ const Checkout = () => {
           amount: total,
           provider: paymentMethod,
           status: 'Pending',
-          fk_addr_fk: selectedAddressId, // Ajout de l'ID de l'adresse sélectionnée
+          fk_addr_fk: selectedAddressId,
         },
         { withCredentials: true }
       );
@@ -159,6 +188,44 @@ const Checkout = () => {
             <p><strong>Ville :</strong> {selectedAddressDetails.city}</p>
             <p><strong>Code Postal :</strong> {selectedAddressDetails.postal_code}</p>
             <p><strong>Pays :</strong> {selectedAddressDetails.country}</p>
+          </div>
+        )}
+        <button onClick={() => setShowNewAddressForm(!showNewAddressForm)}>
+          {showNewAddressForm ? 'Annuler' : 'Ajouter une nouvelle adresse'}
+        </button>
+        {showNewAddressForm && (
+          <div className="new-address-form">
+            <input
+              type="text"
+              placeholder="Adresse ligne 1"
+              value={newAddress.address_line1}
+              onChange={(e) =>
+                setNewAddress({ ...newAddress, address_line1: e.target.value })
+              }
+            />
+            <input
+              type="text"
+              placeholder="Adresse ligne 2 (optionnel)"
+              value={newAddress.address_line2}
+              onChange={(e) =>
+                setNewAddress({ ...newAddress, address_line2: e.target.value })
+              }
+            />
+            <input
+              type="text"
+              placeholder="Ville"
+              value={newAddress.city}
+              onChange={(e) => setNewAddress({ ...newAddress, city: e.target.value })}
+            />
+            <input
+              type="text"
+              placeholder="Code postal"
+              value={newAddress.postal_code}
+              onChange={(e) =>
+                setNewAddress({ ...newAddress, postal_code: e.target.value })
+              }
+            />
+            <button onClick={handleAddNewAddress}>Ajouter l'adresse</button>
           </div>
         )}
       </div>

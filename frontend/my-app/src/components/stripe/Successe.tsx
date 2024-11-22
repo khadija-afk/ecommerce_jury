@@ -54,9 +54,10 @@ const PaymentSuccessPage = () => {
         console.log("Le panier a été vidé.");
         setPanier([]); // Mettre à jour le panier dans PanierContext
 
-        // Réinitialiser les favoris (facultatif selon votre logique)
-        setFavorites([]);
-        console.log("Les favoris ont été réinitialisés.");
+        // Supprimer tous les favoris
+        await apiClient.delete('/api/api/favorie/clear/api');
+        console.log("Tous les favoris ont été supprimés.");
+        setFavorites([]); // Mettre à jour les favoris dans FavorisContext
 
         // Supprimer les valeurs du localStorage après traitement
         localStorage.removeItem('orderId');
@@ -64,7 +65,7 @@ const PaymentSuccessPage = () => {
 
         setIsRecorded(true); // Marquer l'enregistrement comme effectué
       } catch (error) {
-        console.error("Erreur lors de la mise à jour du paiement, de la commande ou du panier :", error);
+        console.error("Erreur lors de la mise à jour du paiement, de la commande, du panier ou des favoris :", error);
       }
     };
 
