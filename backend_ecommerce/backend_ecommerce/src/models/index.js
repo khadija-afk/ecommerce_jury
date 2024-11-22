@@ -113,6 +113,10 @@ Article.hasMany(OrderItems, { foreignKey: "product_fk" });
 User.hasMany(Address, { foreignKey: 'user_fk' });
 Address.belongsTo(User, { foreignKey: 'user_fk' });
 
+Address.hasMany(PaymentDetails, { foreignKey: 'fk_addr_fk', onDelete: 'SET NULL', onUpdate: 'CASCADE' });
+PaymentDetails.belongsTo(Address, { foreignKey: 'fk_addr_fk' });
+
+
 // Définir les relations pour Favorie
 User.hasMany(Favorite, { foreignKey: "user_fk" });
 Favorite.belongsTo(User, { foreignKey: "user_fk" });
@@ -163,6 +167,19 @@ const syncReview = async () => {
     console.error('Erreur lors de la synchronisation de la table `review` :', error);
   }
 };
+
+const syncAddressTable = async () => {
+  try {
+    await Address.sync({ alter: true });
+    console.log("Table `Address` synchronisée avec succès.");
+  } catch (error) {
+    console.error("Erreur lors de la synchronisation de la table `Address` :", error);
+  }
+};
+
+// Appeler cette fonction si nécessaire
+syncAddressTable();
+
 
 // Appeler la fonction pour synchroniser la table `User`
 // syncUserTable();
