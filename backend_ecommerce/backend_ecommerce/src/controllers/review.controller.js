@@ -75,6 +75,7 @@ export const getReviewById = async (req, res) => {
 };
 
 // Create a new review with purchase verification and single-review restriction
+// Create a new review with purchase verification and single-review restriction
 export const createReview = async (req, res) => {
   try {
     const { product_fk, rating, comment } = req.body;
@@ -96,8 +97,9 @@ export const createReview = async (req, res) => {
     });
 
     if (!hasPurchased) {
+      console.error("Erreur : Avis refusé. L'utilisateur n'a pas acheté ce produit ou la commande n'est pas validée.");
       return res.status(403).json({ error: "Vous ne pouvez pas laisser un avis pour un produit non acheté ou commande non validée." });
-    }
+  }
 
     // Vérifie si un avis existe déjà pour cet utilisateur et ce produit
     const existingReview = await Review.findOne({
@@ -108,22 +110,23 @@ export const createReview = async (req, res) => {
     });
 
     if (existingReview) {
+      console.error("Erreur : Avis refusé. L'utilisateur a déjà laissé un avis pour ce produit.");
       return res.status(403).json({ error: "Vous avez déjà laissé un avis pour ce produit." });
-    }
-
+  }
     // Crée un nouvel avis si l'utilisateur a acheté le produit et n'a pas encore laissé d'avis
     const newReview = await Review.create({
       user_fk,
       product_fk,
       rating,
       comment,
+      status: 'pending' // Définit le statut par défaut comme "en attente"
     });
 
     res.status(201).json(newReview);
   } catch (error) {
     console.error("Error creating review:", error);
     res.status(500).json({
-      error: "Server error while creating review",
+      error: "Erreur serveur lors de la création de l'avis.",
       detail: error.message,
     });
   }

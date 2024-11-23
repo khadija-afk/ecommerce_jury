@@ -2,11 +2,8 @@ import React, { useEffect, useState, useRef } from 'react';
 import { useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { usePanier } from '../../utils/PanierContext';
-import { RootState, Article } from '../../types/Article';
+import { RootState } from '../../types/Article';
 import './DetailArticles.css';
-import URL from '../../constants/Url';
-
-import apiClient from '../../utils/axiosConfig';
 import { getAverageRating } from '../../services/review/ReviewService';
 import ReviewsList from '../../components/review/ReviewList';
 import ReviewForm from '../../components/review/ReviewForm';
@@ -24,16 +21,17 @@ const DetailArticle: React.FC = () => {
     const articles = useSelector((state: RootState) => state.articles.articles);
     const articleStatus = useSelector((state: RootState) => state.articles.status);
     const [ratings, setRatings] = useState<{ [key: number]: number }>({});
-
-    const article = articles.find(article => article.id === articleId);
     const [mainPhoto, setMainPhoto] = useState<string | null>(null);
     const reviewsRef = useRef<HTMLDivElement>(null);
+
+    const article = articles.find(article => article.id === articleId);
 
     useEffect(() => {
         if (articleStatus === 'idle') {
             dispatch(fetchArticles());
         }
 
+        // Charger les notes moyennes pour chaque article
         articles.forEach(async (article) => {
             try {
                 const avgRating = await getAverageRating(article.id);
@@ -52,36 +50,6 @@ const DetailArticle: React.FC = () => {
             setMainPhoto(article.photo[0]);
         }
     }, [article]);
-
-    // const handleAddToPanier = async (article: Article) => {
-    //     try {
-    //         const user = JSON.parse(localStorage.getItem('user') || '{}');
-    //         const userId = user.id;
-
-    //         if (!userId) {
-    //             throw new Error("Utilisateur non connecté ou ID manquant");
-    //         }
-
-    //         const cartResponse = await apiClient.get(`api/api/cart/cart`, {
-    //             withCredentials: true,
-    //         });
-
-    //         const cartId = cartResponse.data.id;
-
-    //         await apiClient.post(URL.POST_CART_ITEMS, {
-    //             cart_fk: cartId,
-    //             product_fk: article.id,
-    //             quantity: 1
-    //         }, {
-    //             withCredentials: true
-    //         });
-
-    //         addPanier(article);
-    //         console.log('Article ajouté au panier');
-    //     } catch (error) {
-    //         console.error("Erreur lors de l'ajout de l'article au panier :", error);
-    //     }
-    // };
 
     const handleThumbnailClick = (photo: string) => {
         setMainPhoto(photo);
@@ -108,7 +76,7 @@ const DetailArticle: React.FC = () => {
     return (
         <div>
             {article && mainPhoto && article.photo &&
-                <section className='bloc__detail'>
+                <section className="bloc__detail">
                     <div className="photo-container">
                         <div className="thumbnails-container">
                             {article.photo.map((img, index) => (
@@ -134,18 +102,22 @@ const DetailArticle: React.FC = () => {
                         {ratings[articleId] !== undefined && (
                             <div className="rating-summary">
                                 {renderStars(ratings[articleId])}
-                                {/* <span className="rating-text">
-                                    Note : {ratings[articleId]} sur 5
-                                </span> */}
-                                <span onClick={scrollToReviews} className="reviews-link" role="button" style={{ cursor: 'pointer' }}>
+                                <span
+                                    onClick={scrollToReviews}
+                                    className="reviews-link"
+                                    role="button"
+                                    style={{ cursor: 'pointer' }}
+                                >
                                     Voir les avis
                                 </span>
-
                             </div>
                         )}
                         <p className="price">{article.price} €</p>
                         <p>{article.content}</p>
-                        <button onClick={() => addPanier(article)}>
+                        <button
+                            className="add-to-cart-btn"
+                            onClick={() => addPanier(article)}
+                        >
                             AJOUTER AU PANIER ({article.price} €)
                         </button>
                     </div>
@@ -156,7 +128,11 @@ const DetailArticle: React.FC = () => {
             <section className="reviews-section" ref={reviewsRef}>
                 <h3>Avis</h3>
                 <ReviewsList productId={articleId} />
-                <ReviewForm productId={articleId} onReviewAdded={() => console.log("Avis ajouté")} />
+                <ReviewForm
+                    productId={articleId}
+                    onReviewAdded={() => {
+                    }}
+                />
             </section>
         </div>
     );
