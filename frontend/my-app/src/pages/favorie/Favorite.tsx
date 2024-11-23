@@ -75,7 +75,9 @@ const Favoris = () => {
           </table>
         </>
       ) : (
-        <p>Pas de favoris !</p>
+        <div className="empty-favoris">
+                    <p>Votre favoris est vide!</p>
+                </div>
       )}
     </section>
   );

@@ -65,6 +65,20 @@
   font-weight: bold;
 }
 
+.empty-favoris {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 50vh; /* Ajuste la hauteur pour centrer verticalement */
+  text-align: center;
+}
+
+.empty-favoris p {
+  font-size: 1.5rem;
+  color: #555; /* Couleur du texte */
+}
+
+
 
 /* Pour la responsivité */
 @media (max-width: 768px) {

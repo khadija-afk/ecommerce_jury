@@ -5,7 +5,7 @@ import apiClient from '../../utils/axiosConfig';
 import './Panier.css';
 
 const Panier = () => {
-    const { incremente, decremente, panier, setPanier } = useContext(PanierContext);
+    const { incremente, decremente, panier, setPanier, removeArticle } = useContext(PanierContext);
     const navigate = useNavigate();
     const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
@@ -61,34 +61,45 @@ const Panier = () => {
                                 <th>Prix Unitaire</th>
                                 <th>Quantité</th>
                                 <th>Prix Total</th>
+                                <th>Supprimer</th>
                             </tr>
                         </thead>
                         <tbody>
-                            {panier.map((cartItem, index) => (
-                                <tr key={index}>
+                                {panier.map((cartItem, index) => (
+                                    <tr key={index}>
                                     <td>
                                         {cartItem?.article?.photo?.[0] ? (
-                                            <img
-                                                src={cartItem.article.photo[0]}
-                                                alt={cartItem.article.name}
-                                            />
+                                        <img
+                                            src={cartItem.article.photo[0]}
+                                            alt={cartItem.article.name}
+                                        />
                                         ) : (
-                                            <span>Pas d'image</span>
+                                        <span>Pas d'image</span>
                                         )}
                                     </td>
                                     <td>{cartItem?.article?.name || "Nom du produit manquant"}</td>
                                     <td>{cartItem?.article?.price ? `${cartItem.article.price} €` : "Prix non disponible"}</td>
                                     <td>
                                         <div className="quantity-container">
-                                            <button className="button" onClick={() => decremente(index)}>-</button>
-                                            <span>{cartItem.quantity}</span>
-                                            <button className="button" onClick={() => incremente(index)}>+</button>
+                                        <button className="button" onClick={() => decremente(cartItem.product_fk)}>-</button>
+                                        <span>{cartItem.quantity}</span>
+                                        <button className="button" onClick={() => incremente(cartItem.product_fk)}>+</button>
                                         </div>
                                     </td>
                                     <td>{(cartItem?.article?.price * cartItem.quantity)?.toFixed(2) || "0.00"} €</td>
-                                </tr>
-                            ))}
-                        </tbody>
+                                    <td>
+                                        <button
+                                            className="removeButton"
+                                            onClick={() => removeArticle(cartItem.product_fk)}
+                                        >
+                                            
+                                        </button>
+                                    </td>
+                                    </tr>
+                                ))}
+                            </tbody>
+
+
                     </table>
 
                     <div className="cart-summary">
