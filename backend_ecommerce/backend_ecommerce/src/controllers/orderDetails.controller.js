@@ -54,44 +54,69 @@ export const getOrderById = async (req, res) => {
     const userId = req.user.id;
     const order = await OrderDetails.findOne({
       where: { id: req.params.id, user_fk: userId },
+      include: [
+        {
+          model: OrderItems,
+          as: "OrderItems",
+          include: [
+            {
+              model: Article,
+              as: "Article",
+              attributes: ["id", "name", "price", "photo"],
+            },
+          ],
+        },
+      ],
     });
+
     if (!order) {
       return res.status(404).json({ error: "Commande non trouvée" });
     }
+
     res.status(200).json(order);
   } catch (error) {
     console.error("Erreur lors de la récupération de la commande :", error);
-    res
-      .status(500)
-      .json({ error: "Erreur serveur lors de la récupération de la commande" });
+    res.status(500).json({
+      error: "Erreur serveur lors de la récupération de la commande",
+    });
   }
 };
+
 
 // Créer une nouvelle commande pour l'utilisateur connecté
 export const createOrder = async (req, res) => {
   try {
-    const userId = req.user.id; // Utiliser l'ID de l'utilisateur connecté
-    const { total } = req.body;
+    const userId = req.user.id; // ID utilisateur connecté
+    const { total, items } = req.body;
 
-    // Vérification des paramètres
-    if (!total ) {
-      return res
-        .status(400)
-        .json({
-          error: "Le total de paiement est requis",
-        });
+    // Vérification des données
+    if (!total || !items || !Array.isArray(items) || items.length === 0) {
+      return res.status(400).json({
+        error: "Le total de paiement et les articles sont requis",
+      });
     }
 
+    // Créer la commande
     const newOrder = await OrderDetails.create({
       user_fk: userId,
-      total
+      total,
     });
+
+    // Ajouter les articles à la commande
+    const orderItems = items.map((item) => ({
+      order_fk: newOrder.id,
+      product_fk: item.product_fk,
+      quantity: item.quantity,
+      price: item.price,
+    }));
+    await OrderItems.bulkCreate(orderItems);
 
     res.status(201).json({ orderId: newOrder.id });
   } catch (error) {
-    res
-      .status(500)
-      .json({ error: "Erreur serveur lors de la création de la commande" });
+    console.error("Erreur lors de la création de la commande :", error);
+    res.status(500).json({
+      error: "Erreur serveur lors de la création de la commande",
+    });
   }
 };
 
