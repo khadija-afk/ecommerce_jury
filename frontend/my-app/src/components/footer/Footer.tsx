@@ -1,7 +1,41 @@
-import React from 'react';
+import React, { useState } from 'react';
 import './Footer.css';
+import apiClient from '../../utils/axiosConfig';
 
 const Footer = () => {
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    message: '',
+  });
+  const [responseMessage, setResponseMessage] = useState('');
+  const [responseType, setResponseType] = useState<'success' | 'error' | null>(null);
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value,
+    });
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setResponseMessage('');
+    setResponseType(null);
+
+    try {
+      const response = await apiClient.post('/api/api/cantact/contact', formData);
+      setResponseMessage('Votre message a été envoyé avec succès !');
+      setResponseType('success');
+      setFormData({ name: '', email: '', message: '' });
+    } catch (error: any) {
+      setResponseMessage(
+        error.response?.data?.error || "Une erreur s'est produite lors de l'envoi de votre message. Veuillez réessayer."
+      );
+      setResponseType('error');
+    }
+  };
+
   return (
     <footer className="footer">
       <div className="footer-content">
@@ -26,12 +60,41 @@ const Footer = () => {
         {/* Formulaire de contact */}
         <div className="footer-form">
           <h4>Contactez-nous</h4>
-          <form>
-            <input type="text" placeholder="Entrez votre nom" />
-            <input type="email" placeholder="Entrez votre email" />
-            <textarea placeholder="Entrez votre message"></textarea>
+          <form onSubmit={handleSubmit}>
+            <input
+              type="text"
+              name="name"
+              placeholder="Entrez votre nom"
+              value={formData.name}
+              onChange={handleChange}
+              required
+            />
+            <input
+              type="email"
+              name="email"
+              placeholder="Entrez votre email"
+              value={formData.email}
+              onChange={handleChange}
+              required
+            />
+            <textarea
+              name="message"
+              placeholder="Entrez votre message"
+              value={formData.message}
+              onChange={handleChange}
+              required
+            ></textarea>
             <button type="submit">Envoyer</button>
           </form>
+
+          {/* Message de réponse */}
+          {responseMessage && (
+            <div
+              className={`response-message ${responseType === 'success' ? 'success' : 'error'}`}
+            >
+              {responseMessage}
+            </div>
+          )}
         </div>
       </div>
 

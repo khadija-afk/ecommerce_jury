@@ -177,8 +177,8 @@ const syncAddressTable = async () => {
   }
 };
 
-// Appeler cette fonction si nécessaire
-syncAddressTable();
+
+// syncAddressTable();
 
 
 // Appeler la fonction pour synchroniser la table `User`

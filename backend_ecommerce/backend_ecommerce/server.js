@@ -29,6 +29,7 @@ import initializeAdminJS from './src/routes/admin.js'
 import serachroute from './src/routes/searche.js'
 import routerUserPrefernec from './src/routes/userPreference.js'
 import routerAdresse from './src/routes/adresse.js'
+import routerCantacte from'./src/routes/cantacte.js'
 
 
 
@@ -75,6 +76,7 @@ app.use("/api/Log", routLogout)
 app.use("/api/search", serachroute);
 app.use("/api/cookie", routerUserPrefernec);
 app.use("/api/adresse", routerAdresse);
+app.use("/api/cantact", routerCantacte);
 
 //stripe
 app.use('/api/webhook', stripeWebhookRoute);
