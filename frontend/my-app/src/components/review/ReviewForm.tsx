@@ -3,9 +3,11 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faStar } from '@fortawesome/free-solid-svg-icons';
 import apiClient from '../../utils/axiosConfig';
 import { Box, Button, TextField, Typography, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@mui/material';
+import { useAuth } from '../../utils/AuthCantext'; // Contexte d'authentification
 import './ReviewForm.css';
 
 const ReviewForm = ({ productId, onReviewAdded }) => {
+    const { isAuthenticated } = useAuth(); // Vérifie si l'utilisateur est connecté
     const [rating, setRating] = useState(0);
     const [comment, setComment] = useState('');
     const [fieldErrors, setFieldErrors] = useState<{ rating?: string; comment?: string; general?: string }>({});
@@ -21,6 +23,12 @@ const ReviewForm = ({ productId, onReviewAdded }) => {
         e.preventDefault();
         setFieldErrors({});
         setModalMessage(null);
+
+        if (!isAuthenticated) {
+            setModalType('error');
+            setModalMessage("Vous devez être connecté pour laisser un avis.");
+            return;
+        }
 
         // Validation locale
         const errors: { rating?: string; comment?: string } = {};
@@ -89,32 +97,38 @@ const ReviewForm = ({ productId, onReviewAdded }) => {
                 Ajouter un avis
             </Typography>
 
-            <form onSubmit={handleSubmit}>
-                <Box sx={{ mb: 2 }}>
-                    <Typography variant="subtitle1">Note :</Typography>
-                    {renderStars()}
-                    {fieldErrors.rating && (
-                        <Typography variant="body2" color="error">
-                            {fieldErrors.rating}
-                        </Typography>
-                    )}
-                </Box>
-                <Box sx={{ mb: 2 }}>
-                    <TextField
-                        label="Commentaire"
-                        multiline
-                        rows={4}
-                        fullWidth
-                        value={comment}
-                        onChange={(e) => setComment(e.target.value)}
-                        error={!!fieldErrors.comment}
-                        helperText={fieldErrors.comment}
-                    />
-                </Box>
-                <Button type="submit" variant="contained" color="primary">
-                    Envoyer l'avis
-                </Button>
-            </form>
+            {isAuthenticated ? (
+                <form onSubmit={handleSubmit}>
+                    <Box sx={{ mb: 2 }}>
+                        <Typography variant="subtitle1">Note :</Typography>
+                        {renderStars()}
+                        {fieldErrors.rating && (
+                            <Typography variant="body2" color="error">
+                                {fieldErrors.rating}
+                            </Typography>
+                        )}
+                    </Box>
+                    <Box sx={{ mb: 2 }}>
+                        <TextField
+                            label="Commentaire"
+                            multiline
+                            rows={4}
+                            fullWidth
+                            value={comment}
+                            onChange={(e) => setComment(e.target.value)}
+                            error={!!fieldErrors.comment}
+                            helperText={fieldErrors.comment}
+                        />
+                    </Box>
+                    <Button type="submit" variant="contained" color="primary">
+                        Envoyer l'avis
+                    </Button>
+                </form>
+            ) : (
+                <Typography variant="body2" color="textSecondary">
+                    Vous devez être connecté pour laisser un avis.
+                </Typography>
+            )}
 
             {/* Modal pour les messages */}
             <Dialog

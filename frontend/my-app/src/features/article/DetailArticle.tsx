@@ -75,66 +75,52 @@ const DetailArticle: React.FC = () => {
 
     return (
         <div>
-            {article && mainPhoto && article.photo &&
-                <section className="bloc__detail">
-                    <div className="photo-container">
-                        <div className="thumbnails-container">
-                            {article.photo.map((img, index) => (
-                                <img
-                                    key={index}
-                                    src={img}
-                                    className="thumbnail"
-                                    onClick={() => handleThumbnailClick(img)}
-                                    alt={`${article.name} ${index}`}
-                                />
-                            ))}
-                        </div>
-                        <div className="main-photo-container">
-                            <img
-                                src={mainPhoto}
-                                alt={article.name}
-                                className="main-photo"
-                            />
-                        </div>
+    {article && mainPhoto && article.photo && (
+        <section className="bloc__detail">
+            <div className="photo-container">
+                <div className="main-photo-container">
+                    <img src={mainPhoto} alt={article.name} className="main-photo" />
+                </div>
+                <div className="thumbnails-container">
+                    {article.photo.map((img, index) => (
+                        <img
+                            key={index}
+                            src={img}
+                            className="thumbnail"
+                            onClick={() => handleThumbnailClick(img)}
+                            alt={`${article.name} ${index}`}
+                        />
+                    ))}
+                </div>
+            </div>
+            <div className="details-container">
+                <h2>{article.name}</h2>
+                {ratings[articleId] !== undefined && (
+                    <div className="rating-summary">
+                        {renderStars(ratings[articleId])}
+                        <span onClick={scrollToReviews} className="reviews-link" role="button">
+                            Voir les avis
+                        </span>
                     </div>
-                    <div className="details-container">
-                        <h2>{article.name}</h2>
-                        {ratings[articleId] !== undefined && (
-                            <div className="rating-summary">
-                                {renderStars(ratings[articleId])}
-                                <span
-                                    onClick={scrollToReviews}
-                                    className="reviews-link"
-                                    role="button"
-                                    style={{ cursor: 'pointer' }}
-                                >
-                                    Voir les avis
-                                </span>
-                            </div>
-                        )}
-                        <p className="price">{article.price} €</p>
-                        <p>{article.content}</p>
-                        <button
-                            className="add-to-cart-btn"
-                            onClick={() => addPanier(article)}
-                        >
-                            AJOUTER AU PANIER ({article.price} €)
-                        </button>
-                    </div>
-                </section>
-            }
+                )}
+                <p className="price">{article.price} €</p>
+                <p>{article.content}</p>
+                <button onClick={() => addPanier(article)}>AJOUTER AU PANIER ({article.price} €)</button>
+            </div>
+        </section>
+    )}
 
-            {/* Section des avis */}
-            <section className="reviews-section" ref={reviewsRef}>
-                <h3>Avis</h3>
-                <ReviewsList productId={articleId} />
-                <ReviewForm
-                    productId={articleId}
-                    onReviewAdded={() => {
-                    }}
-                />
-            </section>
-        </div>
+    {/* Séparateur entre les sections */}
+    <div className="separator"></div>
+
+    {/* Section des avis */}
+    <section className="reviews-section" ref={reviewsRef}>
+        {/* <h3>Avis</h3> */}
+        <ReviewsList productId={articleId} />
+        <ReviewForm productId={articleId} onReviewAdded={() => {}} />
+    </section>
+</div>
+
     );
 };
 

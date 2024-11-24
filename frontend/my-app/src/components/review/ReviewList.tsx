@@ -13,7 +13,6 @@ const ReviewsList = ({ productId }) => {
                 const response = await apiClient.get(`api/api/review/product/${productId}`);
                 setReviews(response.data);
             } catch (error) {
-                // Vérifier si l'erreur est due à une absence d'avis ou un autre problème
                 if (error.response && error.response.status !== 500) {
                     console.warn("Aucun avis pour ce produit.");
                 } else {
@@ -25,7 +24,7 @@ const ReviewsList = ({ productId }) => {
         const fetchAverageRating = async () => {
             try {
                 const response = await apiClient.get(`api/api/review/${productId}/average`);
-                setAverageRating(response.data.averageRating);
+                setAverageRating(response.data.averageRating || 0);
             } catch (error) {
                 if (error.response && error.response.status !== 500) {
                     console.warn("Pas de note moyenne disponible pour ce produit.");
@@ -44,9 +43,22 @@ const ReviewsList = ({ productId }) => {
         return new Date(dateString).toLocaleDateString('fr-FR', options);
     };
 
+    const renderStars = (rating) => {
+        return Array.from({ length: 5 }, (_, i) => (
+            <FontAwesomeIcon
+                key={i}
+                icon={faStar}
+                color={i < rating ? '#ffc107' : '#e4e5e9'}
+            />
+        ));
+    };
+
     return (
         <div className="reviews-list">
-            <h3>Note moyenne : {averageRating || "N/A"} / 5</h3>
+            <h3>
+            <span>{renderStars(averageRating)}</span> {averageRating} / 5{' '}
+                
+            </h3>
             {reviews.length > 0 ? (
                 reviews.map((review) => (
                     <div key={review.id} className="review" style={{ marginBottom: '20px', paddingBottom: '10px', borderBottom: '1px solid #ccc' }}>
@@ -63,13 +75,7 @@ const ReviewsList = ({ productId }) => {
                         </div>
                         <p style={{ margin: '5px 0' }}>
                             <strong>Note : {review.rating} / 5</strong>{' '}
-                            {Array.from({ length: 5 }, (_, i) => (
-                                <FontAwesomeIcon
-                                    key={i}
-                                    icon={faStar}
-                                    color={i < review.rating ? '#ffc107' : '#e4e5e9'}
-                                />
-                            ))}
+                            {renderStars(review.rating)}
                         </p>
                         <p style={{ margin: '5px 0', fontStyle: 'italic' }}>{review.comment}</p>
                     </div>
