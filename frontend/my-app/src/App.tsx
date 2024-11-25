@@ -49,6 +49,11 @@ import ForgotPasswordPage from './pages/forgetPasse/ForgotPasswordPage';
 import ResetPasswordPage from './pages/forgetPasse/ResetPasswordPage';
 import ResetPasswordSuccess from './pages/forgetPasse/ReasetPasswordsuccéss';
 
+//A2F
+import TwoFactorAuthPage from './pages/A2F/GenerateA2F';
+import Verify2FAPage from './pages/A2F/VerefieA2F';
+import Disable2FAPage from './pages/A2F/DesactiveA2F';
+
 const App = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [showCookieSettings, setShowCookieSettings] = useState(false);
@@ -107,8 +112,10 @@ const App = () => {
             <Route path="orders" element={<UserOrders />} />
             <Route path="security" element={<UserProfile />} />
             <Route path="adresse" element={<UserAddresses />} />
-            {/* <Route path="addresses" element={<h3>Vos Adresses</h3>} />
-            <Route path="shipping" element={<h3>Expédition</h3>} /> */}
+            <Route path="A2FGenerat" element={< TwoFactorAuthPage/>} />
+            <Route path="A2FVerefiy" element={<Verify2FAPage />} />
+            <Route path="A2FDesactive" element={<Disable2FAPage />} />
+            
           </Route>
 
           {/* Politique de confidentialité */}

@@ -14,8 +14,15 @@ const ProfileNavBar = () => {
       <button onClick={() => navigate("/profil/adresse")}>
         Adresse et Livraison
       </button>
-      {/* <button onClick={() => navigate("/profile/addresses")}>Adresses</button>
-      <button onClick={() => navigate("/profile/shipping")}>Expédition</button> */}
+      <button onClick={() => navigate("/profil/A2FGenerat")}>
+        Activer A2F
+      </button>
+      <button onClick={() => navigate("/profil/A2FVerefiy")}>
+        Vérifier A2F
+      </button>
+      <button onClick={() => navigate("/profil/A2FDesactive")}>
+        Désactiver A2F
+      </button>
     </div>
   );
 };
