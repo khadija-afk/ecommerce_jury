@@ -30,6 +30,7 @@ import serachroute from './src/routes/searche.js'
 import routerUserPrefernec from './src/routes/userPreference.js'
 import routerAdresse from './src/routes/adresse.js'
 import routerCantacte from'./src/routes/cantacte.js'
+import routerA2F from  './src/routes/auth2FA.js'
 
 
 
@@ -77,6 +78,8 @@ app.use("/api/search", serachroute);
 app.use("/api/cookie", routerUserPrefernec);
 app.use("/api/adresse", routerAdresse);
 app.use("/api/cantact", routerCantacte);
+app.use("/api/A2F", routerA2F);
+
 
 //stripe
 app.use('/api/webhook', stripeWebhookRoute);

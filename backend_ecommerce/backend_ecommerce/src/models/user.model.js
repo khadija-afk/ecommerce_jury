@@ -35,6 +35,15 @@ export default (connection, DataTypes) => {
                 type: DataTypes.DATE,
                 allowNull: true,
               },
+                // Colonnes pour l'A2F
+            is2FAEnabled: {
+                type: DataTypes.BOOLEAN,
+                defaultValue: false,
+            },
+            twoFASecret: {
+                type: DataTypes.STRING,
+                allowNull: true,
+            },
         },
         { timestamps: true }
     );
