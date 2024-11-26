@@ -35,6 +35,7 @@ const Header: React.FC = () => {
   const { totalArticle } = usePanier();
   const { totalFavorites } = useFavoris();
   const [showOffcanvas, setShowOffcanvas] = useState(false);
+  const [showSearchOffcanvas, setShowSearchOffcanvas] = useState(false); // Offcanvas de recherche
   const [showProfileMenu, setShowProfileMenu] = useState(false);
   const navigate = useNavigate();
 
@@ -73,7 +74,7 @@ const Header: React.FC = () => {
     e.preventDefault();
     if (searchTerm.trim() !== "") {
       navigate(`/search?query=${searchTerm}`);
-      setShowOffcanvas(false);
+      setShowSearchOffcanvas(false);
     }
   };
 
@@ -96,6 +97,7 @@ const Header: React.FC = () => {
   const handleNavLinkClick = (path: string) => {
     navigate(path);
     setShowOffcanvas(false);
+    setShowSearchOffcanvas(false);
   };
 
   const toggleProfileMenu = () => {
@@ -121,6 +123,17 @@ const Header: React.FC = () => {
             </Button>
           </Form>
 
+
+          {/* Icône de recherche pour petits écrans */}
+          <Button
+            variant="outline-secondary"
+            className="d-lg-none mx-auto"
+            onClick={() => setShowSearchOffcanvas(true)}
+          >
+            <FontAwesomeIcon icon={faSearch} />
+          </Button>
+
+          {/* Icône de menu pour petits écrans */}
           <Button
             variant="outline-secondary"
             className="d-lg-none ms-auto"
@@ -129,6 +142,7 @@ const Header: React.FC = () => {
             <FontAwesomeIcon icon={faBars} />
           </Button>
 
+          {/* Barre de navigation pour grands écrans */}
           <Nav className="d-none d-lg-flex align-items-center ms-auto">
             <Nav.Link href="/favoris" className="position-relative me-3">
               <FontAwesomeIcon icon={faHeart} />
@@ -149,46 +163,39 @@ const Header: React.FC = () => {
             </Nav.Link>
 
             {isAuthenticated ? (
-              <NavDropdown title={`Salut, ${userFirstName}`} id="user-dropdown">
-                <NavDropdown.Item onClick={toggleProfileMenu}>
-                  <FontAwesomeIcon icon={faUserCircle} /> Mon compte
-                </NavDropdown.Item>
-                <NavDropdown.Item onClick={handleLogout}>
-                  <FontAwesomeIcon icon={faSignOutAlt} /> Déconnexion
-                </NavDropdown.Item>
-              </NavDropdown>
-            ) : (
-              <NavDropdown title="Compte" id="user-dropdown">
-                <NavDropdown.Item href="/sign">
-                  <FontAwesomeIcon icon={faUser} /> Se connecter
-                </NavDropdown.Item>
-                <NavDropdown.Item href="/register">
-                  <FontAwesomeIcon icon={faUser} /> Inscription
-                </NavDropdown.Item>
-              </NavDropdown>
-            )}
+                  <NavDropdown title={`Salut, ${userFirstName}`} id="user-dropdown">
+                    <NavDropdown.Item onClick={() => handleNavLinkClick("/profil")}>
+                      <FontAwesomeIcon icon={faUserCircle} className="me-2" />
+                      Mon compte
+                    </NavDropdown.Item>
+                    <NavDropdown.Item onClick={handleLogout}>
+                      <FontAwesomeIcon icon={faSignOutAlt} className="me-2" />
+                      Déconnexion
+                    </NavDropdown.Item>
+                  </NavDropdown>
+                ) : (
+                  <NavDropdown title="Compte" id="user-dropdown">
+                    <NavDropdown.Item onClick={() => handleNavLinkClick("/sign")}>
+                      <FontAwesomeIcon icon={faUser} className="me-2" />
+                      Se connecter
+                    </NavDropdown.Item>
+                    <NavDropdown.Item onClick={() => handleNavLinkClick("/register")}>
+                      <FontAwesomeIcon icon={faUser} className="me-2" />
+                      Inscription
+                    </NavDropdown.Item>
+                  </NavDropdown>
+                )}
+
           </Nav>
         </Container>
       </Navbar>
 
+      {/* Offcanvas Menu Principal */}
       <Offcanvas show={showOffcanvas} onHide={() => setShowOffcanvas(false)} placement="end">
         <Offcanvas.Header closeButton>
           <Offcanvas.Title>Menu</Offcanvas.Title>
         </Offcanvas.Header>
         <Offcanvas.Body>
-          <Form className="d-flex mb-3" onSubmit={handleSearch}>
-            <FormControl
-              type="search"
-              placeholder="Rechercher"
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              className="me-2"
-            />
-            <Button variant="primary" type="submit">
-              Rechercher
-            </Button>
-          </Form>
-
           <Nav className="d-flex flex-column align-items-start">
             <Nav.Link onClick={() => handleNavLinkClick("/favoris")} className="position-relative mb-2">
               <FontAwesomeIcon icon={faHeart} className="me-2" />
@@ -237,10 +244,31 @@ const Header: React.FC = () => {
 
           {showProfileMenu && <ProfileNavBar handleNavLinkClick={handleNavLinkClick} />}
           <MiniNavbar handleNavLinkClick={handleNavLinkClick} />
+        </Offcanvas.Body>
+      </Offcanvas>
 
+      {/* Offcanvas Recherche */}
+      <Offcanvas show={showSearchOffcanvas} onHide={() => setShowSearchOffcanvas(false)} placement="top">
+        <Offcanvas.Header closeButton>
+          <Offcanvas.Title>Rechercher</Offcanvas.Title>
+        </Offcanvas.Header>
+        <Offcanvas.Body>
+          <Form className="d-flex mb-3" onSubmit={handleSearch}>
+            <FormControl
+              type="search"
+              placeholder="Rechercher"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="me-2"
+            />
+            <Button variant="primary" type="submit">
+              Rechercher
+            </Button>
+          </Form>
         </Offcanvas.Body>
       </Offcanvas>
     </header>
   );
 };
+
 export default Header;
