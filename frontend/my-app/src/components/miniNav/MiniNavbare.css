@@ -1,42 +1,28 @@
-/* MiniNavbar.css */
 
+/* MiniNavbare.css */
 .mini-navbar {
   width: 100%;
   background-color: #fff;
   padding: 10px 20px;
   display: flex;
   justify-content: flex-start;
+  padding-left: 120px; /* Ajoute un espace à gauche */
   align-items: center;
   position: relative;
-  margin-left: 100px; /* Décalage à gauche */
+  border-bottom: 1px solid #e3e1e1;
 }
 
-.mini-navbar::before {
-  content: "";
-  position: absolute;
-  top: 100%; /* Place la ligne en bas du mini-navbar */
-  left: -100px; /* Compense le margin-left pour débuter la ligne au bord de la page */
-  width: calc(100% + 100px); /* Étend la ligne pour couvrir tout l'espace */
-  height: 1px;
-  background-color: #e3e1e1; /* Couleur de la ligne */
-}
-
-/* Appliquer le décalage à gauche sur les écrans moyens et grands */
-@media (min-width: 768px) {
-  .mini-navbar {
-    margin-left: 100px;
-  }
-}
-
-
+/* Liste des catégories */
 .mini-navbar-list {
   display: flex;
   gap: 20px;
   list-style-type: none;
   margin: 0;
   padding: 0;
+  flex-wrap: wrap; /* Permet à la liste de passer à la ligne sur petits écrans */
 }
 
+/* Style des éléments */
 .mini-navbar-item {
   font-size: 16px;
 }
@@ -55,17 +41,14 @@
 /* Styles pour les petits écrans */
 @media (max-width: 768px) {
   .mini-navbar {
-    justify-content: flex-start; /* Aligne le bouton à gauche */
+    justify-content: center; /* Centre les éléments sur petits écrans */
   }
 
-  /* Centrer la liste dans le Offcanvas sur petits écrans */
   .mini-navbar-list {
-    flex-direction: column;
-    align-items: center;
+    gap: 10px; /* Réduit l'espacement entre les éléments */
   }
 
-  /* Place le bouton de catégories à gauche sur petits écrans */
-  .mini-navbar .btn {
-    margin-right: auto; /* Place le bouton à gauche */
+  .mini-navbar-item {
+    font-size: 14px; /* Réduit la taille du texte */
   }
 }
