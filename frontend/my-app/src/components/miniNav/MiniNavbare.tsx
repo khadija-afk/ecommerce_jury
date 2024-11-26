@@ -1,22 +1,34 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-import './MiniNavbare.css';
+import React from "react";
+import { Link } from "react-router-dom";
+import "./MiniNavbare.css";
 
-const MiniNavbar: React.FC = () => {
+interface MiniNavbarProps {
+  handleNavLinkClick: (path: string) => void;
+}
+
+const MiniNavbar: React.FC<MiniNavbarProps> = ({ handleNavLinkClick }) => {
   return (
     <nav className="mini-navbar">
       <ul className="mini-navbar-list">
         <li className="mini-navbar-item">
-          <Link to="/categorie/vetements">Vêtements</Link>
+          <Link to="/categorie/vetements" onClick={() => handleNavLinkClick("/categorie/vetements")}>
+            Vêtements
+          </Link>
         </li>
         <li className="mini-navbar-item">
-          <Link to="/categorie/maquillage">Maquillage</Link>
+          <Link to="/categorie/maquillage" onClick={() => handleNavLinkClick("/categorie/maquillage")}>
+            Maquillage
+          </Link>
         </li>
         <li className="mini-navbar-item">
-          <Link to="/categorie/accessoires">Accessoires</Link>
+          <Link to="/categorie/accessoires" onClick={() => handleNavLinkClick("/categorie/accessoires")}>
+            Accessoires
+          </Link>
         </li>
         <li className="mini-navbar-item">
-          <Link to="/categorie/chaussures">Chaussures</Link>
+          <Link to="/categorie/chaussures" onClick={() => handleNavLinkClick("/categorie/chaussures")}>
+            Chaussures
+          </Link>
         </li>
       </ul>
     </nav>

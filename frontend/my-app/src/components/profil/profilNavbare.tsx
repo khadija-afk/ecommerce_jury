@@ -1,26 +1,29 @@
 import React from "react";
-import { useNavigate } from "react-router-dom";
 import "./profileNavebare.css";
 
-const ProfileNavBar = () => {
-  const navigate = useNavigate();
+interface ProfileNavBarProps {
+  handleNavLinkClick: (path: string) => void;
+}
 
+const ProfileNavBar: React.FC<ProfileNavBarProps> = ({ handleNavLinkClick }) => {
   return (
     <div className="profile-navbar">
-      <button onClick={() => navigate("/profil/orders")}>Vos Commandes</button>
-      <button onClick={() => navigate("/profil/security")}>
+      <button onClick={() => handleNavLinkClick("/profil/orders")}>
+        Vos Commandes
+      </button>
+      <button onClick={() => handleNavLinkClick("/profil/security")}>
         Connexion et Sécurité
       </button>
-      <button onClick={() => navigate("/profil/adresse")}>
+      <button onClick={() => handleNavLinkClick("/profil/adresse")}>
         Adresse et Livraison
       </button>
-      <button onClick={() => navigate("/profil/A2FGenerat")}>
+      <button onClick={() => handleNavLinkClick("/profil/A2FGenerat")}>
         Activer A2F
       </button>
-      <button onClick={() => navigate("/profil/A2FVerefiy")}>
+      <button onClick={() => handleNavLinkClick("/profil/A2FVerefiy")}>
         Vérifier A2F
       </button>
-      <button onClick={() => navigate("/profil/A2FDesactive")}>
+      <button onClick={() => handleNavLinkClick("/profil/A2FDesactive")}>
         Désactiver A2F
       </button>
     </div>

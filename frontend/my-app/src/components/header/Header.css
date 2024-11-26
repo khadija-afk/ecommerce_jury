@@ -8,54 +8,84 @@
   background-color: #fff;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   padding: 10px 0;
- 
 }
 
 .navbar-custom {
-  margin-left: 100px; /* Ajustez ici pour le décalage */
-  margin-right: 100px; /* Ajoute un espacement de 80px à droite */
+  padding: 0 10px; /* Par défaut, réduit le padding sur les petits écrans */
 }
 
+/* Appliquer les marges uniquement sur les grands écrans */
+@media (min-width: 992px) {
+  .navbar-custom {
+    margin-left: 120px; /* Ajustez ici pour le décalage */
+    margin-right: 120px; /* Ajoute un espacement de 80px à droite */
+  }
+}
 
 .header-content {
   max-width: 1200px; /* Limite la largeur du contenu */
   margin: 0 auto; /* Centre le contenu horizontalement */
-  padding: 0 60px; /* Ajoute du padding à gauche et à droite pour éviter que le contenu touche les bords */
+  padding: 0 60px; /* Ajoute un padding à gauche et à droite pour éviter que le contenu touche les bords */
   display: flex;
   justify-content: space-between; /* Distribue les éléments de manière uniforme */
   align-items: center; /* Aligne les éléments verticalement au centre */
 }
 
-/* Ajustements pour mobile */
+/* Barre de recherche */
+.search-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+
+.search-bar {
+  width: 100%;
+  max-width: 600px;
+  padding: 0.5rem;
+}
+
+.search-bar-container {
+  width: 100%;
+  max-width: 600px; /* Limite maximale */
+}
+
+/* Offcanvas Styles for Small Screens */
 @media (max-width: 767.98px) {
-  .navbar-nav {
-    display: none; /* Cache les icônes sur les petits écrans */
+  .navbar-custom {
+    margin-left: 0; /* Supprime les marges sur les petits écrans */
+    margin-right: 0; /* Supprime les marges sur les petits écrans */
+    padding: 0 10px; /* Ajoute un padding intérieur pour un alignement visuel */
   }
 
-  .offcanvas {
-    width: 250px; /* Largeur du Offcanvas pour mobile */
+  .d-lg-none {
+    display: block;
   }
 
-  .offcanvas-body .nav-link {
-    font-size: 1.25rem; /* Agrandir les liens dans le Offcanvas */
+  .d-lg-flex {
+    display: none;
   }
 }
 
-/* Icônes et badges */
-.nav-link .bi-heart,
-.nav-link .bi-cart {
-  font-size: 1.5rem;
-  color: #fff;
-  text-shadow: 0 0 0.5px black;
-  -webkit-text-stroke: 0.5px black;
+/* Styles pour l'Offcanvas */
+.offcanvas {
+  width: 300px;
 }
 
-.nav-link .bi-heart:hover,
-.nav-link .bi-cart:hover {
-  color: red;
+.offcanvas-header {
+  border-bottom: 1px solid #ddd;
 }
 
-.nav-link .badge {
+.offcanvas-body {
+  padding: 20px;
+}
+
+.nav-link {
+  font-size: 1.2rem;
+  margin-bottom: 15px;
+}
+
+.icon-badge {
   position: absolute;
   top: 0;
   right: 0;
@@ -67,21 +97,19 @@
   font-size: 0.75rem;
 }
 
+.offcanvas-body .nav-link {
+  font-size: 1.25rem; /* Agrandir les liens dans l'Offcanvas */
+  margin-bottom: 15px;
+}
 
-/* Ajoute un conteneur plus large et centre la barre de recherche */
 .search-center {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
+  display: none; /* Cache la barre de recherche sur petits écrans */
 }
 
-.search-bar-container {
-  width: 100%;
-  max-width: 600px; /* Limite maximale */
+.d-lg-none {
+  display: block;
 }
 
-.search-bar {
-  width: 100%; /* Permet à la barre de recherche d’occuper toute la largeur de son conteneur */
-  padding: 0.5rem; /* Optionnel : ajoute de l'espace intérieur */
+.d-lg-flex {
+  display: none;
 }

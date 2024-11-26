@@ -1,21 +1,45 @@
 .profile-navbar {
-    display: flex;
-    justify-content: center;
-    gap: 15px;
-    margin-bottom: 20px;
-    border-bottom: 1px solid #ddd;
-    padding-bottom: 10px;
+  display: flex;
+  justify-content: flex-start; /* Aligne les éléments au début */
+  gap: 15px;
+  margin-bottom: 20px;
+  border-bottom: 1px solid #ddd;
+  padding-bottom: 10px;
+  overflow-x: auto; /* Ajoute un défilement horizontal si nécessaire */
+  white-space: nowrap; /* Empêche le retour à la ligne */
+  padding: 10px; /* Ajoute un peu de marge intérieure pour les petits écrans */
+}
+
+.profile-navbar::-webkit-scrollbar {
+  height: 6px; /* Réduit la taille de la barre de défilement */
+}
+
+.profile-navbar::-webkit-scrollbar-thumb {
+  background-color: #ddd; /* Couleur de la barre de défilement */
+  border-radius: 10px; /* Ajoute des bords arrondis */
+}
+
+.profile-navbar button {
+  background-color: transparent;
+  border: none;
+  color: #311C52;
+  font-size: 16px;
+  cursor: pointer;
+  white-space: nowrap; /* Garde le texte sur une seule ligne */
+}
+
+.profile-navbar button:hover {
+  text-decoration: underline;
+}
+
+/* Ajustements pour les petits écrans */
+@media (max-width: 768px) {
+  .profile-navbar {
+    padding: 10px 5px; /* Ajoute un peu de marge intérieure pour les petits écrans */
+    gap: 10px; /* Réduit l'espacement entre les boutons */
   }
-  
+
   .profile-navbar button {
-    background-color: transparent;
-    border: none;
-    color: #311C52;
-    font-size: 16px;
-    cursor: pointer;
+    font-size: 14px; /* Réduit légèrement la taille des boutons */
   }
-  
-  .profile-navbar button:hover {
-    text-decoration: underline;
-  }
-  
+}

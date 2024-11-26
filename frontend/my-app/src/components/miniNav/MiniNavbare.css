@@ -39,16 +39,41 @@
 }
 
 /* Styles pour les petits écrans */
+
+
+/* MiniNavbar pour les grands écrans */
+.mini-navbar {
+  display: flex; /* Visible sur les grands écrans */
+}
+
 @media (max-width: 768px) {
   .mini-navbar {
-    justify-content: center; /* Centre les éléments sur petits écrans */
+    display: none; /* Masque le MiniNavbar sur les petits écrans */
   }
+}
 
-  .mini-navbar-list {
-    gap: 10px; /* Réduit l'espacement entre les éléments */
-  }
+/* MiniNavbar dans l'Offcanvas */
+.offcanvas .mini-navbar {
+  display: flex; /* Affiche le MiniNavbar dans l'Offcanvas */
+  margin-top: 20px; /* Ajoute un espace en haut */
+  padding-left: 0; /* Supprime le padding gauche */
+  justify-content: flex-start; /* Aligne les éléments à gauche */
+}
 
-  .mini-navbar-item {
-    font-size: 14px; /* Réduit la taille du texte */
-  }
+.offcanvas .mini-navbar-list {
+  flex-direction: column; /* Aligne les catégories verticalement */
+  gap: 15px; /* Espacement entre les éléments */
+}
+
+.offcanvas .mini-navbar-item a {
+  padding: 10px 20px; /* Ajoute plus d'espace autour des liens */
+  font-size: 16px; /* Taille standard des textes */
+  text-align: left; /* Alignement à gauche des liens */
+  display: block; /* Les liens occupent toute la largeur */
+}
+
+.offcanvas .mini-navbar-item a:hover {
+  background-color: #f7f7f7; /* Ajoute un effet de survol */
+  color: #432f6d; /* Change la couleur lors du survol */
+  border-radius: 5px; /* Ajoute des bords arrondis */
 }
