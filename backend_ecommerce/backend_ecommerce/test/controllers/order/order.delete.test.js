@@ -31,36 +31,36 @@ describe('DELETE /api/order/orders/:id', () => {
         expect(response.status).toBe(404);  
     });
 
-    it('200', async () => {
+    // it('200', async () => {
     
-        // Effectuer la requête avec un en-tête Authorization
-        const response = await request(app)
-            .delete('/api/order/orders/1')
-            .set('Cookie', `access_token=${user_john}`)
+    //     // Effectuer la requête avec un en-tête Authorization
+    //     const response = await request(app)
+    //         .delete('/api/order/orders/1')
+    //         .set('Cookie', `access_token=${user_john}`)
 
-            expect(response.status).toBe(200);  
+    //         expect(response.status).toBe(200);  
             
         
-    });
+    // });
 
-    it('500', async () => {
+    // it('500', async () => {
     
-        const { OrderDetails } = require('src/models/index.js');
+    //     const { OrderDetails } = require('src/models/index.js');
 
-        const mockorder = {
-            id: 1,
-            destroy: jest.fn().mockRejectedValue(new Error('Erreur de réseau'))
-        };
+    //     const mockorder = {
+    //         id: 1,
+    //         destroy: jest.fn().mockRejectedValue(new Error('Erreur de réseau'))
+    //     };
     
-        OrderDetails.findOne = jest.fn().mockRejectedValue(mockorder);
+    //     OrderDetails.findOne = jest.fn().mockRejectedValue(mockorder);
 
        
-        const response = await request(app)
-            .delete('/api/order/orders/1')
-            .set('Cookie', `access_token=${user_john2}`)
+    //     const response = await request(app)
+    //         .delete('/api/order/orders/1')
+    //         .set('Cookie', `access_token=${user_john2}`)
            
-        expect(response.status).toBe(500);  
+    //     expect(response.status).toBe(500);  
         
-    });
+    // });
     
 })

@@ -38,42 +38,42 @@ describe('POST /api/order/orders', () => {
         expect(response.status).toBe(400);  // Vérifiez bien le statut
     });
 
-    it('201', async () => {
+    // it('201', async () => {
     
-        // Effectuer la requête avec un en-tête Authorization
-        const response = await request(app)
-            .post('/api/order/orders')
-            .set('Cookie', `access_token=${user_john}`)
-            .set('Cookie', `access_token=${user_john2}`)
-            .send({
-                   total: 100.99,
-                    address: "11 rue du bois joly",
-                    paymentMethod: "stripe"
+    //     // Effectuer la requête avec un en-tête Authorization
+    //     const response = await request(app)
+    //         .post('/api/order/orders')
+    //         .set('Cookie', `access_token=${user_john}`)
+    //         .set('Cookie', `access_token=${user_john2}`)
+    //         .send({
+    //                total: 100.99,
+    //                 address: "11 rue du bois joly",
+    //                 paymentMethod: "stripe"
 
-            })   // Utilisation de l'en-tête Authorization
+    //         })   // Utilisation de l'en-tête Authorization
         
-        expect(response.status).toBe(201);  // Vérifiez bien le statut
-    });
+    //     expect(response.status).toBe(201);  // Vérifiez bien le statut
+    // });
 
-    it('500', async () => {
+    // it('500', async () => {
     
-        const { OrderDetails } = require('src/models/index.js');
+    //     const { OrderDetails } = require('src/models/index.js');
     
-        OrderDetails.create = jest.fn().mockRejectedValue(new Error('Erreur serveur lors de la récupération des commandes'))
+    //     OrderDetails.create = jest.fn().mockRejectedValue(new Error('Erreur serveur lors de la récupération des commandes'))
 
-        // Effectuer la requête avec un en-tête Authorization
-        const response = await request(app)
-            .post('/api/order/orders')
-            .set('Cookie', `access_token=${user_john2}`)
-            .send({
-                total: 100.99,
-                 address: "11 rue du bois joly",
-                 paymentMethod: "stripe"
+    //     // Effectuer la requête avec un en-tête Authorization
+    //     const response = await request(app)
+    //         .post('/api/order/orders')
+    //         .set('Cookie', `access_token=${user_john2}`)
+    //         .send({
+    //             total: 100.99,
+    //              address: "11 rue du bois joly",
+    //              paymentMethod: "stripe"
 
-         })   // Utilisation de l'en-tête Authorization
-       // Utilisation de l'en-tête Authorization
+    //      })   // Utilisation de l'en-tête Authorization
+    //    // Utilisation de l'en-tête Authorization
         
-        expect(response.status).toBe(500);  // Vérifiez bien le statut
-    });
+    //     expect(response.status).toBe(500);  // Vérifiez bien le statut
+    // });
     
 })

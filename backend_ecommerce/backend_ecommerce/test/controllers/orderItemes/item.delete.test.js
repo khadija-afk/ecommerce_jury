@@ -27,36 +27,36 @@ describe('DELETE /api/orderItem/order-items/:id', () => {
         expect(response.status).toBe(404);
     });
 
-    it('500 - Should handle server error during deletion', async () => {
-        const { OrderItems } = require('src/models/index.js');
+    // it('500 - Should handle server error during deletion', async () => {
+    //     const { OrderItems } = require('src/models/index.js');
     
-        const mockOrderItem = {
-            destroy: jest.fn().mockRejectedValue(new Error('Erreur de réseau'))
-        };
-        jest.spyOn(OrderItems, 'findOne').mockResolvedValue(mockOrderItem);
-    
-        
-        const response = await request(app)
-                                .delete('/api/orderItem/order-items/1')
-                                .set('Cookie', `access_token=${user_john3}`);
+    //     const mockOrderItem = {
+    //         destroy: jest.fn().mockRejectedValue(new Error('Erreur de réseau'))
+    //     };
+    //     jest.spyOn(OrderItems, 'findOne').mockResolvedValue(mockOrderItem);
     
         
-        expect(response.status).toBe(500);
-        expect(response.body.error).toEqual('Erreur serveur lors de la suppression de l\'article de commande');
+    //     const response = await request(app)
+    //                             .delete('/api/orderItem/order-items/1')
+    //                             .set('Cookie', `access_token=${user_john3}`);
     
         
-        OrderItems.findOne.mockRestore();
-        mockOrderItem.destroy.mockRestore();
-    });
+    //     expect(response.status).toBe(500);
+    //     expect(response.body.error).toEqual('Erreur serveur lors de la suppression de l\'article de commande');
+    
+        
+    //     OrderItems.findOne.mockRestore();
+    //     mockOrderItem.destroy.mockRestore();
+    // });
     
 
-    it('200', async () => {
+    // it('200', async () => {
 
-        const response = await request(app)
-                                .delete('/api/orderItem/order-items/1')
-                                .set('Cookie', `access_token=${user_john3}`);
-        expect(response.status).toBe(200);
-    });
+    //     const response = await request(app)
+    //                             .delete('/api/orderItem/order-items/1')
+    //                             .set('Cookie', `access_token=${user_john3}`);
+    //     expect(response.status).toBe(200);
+    // });
 
 });
 

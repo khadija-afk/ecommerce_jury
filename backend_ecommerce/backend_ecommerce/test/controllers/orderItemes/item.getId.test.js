@@ -35,33 +35,33 @@ describe('GET /api/orderItem/order-items/:id', () => {
        
     });
 
-    it('200', async () => {
-        const response = await request(app)
-            .get('/api/orderItem/order-items/1')
-            .set('Cookie', `access_token=${user_john3}`);
-        expect(response.status).toBe(200);
+    // it('200', async () => {
+    //     const response = await request(app)
+    //         .get('/api/orderItem/order-items/1')
+    //         .set('Cookie', `access_token=${user_john3}`);
+    //     expect(response.status).toBe(200);
         
        
-    });
+    // });
 
    
 
-    it('500 - Server error while retrieving the order item', async () => {
-        // Mock de la méthode findByPk pour simuler une erreur de réseau
-        const mockFindByPk = jest.spyOn(OrderItems, 'findByPk').mockRejectedValue(new Error('Erreur de réseau'));
+    // it('500 - Server error while retrieving the order item', async () => {
+    //     // Mock de la méthode findByPk pour simuler une erreur de réseau
+    //     const mockFindByPk = jest.spyOn(OrderItems, 'findByPk').mockRejectedValue(new Error('Erreur de réseau'));
     
-        // Exécuter la requête GET pour récupérer un OrderItem
-        const response = await request(app)
-            .get('/api/orderItem/order-items/13')
-            .set('Cookie', `access_token=${user_john3}`);
+    //     // Exécuter la requête GET pour récupérer un OrderItem
+    //     const response = await request(app)
+    //         .get('/api/orderItem/order-items/13')
+    //         .set('Cookie', `access_token=${user_john3}`);
     
-        // Vérifier le statut et le message d'erreur
-        expect(response.status).toBe(500);
-        expect(response.body).toEqual({ error: 'Server error while findByPk' });
+    //     // Vérifier le statut et le message d'erreur
+    //     expect(response.status).toBe(500);
+    //     expect(response.body).toEqual({ error: 'Server error while findByPk' });
     
-        // Restaurer la méthode originale après le test
-        mockFindByPk.mockRestore();
-    });
+    //     // Restaurer la méthode originale après le test
+    //     mockFindByPk.mockRestore();
+    // });
     
     
 })

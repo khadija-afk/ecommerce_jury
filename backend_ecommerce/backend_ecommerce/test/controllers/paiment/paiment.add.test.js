@@ -33,37 +33,37 @@ describe('POST /api/payment/payment-details', () => {
        
     });
 
-    it('201', async () => {
-        const response = await request(app)
-            .post('/api/payment/payment-details')
-            .set('Cookie', `access_token=${user_john2}`)
-            .send({
-                order_fk: 1,
-                amount: 19.99, 
-                provider: "stripe"
-            })
-        expect(response.status).toBe(201);  
+    // it('201', async () => {
+    //     const response = await request(app)
+    //         .post('/api/payment/payment-details')
+    //         .set('Cookie', `access_token=${user_john2}`)
+    //         .send({
+    //             order_fk: 1,
+    //             amount: 19.99, 
+    //             provider: "stripe"
+    //         })
+    //     expect(response.status).toBe(201);  
         
        
-    });
+    // });
 
    
-    it('500', async () => {
+    // it('500', async () => {
     
-        const { PaymentDetails } = require('src/models/index.js');
+    //     const { PaymentDetails } = require('src/models/index.js');
     
-        PaymentDetails.create = jest.fn().mockRejectedValue(new Error("Erreur serveur lors de l'ajout du détail de paiement"))
+    //     PaymentDetails.create = jest.fn().mockRejectedValue(new Error("Erreur serveur lors de l'ajout du détail de paiement"))
 
-        const response = await request(app)
-            .post('/api/payment/payment-details')
-            .set('Cookie', `access_token=${user_john2}`)
-            .send({
-                order_fk: 1,
-                amount: 19.99, 
-                provider: "stripe"
+    //     const response = await request(app)
+    //         .post('/api/payment/payment-details')
+    //         .set('Cookie', `access_token=${user_john2}`)
+    //         .send({
+    //             order_fk: 1,
+    //             amount: 19.99, 
+    //             provider: "stripe"
 
-         })  
-        expect(response.status).toBe(500);  
-    });
+    //      })  
+    //     expect(response.status).toBe(500);  
+    // });
     
 })

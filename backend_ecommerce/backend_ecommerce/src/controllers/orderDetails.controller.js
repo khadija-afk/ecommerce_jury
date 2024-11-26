@@ -9,8 +9,8 @@ import { fileURLToPath } from 'url';
 
 
 // Récupération de __dirname dans un module ES
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+// const __filename = fileURLToPath(import.meta.url);
+// const __dirname = path.dirname(__filename);
 
 
 export const getAllOrders = async (req, res) => {
