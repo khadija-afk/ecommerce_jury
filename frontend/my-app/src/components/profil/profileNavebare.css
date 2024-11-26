@@ -1,45 +1,51 @@
+/* ProfileNavBar pour les grands écrans */
 .profile-navbar {
-  display: flex;
-  justify-content: flex-start; /* Aligne les éléments au début */
-  gap: 15px;
-  margin-bottom: 20px;
-  border-bottom: 1px solid #ddd;
-  padding-bottom: 10px;
-  overflow-x: auto; /* Ajoute un défilement horizontal si nécessaire */
-  white-space: nowrap; /* Empêche le retour à la ligne */
-  padding: 10px; /* Ajoute un peu de marge intérieure pour les petits écrans */
+  display: none; /* Masqué par défaut */
 }
 
-.profile-navbar::-webkit-scrollbar {
-  height: 6px; /* Réduit la taille de la barre de défilement */
-}
-
-.profile-navbar::-webkit-scrollbar-thumb {
-  background-color: #ddd; /* Couleur de la barre de défilement */
-  border-radius: 10px; /* Ajoute des bords arrondis */
-}
-
-.profile-navbar button {
-  background-color: transparent;
-  border: none;
-  color: #311C52;
-  font-size: 16px;
-  cursor: pointer;
-  white-space: nowrap; /* Garde le texte sur une seule ligne */
-}
-
-.profile-navbar button:hover {
-  text-decoration: underline;
-}
-
-/* Ajustements pour les petits écrans */
 @media (max-width: 768px) {
   .profile-navbar {
-    padding: 10px 5px; /* Ajoute un peu de marge intérieure pour les petits écrans */
-    gap: 10px; /* Réduit l'espacement entre les boutons */
+    display: none;
   }
+}
 
-  .profile-navbar button {
-    font-size: 14px; /* Réduit légèrement la taille des boutons */
-  }
+/* Liste des catégories */
+.profile-navbar-list {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+  gap: 15px;
+}
+
+/* Style des éléments */
+.profile-navbar-item {
+  font-size: 16px;
+}
+
+.profile-navbar-item a {
+  text-decoration: none;
+  color: #311C52;
+  padding: 10px 20px;
+  transition: background-color 0.3s ease, color 0.3s ease;
+  display: block; /* Occupe toute la largeur */
+}
+
+.profile-navbar-item a:hover {
+  background-color: #f7f7f7;
+  color: #432f6d;
+  border-radius: 5px;
+}
+
+/* Affichage dans l'Offcanvas */
+.offcanvas .profile-navbar {
+  display: flex; /* Toujours visible dans l'Offcanvas */
+}
+
+.offcanvas .profile-navbar-list {
+  gap: 10px; /* Réduit l'espacement */
+}
+
+.offcanvas .profile-navbar-item a {
+  font-size: 14px; /* Taille ajustée pour les petits écrans */
+  padding: 8px 16px;
 }
