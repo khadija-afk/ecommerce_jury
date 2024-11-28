@@ -56,11 +56,7 @@ pipeline {
         }
 
         stage('SonarQube Analysis BackEnd') {
-            // agent { 
-            //     docker {
-            //         image 'sonarsource/sonar-scanner-cli'
-            //     }
-            // }
+           
             steps {
                     sh " cd backend_ecommerce/backend_ecommerce && \
                         sonar-scanner \

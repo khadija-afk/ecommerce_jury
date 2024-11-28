@@ -1,17 +1,9 @@
 import { OrderDetails, OrderItems, Article } from "../models/index.js";
-import { verifieToken } from "../auth.js"; // Middleware pour vérifier le token d'authentification
-
 import PDFDocument from 'pdfkit';
-import fs from 'fs';
-import path from 'path';
-import { fileURLToPath } from 'url';
-// Récupérer toutes les commandes d'un utilisateur authentifié
+// import { __dirname, __filename } from "../utils/global.js";
 
-
-// Récupération de __dirname dans un module ES
-// const __filename = fileURLToPath(import.meta.url);
-// const __dirname = path.dirname(__filename);
-
+// console.log("Nom du fichier :", __filename);
+// console.log("Répertoire :", __dirname);
 
 export const getAllOrders = async (req, res) => {
   try {

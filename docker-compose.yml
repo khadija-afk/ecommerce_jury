@@ -75,7 +75,7 @@ services:
     depends_on:
       - phpmyadmin
     networks:
-      - jenkins_net  # Ajouter au même réseau
+      - jenkins_net  
 
   phpmyadmin:
     image: phpmyadmin/phpmyadmin
@@ -86,7 +86,7 @@ services:
     ports:
       - "8085:80"
     networks:
-      - jenkins_net  # Ajouter au même réseau
+      - jenkins_net  
 
   nginx:
     image: nginx:latest

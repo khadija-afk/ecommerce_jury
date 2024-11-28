@@ -14,58 +14,53 @@ const Favoris = () => {
   return (
     <section>
       {favorites.length > 0 ? (
-        <>
-          <table className="table">
+        <div className="table-responsive">
+         {/* Utilisation de table-responsive */}
+          <table >
+            
             <thead>
               <tr>
-                <th>Photo</th>
-                <th>Nom</th>
-                <th>Prix</th>
-                <th>Date ajoutée</th>
-                <th>Ajouter au panier</th>
-                <th>Supprimer</th>
+                <th >Photo</th>
+                <th >Nom</th>
+                <th >Prix</th>
+                <th >Date ajoutée</th>
+                <th >Ajouter au panier</th>
+                <th >Supprimer</th>
               </tr>
             </thead>
             <tbody>
               {favorites.map((favorite, index) => {
-                // Déterminez si les données se trouvent dans `Article` ou directement dans l'objet
                 const article = favorite.Article || favorite;
 
-                // Vérifiez si l'article est valide
                 if (!article) {
-                  console.warn("Article manquant dans le favori :", favorite);
-                  return null; // Ignorez les favoris sans article
+                  console.warn("Article manquant :", favorite);
+                  return null;
                 }
 
-                // Sélectionnez la première photo si elle existe
                 const photoUrl = Array.isArray(article.photo) && article.photo.length > 0
-                  ? article.photo[0].split(",")[0].trim() // Prenez la première photo et nettoyez les espaces
-                  : "default-image-url.jpg"; // Image par défaut
+                  ? article.photo[0].split(",")[0].trim()
+                  : "default-image-url.jpg";
 
                 return (
                   <tr key={index}>
                     <td data-label="Photo">
-                      <img src={photoUrl} alt={article.name} />
+                      <img src={photoUrl} alt={article.name} style={{ width: '80px', height: '80px', objectFit: 'cover' }} />
                     </td>
-                    <td data-label="Nom">{article.name}</td>
+                    <td data-label="Nom" >{article.name}</td>
                     <td data-label="Prix">{article.price} €</td>
-                    <td data-label="Date ajoutée">
+                    <td data-label="Date ajoutée" >
                       {new Date(favorite.createdAt).toLocaleDateString()}
                     </td>
                     <td data-label="Ajouter au panier">
-                      <button
-                        className="button"
-                        onClick={() => addPanier(article)}
-                      >
+                      <button className="button" onClick={() => addPanier(article)}>
                         Ajouter au panier
                       </button>
                     </td>
-                    <td data-label="Supprimer">
+                    <td data-label="Supprimer" >
                       <button
                         className="removeButton"
                         onClick={() => removeFavorite(article.id)}
                       >
-                        
                       </button>
                     </td>
                   </tr>
@@ -73,11 +68,12 @@ const Favoris = () => {
               })}
             </tbody>
           </table>
-        </>
+          
+        </div>
       ) : (
         <div className="empty-favoris">
-                    <p>Votre favoris est vide!</p>
-                </div>
+          <p>Votre favoris est vide!</p>
+        </div>
       )}
     </section>
   );
