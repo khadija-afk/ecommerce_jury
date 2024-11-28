@@ -55,7 +55,8 @@ const Panier = () => {
         <section className="panier-section">
             {panier.length > 0 ? (
                 <>
-                    <table className="table">
+                <div className="table-responsive">
+                    <table >
                         <thead>
                             <tr>
                                 <th>Photo</th>
@@ -109,6 +110,7 @@ const Panier = () => {
                             ))}
                         </tbody>
                     </table>
+                    </div>
 
                     <div className="cart-summary">
                         <button className="checkoutButton" onClick={validateCart}>
