@@ -22,25 +22,42 @@ let sequelize;
 
 
 if (process.env.NODE_ENV === 'test') {
-    // logger.info("in Test Mode")
-    // Utiliser SQLite en mémoire pour les tests
-    sequelize = new Sequelize({
-        dialect: 'sqlite',
-        storage: ':memory:' // Base de données en mémoire pour les tests
-    });
+  // Utiliser SQLite en mémoire pour les tests
+  sequelize = new Sequelize({
+      dialect: 'sqlite',
+      storage: ':memory:' // Base de données en mémoire pour les tests
+  });
 } else {
-    // logger.info("in Not Test Mode")
-    // Utiliser MySQL pour les autres environnements
-    sequelize = new Sequelize(
-        process.env.MYSQL_DATABASE, // Nom de la base de données
-        process.env.DB_USER,        // Nom d'utilisateur
-        process.env.MYSQL_ROOT_PASSWORD, // Mot de passe
-        {
-            host: process.env.DB_HOST,   // Hôte de la base de données
-            dialect: 'mysql',            // Utilisation de MySQL
-            logging: false               // Désactiver les logs SQL (peut être activé si nécessaire)
-        }
-    );
+  // Détecter la base de données à utiliser
+  const dbType = process.env.DB_TYPE || 'mysql'; // Par défaut, utiliser MySQL
+
+  if (dbType === 'mysql') {
+      sequelize = new Sequelize(
+          process.env.MYSQL_DATABASE,         // Nom de la base de données
+          process.env.MYSQL_USER,             // Nom d'utilisateur
+          process.env.MYSQL_ROOT_PASSWORD,    // Mot de passe
+          {
+              host: process.env.DB_HOST || 'mysql', // Hôte de la base de données
+              dialect: 'mysql',                     // Utilisation de MySQL
+              logging: false                        // Désactiver les logs SQL (peut être activé si nécessaire)
+          }
+      );
+  } else if (dbType === 'postgres') {
+
+      console.log('postgres:', process.env.POSTGRES_DB, process.env.POSTGRES_USER, process.env.POSTGRES_PASSWORD, process.env.DB_HOST)
+      sequelize = new Sequelize(
+          process.env.POSTGRES_DB,          // Nom de la base de données
+          process.env.POSTGRES_USER,        // Nom d'utilisateur
+          process.env.POSTGRES_PASSWORD,    // Mot de passe
+          {
+              host: process.env.DB_HOST || 'postgres', // Hôte de la base de données
+              dialect: 'postgres',                     // Utilisation de PostgreSQL
+              logging: false                           // Désactiver les logs SQL (peut être activé si nécessaire)
+          }
+      );
+  } else {
+      throw new Error(`Unsupported DB_TYPE: ${dbType}`);
+  }
 }
 
 
@@ -129,7 +146,19 @@ const initializeDatabase = async () => {
     await sequelize.authenticate();
     console.log("Connection has been established successfully.");
 
-    await sequelize.sync({ force: true });
+   // Synchronisez les tables dans le bon ordre
+await User.sync({ force: true }); // Crée la table Users
+await Article.sync({ force: true }); // Crée la table Articles
+await Categorie.sync({ force: true }); // Crée la table Categories
+await Review.sync({ force: true }); // Crée la table Reviews (après Users et Articles)
+await Cart.sync({ force: true }); // Crée les autres tables...
+await CartItem.sync({ force: true });
+await OrderDetails.sync({ force: true });
+await OrderItems.sync({ force: true });
+await PaymentDetails.sync({ force: true });
+await Favorite.sync({ force: true });
+await Address.sync({ force: true });
+
     console.log("All models were synchronized successfully.");
   } catch (error) {
     console.error("Unable to connect to the database or synchronize:", error);
@@ -143,39 +172,142 @@ const initializeDatabase = async () => {
 // Fonction pour synchroniser uniquement le modèle `User`
 const syncUserTable = async () => {
   try {
-    await User.sync({ alter: true }); // Utilise `force: true` si vous souhaitez recréer la table, `alter: true` pour appliquer les modifications sans perte de données
+    await User.sync({ alter: true });
     console.log('Table `User` synchronisée avec succès.');
   } catch (error) {
     console.error('Erreur lors de la synchronisation de la table `User` :', error);
   }
 };
 
-const syncOrderTabe = async () => {
+const syncArticleTable = async () => {
   try {
-    await OrderDetails.sync({ alter: true }); // Utilise `force: true` si vous souhaitez recréer la table, `alter: true` pour appliquer les modifications sans perte de données
-    console.log('Table `Order` synchronisée avec succès.');
+    await Article.sync({ alter: true });
+    console.log('Table `Article` synchronisée avec succès.');
   } catch (error) {
-    console.error('Erreur lors de la synchronisation de la table `Order` :', error);
+    console.error('Erreur lors de la synchronisation de la table `Article` :', error);
   }
 };
 
-const syncReview = async () => {
+const syncCategorieTable = async () => {
   try {
-    await Review.sync({ alter: true }); // Utilise `force: true` si vous souhaitez recréer la table, `alter: true` pour appliquer les modifications sans perte de données
-    console.log('Table `review` synchronisée avec succès.');
+    await Categorie.sync({ alter: true });
+    console.log('Table `Categorie` synchronisée avec succès.');
   } catch (error) {
-    console.error('Erreur lors de la synchronisation de la table `review` :', error);
+    console.error('Erreur lors de la synchronisation de la table `Categorie` :', error);
+  }
+};
+
+const syncReviewTable = async () => {
+  try {
+    await Review.sync({ alter: true });
+    console.log('Table `Review` synchronisée avec succès.');
+  } catch (error) {
+    console.error('Erreur lors de la synchronisation de la table `Review` :', error);
+  }
+};
+
+const syncCartTable = async () => {
+  try {
+    await Cart.sync({ alter: true });
+    console.log('Table `Cart` synchronisée avec succès.');
+  } catch (error) {
+    console.error('Erreur lors de la synchronisation de la table `Cart` :', error);
+  }
+};
+
+const syncCartItemTable = async () => {
+  try {
+    await CartItem.sync({ alter: true });
+    console.log('Table `CartItem` synchronisée avec succès.');
+  } catch (error) {
+    console.error('Erreur lors de la synchronisation de la table `CartItem` :', error);
+  }
+};
+
+const syncOrderDetailsTable = async () => {
+  try {
+    await OrderDetails.sync({ alter: true });
+    console.log('Table `OrderDetails` synchronisée avec succès.');
+  } catch (error) {
+    console.error('Erreur lors de la synchronisation de la table `OrderDetails` :', error);
+  }
+};
+
+const syncOrderItemsTable = async () => {
+  try {
+    await OrderItems.sync({ alter: true });
+    console.log('Table `OrderItems` synchronisée avec succès.');
+  } catch (error) {
+    console.error('Erreur lors de la synchronisation de la table `OrderItems` :', error);
+  }
+};
+
+const syncPaymentDetailsTable = async () => {
+  try {
+    await PaymentDetails.sync({ alter: true });
+    console.log('Table `PaymentDetails` synchronisée avec succès.');
+  } catch (error) {
+    console.error('Erreur lors de la synchronisation de la table `PaymentDetails` :', error);
+  }
+};
+
+const syncFavoriteTable = async () => {
+  try {
+    await Favorite.sync({ alter: true });
+    console.log('Table `Favorite` synchronisée avec succès.');
+  } catch (error) {
+    console.error('Erreur lors de la synchronisation de la table `Favorite` :', error);
   }
 };
 
 const syncAddressTable = async () => {
   try {
     await Address.sync({ alter: true });
-    console.log("Table `Address` synchronisée avec succès.");
+    console.log('Table `Address` synchronisée avec succès.');
   } catch (error) {
-    console.error("Erreur lors de la synchronisation de la table `Address` :", error);
+    console.error('Erreur lors de la synchronisation de la table `Address` :', error);
   }
 };
+
+const syncUserPreferencesTable = async () => {
+  try {
+    await UserPreferences.sync({ alter: true });
+    console.log('Table `UserPreferences` synchronisée avec succès.');
+  } catch (error) {
+    console.error('Erreur lors de la synchronisation de la table `UserPreferences` :', error);
+  }
+};
+
+const synchronizeAllTables = async () => {
+  try {
+    console.log("Début de la synchronisation des tables...");
+
+    // Synchroniser les tables indépendantes en premier
+    await syncUserTable();            // Table indépendante
+    await syncCategorieTable();       // Table indépendante
+
+    // Synchroniser les tables dépendantes dans l'ordre
+    await syncArticleTable();         // Dépend de User et Categorie
+    await syncAddressTable();         // Dépend de User
+    await syncReviewTable();          // Dépend de User et Article
+    await syncCartTable();            // Dépend de User
+    await syncCartItemTable();        // Dépend de Cart et Article
+    await syncOrderDetailsTable();    // Dépend de User
+    await syncOrderItemsTable();      // Dépend de OrderDetails et Article
+    await syncPaymentDetailsTable();  // Dépend de OrderDetails et Address
+    await syncFavoriteTable();        // Dépend de User et Article
+    await syncUserPreferencesTable(); // Dépend de User
+
+    console.log("Toutes les tables ont été synchronisées avec succès !");
+  } catch (error) {
+    console.error("Erreur lors de la synchronisation des tables :", error);
+  }
+};
+
+// Appeler la synchronisation globale
+// synchronizeAllTables();
+
+
 
 
 // syncAddressTable();

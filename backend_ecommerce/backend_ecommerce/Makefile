@@ -21,7 +21,6 @@ sequelize-migrate:
 %:
 	@:
 
-
 lint:
 	npx eslint controllers
 

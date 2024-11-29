@@ -25,6 +25,10 @@ start-nginx: down-all build-backend-base
 	
 	docker-compose up --build -d nginx
 
+start-db: clean_node_modules build-backend-base
+	docker-compose down backend pgadmin db
+	docker-compose up --build  backend pgadmin db
+
 pull:
 	git pull
 

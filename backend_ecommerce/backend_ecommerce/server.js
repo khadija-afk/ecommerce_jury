@@ -39,7 +39,7 @@ const app = express()
 
 
 // PORT
-const PORT = env.port
+const PORT = env.port     || 9090 ;
 
 
 
