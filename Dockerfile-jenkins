@@ -1,0 +1,25 @@
+# Utiliser l'image Jenkins officielle comme base
+FROM jenkins/jenkins:lts
+
+# Utiliser l'utilisateur root pour installer des paquets
+USER root
+
+# Installer Docker CLI et d'autres dépendances nécessaires
+RUN apt-get update && \
+    apt-get install -y docker.io curl unzip && \
+    rm -rf /var/lib/apt/lists/*
+
+# Installer Sonar Scanner
+RUN apt-get install -y curl unzip &&\
+    curl -o /tmp/sonar-scanner-cli.zip -L https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-6.1.0.4477-linux-x64.zip &&\
+    unzip /tmp/sonar-scanner-cli.zip -d /opt &&\
+    ln -s /opt/sonar-scanner-6.1.0.4477-linux-x64/bin/sonar-scanner /usr/local/bin/sonar-scanner
+
+# Ajouter l'utilisateur Jenkins au groupe Docker
+RUN usermod -aG docker jenkins
+
+# Passer à l'utilisateur Jenkins
+USER jenkins
+
+# Démarrer Jenkins
+CMD ["/usr/local/bin/jenkins.sh"]

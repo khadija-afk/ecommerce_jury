@@ -1,0 +1,115 @@
+
+/* .table-responsive {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+ 
+} */
+
+.table-responsive{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  border-collapse: collapse;
+  margin: 20px auto; /* Centrer la table */
+  margin-top: 80px; /* Ajoute un espace entre le haut de la page et la table */
+  max-width: 1500px; /* Limite la largeur de la table */
+}
+
+.table-responsive th, .table-responsive td {
+  padding: 10px;
+  text-align: center; /* Centre le contenu horizontalement dans les cellules */
+  vertical-align: middle; /* Centre le contenu verticalement dans les cellules */
+  border-bottom: 1px solid #ddd;
+}
+
+.table-responsive th {
+  background-color: none;
+}
+
+.table-responsive img {
+  width: 100px;  /* Largeur fixe pour l'image */
+  height: 100px; /* Hauteur fixe pour l'image, la rendant carrée */
+  object-fit: cover; /* L'image garde son ratio tout en couvrant l'espace */
+  border-radius: 4px; /* Coins arrondis (optionnel) */
+}
+
+.table-responsive .button {
+  margin-right: 10px;
+  padding: 5px 10px;
+  background-color: rgb(248, 245, 245);
+  color: #311C52;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  text-align: center; /* Centre le texte à l'intérieur du bouton */
+}
+
+.table-responsive .removeButton {
+  width: 20px;
+  height: 20px;
+  background-color: red;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  cursor: pointer;
+  padding: 0;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.table-responsive .removeButton:hover {
+  background-color: #ff6666;
+}
+
+.table-responsive.removeButton:focus {
+  outline: none;
+}
+
+.table-responsive .removeButton::before {
+  content: "×"; /* Le caractère de suppression dans le bouton */
+  font-family: Arial, sans-serif;
+  font-weight: bold;
+}
+
+.empty-favoris {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 50vh; /* Ajuste la hauteur pour centrer verticalement */
+  text-align: center;
+}
+
+.empty-favoris p {
+  font-size: 1.5rem;
+  color: #555; /* Couleur du texte */
+}
+
+
+@media (max-width: 768px) {
+  .table-responsive {
+    display: block;
+    margin: 10px auto;
+  }
+
+  .table-responsive {
+    width: 100%;
+    border: none;
+  }
+
+  .table-responsive img {
+    width: 80px;
+    height: 80px;
+  }
+
+  .table-responsive td, .table-responsive th {
+    font-size: 0.9rem;
+    padding: 8px;
+  }
+}
+
+

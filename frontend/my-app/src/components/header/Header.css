@@ -1,31 +1,115 @@
 /* Header.css */
 .header {
-    width: 100%;
-    position: fixed;
-    top: 0;
-    left: 0;
-    z-index: 1030;
-    box-shadow: 0 4px 2px -2px rgb(75, 74, 74);
-    background-color: #343a40;
+  width: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 2000;
+  background-color: #fff;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  padding: 10px 0;
 }
 
-.form-inline {
-    width: 100%;
-    display: flex;
-    justify-content: center;
+.navbar-custom {
+  padding: 0 10px; /* Par défaut, réduit le padding sur les petits écrans */
 }
 
-.form-control {
-    width: 400px; /* Ajustez cette valeur pour augmenter la longueur de la barre de recherche */
-    max-width: 100%; /* Assurez-vous qu'elle ne dépasse pas la largeur disponible */
+/* Appliquer les marges uniquement sur les grands écrans */
+@media (min-width: 992px) {
+  .navbar-custom {
+    margin-left: 120px; /* Ajustez ici pour le décalage */
+    margin-right: 120px; /* Ajoute un espacement de 80px à droite */
+  }
 }
 
-.navbar-nav {
-    width: 100%;
-    display: flex;
-    justify-content: center;
+.header-content {
+  max-width: 1200px; /* Limite la largeur du contenu */
+  margin: 0 auto; /* Centre le contenu horizontalement */
+  padding: 0 60px; /* Ajoute un padding à gauche et à droite pour éviter que le contenu touche les bords */
+  display: flex;
+  justify-content: space-between; /* Distribue les éléments de manière uniforme */
+  align-items: center; /* Aligne les éléments verticalement au centre */
 }
 
-.btn-outline-success {
-    margin-left: 5px;
+/* Barre de recherche */
+.search-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+
+.search-bar {
+  width: 100%;
+  max-width: 600px;
+  padding: 0.5rem;
+}
+
+.search-bar-container {
+  width: 100%;
+  max-width: 600px; /* Limite maximale */
+}
+
+/* Offcanvas Styles for Small Screens */
+@media (max-width: 767.98px) {
+  .navbar-custom {
+    margin-left: 0; /* Supprime les marges sur les petits écrans */
+    margin-right: 0; /* Supprime les marges sur les petits écrans */
+    padding: 0 10px; /* Ajoute un padding intérieur pour un alignement visuel */
+  }
+
+  .d-lg-none {
+    display: block;
+  }
+
+  .d-lg-flex {
+    display: none;
+  }
+}
+
+/* Styles pour l'Offcanvas */
+.offcanvas {
+  width: 300px;
+}
+
+.offcanvas-header {
+  border-bottom: 1px solid #ddd;
+}
+
+.offcanvas-body {
+  padding: 20px;
+}
+
+.nav-link {
+  font-size: 1.2rem;
+  margin-bottom: 15px;
+}
+
+.icon-badge {
+  position: absolute;
+  top: 0;
+  right: 0;
+  transform: translate(50%, -50%);
+  background-color: red;
+  color: white;
+  padding: 0.3rem 0.5rem;
+  border-radius: 50%;
+  font-size: 0.75rem;
+}
+
+.offcanvas-body .nav-link {
+  font-size: 1.25rem; /* Agrandir les liens dans l'Offcanvas */
+  margin-bottom: 15px;
+}
+
+.search-center {
+  display: none; /* Cache la barre de recherche sur petits écrans */
+}
+
+.d-lg-none {
+  display: block;
+}
+
+.d-lg-flex {
+  display: none;
 }

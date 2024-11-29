@@ -1,23 +1,9 @@
-# Utiliser l'image officielle de Node.js comme image de base
-FROM node:14
 
-# Définir le répertoire de travail dans le conteneur
-WORKDIR /app
+FROM backend_base:1.0.1
 
-# Copier les fichiers package.json et package-lock.json
-COPY package*.json ./
+ENV NODE_PATH=/app
 
-# Installer les dépendances de l'application
-RUN npm install
+EXPOSE 9090
 
-# Forcer la reconstruction de bcrypt
-RUN npm rebuild bcrypt --build-from-source
+CMD ["npx", "nodemon", "server.js"]
 
-# Copier le reste des fichiers de l'application
-COPY . .
-
-# Exposer le port sur lequel l'application s'exécute
-EXPOSE 3000
-
-# Démarrer l'application
-CMD ["npm", "start"]

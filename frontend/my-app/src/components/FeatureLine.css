@@ -1,0 +1,71 @@
+/* FeatureLine.css */
+
+/* Container pour le bouton toggle */
+.feature-line-container {
+  width: 100%;
+}
+
+/* Style de la ligne de fonctionnalités */
+.feature-line {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  background-color: white;
+  padding: 10px 0;
+  margin-top: 20px;
+  gap: 20px;
+  transition: max-height 0.3s ease-out; /* Animation pour l'ouverture/fermeture */
+  overflow: hidden; /* Cache le contenu si la hauteur est 0 */
+}
+
+.feature-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 14px;
+  color: black;
+}
+
+.feature-icon {
+  font-size: 18px;
+  color: #311C52;
+}
+
+/* Bascule du menu pour petits écrans */
+@media (max-width: 768px) {
+  .feature-line.closed {
+    max-height: 0; /* Cache la ligne de fonctionnalités */
+  }
+
+  .feature-line.open {
+    max-height: 100px; /* Ajustez selon la hauteur de votre contenu */
+  }
+
+  /* Style du bouton de bascule (toggle) */
+  .feature-line-toggle {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #f8f9fa;
+    padding: 10px;
+    cursor: pointer;
+    border: 1px solid #ddd;
+    margin-bottom: 10px;
+  }
+
+  .toggle-icon {
+    font-size: 18px;
+  }
+}
+
+/* Styles pour les très petits écrans */
+@media (max-width: 480px) {
+  .feature-item {
+    font-size: 14px;
+    gap: 8px;
+  }
+
+  .feature-icon {
+    font-size: 18px;
+  }
+}

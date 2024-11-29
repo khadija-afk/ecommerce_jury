@@ -1,0 +1,111 @@
+thechnilogie de projet: react + Nodjs + Mysql
+
+question et organisation de application:
+
+comment securiset tes donne? web token cors ajouter certifecat crfs https comment tu securiser ton application
+
+attque: xss
+attaque SQL
+CRSF comment je mettre en place : comment securiser comment securiser base de donne
+maquettage application:
+comment diff entre nosql et sql
+choix de la technologique: back + front
+
+test avant de coder
+deploiment
+arcgitecteur application Back: MVC back
+la securite 
+les test: unitaire, integration, de bout en bout
+MCD + cas d'utilisarion
+maquettage
+deploiment: CI/CD devops jenkins les tests 
+
+
+1: la conception de projet
+
+dictionnaire de donne apres MCD apes MLD
+
+MCD -> MLD , use case, les relation, entité ,  
+
+2: arcgitecteur application Back: MVC back + maquettage + les tests
+
+	comment securiset tes donne? web token cors ajouter certifecat crfs https comment tu securiser ton application
+
+	attque: xss
+	attaque SQL
+	CRSF comment je mettre en place : comment securiser comment securiser base de donne
+
+
+3: DEVOPS: docker, jenkins, AWS, jest: test unitaire, 			sécurite: nginx, gestion token, gestion de HTTP - HTTPS, GESTION fichier caché .env, CSRF 	
+
+
+les point important:
+les test unitaire sont important:
+les attaques tres connues
+les bibliotheque securise
+
+
+c'est quoi vous vulnirabilite de ton site?
+couvrage de tests
+
+
+question:
+
+que tu met en place theme sucerete: retire le passe word + hashe le mode passe: bycrypt, token: comment tu gerer les token: local storage -> on peut acceder avec des code la solution est de mettre dans cookies?
+
+tu utilise des design battern MVC?
+
+RGPD pour protection de donnee ?
+
+la route est relier a quoi ? relier entre server et controller
+
+comment gerer les dependances? npm install
+
+est ce que tu utilise les middleware? comment gerer les middleware? autorise..
+
+est ce que utilise les sycle de vie dans react : useeffect
+
+comment tu gere tes donne : statemanagement: Redux vs contextAPI
+
+c'est quoi les probleme tu recontrer comment tu reussé
+tu utilise quoi organisation: Trello, git
+utilisation docker + Jenkins : test unitaire
+securite de l'application 
+
+utilisation de dashboard :CRUD
+
+
+Slide demo: montrer un slide après demonstration
+
+arborescence de site 
+
+
+MCD 
+MSTD
+plan de site: arboressence des pages
+
+langage: js, html, css  liberires: reactjs, jquery, socketIO: reaction
+
+
+xss gerer nativement par react
+
+gerer les requete SQL : sequilize : gerer automatiquement, systeme urm : bloque injection
+
+utilise quoi dans ton backend designe pattern : l'architucture MVC
+
+sucerise la connextion :securise par auth.js en utilise token 
+
+
+try catch: gerer et recuperer les erreur 
+
+
+react gerer les route : react dom
+
+deux principes sur RGPD: 
+
+accéssibilité d'un site? balise label, img alt
+
+
+
+
+

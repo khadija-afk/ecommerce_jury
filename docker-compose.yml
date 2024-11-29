@@ -3,52 +3,217 @@ version: '3.8'
 services:
   backend:
     build:
-      context: ./backend_ecommerce
+      context: ./backend_ecommerce/backend_ecommerce
     container_name: backend
     ports:
-      - "3001:3000"
+      - "9090:9090"
     volumes:
-      - ./backend:/app
+      - ./backend_ecommerce/backend_ecommerce:/app
+      - /app/node_modules
+    depends_on:
+      - db
     environment:
       - NODE_ENV=${NODE_ENV}
       - DB_HOST=${DB_HOST}
+      - DB_TYPE=${DB_TYPE}
       - DB_PORT=${DB_PORT}
       - DB_USER=${DB_USER}
-      - DB_PASSWORD=${DB_PASS}
-      - DB_NAME=${MYSQL_DATABASE}
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_DB=${POSTGRES_DB}
+      - DIALECT=${DIALECT}
+      - BACKEND_PORT=${BACKEND_PORT}
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+      - MYSQL_DATABASE=${MYSQL_DATABASE}
+      - TOKEN=${TOKEN}
+      - SECRET_KEY=${SECRET_KEY}
+      - WEB_APP_URL= http://localhost:3000
+      - VITE_PUBLIC_KEY_STRIPE=${VITE_PUBLIC_KEY_STRIPE}
+      - MY_EMAIL=${MY_EMAIL}
+      - MY_PASSWORD=${MY_PASSWORD}
+    networks:
+      - jenkins_net  # Ajouter au même réseau
 
   frontend:
     build:
-      context: ./frontend/my-app  # Assurez-vous que le chemin est correct
+      context: ./frontend/my-app
     container_name: frontend
     ports:
       - "3000:3000"
     volumes:
-      - ./frontend:/app
+      - ./frontend/my-app:/app
+      - /app/node_modules
     environment:
       - NODE_ENV=${NODE_ENV}
+      - VITE_PUBLIC_KEY_STRIPE=${VITE_PUBLIC_KEY_STRIPE}
+      - VITE_CORS_URL=${VITE_CORS_URL}
+    networks:
+      - jenkins_net  # Ajouter au même réseau
+
+  zap:
+    image: ghcr.io/zaproxy/zaproxy:stable
+    container_name: zap
+    volumes:
+      - ./zap/wrk/:/zap/wrk/  # Monte ton dossier local pour stocker le rapport
+    entrypoint: >
+      zap-baseline.py -t https://nginx
+      -r testreport.html
+    networks:
+      - jenkins_net  # S'assurer que ZAP et le frontend sont sur le même réseau
+    environment:
+      - ZAP_LOG_LEVEL=INFO  # Optionnel, pour ajuster le niveau de log
+
+  # db:
+  #   image: mysql:5.7
+  #   container_name: mysql
+  #   ports:
+  #     - "3307:3306"
+  #   environment:
+  #     MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+  #     MYSQL_DATABASE: ${MYSQL_DATABASE}
+  #     MYSQL_USER: ${MYSQL_USER}
+  #     DB_PORT: ${DB_PORT}
+  #     MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+  #     DB_HOST: ${DB_HOST}
+  #   volumes:
+  #     - mysql-data:/var/lib/mysql
+  #   depends_on:
+  #     - phpmyadmin
+  #   networks:
+  #     - jenkins_net  
 
   db:
-    image: mysql:5.7
-    container_name: mysql
+    image: postgres:16
+    container_name: postgres
     ports:
-      - "3306:3306"
+      - "5432:5432"
     environment:
-      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
-      MYSQL_DATABASE: ${MYSQL_DATABASE}
-      MYSQL_USER: ${MYSQL_USER}
-      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
     volumes:
-      - mysql-data:/var/lib/mysql
+      - postgres-data:/var/lib/postgresql/data
+    networks:
+      - jenkins_net
 
-  phpmyadmin:
-    image: phpmyadmin/phpmyadmin
-    container_name: phpmyadmin
+  pgadmin:
+    image: dpage/pgadmin4
+    container_name: pgadmin
     environment:
-      PMA_HOST: ${DB_HOST}
-      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL} # Email pour la connexion à pgAdmin
+      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD} # Mot de passe pour la connexion à pgAdmin
     ports:
-      - "8080:80"
+      - "8888:80" # Port exposé pour accéder à pgAdmin
+    volumes:
+      - pgadmin-data:/var/lib/pgadmin
+    networks:
+      - jenkins_net
+
+  # phpmyadmin:
+  #   image: phpmyadmin/phpmyadmin
+  #   container_name: phpmyadmin
+  #   environment:
+  #     PMA_HOST: db
+  #     MYSQL_ROOT_PASSWORD: ${POSTGRES_PASSWORD}
+  #   ports:
+  #     - "8085:80"
+  #   networks:
+  #     - jenkins_net  
+
+  nginx:
+    image: nginx:latest
+    container_name: nginx-proxy
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+      - ./nginx/nginx_logs:/var/log/nginx
+      - ./ssl:/etc/nginx/ssl
+    depends_on:
+      - backend
+      - frontend
+    networks:
+      - jenkins_net
+
+  jenkins:
+    image: custom-jenkins:latest
+    container_name: jenkins
+    restart: always
+    user: root
+    ports:
+      - "8080:8080"  # Mappe le port 8080 pour accéder à Jenkins
+      - "50000:50000" # Port pour les agents Jenkins
+    volumes:
+      - jenkins_data:/var/jenkins_home  # Volume persistant pour les données Jenkins
+      - /var/run/docker.sock:/var/run/docker.sock  # Nécessaire pour que Jenkins puisse exécuter des conteneurs Docker
+    environment:
+      - JENKINS_OPTS=--prefix=/jenkins  # Optionnel : si vous voulez que Jenkins soit accessible via un sous-chemin (ex. : /jenkins)
+      - JAVA_OPTS=-Djenkins.install.runSetupWizard=false  # Désactive l'assistant de configuration initiale
+    networks:
+      - jenkins_net
+
+  sonarqube:
+    image: sonarqube:community
+    container_name: sonarqube
+    depends_on:
+      - postgresql
+    ports:
+      - "9000:9000"  # SonarQube interface web
+    environment:
+      - SONAR_JDBC_URL=jdbc:postgresql://postgresql:5432/sonar
+      - SONAR_JDBC_USERNAME=sonar
+      - SONAR_JDBC_PASSWORD=sonar
+    volumes:
+      - sonarqube_data:/opt/sonarqube/data
+      - sonarqube_logs:/opt/sonarqube/logs
+      - sonarqube_extensions:/opt/sonarqube/extensions
+      - sonarqube_temp:/opt/sonarqube/temp
+    networks:
+      - jenkins_net  # Ajouter au même réseau
+
+  postgresql:
+    image: postgres:latest
+    hostname: postgresql
+    container_name: postgresql
+    environment:
+      - POSTGRES_USER=sonar
+      - POSTGRES_DB=sonar
+      - POSTGRES_PASSWORD=sonar
+    volumes:
+      - postgresql_data:/var/lib/postgresql/data
+      - postgresql:/var/lib/postgresql
+    networks:
+      - jenkins_net  # Ajouter au même réseau
+
+  # vault:
+  #   image: hashicorp/vault:1.18
+  #   container_name: vault
+  #   restart: always
+  #   environment:
+  #     VAULT_DEV_ROOT_TOKEN_ID: "root"  # Token de root pour le mode développement (ne pas utiliser en production)
+  #     VAULT_ADDR: "http://0.0.0.0:8200"
+  #   ports:
+  #     - "8200:8200"  # Expose le port 8200 pour accéder à Vault
+  #   command: "server -dev"  # Démarre Vault en mode développement
+  #   volumes:
+  #     - vault_data:/vault/file  # Utiliser le volume nommé pour stocker les données Vault
 
 volumes:
   mysql-data:
+  postgres-data:
+  pgadmin-data:
+  node_modules:
+  sonarqube_data:
+  sonarqube_temp:
+  sonarqube_logs:
+  sonarqube_extensions:
+  postgresql_data:
+  postgresql:
+  jenkins_data:
+    driver: local
+  vault_data:
+    driver: local
+
+networks:
+  jenkins_net:
+    driver: bridge

@@ -1,0 +1,13 @@
+.env
+.env.txt
+logs
+node_modules
+lcov-report
+
+.env.local
+
+e-commerce.pem
+
+error.log
+access.log
+ssl

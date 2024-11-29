@@ -1,0 +1,86 @@
+/* UserProfile.css */
+
+/* Conteneur principal */
+.profile-container {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+    font-family: Arial, sans-serif;
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* Titre */
+  .profile-container h2 {
+    text-align: center;
+    color: #311C52;
+    margin-bottom: 20px;
+  }
+  
+  /* Affichage des données utilisateur */
+  .profile-container p {
+    font-size: 16px;
+    margin: 10px 0;
+    color: #333;
+  }
+  
+  /* Mettre en évidence les étiquettes */
+  .profile-container p strong {
+    color: #311C52;
+  }
+  
+  /* Input pour le mode édition */
+  .profile-container input[type="text"],
+  .profile-container input[type="email"] {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    box-sizing: border-box;
+    font-size: 14px;
+  }
+  
+  /* Boutons */
+  .profile-container button {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #311C52;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    font-size: 14px;
+    cursor: pointer;
+    margin-top: 10px;
+    transition: background-color 0.3s ease;
+  }
+  
+  .profile-container button:hover {
+    background-color: #4e2a7a;
+  }
+  
+  /* Conteneur d'entrée pour mode édition */
+  .profile-container .edit-mode {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  /* Responsive */
+  @media (max-width: 480px) {
+    .profile-container {
+      padding: 15px;
+    }
+  
+    .profile-container input[type="text"],
+    .profile-container input[type="email"] {
+      font-size: 12px;
+    }
+  
+    .profile-container button {
+      font-size: 12px;
+      padding: 8px 15px;
+    }
+  }
+  

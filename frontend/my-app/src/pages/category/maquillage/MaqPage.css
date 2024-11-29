@@ -1,0 +1,61 @@
+/* MaquillagePage.css */
+
+/* Style pour la page de maquillage */
+.maquillage-page {
+    margin-top: 20px;
+    padding: 20px;
+    background-color: #f8f9fa;
+  }
+  
+  .product-grid {
+    margin-top: 20px;
+  }
+  
+  .product-grid .card {
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+    height: 100%; /* S'assurer que chaque carte prend toute la hauteur possible */
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between; /* S'assurer que les éléments sont bien répartis */
+  }
+  
+  .product-grid .card:hover {
+    transform: translateY(-5px); /* Légère élévation au survol */
+  }
+  
+  .product-grid .card-title {
+    font-size: 18px;
+    font-weight: bold;
+    text-align: center;
+  }
+  
+  .product-grid .card-text {
+    font-size: 16px;
+    text-align: center;
+  }
+  
+  .product-grid .card-body {
+    flex-grow: 1; /* Permet au corps de la carte de s'étendre */
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  
+  .product-grid .card-img-top {
+    height: 200px; /* Fixer la hauteur de l'image */
+    object-fit: cover; /* S'assure que l'image ne déborde pas et garde ses proportions */
+  }
+  
+  .product-grid .btn {
+    background-color: rgb(192, 93, 93);
+    border: none;
+    transition: background-color 0.3s ease;
+    align-self: center; /* Centrer le bouton */
+    margin-top: 10px;
+  }
+  
+  .product-grid .btn:hover {
+    background-color: rgb(150, 75, 75);
+  }
+  
