@@ -305,7 +305,11 @@ const synchronizeAllTables = async () => {
 };
 
 // Appeler la synchronisation globale
-// synchronizeAllTables();
+
+
+if (process.env.SYNC_TABLES === 'yes') {
+  synchronizeAllTables();
+}
 
 
 
