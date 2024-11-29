@@ -8,9 +8,18 @@ import './ArticleListe.css';
 import { getAverageRating, Review } from '../../services/review/ReviewService';
 import { useFavoris } from '../../utils/FavorieContext';
 
+export interface Article {
+    id: number; // ID unique de l'article
+    name: string;
+    photo: string[];
+    price: number;
+    content: string; // Description obligatoire
+    createdAt?: string; // Optionnel si ce champ n'est pas toujours présent
+  }
+
 const ArticleList: React.FC = () => {
     const dispatch = useDispatch<AppDispatch>();
-    const articles = useSelector((state: RootState) => state.articles.articles);
+    const articles = useSelector((state: RootState) => state.articles.articles) as Article[];
     const articleStatus = useSelector((state: RootState) => state.articles.status);
     const error = useSelector((state: RootState) => state.articles.error);
 
@@ -19,7 +28,6 @@ const ArticleList: React.FC = () => {
     const [ratings, setRatings] = useState<{ [key: number]: number }>({});
     const [reviews, setReviews] = useState<{ [key: number]: Review[] }>({});
 
-    // Vérifie si un article est dans les favoris
     const isFavorite = (articleId: number): boolean => {
         return favorites.some((fav) => fav.id === articleId);
     };
@@ -29,24 +37,30 @@ const ArticleList: React.FC = () => {
             dispatch(fetchArticles());
         }
 
-        articles.forEach(async (article) => {
-            try {
-                const avgRating = await getAverageRating(article.id);
-                setRatings((prevRatings) => ({
-                    ...prevRatings,
-                    [article.id]: avgRating,
-                }));
-            } catch (error) {
-                console.error(`Error fetching data for article ${article.id}:`, error);
+        const fetchRatingsAndReviews = async () => {
+            for (const article of articles) {
+                try {
+                    const avgRating = await getAverageRating(article.id);
+                    setRatings((prevRatings) => ({
+                        ...prevRatings,
+                        [article.id]: avgRating,
+                    }));
+                } catch (error) {
+                    console.error(`Error fetching data for article ${article.id}:`, error);
+                }
             }
-        });
+        };
+
+        if (articles.length > 0) {
+            fetchRatingsAndReviews();
+        }
     }, [articleStatus, dispatch, articles]);
 
-    const handleFavoriteClick = (article: any) => {
+    const handleFavoriteClick = (article: Article) => {
         if (isFavorite(article.id)) {
-            removeFavorite(article.id); // Supprime le favori en utilisant son ID
+            removeFavorite(article.id);
         } else {
-            addFavorite(article); // Ajoute l'article complet aux favoris
+            addFavorite(article);
         }
     };
 
@@ -58,13 +72,12 @@ const ArticleList: React.FC = () => {
         content = (
             <Container className="mt-4">
                 <Row className="custom-row">
-                    {articles.map((article, index) => (
-                        <Col key={`${article.id}-${index}`} sm={12} md={6} lg={4} className="mb-4">
+                    {articles.map((article) => (
+                        <Col key={article.id} sm={12} md={6} lg={4} className="mb-4">
                             <Card className="custom-card">
-                            <div className="favorite-icon" onClick={() => handleFavoriteClick(article)}>
-                                <span className={isFavorite(article.id) ? 'red' : ''}>♥</span>
-                            </div>
-
+                                <div className="favorite-icon" onClick={() => handleFavoriteClick(article)}>
+                                    <span className={isFavorite(article.id) ? 'red' : ''}>♥</span>
+                                </div>
                                 {Array.isArray(article.photo) && article.photo.length > 0 ? (
                                     <Link to={`api/article/${article.id}`}>
                                         <Card.Img
@@ -75,7 +88,11 @@ const ArticleList: React.FC = () => {
                                         />
                                     </Link>
                                 ) : (
-                                    <Card.Img variant="top" src="default-image-url.jpg" alt="Default Image" />
+                                    <Card.Img
+                                        variant="top"
+                                        src={typeof article.photo === 'string' ? article.photo : 'default-image-url.jpg'}
+                                        alt="Default Image"
+                                    />
                                 )}
                                 <Card.Body className="custom-card-body">
                                     <Card.Text className="custom-card-text">Voir les détails</Card.Text>

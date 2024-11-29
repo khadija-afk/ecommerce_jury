@@ -1,11 +1,12 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { PanierContext } from "../../utils/PanierContext";
+import { PanierContext, PanierContextType } from "../../utils/PanierContext";
 import apiClient from '../../utils/axiosConfig';
 import './Panier.css';
 
 const Panier = () => {
-    const { incremente, decremente, panier, setPanier, removeArticle } = useContext(PanierContext);
+    const { incremente, decremente, panier, setPanier, removeArticle } = useContext(PanierContext) as PanierContextType;
+
     const navigate = useNavigate();
     const [errorMessage, setErrorMessage] = useState<string | null>(null);
 

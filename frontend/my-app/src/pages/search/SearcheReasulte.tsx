@@ -2,9 +2,18 @@ import React, { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import axios from 'axios';
 
+interface SearchResult {
+  id: number;
+  name: string;
+  photo: string;
+  content: string;
+  price: number;
+}
+
 const SearchResults: React.FC = () => {
-  const [results, setResults] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [results, setResults] = useState<SearchResult[]>([]); // Typage explicite
+  const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string | null>(null);
   const location = useLocation();
 
   // Extraire le terme de recherche depuis l'URL
@@ -13,11 +22,18 @@ const SearchResults: React.FC = () => {
   useEffect(() => {
     const fetchResults = async () => {
       try {
-        const response = await axios.get(`api/api/search/search?query=${query}`);
+        setLoading(true);
+        setError(null);
+
+        // Requête API
+        const response = await axios.get<SearchResult[]>(
+          `/api/api/search/search?query=${query}`
+        );
         setResults(response.data);
-        setLoading(false);
-      } catch (error) {
-        console.error('Erreur lors de la recherche :', error);
+      } catch (err) {
+        setError("Une erreur s'est produite lors de la recherche.");
+        console.error('Erreur lors de la recherche :', err);
+      } finally {
         setLoading(false);
       }
     };
@@ -30,21 +46,37 @@ const SearchResults: React.FC = () => {
   return (
     <div>
       <h1>Résultats pour "{query}"</h1>
-      {loading ? (
-        <p>Chargement...</p>
-      ) : results.length > 0 ? (
+
+      {loading && <p>Chargement...</p>}
+
+      {error && <p style={{ color: 'red' }}>{error}</p>}
+
+      {!loading && !error && results.length === 0 && (
+        <p>Aucun résultat trouvé pour votre recherche.</p>
+      )}
+
+      {!loading && !error && results.length > 0 && (
         <ul style={{ listStyle: 'none', padding: 0 }}>
           {results.map((item) => (
-            <li key={item.id} style={{ borderBottom: '1px solid #ddd', padding: '20px' }}>
+            <li
+              key={item.id}
+              style={{ borderBottom: '1px solid #ddd', padding: '20px' }}
+            >
               <h2>{item.name}</h2>
-              <img src={item.photo} alt={item.name} style={{ width: '150px', height: '150px', objectFit: 'cover' }} />
+              <img
+                src={item.photo}
+                alt={item.name}
+                style={{
+                  width: '150px',
+                  height: '150px',
+                  objectFit: 'cover',
+                }}
+              />
               <p>{item.content}</p>
               <p>Prix : {item.price} €</p>
             </li>
           ))}
         </ul>
-      ) : (
-        <p>Aucun résultat trouvé</p>
       )}
     </div>
   );

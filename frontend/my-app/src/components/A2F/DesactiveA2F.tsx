@@ -2,10 +2,15 @@ import React, { useState, useEffect } from "react";
 import apiClient from "../../utils/axiosConfig";
 import { Box, Button, TextField, Typography, Alert } from "@mui/material";
 
+interface Message {
+  type: "success" | "error"; // Définir les types possibles pour 'type'
+  text: string;
+}
+
 const Disable2FA = () => {
-  const [otp, setOtp] = useState("");
-  const [message, setMessage] = useState(null);
-  const [userId, setUserId] = useState(null);
+  const [otp, setOtp] = useState<string>(""); // Type explicite pour otp
+  const [message, setMessage] = useState<Message | null>(null); // Type explicite pour message
+  const [userId, setUserId] = useState<number | null>(null); // Type explicite pour userId
 
   const fetchUserId = async () => {
     try {
@@ -13,7 +18,7 @@ const Disable2FA = () => {
         withCredentials: true,
       });
       setUserId(response.data.id); // ID utilisateur
-    } catch (error) {
+    } catch (error: any) {
       setMessage({
         type: "error",
         text: "Erreur lors de la récupération des informations utilisateur.",
@@ -33,7 +38,7 @@ const Disable2FA = () => {
         { withCredentials: true }
       );
       setMessage({ type: "success", text: response.data.message });
-    } catch (error) {
+    } catch (error: any) {
       setMessage({
         type: "error",
         text:

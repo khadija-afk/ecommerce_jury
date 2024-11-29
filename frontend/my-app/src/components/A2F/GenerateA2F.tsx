@@ -2,12 +2,17 @@ import React, { useState, useEffect } from "react";
 import apiClient from "../../utils/axiosConfig";
 import { Box, Button, TextField, Typography, Alert } from "@mui/material";
 
+interface Message {
+  type: "success" | "error"; // Types possibles pour le message
+  text: string;
+}
+
 const TwoFactorAuth = () => {
-  const [qrCode, setQrCode] = useState(null);
-  const [secret, setSecret] = useState(null);
-  const [otp, setOtp] = useState("");
-  const [message, setMessage] = useState(null);
-  const [userId, setUserId] = useState(null);
+  const [qrCode, setQrCode] = useState<string | null>(null); // QR Code comme chaîne de caractères ou null
+  const [secret, setSecret] = useState<string | null>(null); // Secret comme chaîne de caractères ou null
+  const [otp, setOtp] = useState<string>(""); // Code OTP comme chaîne
+  const [message, setMessage] = useState<Message | null>(null); // Message typé ou null
+  const [userId, setUserId] = useState<number | null>(null); // ID utilisateur comme nombre ou null
 
   // Récupérer les informations utilisateur
   const fetchUserId = async () => {
@@ -16,7 +21,7 @@ const TwoFactorAuth = () => {
         withCredentials: true,
       });
       setUserId(response.data.id); // ID utilisateur
-    } catch (error) {
+    } catch (error: any) {
       setMessage({
         type: "error",
         text: "Erreur lors de la récupération des informations utilisateur.",
@@ -32,7 +37,7 @@ const TwoFactorAuth = () => {
       });
       setQrCode(response.data.qrCode);
       setSecret(response.data.secret);
-    } catch (error) {
+    } catch (error: any) {
       setMessage({
         type: "error",
         text: "Erreur lors de la génération du QR Code.",
@@ -57,7 +62,7 @@ const TwoFactorAuth = () => {
         { withCredentials: true }
       );
       setMessage({ type: "success", text: response.data.message });
-    } catch (error) {
+    } catch (error: any) {
       setMessage({
         type: "error",
         text: error.response?.data?.error || "Échec de l'activation de l'A2F.",

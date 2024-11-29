@@ -6,6 +6,7 @@ interface Article {
   id: number;
   name: string;
   price: number;
+  content: string;
   quantity?: number; // La quantité est optionnelle dans un article
   photo: string[];
 }
@@ -18,7 +19,7 @@ interface CartItem {
   article: Article;
 }
 
-interface PanierContextType {
+export interface PanierContextType {
   panier: CartItem[];
   totalPrice: number;
   totalArticle: number;
@@ -29,6 +30,7 @@ interface PanierContextType {
   setPanier: React.Dispatch<React.SetStateAction<CartItem[]>>;
   recalculateTotals: (updatedPanier: CartItem[]) => void; // Ajoutez cette ligne
 }
+
 
 export const PanierContext = createContext<PanierContextType | undefined>(undefined);
 

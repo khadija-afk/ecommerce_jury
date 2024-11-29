@@ -2,14 +2,17 @@ import React, { createContext, useState, useContext, ReactNode, useEffect } from
 import apiClient from './axiosConfig';
 import { useAuth } from './AuthCantext';
 
-interface Article {
+
+export interface Article {
   id: number; // ID unique de l'article
   name: string;
-  photo: string;
+  photo: string[];
   price: number;
+  content: string; // Description obligatoire
+  createdAt?: string; // Optionnel si ce champ n'est pas toujours présent
 }
 
-interface FavorisContextType {
+export interface FavorisContextType {
   favorites: Article[]; // Liste des articles favoris
   addFavorite: (article: Article) => void; // Ajouter un favori
   removeFavorite: (product_fk: number) => void; // Supprimer un favori par ID
