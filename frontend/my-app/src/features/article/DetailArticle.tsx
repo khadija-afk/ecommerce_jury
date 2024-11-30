@@ -2,17 +2,16 @@ import React, { useEffect, useState, useRef } from 'react';
 import { useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { usePanier } from '../../utils/PanierContext';
-import { RootState } from '../../store';
+import { RootState, AppDispatch } from '../../store';
 import './DetailArticles.css';
 import { getAverageRating } from '../../services/review/ReviewService';
 import ReviewsList from '../../components/review/ReviewList';
 import ReviewForm from '../../components/review/ReviewForm';
-
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faStar, faStarHalfAlt } from '@fortawesome/free-solid-svg-icons';
 import { fetchArticles } from './articleSlice';
 
-// Typage explicite de l'interface Article si elle est nécessaire
+// Typage explicite de l'interface Article
 interface Article {
     id: number;
     name: string;
@@ -23,7 +22,7 @@ interface Article {
 
 const DetailArticle: React.FC = () => {
     const { addPanier } = usePanier();
-    const dispatch = useDispatch();
+    const dispatch = useDispatch<AppDispatch>();
     const { id } = useParams<{ id: string }>();
     const articleId = Number(id);
 
@@ -60,7 +59,7 @@ const DetailArticle: React.FC = () => {
 
     // Mettre à jour la photo principale si l'article est chargé
     useEffect(() => {
-        if (article?.photo?.length > 0) {
+        if (article?.photo && article.photo.length > 0) {
             setMainPhoto(article.photo[0]);
         }
     }, [article]);
@@ -89,47 +88,47 @@ const DetailArticle: React.FC = () => {
 
     return (
         <div>
-            {article && mainPhoto && article.photo && (
-                <section className="bloc__detail">
-                    <div className="photo-container">
-                        <div className="main-photo-container">
-                            <img src={mainPhoto} alt={article.name} className="main-photo" />
-                        </div>
-                        <div className="thumbnails-container">
-                            {article.photo.map((img: string, index: number) => (
-                                <img
-                                    key={index}
-                                    src={img}
-                                    className="thumbnail"
-                                    onClick={() => handleThumbnailClick(img)}
-                                    alt={`${article.name} ${index}`}
-                                />
-                            ))}
-                        </div>
-                    </div>
-                    <div className="details-container">
-                        <h2>{article.name}</h2>
-                        {ratings[articleId] !== undefined && (
-                            <div className="rating-summary">
-                                {renderStars(ratings[articleId])}
-                                <span onClick={scrollToReviews} className="reviews-link" role="button">
-                                    Voir les avis
-                                </span>
+            {article ? (
+                mainPhoto && article.photo && (
+                    <section className="bloc__detail">
+                        <div className="photo-container">
+                            <div className="main-photo-container">
+                                <img src={mainPhoto} alt={article.name} className="main-photo" />
                             </div>
-                        )}
-                        <p className="price">{article.price} €</p>
-                        <p>{article.content}</p>
-                        <button onClick={() => addPanier(article)}>
-                            AJOUTER AU PANIER ({article.price} €)
-                        </button>
-                    </div>
-                </section>
+                            <div className="thumbnails-container">
+                                {article.photo.map((img: string, index: number) => (
+                                    <img
+                                        key={index}
+                                        src={img}
+                                        className="thumbnail"
+                                        onClick={() => handleThumbnailClick(img)}
+                                        alt={`${article.name} ${index}`}
+                                    />
+                                ))}
+                            </div>
+                        </div>
+                        <div className="details-container">
+                            <h2>{article.name}</h2>
+                            {ratings[articleId] !== undefined && (
+                                <div className="rating-summary">
+                                    {renderStars(ratings[articleId])}
+                                    <span onClick={scrollToReviews} className="reviews-link" role="button">
+                                        Voir les avis
+                                    </span>
+                                </div>
+                            )}
+                            <p className="price">{article.price} €</p>
+                            <p>{article.content}</p>
+                            <button onClick={() => addPanier(article)}>
+                                AJOUTER AU PANIER ({article.price} €)
+                            </button>
+                        </div>
+                    </section>
+                )
+            ) : (
+                <p>Chargement...</p>
             )}
-
-            {/* Séparateur entre les sections */}
             <div className="separator"></div>
-
-            {/* Section des avis */}
             <section className="reviews-section" ref={reviewsRef}>
                 <ReviewsList productId={articleId} />
                 <ReviewForm productId={articleId} onReviewAdded={() => {}} />
