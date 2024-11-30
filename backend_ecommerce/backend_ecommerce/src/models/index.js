@@ -282,11 +282,9 @@ const synchronizeAllTables = async () => {
   try {
     console.log("Début de la synchronisation des tables...");
 
-    // Synchroniser les tables indépendantes en premier
+   
     await syncUserTable();            // Table indépendante
     await syncCategorieTable();       // Table indépendante
-
-    // Synchroniser les tables dépendantes dans l'ordre
     await syncArticleTable();         // Dépend de User et Categorie
     await syncAddressTable();         // Dépend de User
     await syncReviewTable();          // Dépend de User et Article
@@ -297,6 +295,7 @@ const synchronizeAllTables = async () => {
     await syncPaymentDetailsTable();  // Dépend de OrderDetails et Address
     await syncFavoriteTable();        // Dépend de User et Article
     await syncUserPreferencesTable(); // Dépend de User
+    await syncReviewTable();
 
     console.log("Toutes les tables ont été synchronisées avec succès !");
   } catch (error) {
@@ -304,23 +303,12 @@ const synchronizeAllTables = async () => {
   }
 };
 
-// Appeler la synchronisation globale
 
 
 if (process.env.SYNC_TABLES === 'yes') {
   synchronizeAllTables();
 }
 
-
-
-
-// syncAddressTable();
-
-
-// Appeler la fonction pour synchroniser la table `User`
-// syncUserTable();
-// syncOrderTabe();
-// syncReview();
 
 
 export {

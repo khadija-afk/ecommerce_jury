@@ -58,22 +58,6 @@ const App = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [showCookieSettings, setShowCookieSettings] = useState(false);
 
-  // Vérification de l'authentification
-  useEffect(() => {
-    const checkAuthStatus = async () => {
-      try {
-        const response = await fetch('/api/api/user/check_auth', {
-          method: 'GET',
-          credentials: 'include',
-        });
-        setIsLoggedIn(response.ok);
-      } catch (error) {
-        console.error('Erreur lors de la vérification de l\'authentification :', error);
-      }
-    };
-
-    checkAuthStatus();
-  }, []);
 
   // Ouverture du modal pour les réglages des cookies
   const openCookieSettings = () => setShowCookieSettings(true);
