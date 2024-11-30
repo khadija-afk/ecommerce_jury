@@ -22,7 +22,7 @@ interface Article {
     stock: number;
     user_fk: number;
     categorie_fk: number;
-    photo: string;
+    photo: string[];
     createdAt: string;
     updatedAt: string;
 }

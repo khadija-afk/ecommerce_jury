@@ -35,7 +35,7 @@ pull:
 deploy-prod: pull start-nginx
 
 start-front:
-	docker-compose up --build -d frontend
+	docker-compose up --build frontend
 
 sz:
 	docker-compose up --build zap
