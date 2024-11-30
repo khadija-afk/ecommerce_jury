@@ -49,6 +49,7 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 app.use(express.json())
 app.use(cookieParser())
 // Configurer CORS pour autoriser toutes les requêtes
+console.log(`CORS_URL in use: ${process.env.CORS_URL}`); // Ajout du console.log
 app.use(cors({
   origin: process.env.CORS_URL ,
   credentials: true
