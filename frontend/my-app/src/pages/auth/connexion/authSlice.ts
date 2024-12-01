@@ -35,13 +35,17 @@ export const signInUser = createAsyncThunk(
         { rejectWithValue }
     ) => {
         try {
-            const response = await apiClient.post('/api/user/sign', credentials);
-            const { token, user } = response.data;
-
-            // Stocker les données de l'utilisateur et le token dans le localStorage
-            localStorage.setItem('token', token);
+            // Ajout de withCredentials: true
+            const response = await apiClient.post('/api/user/sign', credentials, {
+                withCredentials: true, // Inclure les cookies dans la requête
+            });
+    
+            const { access_token, user } = response.data;
+    
+            // Stocker les données de l'utilisateur dans le localStorage (si nécessaire)
+            localStorage.setItem('access_token', access_token);
             localStorage.setItem('user', JSON.stringify(user));
-
+    
             return response.data; // Renvoie les données pour le store
         } catch (error) {
             // Gestion des erreurs spécifiques
@@ -70,7 +74,7 @@ const authSlice = createSlice({
             state.error = null;
 
             // Nettoyer le localStorage lors de la déconnexion
-            localStorage.removeItem('token');
+            localStorage.removeItem('access_token');
             localStorage.removeItem('user');
         },
     },
