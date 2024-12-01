@@ -77,8 +77,7 @@ const Header: React.FC = () => {
   const handleLogout = async () => {
     try {
       const response = await apiClient.post("/api/Log/logout", {
-        method: "POST",
-        credentials: "include",
+        withCredentials: true,
       });
       if (response.data) {
         setIsAuthenticated(false);

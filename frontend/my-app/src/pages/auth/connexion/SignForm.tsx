@@ -45,6 +45,8 @@ const SignInForm: React.FC = () => {
 
             // Stocker les informations utilisateur si nécessaire
             localStorage.setItem('user', JSON.stringify(response.data.user));
+            console.log("Requête Axios avec cookies :", document.cookie);
+
 
             // Rediriger après une connexion réussie
             navigate('/');

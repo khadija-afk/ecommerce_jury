@@ -37,19 +37,8 @@ import routerA2F from  './src/routes/auth2FA.js'
 
 
 const app = express()
-
-
-// PORT
-const PORT = env.port     || 9090 ;
-
-
-
-// Swagger
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocs));
-// MIDDLEWARE
-app.use(express.json())
 app.use(cookieParser())
-// Configurer CORS pour autoriser toutes les requêtes
+app.use(express.json())
 console.log(`CORS_URL in use: ${process.env.CORS_URL}`); // Ajout du console.log
 app.use(cors({
   origin: env.cors_url,
@@ -57,6 +46,18 @@ app.use(cors({
 }));
 
 console.log(`CORS_URL in use: ${process.env.CORS_URL}`); // Ajout du console.log
+app.use((req, res, next) => {
+  console.log("Cookies reçus dans la requête :", req.cookies);
+  next();
+});
+
+
+// PORT
+const PORT = env.port     || 9090 ;
+// api-docs
+
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocs));
+
 
 // Utiliser le routeur AdminJS
 if (process.env.NODE_ENV != 'test') {

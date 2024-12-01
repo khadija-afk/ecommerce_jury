@@ -42,21 +42,35 @@ export const login = async (req, res) => {
     expiresIn: "24h", // Le token est valide pendant 24 heures
   });
 
+  console.log("Token généré :", token);
+
   // Suppression du mot de passe des données utilisateur avant de les retourner
   const { password: _, ...otherData } = user.dataValues;
 
   // Étape 4 : Envoi de la réponse avec le cookie
-  res
-    .cookie("access_token", token, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === "production", // Actif uniquement en HTTPS en production
-      sameSite: "strict", // Empêche les requêtes intersites
-    })
+  console.log("Cookie configuré pour l'envoi :", {
+  token,
+  httpOnly: true,
+  secure: process.env.NODE_ENV === "production",
+  sameSite: process.env.NODE_ENV === "production" ? "strict" : "lax",
+});
+res.cookie("access_token", token, {
+  httpOnly: true,
+  secure: process.env.NODE_ENV === "production", // Actif uniquement en HTTPS
+  sameSite: process.env.NODE_ENV === "production" ? "strict" : "lax", // "strict" en prod, "lax" en dev
+})
+
+  
+
+    
     .status(200)
     .json({
       message: "Connexion réussie.",
       user: otherData,
     });
+
+    console.log("Cookie envoyé : ", res.cookie.access_token);
+
 };
 // Fonction pour vérifier le format de l'email
 const isValidEmail = (email) => {
