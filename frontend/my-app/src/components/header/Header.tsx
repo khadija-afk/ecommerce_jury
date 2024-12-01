@@ -43,30 +43,23 @@ const Header: React.FC = () => {
   useEffect(() => {
     const checkAuthStatus = async () => {
       try {
-        const response = await apiClient.get("/api/user/check_auth", {
-          method: "GET"
-        });
-
-        if (response.data) {
-          const responseData = await response.data;
-          if (responseData && responseData.id && responseData.firstName) {
-            setIsAuthenticated(true);
-            setUserFirstName(responseData.firstName);
-          } else {
-            setIsAuthenticated(false);
-            setUserFirstName("");
-          }
+        const response = await apiClient.get('/api/user/check_auth');
+        console.log('Réponse du backend :', response.data);
+    
+        if (response.data && response.data.id && response.data.firstName) {
+          setIsAuthenticated(true);
+          setUserFirstName(response.data.firstName);
         } else {
           setIsAuthenticated(false);
-          setUserFirstName("");
+          setUserFirstName('');
         }
       } catch (error) {
-        console.error("Erreur lors de la vérification de l'authentification :", error);
+        console.error('Erreur lors de la vérification de l\'authentification :', error);
         setIsAuthenticated(false);
-        setUserFirstName("");
+        setUserFirstName('');
       }
     };
-
+    
     checkAuthStatus();
   }, [setIsAuthenticated, isAuthenticated]);
 
