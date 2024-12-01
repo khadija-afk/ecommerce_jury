@@ -36,10 +36,7 @@ const SignInForm: React.FC = () => {
 
         try {
             const response = await apiClient.post(
-                '/api/user/sign',
-                {
-                    withCredentials: true,
-                  }// Inclure les cookies dans la requête
+                '/api/user/sign', credentials
             );
 
             console.log('Réponse API :', response.data);
