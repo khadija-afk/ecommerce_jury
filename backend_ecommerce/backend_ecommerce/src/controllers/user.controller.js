@@ -69,7 +69,7 @@ res.cookie("access_token", token, {
       user: otherData,
     });
 
-    console.log("Cookie envoyé : ", res.cookie.access_token);
+    console.log("Cookie envoyé : ", req.cookies);
 
 };
 // Fonction pour vérifier le format de l'email

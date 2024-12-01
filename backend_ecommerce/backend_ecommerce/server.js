@@ -35,17 +35,16 @@ import routerA2F from  './src/routes/auth2FA.js'
 
 
 
+const app = express();
 
-const app = express()
-app.use(cookieParser())
-app.use(express.json())
-console.log(`CORS_URL in use: ${process.env.CORS_URL}`); // Ajout du console.log
+app.use(cookieParser()); // Parse les cookies dans req.cookies
 app.use(cors({
   origin: env.cors_url,
-  credentials: true
+  credentials: true // Autorise l'envoi et la réception des cookies
 }));
-
-console.log(`CORS_URL in use: ${process.env.CORS_URL}`); // Ajout du console.log
+console.log(`CORS_URL in use: ${process.env.CORS_URL}`);
+app.use(express.json())
+ 
 app.use((req, res, next) => {
   console.log("Cookies reçus dans la requête :", req.cookies);
   next();
