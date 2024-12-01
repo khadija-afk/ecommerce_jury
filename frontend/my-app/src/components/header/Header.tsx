@@ -43,8 +43,10 @@ const Header: React.FC = () => {
   useEffect(() => {
     const checkAuthStatus = async () => {
       try {
-        const response = await apiClient.get('/api/user/check_auth');
-        console.log('Réponse du backend :', response.data);
+        const response = await apiClient.get('/api/user/check_auth', {
+          withCredentials: true, // Inclure les cookies dans la requête
+        });
+        console.log('Réponse reçue du serveur :', response.data);
     
         if (response.data && response.data.id && response.data.firstName) {
           setIsAuthenticated(true);
@@ -59,6 +61,7 @@ const Header: React.FC = () => {
         setUserFirstName('');
       }
     };
+    
     
     checkAuthStatus();
   }, [setIsAuthenticated, isAuthenticated]);
