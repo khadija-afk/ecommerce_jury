@@ -32,7 +32,7 @@ const StripeCheckout: React.FC<StripeCheckoutProps> = ({ orderId }) => {
   useEffect(() => {
     const fetchUserEmail = async () => {
       try {
-        const response = await axios.get("/api/api/user/check_auth", {
+        const response = await axios.get("/api/user/check_auth", {
           withCredentials: true,
         });
         setEmail(response.data.email);

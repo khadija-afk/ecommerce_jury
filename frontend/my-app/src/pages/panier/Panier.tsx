@@ -13,7 +13,7 @@ const Panier = () => {
     // Récupérer le panier de l'utilisateur
     const fetchCartByUser = async () => {
         try {
-            const response = await apiClient.get('/api/api/cart/cart', { withCredentials: true });
+            const response = await apiClient.get('/api/cart/cart', { withCredentials: true });
             setPanier(response.data.cartItems || []);
         } catch (error) {
             console.error('Erreur lors de la récupération du panier :', error);
@@ -34,7 +34,7 @@ const Panier = () => {
                 price: item.article.price,
             }));
 
-            const response = await apiClient.post('/api/api/order/orders', {
+            const response = await apiClient.post('/api/order/orders', {
                 total: recalculateTotalPrice(),
                 items: orderItems,
             }, { withCredentials: true });

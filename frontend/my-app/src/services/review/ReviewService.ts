@@ -9,7 +9,7 @@ export interface Review {
 
 export const getReviewsByProductId = async (productId: number): Promise<Review[]> => {
     try {
-        const response = await apiClient.get(`/api/api/review/${productId}`);
+        const response = await apiClient.get(`/api/review/${productId}`);
         return response.data; // Axios gère automatiquement le JSON
     } catch (error) {
         console.error(`Error fetching reviews for product ${productId}:`, error);
@@ -24,7 +24,7 @@ interface AverageRatingResponse {
 
 export const getAverageRating = async (productId: number): Promise<number> => {
     try {
-        const response = await apiClient.get<AverageRatingResponse>(`/api/api/review/${productId}/average`);
+        const response = await apiClient.get<AverageRatingResponse>(`/api/review/${productId}/average`);
         return parseFloat(response.data.averageRating); // Convertir la note moyenne en nombre
     } catch (error) {
         console.error(`Error fetching average rating for product ${productId}:`, error);

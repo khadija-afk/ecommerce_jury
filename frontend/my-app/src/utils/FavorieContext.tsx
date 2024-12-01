@@ -43,7 +43,7 @@ export const FavorisProvider: React.FC<{ children: ReactNode }> = ({ children })
 
     const fetchFavorites = async () => {
       try {
-        const response = await apiClient.get('/api/api/favorie', { withCredentials: true });
+        const response = await apiClient.get('/api/favorie', { withCredentials: true });
         if (response.data && Array.isArray(response.data)) {
           setFavorites(response.data.map((fav: any) => fav.Article)); // Mappage des articles favoris
           console.log('Favoris récupérés avec succès :', response.data);
@@ -80,7 +80,7 @@ export const FavorisProvider: React.FC<{ children: ReactNode }> = ({ children })
 
     try {
       const response = await apiClient.post(
-        '/api/api/favorie',
+        '/api/favorie',
         { product_fk: article.id },
         { withCredentials: true }
       );
@@ -103,7 +103,7 @@ export const FavorisProvider: React.FC<{ children: ReactNode }> = ({ children })
     }
 
     try {
-      await apiClient.delete(`/api/api/favorie/${product_fk}`, { withCredentials: true });
+      await apiClient.delete(`/api/favorie/${product_fk}`, { withCredentials: true });
 
       setFavorites((prev) => prev.filter((fav) => fav.id !== product_fk));
       console.log(`Favori avec product_fk=${product_fk} supprimé avec succès.`);

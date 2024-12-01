@@ -42,7 +42,7 @@ const Header: React.FC = () => {
   useEffect(() => {
     const checkAuthStatus = async () => {
       try {
-        const response = await fetch("/api/api/user/check_auth", {
+        const response = await fetch("/api/user/check_auth", {
           method: "GET",
           credentials: "include",
         });
@@ -80,7 +80,7 @@ const Header: React.FC = () => {
 
   const handleLogout = async () => {
     try {
-      const response = await fetch("/api/api/Log/logout", {
+      const response = await fetch("/api/Log/logout", {
         method: "POST",
         credentials: "include",
       });

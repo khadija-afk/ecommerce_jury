@@ -23,7 +23,7 @@ const ReviewsList: React.FC<ReviewsListProps> = ({ productId }) => {
   useEffect(() => {
     const fetchReviews = async () => {
       try {
-        const response = await apiClient.get(`/api/api/review/product/${productId}`);
+        const response = await apiClient.get(`/api/review/product/${productId}`);
         setReviews(response.data);
       } catch (error: any) {
         if (error.response && error.response.status !== 500) {
@@ -36,7 +36,7 @@ const ReviewsList: React.FC<ReviewsListProps> = ({ productId }) => {
 
     const fetchAverageRating = async () => {
       try {
-        const response = await apiClient.get(`/api/api/review/${productId}/average`);
+        const response = await apiClient.get(`/api/review/${productId}/average`);
         setAverageRating(response.data.averageRating || 0);
       } catch (error: any) {
         if (error.response && error.response.status !== 500) {

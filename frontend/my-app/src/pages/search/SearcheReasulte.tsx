@@ -27,7 +27,7 @@ const SearchResults: React.FC = () => {
 
         // Requête API
         const response = await axios.get<SearchResult[]>(
-          `/api/api/search/search?query=${query}`
+          `/api/search/search?query=${query}`
         );
         setResults(response.data);
       } catch (err) {

@@ -35,7 +35,7 @@ const UserAddresses: React.FC = () => {
     const fetchAddresses = async () => {
       try {
         setLoading(true);
-        const response = await apiClient.get<Address[]>("/api/api/adresse/addresses", {
+        const response = await apiClient.get<Address[]>("/api/adresse/addresses", {
           withCredentials: true,
         });
         setAddresses(response.data);
@@ -57,7 +57,7 @@ const UserAddresses: React.FC = () => {
 
   const handleAddAddress = async () => {
     try {
-      const response = await apiClient.post<Address>("/api/api/adresse/addresses", newAddress, {
+      const response = await apiClient.post<Address>("/api/adresse/addresses", newAddress, {
         withCredentials: true,
       });
       setAddresses((prev) => [...prev, response.data]);
@@ -84,7 +84,7 @@ const UserAddresses: React.FC = () => {
     if (!editAddress?.id) return;
     try {
       const response = await apiClient.put<Address>(
-        `/api/api/adresse/addresses/${editAddress.id}`,
+        `/api/adresse/addresses/${editAddress.id}`,
         editAddress,
         { withCredentials: true }
       );
@@ -99,7 +99,7 @@ const UserAddresses: React.FC = () => {
 
   const handleDeleteAddress = async (id: number) => {
     try {
-      await apiClient.delete(`/api/api/adresse/addresses/${id}`, { withCredentials: true });
+      await apiClient.delete(`/api/adresse/addresses/${id}`, { withCredentials: true });
       setAddresses((prev) => prev.filter((addr) => addr.id !== id));
     } catch (err) {
       console.error("Erreur lors de la suppression de l'adresse :", err);

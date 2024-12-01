@@ -23,7 +23,7 @@ const PasswordResetForm: React.FC = () => {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
-      await apiClient.post("/api/api/forget/request-reset", { email });
+      await apiClient.post("/api/forget/request-reset", { email });
       setMessage("Un e-mail de réinitialisation a été envoyé.");
       setError("");
       setOpenModal(true);

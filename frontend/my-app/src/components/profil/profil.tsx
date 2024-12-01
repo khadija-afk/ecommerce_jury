@@ -20,7 +20,7 @@ const UserProfile: React.FC = () => {
     const fetchUserProfile = async () => {
       try {
         setLoading(true);
-        const response = await apiClient.get<User>("/api/api/user/profil", {
+        const response = await apiClient.get<User>("/api/user/profil", {
           withCredentials: true,
         });
         setUser(response.data);
@@ -44,7 +44,7 @@ const UserProfile: React.FC = () => {
   const handleSave = async () => {
     try {
       const response = await apiClient.put<{ user: User }>(
-        "/api/api/user/updateProfil",
+        "/api/user/updateProfil",
         updatedData,
         { withCredentials: true }
       );

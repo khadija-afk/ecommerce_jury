@@ -61,7 +61,7 @@ const ReviewForm: React.FC<ReviewFormProps> = ({ productId, onReviewAdded }) => 
 
     try {
       const response = await apiClient.post(
-        `/api/api/review`,
+        `/api/review`,
         { product_fk: productId, rating, comment },
         { withCredentials: true }
       );

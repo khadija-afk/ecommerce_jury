@@ -54,7 +54,7 @@ const Checkout: React.FC = () => {
   useEffect(() => {
     const fetchAddresses = async () => {
       try {
-        const response = await apiClient.get<Address[]>('/api/api/adresse/addresses', {
+        const response = await apiClient.get<Address[]>('/api/adresse/addresses', {
           withCredentials: true,
         });
         setAddresses(response.data);
@@ -75,7 +75,7 @@ const Checkout: React.FC = () => {
   useEffect(() => {
     if (!state?.total && orderId) {
       apiClient
-        .get<{ total: number }>(`/api/api/order/orders/${orderId}`, { withCredentials: true })
+        .get<{ total: number }>(`/api/order/orders/${orderId}`, { withCredentials: true })
         .then((response) => setTotal(response.data.total))
         .catch((err) =>
           console.error('Erreur lors de la récupération des détails de la commande :', err)
@@ -91,7 +91,7 @@ const Checkout: React.FC = () => {
 
   const handleAddNewAddress = async () => {
     try {
-      const response = await apiClient.post<Address>('/api/api/adresse/addresses', newAddress, {
+      const response = await apiClient.post<Address>('/api/adresse/addresses', newAddress, {
         withCredentials: true,
       });
       setAddresses([...addresses, response.data]); // Ajouter la nouvelle adresse à la liste
@@ -122,7 +122,7 @@ const Checkout: React.FC = () => {
 
     try {
       const paymentDetailResponse = await apiClient.post<{ id: number }>(
-        '/api/api/payment/payment-details',
+        '/api/payment/payment-details',
         {
           order_fk: orderId,
           amount: total,
@@ -146,7 +146,7 @@ const Checkout: React.FC = () => {
         }
 
         const response = await apiClient.post<{ sessionId: string }>(
-          '/api/api/stripe/create-checkout-session',
+          '/api/stripe/create-checkout-session',
           {
             paymentMethod: 'stripe',
             line_items: [],

@@ -38,25 +38,25 @@ const PaymentSuccessPage = () => {
 
       try {
         // Mettre à jour le statut de PaymentDetail à "Paid"
-        await apiClient.put(`/api/api/payment/payment-details/${paymentDetailId}`, {
+        await apiClient.put(`/api/payment/payment-details/${paymentDetailId}`, {
           status: 'Paid'
         });
         console.log("Statut du paiement mis à jour à 'Paid'.");
 
         // Mettre à jour le statut de la commande à "Validé"
-        await apiClient.put(`/api/api/order/orders/${orderId}`, {
+        await apiClient.put(`/api/order/orders/${orderId}`, {
           status: 'Validé'
         });
         console.log("Statut de la commande mis à jour à 'Validé'.");
 
         // Vider le panier après la mise à jour des statuts
-        await apiClient.post('/api/api/cartItem/cart-items/clear');
+        await apiClient.post('/api/cartItem/cart-items/clear');
         console.log("Le panier a été vidé.");
         setPanier([]); // Vider le panier
         recalculateTotals([]); // Recalculer les totaux
 
         // Supprimer tous les favoris
-        await apiClient.delete('/api/api/favorie/clear/api');
+        await apiClient.delete('/api/favorie/clear/api');
         console.log("Tous les favoris ont été supprimés.");
         setFavorites([]);
 

@@ -33,7 +33,7 @@ const PaymentFailedPage = () => {
 
       try {
         // Mettre à jour le statut de PaymentDetail à "Failed"
-        await apiClient.put(`/api/api/payment/payment-details/${paymentDetailId}`, {
+        await apiClient.put(`/api/payment/payment-details/${paymentDetailId}`, {
           status: 'Failed'
         });
         console.log("Statut du paiement mis à jour à 'Failed'.");

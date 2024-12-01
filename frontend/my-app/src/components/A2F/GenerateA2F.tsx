@@ -17,7 +17,7 @@ const TwoFactorAuth = () => {
   // Récupérer les informations utilisateur
   const fetchUserId = async () => {
     try {
-      const response = await apiClient.get("/api/api/user/check_auth", {
+      const response = await apiClient.get("/api/user/check_auth", {
         withCredentials: true,
       });
       setUserId(response.data.id); // ID utilisateur
@@ -32,7 +32,7 @@ const TwoFactorAuth = () => {
   // Générer le QR Code
   const fetchQrCode = async () => {
     try {
-      const response = await apiClient.get("/api/api/A2F/generate", {
+      const response = await apiClient.get("/api/A2F/generate", {
         withCredentials: true,
       });
       setQrCode(response.data.qrCode);
@@ -57,7 +57,7 @@ const TwoFactorAuth = () => {
   const handleActivate = async () => {
     try {
       const response = await apiClient.post(
-        "/api/api/A2F/activate",
+        "/api/A2F/activate",
         { token: otp, secret, userId },
         { withCredentials: true }
       );

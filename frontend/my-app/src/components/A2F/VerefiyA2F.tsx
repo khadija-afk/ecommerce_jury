@@ -14,7 +14,7 @@ const Verify2FA: React.FC<Verify2FAProps> = ({ userId, onSuccess }) => {
   const handleVerify = async () => {
     try {
       const response = await apiClient.post(
-        "/api/api/A2F/verify",
+        "/api/A2F/verify",
         { userId, token: otp },
         { withCredentials: true }
       );

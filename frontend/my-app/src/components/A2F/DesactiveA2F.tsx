@@ -14,7 +14,7 @@ const Disable2FA = () => {
 
   const fetchUserId = async () => {
     try {
-      const response = await apiClient.get("/api/api/user/check_auth", {
+      const response = await apiClient.get("/api/user/check_auth", {
         withCredentials: true,
       });
       setUserId(response.data.id); // ID utilisateur
@@ -33,7 +33,7 @@ const Disable2FA = () => {
   const handleDisable = async () => {
     try {
       const response = await apiClient.post(
-        "/api/api/A2F/disable",
+        "/api/A2F/disable",
         { userId, token: otp },
         { withCredentials: true }
       );

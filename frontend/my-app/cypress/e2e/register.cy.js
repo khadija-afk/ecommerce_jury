@@ -13,7 +13,7 @@ describe('Page d\'inscription', () => {
     });
 
     it('Envoie une demande d\'inscription avec des données valides', () => {
-        cy.intercept('POST', '/api/api/user/add', {
+        cy.intercept('POST', '/api/user/add', {
             statusCode: 201,
             body: {
                 message: 'Utilisateur créé avec succès',
@@ -41,7 +41,7 @@ describe('Page d\'inscription', () => {
     });
 
     it('Affiche une erreur lorsque l\'email est déjà utilisé', () => {
-        cy.intercept('POST', '/api/api/user/add', {
+        cy.intercept('POST', '/api/user/add', {
             statusCode: 409,
             body: { error: 'Cet email est déjà utilisé' },
         }).as('registerRequestFailed');
@@ -61,7 +61,7 @@ describe('Page d\'inscription', () => {
     });
 
     it('Affiche une erreur de validation pour le mot de passe', () => {
-        cy.intercept('POST', '/api/api/user/add', {
+        cy.intercept('POST', '/api/user/add', {
             statusCode: 400,
             body: { error: 'Le mot de passe doit comporter au moins 8 caractères, une majuscule, un caractère spécial et un chiffre.' },
         }).as('registerPasswordError');

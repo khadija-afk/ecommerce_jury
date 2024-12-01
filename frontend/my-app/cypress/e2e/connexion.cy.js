@@ -10,7 +10,7 @@ describe('Page de connexion', () => {
     });
 
     it('Connexion réussie avec les identifiants corrects', () => {
-        cy.intercept('POST', '/api/api/user/sign', {
+        cy.intercept('POST', '/api/user/sign', {
             statusCode: 200,
             body: {
                 user: {
@@ -38,7 +38,7 @@ describe('Page de connexion', () => {
     });
 
     it('Affiche une erreur avec des identifiants incorrects', () => {
-        cy.intercept('POST', '/api/api/user/sign', {
+        cy.intercept('POST', '/api/user/sign', {
             statusCode: 404,
             body: { message: 'Utilisateur non trouvé. Veuillez vérifier vos identifiants.' },
         }).as('signInRequestFailed');
@@ -57,7 +57,7 @@ describe('Page de connexion', () => {
     });
 
     it('Affiche une erreur lorsque le mot de passe est incorrect', () => {
-        cy.intercept('POST', '/api/api/user/sign', {
+        cy.intercept('POST', '/api/user/sign', {
             statusCode: 400,
             body: { message: 'Mot de passe incorrect. Veuillez réessayer.' },
         }).as('signInRequestFailed');

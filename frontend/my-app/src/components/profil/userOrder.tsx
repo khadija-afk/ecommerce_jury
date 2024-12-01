@@ -33,7 +33,7 @@ const UserOrders: React.FC = () => {
     const fetchOrders = async () => {
       try {
         setLoading(true);
-        const response = await apiClient.get<Order[]>("/api/api/order/orders", {
+        const response = await apiClient.get<Order[]>("/api/order/orders", {
           withCredentials: true,
         });
         setOrders(response.data);
@@ -54,7 +54,7 @@ const UserOrders: React.FC = () => {
 
   const handleDownloadInvoice = async (orderId: number) => {
     try {
-      const response = await apiClient.get(`/api/api/order/order/${orderId}/invoice`, {
+      const response = await apiClient.get(`/api/order/order/${orderId}/invoice`, {
         responseType: "blob", // Important pour traiter un fichier binaire (PDF)
         withCredentials: true,
       });

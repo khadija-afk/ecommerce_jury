@@ -59,7 +59,7 @@ export const fetchArticles = createAsyncThunk<Article[]>(
     async (_, { rejectWithValue }) => {
         try {
             console.log(import.meta.env.VITE_CORS_URL, import.meta.env.URL_BACKEND)
-            const response = await instance.get('/api/article/');  /*   /api/api/article/*/ 
+            const response = await instance.get('/api/article/');  /*   /api/article/*/ 
             return response.data as 
             [];
         } catch (error: any) {

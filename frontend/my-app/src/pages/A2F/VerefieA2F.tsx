@@ -10,7 +10,7 @@ const Verify2FAPage = () => {
   useEffect(() => {
     const fetchUserId = async () => {
       try {
-        const response = await apiClient.get("/api/api/user/check_auth", {
+        const response = await apiClient.get("/api/user/check_auth", {
           withCredentials: true,
         });
         setUserId(response.data.id); // ID utilisateur

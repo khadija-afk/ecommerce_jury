@@ -33,7 +33,7 @@ export const signInUser = createAsyncThunk(
             const instance = axios.create({
                 withCredentials: true
             });
-            const response = await instance.post('/api/api/user/sign', credentials);
+            const response = await instance.post('/api/user/sign', credentials);
             const { token } = response.data;
             localStorage.setItem('token', token);
             localStorage.setItem('user', JSON.stringify(response.data));
