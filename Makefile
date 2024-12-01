@@ -35,6 +35,8 @@ pull:
 deploy-prod: pull start-nginx
 
 start-front:
+	@echo "URL_BACKEND is $(URL_BACKEND)"
+	docker-compose down frontend
 	docker-compose up --build frontend
 
 sz:

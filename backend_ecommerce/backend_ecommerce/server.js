@@ -35,6 +35,7 @@ import routerA2F from  './src/routes/auth2FA.js'
 
 
 
+
 const app = express()
 
 
@@ -51,9 +52,11 @@ app.use(cookieParser())
 // Configurer CORS pour autoriser toutes les requêtes
 console.log(`CORS_URL in use: ${process.env.CORS_URL}`); // Ajout du console.log
 app.use(cors({
-  origin: process.env.CORS_URL ,
+  origin: env.cors_url,
   credentials: true
 }));
+
+console.log(`CORS_URL in use: ${process.env.CORS_URL}`); // Ajout du console.log
 
 // Utiliser le routeur AdminJS
 if (process.env.NODE_ENV != 'test') {

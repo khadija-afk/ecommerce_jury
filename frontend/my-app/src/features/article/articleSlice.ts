@@ -41,7 +41,7 @@ const initialState: ArticleState = {
 
 // Instance Axios centralisée
 const instance = axios.create({
-    baseURL: import.meta.env.baseURL_backend,
+    baseURL: import.meta.env.VITE_CORS_URL,
     withCredentials: true,
 });
 
@@ -58,7 +58,8 @@ export const fetchArticles = createAsyncThunk<Article[]>(
     'articles/fetchArticles',
     async (_, { rejectWithValue }) => {
         try {
-            const response = await instance.get('/api/article/');
+            console.log(import.meta.env.VITE_CORS_URL, import.meta.env.URL_BACKEND)
+            const response = await instance.get('/api/article/');  /*   /api/api/article/*/ 
             return response.data as 
             [];
         } catch (error: any) {

@@ -8,4 +8,5 @@ export const env = {
     web_app_url: process.env.WEB_APP_URL || "http://localhost:3000",
     user: process.env.MY_EMAIL,
     pass: process.env.MY_PASSWORD,
+    cors_url: process.env.CORS_URL   || "https://ecommerce-jury-2.onrender.com/"
 };
