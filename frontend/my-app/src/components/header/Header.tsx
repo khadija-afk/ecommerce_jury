@@ -27,6 +27,7 @@ import {
 import MiniNavbar from "../miniNav/MiniNavbare";
 import ProfileNavBar from "../profil/profilNavbare";
 import "./Header.css";
+import apiClient from "../../utils/axiosConfig";
 
 const Header: React.FC = () => {
   const { isAuthenticated, setIsAuthenticated } = useAuth();
@@ -42,13 +43,12 @@ const Header: React.FC = () => {
   useEffect(() => {
     const checkAuthStatus = async () => {
       try {
-        const response = await fetch("/api/user/check_auth", {
-          method: "GET",
-          credentials: "include",
+        const response = await apiClient.get("/api/user/check_auth", {
+          method: "GET"
         });
 
-        if (response.ok) {
-          const responseData = await response.json();
+        if (response.data) {
+          const responseData = await response.data;
           if (responseData && responseData.id && responseData.firstName) {
             setIsAuthenticated(true);
             setUserFirstName(responseData.firstName);
@@ -80,11 +80,11 @@ const Header: React.FC = () => {
 
   const handleLogout = async () => {
     try {
-      const response = await fetch("/api/Log/logout", {
+      const response = await apiClient.post("/api/Log/logout", {
         method: "POST",
         credentials: "include",
       });
-      if (response.ok) {
+      if (response.data) {
         setIsAuthenticated(false);
         setUserFirstName("");
         setShowOffcanvas(false);
