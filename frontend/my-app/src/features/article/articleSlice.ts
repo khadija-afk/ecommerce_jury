@@ -41,7 +41,7 @@ const initialState: ArticleState = {
 
 // Instance Axios centralisée
 const instance = axios.create({
-    baseURL: '/api/api/article/',
+    baseURL: import.meta.env.baseURL_backend,
     withCredentials: true,
 });
 
@@ -58,8 +58,9 @@ export const fetchArticles = createAsyncThunk<Article[]>(
     'articles/fetchArticles',
     async (_, { rejectWithValue }) => {
         try {
-            const response = await instance.get('/');
-            return response.data as Article[];
+            const response = await instance.get('/api/article/');
+            return response.data as 
+            [];
         } catch (error: any) {
             return rejectWithValue(error.response?.data || 'Erreur lors du chargement des articles.');
         }
