@@ -31,40 +31,36 @@ import apiClient from "../../utils/axiosConfig";
 
 const Header: React.FC = () => {
   const { isAuthenticated, setIsAuthenticated } = useAuth();
-  const [userFirstName, setUserFirstName] = useState("");
-  const [searchTerm, setSearchTerm] = useState("");
+  const [userFirstName, setUserFirstName] = useState<string>("");
+  const [searchTerm, setSearchTerm] = useState<string>("");
   const { totalArticle } = usePanier();
   const { totalFavorites } = useFavoris();
   const [showOffcanvas, setShowOffcanvas] = useState(false);
-  const [showSearchOffcanvas, setShowSearchOffcanvas] = useState(false); // Offcanvas de recherche
+  const [showSearchOffcanvas, setShowSearchOffcanvas] = useState(false);
   const [showProfileMenu, setShowProfileMenu] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
-    const checkAuthStatus = async () => {
+    const checkAuthStatus = () => {
       try {
-        const response = await apiClient.get('/api/user/check_auth', {
-          withCredentials: true, // Inclure les cookies dans la requête
-        });
-        console.log('Réponse reçue du serveur :', response.data);
-    
-        if (response.data && response.data.id && response.data.firstName) {
+        const user = localStorage.getItem("user");
+        if (user) {
+          const parsedUser = JSON.parse(user);
           setIsAuthenticated(true);
-          setUserFirstName(response.data.firstName);
+          setUserFirstName(parsedUser.firstName || "");
         } else {
           setIsAuthenticated(false);
-          setUserFirstName('');
+          setUserFirstName("");
         }
       } catch (error) {
-        console.error('Erreur lors de la vérification de l\'authentification :', error);
+        console.error("Erreur lors de la vérification de l'authentification :", error);
         setIsAuthenticated(false);
-        setUserFirstName('');
+        setUserFirstName("");
       }
     };
-    
-    
+
     checkAuthStatus();
-  }, [setIsAuthenticated, isAuthenticated]);
+  }, [setIsAuthenticated]);
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
@@ -83,6 +79,7 @@ const Header: React.FC = () => {
         setIsAuthenticated(false);
         setUserFirstName("");
         setShowOffcanvas(false);
+        localStorage.removeItem("user"); // Nettoyer localStorage après déconnexion
       }
     } catch (error) {
       console.error("Erreur lors de la déconnexion :", error);
@@ -101,28 +98,18 @@ const Header: React.FC = () => {
 
   return (
     <header>
-      {/* Barre de navigation pour petits écrans */}
       <Container fluid className="d-lg-none d-flex align-items-center justify-content-between py-2">
-        <Button
-          variant="link"
-          className="search-icon"
-          onClick={() => setShowSearchOffcanvas(true)}
-        >
+        <Button variant="link" className="search-icon" onClick={() => setShowSearchOffcanvas(true)}>
           <FontAwesomeIcon icon={faSearch} />
         </Button>
         <Navbar.Brand href="/" className="mx-auto text-center">
           KenziShop
         </Navbar.Brand>
-        <Button
-          variant="link"
-          className="menu-icon"
-          onClick={() => setShowOffcanvas(true)}
-        >
+        <Button variant="link" className="menu-icon" onClick={() => setShowOffcanvas(true)}>
           <FontAwesomeIcon icon={faBars} />
         </Button>
       </Container>
 
-      {/* Barre de navigation pour grands écrans */}
       <Navbar expand="lg" bg="white" variant="light" className="navbar-custom py-3">
         <Container fluid>
           <Navbar.Brand href="/" className="d-none d-lg-inline">KenziShop</Navbar.Brand>
@@ -184,14 +171,13 @@ const Header: React.FC = () => {
 
       <div className="header-divider" />
 
-      {/* Offcanvas Menu Principal */}
       <Offcanvas show={showOffcanvas} onHide={() => setShowOffcanvas(false)} placement="end">
         <Offcanvas.Header closeButton>
           <Offcanvas.Title>Menu</Offcanvas.Title>
         </Offcanvas.Header>
         <Offcanvas.Body>
           <Nav className="d-flex flex-column align-items-start">
-          <Nav.Link onClick={() => handleNavLinkClick("/favoris")} className="position-relative mb-2">
+            <Nav.Link onClick={() => handleNavLinkClick("/favoris")} className="position-relative mb-2">
               <FontAwesomeIcon icon={faHeart} className="me-2" />
               Favoris
               {totalFavorites() > 0 && (
@@ -200,7 +186,6 @@ const Header: React.FC = () => {
                 </Badge>
               )}
             </Nav.Link>
-
             <Nav.Link onClick={() => handleNavLinkClick("/panier")} className="position-relative mb-2">
               <FontAwesomeIcon icon={faShoppingCart} className="me-2" />
               Panier
@@ -210,7 +195,6 @@ const Header: React.FC = () => {
                 </Badge>
               )}
             </Nav.Link>
-            
             {isAuthenticated ? (
               <>
                 <Nav.Link onClick={toggleProfileMenu} className="mb-2">
@@ -235,13 +219,11 @@ const Header: React.FC = () => {
               </>
             )}
           </Nav>
-
           {showProfileMenu && <ProfileNavBar handleNavLinkClick={handleNavLinkClick} />}
           <MiniNavbar handleNavLinkClick={handleNavLinkClick} />
         </Offcanvas.Body>
       </Offcanvas>
 
-      {/* Offcanvas Recherche */}
       <Offcanvas show={showSearchOffcanvas} onHide={() => setShowSearchOffcanvas(false)} placement="top">
         <Offcanvas.Header closeButton>
           <Offcanvas.Title>Rechercher</Offcanvas.Title>

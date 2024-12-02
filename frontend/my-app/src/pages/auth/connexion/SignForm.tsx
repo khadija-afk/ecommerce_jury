@@ -15,6 +15,7 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import apiClient from '../../../utils/axiosConfig';
+import { useAuth } from "../../../utils/AuthCantext";
 
 // Définir un thème par défaut
 const defaultTheme = createTheme();
@@ -24,6 +25,9 @@ const SignInForm: React.FC = () => {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
     const navigate = useNavigate();
+    const [userFirstName, setUserFirstName] = useState("");
+
+    const { isAuthenticated, setIsAuthenticated } = useAuth();
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setCredentials({ ...credentials, [e.target.name]: e.target.value });
@@ -38,11 +42,12 @@ const SignInForm: React.FC = () => {
             const response = await apiClient.post(
                 '/api/user/sign', credentials
             );
-
             console.log('Réponse API :', response.data);
 
             // Stocker les informations utilisateur si nécessaire
             localStorage.setItem('user', JSON.stringify(response.data.user));
+            setIsAuthenticated(true);
+            setUserFirstName(response.data.firstName);
             console.log("Requête Axios avec cookies :", document.cookie);
 
 
