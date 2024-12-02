@@ -139,7 +139,9 @@ const Header: React.FC = () => {
               )}
             </Nav.Link>
 
-            <Nav.Link href="/panier" className="position-relative me-3">
+            <Nav.Link 
+            onClick={() => navigate('/panier')}
+            className="position-relative me-3">
               <FontAwesomeIcon icon={faShoppingCart} />
               {totalArticle > 0 && (
                 <Badge bg="danger" pill className="icon-badge">
