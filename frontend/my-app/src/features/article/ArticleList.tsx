@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState, AppDispatch } from '../../store';
 import { fetchArticles } from './articleSlice';
-import { Card, Container, Row, Col } from 'react-bootstrap';
+import { Card, Container, Row, Col,  Nav, } from 'react-bootstrap';
 import { Link, useNavigate } from 'react-router-dom';
 import './ArticleListe.css';
 import { getAverageRating, Review } from '../../services/review/ReviewService';
@@ -84,7 +84,7 @@ const ArticleList: React.FC = () => {
                                     <span className={isFavorite(article.id) ? 'red' : ''}>♥</span>
                                 </div>
                                 {Array.isArray(article.photo) && article.photo.length > 0 ? (
-                                    <button
+                                    <Nav.Link 
                                     onClick={() => navigate(`/detailArticle/${article.id}`)}
                                     style={{
                                         background: "none",
@@ -100,7 +100,7 @@ const ArticleList: React.FC = () => {
                                         alt={`Photo de ${article.name}`}
                                         className="custom-card-img"
                                     />
-                                </button>
+                                </Nav.Link >
                                 ) : (
                                     <Card.Img
                                         variant="top"
