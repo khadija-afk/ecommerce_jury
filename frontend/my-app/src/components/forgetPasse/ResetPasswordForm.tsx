@@ -49,7 +49,7 @@ const ResetPasswordPage = () => {
     }
 
     try {
-      await apiClient.post('api/api/forget/reset-password', { token, newPassword });
+      await apiClient.post('/api/forget/reset-password', { token, newPassword });
       setMessage('Mot de passe réinitialisé avec succès.');
       setError('');
       navigate('/reset-password-success');

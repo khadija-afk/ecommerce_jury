@@ -133,18 +133,29 @@ const SignInForm: React.FC = () => {
                                 {error}
                             </Typography>
                         )}
-                        <Grid container>
+                       <Grid container>
                             <Grid item xs>
-                                <Link href="/forgot-password" variant="body2">
-                                    Mot de passe oublié ?
-                                </Link>
+                                <Typography
+                                variant="body2"
+                                color="primary"
+                                sx={{ cursor: "pointer" }}
+                                onClick={() => navigate("/forgot-password")}
+                                >
+                                Mot de passe oublié ?
+                                </Typography>
                             </Grid>
                             <Grid item>
-                                <Link href="/register" variant="body2">
-                                    {"Vous n'avez pas de compte ? Inscrivez-vous"}
-                                </Link>
+                                <Typography
+                                variant="body2"
+                                color="primary"
+                                sx={{ cursor: "pointer" }}
+                                onClick={() => navigate("/register")}
+                                >
+                                {"Vous n'avez pas de compte ? Inscrivez-vous"}
+                                </Typography>
                             </Grid>
-                        </Grid>
+                            </Grid>
+
                     </Box>
                 </Box>
                 <Box sx={{ mt: 8, mb: 4 }} component="footer">
