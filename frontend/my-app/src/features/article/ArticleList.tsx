@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { RootState, AppDispatch } from '../../store';
 import { fetchArticles } from './articleSlice';
 import { Card, Container, Row, Col } from 'react-bootstrap';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import './ArticleListe.css';
 import { getAverageRating, Review } from '../../services/review/ReviewService';
 import { useFavoris } from '../../utils/FavorieContext';
@@ -22,6 +22,7 @@ const ArticleList: React.FC = () => {
     const articles = useSelector((state: RootState) => state.articles.articles) as Article[];
     const articleStatus = useSelector((state: RootState) => state.articles.status);
     const error = useSelector((state: RootState) => state.articles.error);
+    const navigate = useNavigate();
 
     const { favorites, addFavorite, removeFavorite } = useFavoris();
 
@@ -30,6 +31,10 @@ const ArticleList: React.FC = () => {
 
     const isFavorite = (articleId: number): boolean => {
         return favorites.some((fav) => fav.id === articleId);
+    };
+
+    const handleNavigation = (article: Article) => {
+        navigate(`/detailArticle/${article.id}`);
     };
 
     useEffect(() => {
@@ -79,14 +84,14 @@ const ArticleList: React.FC = () => {
                                     <span className={isFavorite(article.id) ? 'red' : ''}>♥</span>
                                 </div>
                                 {Array.isArray(article.photo) && article.photo.length > 0 ? (
-                                    <Link to={`api/article/${article.id}`}>
-                                        <Card.Img
-                                            variant="top"
-                                            src={article.photo[0]}
-                                            alt={`Photo de ${article.name}`}
-                                            className="custom-card-img"
-                                        />
-                                    </Link>
+                                   <div onClick={() => handleNavigation(article)} style={{ cursor: "pointer" }}>
+                                   <Card.Img
+                                       variant="top"
+                                       src={article.photo[0]}
+                                       alt={`Photo de ${article.name}`}
+                                       className="custom-card-img"
+                                   />
+                               </div>
                                 ) : (
                                     <Card.Img
                                         variant="top"

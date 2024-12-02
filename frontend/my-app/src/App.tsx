@@ -77,7 +77,7 @@ const App = () => {
         <Route path="/" element={<Layout />}>
           <Route index element={<HomePage />} />
           <Route path="article" element={<ArticleList />} />
-          <Route path="api/article/:id" element={<Detail />} />
+          <Route path="detailArticle/:id" element={<Detail />} />
           <Route path="panier" element={<Panier />} />
           <Route path="checkout/:orderId" element={<Checkout />} />
           <Route path="success" element={<PaymentSuccessPage />} />

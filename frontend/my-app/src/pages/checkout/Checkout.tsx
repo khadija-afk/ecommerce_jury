@@ -192,7 +192,9 @@ const Checkout: React.FC = () => {
         await stripe.redirectToCheckout({ sessionId });
       } else if (paymentMethod === 'cheque') {
         alert('Merci pour votre commande. Veuillez envoyer votre chèque à l\'adresse indiquée.');
-        navigate(`/success`);
+
+        const fakeSessionId = `cheque_${orderId}`;
+        navigate(`/success?session_id=${fakeSessionId}&amount=${total}`);
       }
     } catch (error) {
       console.error('Erreur lors de la création du paiement :', error);
