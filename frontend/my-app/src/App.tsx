@@ -107,8 +107,6 @@ const App = () => {
           <Route path="cookie-settings" element={<CookieSettings />} />
           <Route path="terms-conditions" element={<TermsAndConditions />} />
         </Route>
-
-        {/* Authentification */}
         <Route path="register" element={<RegisterForm />} />
         <Route path="sign" element={<SignInForm />} />
 

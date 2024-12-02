@@ -126,14 +126,19 @@ const Header: React.FC = () => {
             </Button>
           </Form>
           <Nav className="d-none d-lg-flex align-items-center ms-auto">
-            <Nav.Link href="/favoris" className="position-relative me-3">
+          <Nav.Link
+              onClick={() => navigate('/favoris')}
+              className="position-relative me-3"
+            >
               <FontAwesomeIcon icon={faHeart} />
+
               {totalFavorites() > 0 && (
                 <Badge bg="danger" pill className="icon-badge">
                   {totalFavorites()}
                 </Badge>
               )}
             </Nav.Link>
+
             <Nav.Link href="/panier" className="position-relative me-3">
               <FontAwesomeIcon icon={faShoppingCart} />
               {totalArticle > 0 && (
