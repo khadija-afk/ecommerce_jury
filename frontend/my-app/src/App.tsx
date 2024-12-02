@@ -54,6 +54,9 @@ import TwoFactorAuthPage from './pages/A2F/GenerateA2F';
 import Verify2FAPage from './pages/A2F/VerefieA2F';
 import Disable2FAPage from './pages/A2F/DesactiveA2F';
 
+//NOTFOUND
+import NotFound from './components/NotFound/NotFound';
+
 const App = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [showCookieSettings, setShowCookieSettings] = useState(false);
@@ -76,6 +79,8 @@ const App = () => {
         {/* Routes principales */}
         <Route path="/" element={<Layout />}>
           <Route index element={<HomePage />} />
+          {/* Route de fallback pour les URL non correspondantes */}
+          <Route path="*" element={<NotFound />} />
           <Route path="article" element={<ArticleList />} />
           <Route path="detailArticle/:id" element={<Detail />} />
           <Route path="panier" element={<Panier />} />
