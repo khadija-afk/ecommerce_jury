@@ -44,8 +44,11 @@ const SignInForm: React.FC = () => {
             );
             console.log('Réponse API :', response.data);
 
+            const { user, token } = response.data;
+
             // Stocker les informations utilisateur si nécessaire
             localStorage.setItem('user', JSON.stringify(response.data.user));
+            localStorage.setItem('token', token);
             setIsAuthenticated(true);
             setUserFirstName(response.data.firstName);
             console.log("Requête Axios avec cookies :", document.cookie);

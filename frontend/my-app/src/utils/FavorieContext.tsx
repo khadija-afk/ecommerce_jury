@@ -2,23 +2,22 @@ import React, { createContext, useState, useContext, ReactNode, useEffect } from
 import apiClient from './axiosConfig';
 import { useAuth } from './AuthCantext';
 
-
 export interface Article {
-  id: number; // ID unique de l'article
+  id: number;
   name: string;
   photo: string[];
   price: number;
-  content: string; // Description obligatoire
-  createdAt?: string; // Optionnel si ce champ n'est pas toujours présent
+  content: string;
+  createdAt?: string;
 }
 
 export interface FavorisContextType {
-  favorites: Article[]; // Liste des articles favoris
-  addFavorite: (article: Article) => void; // Ajouter un favori
-  removeFavorite: (product_fk: number) => void; // Supprimer un favori par ID
-  isFavorite: (product_fk: number) => boolean; // Vérifier si un article est dans les favoris
-  totalFavorites: () => number; // Nombre total de favoris
-  setFavorites: React.Dispatch<React.SetStateAction<Article[]>>; // Fonction pour mettre à jour les favoris
+  favorites: Article[];
+  addFavorite: (article: Article) => void;
+  removeFavorite: (product_fk: number) => void;
+  isFavorite: (product_fk: number) => boolean;
+  totalFavorites: () => number;
+  setFavorites: React.Dispatch<React.SetStateAction<Article[]>>;
 }
 
 export const FavorisContext = createContext<FavorisContextType | undefined>(undefined);
@@ -37,15 +36,26 @@ export const FavorisProvider: React.FC<{ children: ReactNode }> = ({ children })
 
   useEffect(() => {
     if (!isAuthenticated) {
-      setFavorites([]); // Réinitialiser les favoris si déconnecté
+      setFavorites([]);
       return;
     }
 
     const fetchFavorites = async () => {
       try {
-        const response = await apiClient.get('/api/favorie', { withCredentials: true });
+        const token = localStorage.getItem('token');
+        if (!token) {
+          console.error('Token introuvable. Vérifiez si l\'utilisateur est authentifié.');
+          return;
+        }
+
+        const response = await apiClient.get('/api/favorie', {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
         if (response.data && Array.isArray(response.data)) {
-          setFavorites(response.data.map((fav: any) => fav.Article)); // Mappage des articles favoris
+          setFavorites(response.data.map((fav: any) => fav.Article));
           console.log('Favoris récupérés avec succès :', response.data);
         } else {
           console.warn('Réponse inattendue pour les favoris :', response.data);
@@ -68,13 +78,14 @@ export const FavorisProvider: React.FC<{ children: ReactNode }> = ({ children })
       return;
     }
 
-    if (!article || !article.id) {
-      console.error('L\'article ou son ID est invalide.');
+    const token = localStorage.getItem('token');
+    if (!token) {
+      console.error('Token introuvable : impossible d\'ajouter aux favoris.');
       return;
     }
 
     if (isFavorite(article.id)) {
-      console.warn('Cet article est déjà dans vos favoris.');
+      console.warn(`L'article ${article.name} est déjà dans vos favoris.`);
       return;
     }
 
@@ -82,12 +93,16 @@ export const FavorisProvider: React.FC<{ children: ReactNode }> = ({ children })
       const response = await apiClient.post(
         '/api/favorie',
         { product_fk: article.id },
-        { withCredentials: true }
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
 
       if (response.status === 201) {
         setFavorites((prev) => [...prev, article]);
-        console.log(`Favori ajouté : ${article.name}`);
+        console.log(`Favori ajouté avec succès : ${article.name}`);
       } else {
         console.warn('Erreur inattendue lors de l\'ajout du favori :', response);
       }
@@ -102,11 +117,21 @@ export const FavorisProvider: React.FC<{ children: ReactNode }> = ({ children })
       return;
     }
 
+    const token = localStorage.getItem('token');
+    if (!token) {
+      console.error('Token introuvable : impossible de supprimer des favoris.');
+      return;
+    }
+
     try {
-      await apiClient.delete(`/api/favorie/${product_fk}`, { withCredentials: true });
+      await apiClient.delete(`/api/favorie/${product_fk}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
 
       setFavorites((prev) => prev.filter((fav) => fav.id !== product_fk));
-      console.log(`Favori avec product_fk=${product_fk} supprimé avec succès.`);
+      console.log(`Favori supprimé avec succès : product_fk=${product_fk}`);
     } catch (error) {
       console.error('Erreur lors de la suppression du favori :', error);
     }

@@ -61,12 +61,13 @@ res.cookie("access_token", token, {
 })
 
   
-
+// otherData['token']=token
     
     .status(200)
     .json({
       message: "Connexion réussie.",
       user: otherData,
+      token: token
     });
 
     console.log("Cookie envoyé : ", req.cookies);
