@@ -21,6 +21,6 @@
     },
 
   },
-  "include": ["src/**/*"],
+  "include": ["src/**/*", "react-dom-client.d.ts"],
   "exclude": ["node_modules",  "dist"]
 }
