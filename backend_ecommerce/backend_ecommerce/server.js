@@ -3,9 +3,9 @@ import { env } from './src/config.js'
 import swaggerUi from 'swagger-ui-express'
 import swaggerDocs from './swagger.js'
 import cookieParser from 'cookie-parser'
-
+import path from 'path'
+import { fileURLToPath } from 'url';
 import cors from 'cors'
-import Stripe from 'stripe'
 
 
 import './src/models/index.js';
@@ -83,10 +83,21 @@ app.use("/api/cookie", routerUserPrefernec);
 app.use("/api/adresse", routerAdresse);
 app.use("/api/cantact", routerCantacte);
 app.use("/api/A2F", routerA2F);
-
-
-//stripe
 app.use('/api/webhook', stripeWebhookRoute);
+
+
+// Résoudre le chemin vers le dossier `dist` du frontend
+const __dirname = path.dirname(fileURLToPath(import.meta.url)); // Assure la compatibilité ES modules
+const distPath = path.join(__dirname, '../../frontend/my-app/dist');
+
+// Servir les fichiers statiques du frontend
+app.use(express.static(distPath));
+
+// Rediriger toutes les routes inconnues vers `index.html`
+app.get('*', (req, res) => {
+  res.sendFile(path.join(distPath, 'index.html'));
+});
+
 
 
 
