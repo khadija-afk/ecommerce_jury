@@ -95,7 +95,7 @@ app.use(express.static(distPath));
 
 // Rediriger toutes les routes inconnues vers `index.html`
 app.get('*', (req, res) => {
-  res.sendFile(path.join(distPath, 'index.html'));
+  res.sendFile(path.join(distPath, 'dist', 'index.html'));
 });
 
 
