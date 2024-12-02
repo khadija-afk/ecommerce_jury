@@ -42,7 +42,7 @@ app.use(cors({
   origin: env.cors_url,
   credentials: true // Autorise l'envoi et la réception des cookies
 }));
-console.log(`CORS_URL in use: ${process.env.CORS_URL}`);
+console.log(`CORS_URL in use: ${env.cors_url}`);
 app.use(express.json())
  
 app.use((req, res, next) => {
