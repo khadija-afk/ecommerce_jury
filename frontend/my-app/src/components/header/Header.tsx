@@ -72,19 +72,40 @@ const Header: React.FC = () => {
 
   const handleLogout = async () => {
     try {
-      const response = await apiClient.post("/api/Log/logout", {
-        withCredentials: true,
-      });
-      if (response.data) {
+      const token = localStorage.getItem("token");
+  
+      if (!token) {
+        console.warn("Token non trouvé dans le localStorage.");
+        return;
+      }
+  
+      const response = await apiClient.post(
+        "/api/Log/logout",
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${token}`, // Ajout du token Bearer
+            "Content-Type": "application/json", // Définir le type de contenu
+          },
+        }
+      );
+  
+      if (response.status === 200) {
+        // Suppression des informations utilisateur et du token local
         setIsAuthenticated(false);
         setUserFirstName("");
         setShowOffcanvas(false);
-        localStorage.removeItem("user"); // Nettoyer localStorage après déconnexion
+        localStorage.removeItem("user");
+        localStorage.removeItem("token");
+        console.log("Déconnexion réussie.");
+      } else {
+        console.warn("La déconnexion n'a pas été effectuée correctement.");
       }
     } catch (error) {
       console.error("Erreur lors de la déconnexion :", error);
     }
   };
+  
 
   const handleNavLinkClick = (path: string) => {
     navigate(path);
