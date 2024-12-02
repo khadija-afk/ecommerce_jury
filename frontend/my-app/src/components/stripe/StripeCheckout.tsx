@@ -1,7 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import { useStripe } from "@stripe/react-stripe-js";
 import { PanierContextType, PanierContext } from "../../utils/PanierContext";
-import { fetchFromApi } from "../../utils/helpers/Stripe";
 import axios from "axios";
 
 // Définition des types pour un article dans le panier
@@ -74,17 +73,28 @@ const StripeCheckout: React.FC<StripeCheckoutProps> = ({ orderId }) => {
     });
 
     try {
-      // Envoyer les articles, l'email et l'ID de la commande au backend
-      const response = await fetchFromApi("/api/stripe/create-checkout-session", {
-        body: { line_items, customer_email: email, orderId },
-        credentials: "include", // Utilisez `credentials` au lieu de `withCredentials`
-      });
-
-      if (!response) {
-        throw new Error("Réponse API non définie");
+      // Récupérer le token d'authentification
+      const token = localStorage.getItem("authToken");
+      if (!token) {
+        throw new Error("Utilisateur non authentifié.");
       }
 
-      const { sessionId, error } = response;
+      // Envoyer les données au backend
+      const response = await fetch("/api/stripe/create-checkout-session", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}`,
+        },
+        body: JSON.stringify({ line_items, customer_email: email, orderId }),
+        credentials: "include",
+      });
+
+      if (!response.ok) {
+        throw new Error(`Erreur API : ${response.statusText}`);
+      }
+
+      const { sessionId, error } = await response.json();
 
       if (error) {
         console.error("Erreur de l'API Stripe :", error);

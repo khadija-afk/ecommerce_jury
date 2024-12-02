@@ -4,21 +4,32 @@ import jwt from 'jsonwebtoken';
 import { env } from '../config.js';
 
 export const createStripeSession = async (req, res) => {
+    const url = env.cors_url
     try {
-        const token = req.cookies.access_token;
-        if (!token) {
+        // Récupérer le token depuis le header Authorization
+        const authHeader = req.headers["authorization"];
+        if (!authHeader) {
             return res.status(403).json({ error: 'Token non fourni' });
         }
 
+        // Extraire le token du header Authorization
+        const token = authHeader.split(" ")[1];
+        if (!token) {
+            return res.status(403).json({ error: 'Token non valide ou manquant' });
+        }
+
+        // Vérifier et décoder le token
         const decoded = jwt.verify(token, env.token);
         const userId = decoded.id;
 
+        // Trouver l'utilisateur par son ID
         const user = await User.findByPk(userId, { attributes: ['email'] });
         const customerEmail = user ? user.email : null;
         if (!customerEmail) {
             return res.status(400).json({ error: 'Email utilisateur introuvable' });
         }
 
+        // Récupérer le panier de l'utilisateur
         const panier = await Cart.findOne({
             where: { user_fk: userId },
             include: [{
@@ -34,9 +45,11 @@ export const createStripeSession = async (req, res) => {
 
         console.log("Panier trouvé:", panier);
 
+        // Calculer le montant total
         const totalAmount = panier.cartItems.reduce((total, item) => total + item.article.price * item.quantity, 0);
         console.log("Montant total calculé:", totalAmount);
 
+        // Créer une session Stripe
         const session = await stripe.checkout.sessions.create({
             payment_method_types: ['card'],
             line_items: panier.cartItems.map(item => ({
@@ -53,8 +66,8 @@ export const createStripeSession = async (req, res) => {
             })),
             customer_email: customerEmail,
             mode: 'payment',
-            success_url: `https://localhost/success?session_id={CHECKOUT_SESSION_ID}&amount=${totalAmount}`,
-            cancel_url: `https://localhost/cancel`,
+            success_url: `${url}/success?session_id={CHECKOUT_SESSION_ID}&amount=${totalAmount}`,
+            cancel_url: `${url}/cancel`,
         });
 
         console.log("Stripe session créée:", session);

@@ -50,12 +50,19 @@ const Checkout: React.FC = () => {
   const [paymentMethod, setPaymentMethod] = useState<string>('');
   const [loading, setLoading] = useState<boolean>(false);
 
+  const token = localStorage.getItem("token");
+
   // Charger les adresses utilisateur
   useEffect(() => {
     const fetchAddresses = async () => {
       try {
         const response = await apiClient.get<Address[]>('/api/adresse/addresses', {
-          withCredentials: true,
+          
+            headers: {
+              Authorization: `Bearer ${token}`, // Ajout du Bearer Token
+            },
+            withCredentials: true, // Inclure les cookies si nécessaire
+          
         });
         setAddresses(response.data);
 
@@ -75,7 +82,12 @@ const Checkout: React.FC = () => {
   useEffect(() => {
     if (!state?.total && orderId) {
       apiClient
-        .get<{ total: number }>(`/api/order/orders/${orderId}`, { withCredentials: true })
+        .get<{ total: number }>(`/api/order/orders/${orderId}`,  {
+          headers: {
+            Authorization: `Bearer ${token}`, // Ajout du Bearer Token
+          },
+          withCredentials: true, // Inclure les cookies si nécessaire
+        })
         .then((response) => setTotal(response.data.total))
         .catch((err) =>
           console.error('Erreur lors de la récupération des détails de la commande :', err)
@@ -92,7 +104,12 @@ const Checkout: React.FC = () => {
   const handleAddNewAddress = async () => {
     try {
       const response = await apiClient.post<Address>('/api/adresse/addresses', newAddress, {
-        withCredentials: true,
+        
+          headers: {
+            Authorization: `Bearer ${token}`, // Ajout du Bearer Token
+          },
+          withCredentials: true, // Inclure les cookies si nécessaire
+        
       });
       setAddresses([...addresses, response.data]); // Ajouter la nouvelle adresse à la liste
       setShowNewAddressForm(false); // Masquer le formulaire après ajout
@@ -130,7 +147,12 @@ const Checkout: React.FC = () => {
           status: 'Pending',
           fk_addr_fk: selectedAddressId,
         },
-        { withCredentials: true }
+        {
+          headers: {
+            Authorization: `Bearer ${token}`, // Ajout du Bearer Token
+          },
+          withCredentials: true, // Inclure les cookies si nécessaire
+        }
       );
 
       const paymentDetailId = paymentDetailResponse.data.id;
@@ -145,22 +167,26 @@ const Checkout: React.FC = () => {
           return;
         }
 
-        const response = await apiClient.post<{ sessionId: string }>(
-          '/api/stripe/create-checkout-session',
+        const response = await apiClient.post(
+          "/api/stripe/create-checkout-session",
           {
-            paymentMethod: 'stripe',
+            paymentMethod: "stripe",
             line_items: [],
-            customer_email: selectedAddressDetails?.email || '',
+            customer_email: selectedAddressDetails?.email || "",
             address: {
-              line1: selectedAddressDetails?.address_line1 || '',
-              city: selectedAddressDetails?.city || '',
-              postal_code: selectedAddressDetails?.postal_code || '',
-              country: selectedAddressDetails?.country || '',
+              line1: selectedAddressDetails?.address_line1 || "",
+              city: selectedAddressDetails?.city || "",
+              postal_code: selectedAddressDetails?.postal_code || "",
+              country: selectedAddressDetails?.country || "",
             },
           },
-          { withCredentials: true }
+          {
+            headers: {
+              Authorization: `Bearer ${token}`, // Ajout du Bearer Token
+            },
+            withCredentials: true, // Inclure les cookies si nécessaire
+          }
         );
-
         const { sessionId } = response.data;
 
         await stripe.redirectToCheckout({ sessionId });
