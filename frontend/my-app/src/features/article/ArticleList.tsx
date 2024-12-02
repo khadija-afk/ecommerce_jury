@@ -84,14 +84,23 @@ const ArticleList: React.FC = () => {
                                     <span className={isFavorite(article.id) ? 'red' : ''}>♥</span>
                                 </div>
                                 {Array.isArray(article.photo) && article.photo.length > 0 ? (
-                                    <div onClick={() => navigate(`/detailArticle/${article.id}`)} style={{ cursor: "pointer" }}>
+                                    <button
+                                    onClick={() => navigate(`/detailArticle/${article.id}`)}
+                                    style={{
+                                        background: "none",
+                                        border: "none",
+                                        padding: "0",
+                                        cursor: "pointer",
+                                        display: "inline-block",
+                                    }}
+                                >
                                     <Card.Img
                                         variant="top"
                                         src={article.photo[0]}
                                         alt={`Photo de ${article.name}`}
                                         className="custom-card-img"
                                     />
-                                </div>
+                                </button>
                                 ) : (
                                     <Card.Img
                                         variant="top"
