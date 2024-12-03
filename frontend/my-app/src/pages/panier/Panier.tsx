@@ -157,12 +157,8 @@ const Panier = () => {
                     </div>
 
                     <div className="cart-summary">
-                        <button
-                            className="checkout-button"
-                            onClick={validateCart}
-                        >
-                            Valider le panier - Total :{' '}
-                            {recalculateTotalPrice().toFixed(2)} €
+                        <button className="checkoutButton" onClick={validateCart}>
+                            Valider le panier - Total : {recalculateTotalPrice().toFixed(2)} €
                         </button>
                     </div>
                 </>
