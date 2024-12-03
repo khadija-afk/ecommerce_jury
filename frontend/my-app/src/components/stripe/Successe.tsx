@@ -26,52 +26,35 @@ const PaymentSuccessPage = () => {
   const { setFavorites } = useFavoris();
 
   useEffect(() => {
+    
     const processOrderAndPayment = async () => {
-      console.log("orderId:", orderId);
-      console.log("paymentDetailId:", paymentDetailId);
-      console.log("isRecorded:", isRecorded);
-
       if (!orderId || !paymentDetailId || isRecorded) {
         console.log("Paramètres manquants ou enregistrement déjà effectué.");
         return;
       }
-
+      
       try {
-        // Mettre à jour le statut de PaymentDetail à "Paid"
-        await apiClient.put(`/api/payment/payment-details/${paymentDetailId}`, {
-          status: 'Paid'
-        });
-        console.log("Statut du paiement mis à jour à 'Paid'.");
-
-        // Mettre à jour le statut de la commande à "Validé"
-        await apiClient.put(`/api/order/orders/${orderId}`, {
-          status: 'Validé'
-        });
-        console.log("Statut de la commande mis à jour à 'Validé'.");
-
-        // Vider le panier après la mise à jour des statuts
+        console.log("Traitement des paiements et commandes...");
+        await apiClient.put(`/api/payment/payment-details/${paymentDetailId}`, { status: 'Paid' });
+        await apiClient.put(`/api/order/orders/${orderId}`, { status: 'Validé' });
         await apiClient.post('/api/cartItem/cart-items/clear');
-        console.log("Le panier a été vidé.");
-        setPanier([]); // Vider le panier
-        recalculateTotals([]); // Recalculer les totaux
-
-        // Supprimer tous les favoris
         await apiClient.delete('/api/favorie/clear/api');
-        console.log("Tous les favoris ont été supprimés.");
+
+        setPanier([]);
+        recalculateTotals([]);
         setFavorites([]);
 
-        // Supprimer les valeurs du localStorage après traitement
         localStorage.removeItem('orderId');
         localStorage.removeItem('paymentDetailId');
-
-        setIsRecorded(true); // Marquer l'enregistrement comme effectué
+        setIsRecorded(true);
       } catch (error) {
-        console.error("Erreur lors de la mise à jour du paiement, de la commande, du panier ou des favoris :", error);
+        console.error("Erreur :", error);
       }
     };
-
+  
     processOrderAndPayment();
-  }, [orderId, paymentDetailId, isRecorded, setPanier, recalculateTotals, setFavorites]);
+  }, [orderId, paymentDetailId, isRecorded]);
+  
 
   return (
     <ThemeProvider theme={theme}>
