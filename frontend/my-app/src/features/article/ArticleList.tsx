@@ -91,11 +91,18 @@ const ArticleList: React.FC = () => {
                   <span className={isFavorite(article.id) ? "red" : ""}>♥</span>
                 </div>
                 <Card.Img
-                  variant="top"
-                  src={Array.isArray(article.photo) && article.photo.length > 0 ? article.photo[0] : "default-image-url.jpg"}
-                  alt={`Photo de ${article.name}`}
-                  className="custom-card-img"
-                />
+                    variant="top"
+                    src={
+                      article.photo
+                        ? article.photo[0] // Utiliser la première image comme miniature
+                        : "https://ecommerce-jury-1.onrender.com/default-image-url.jpg" // Image par défaut si aucune image n'est disponible
+                    }
+                    alt={`Photo de ${article.name}`}
+                    className="custom-card-img"
+                    onError={(e) => {
+                      e.currentTarget.src = "https://ecommerce-jury-1.onrender.com/default-image-url.jpg"; // Gestion des erreurs
+                    }}
+                  />
                 <Card.Body className="custom-card-body">
                   <h5>{article.name}</h5>
                   <p className="article-price">Prix : {article.price} €</p>
