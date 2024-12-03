@@ -7,17 +7,24 @@ import Footer from './footer/Footer';
 import './Layout.css'
 
 const Layout = () => {
+  const handleNavLinkClick = (path: string) => {
+    console.log(`Navigation vers : ${path}`);
+    // Ajoutez ici une logique supplémentaire si nécessaire
+  };
+
   return (
     <>
-     <div className="page-container"></div>
+      <div className="page-container"></div>
       <Header />
-      <MiniNavbar />
-      <section style={{ margin: '20px 0' }}> {/* Ajout de marge pour espacement */}
-        <Outlet /> {/* Home.js sera chargé ici */}
+      {/* Passez la fonction handleNavLinkClick à MiniNavbar */}
+      <MiniNavbar handleNavLinkClick={handleNavLinkClick} />
+      <section style={{ margin: '20px 0' }}>
+        <Outlet />
       </section>
       <Footer />
     </>
   );
 };
+
 
 export default Layout;

@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { useState } from 'react';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -10,44 +10,60 @@ import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
-import { AppDispatch, RootState } from '../../../store';
-import { signInUser } from './authSlice';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
+import apiClient from '../../../utils/axiosConfig';
+import { useAuth } from "../../../utils/AuthCantext";
 
 // Définir un thème par défaut
 const defaultTheme = createTheme();
 
-const SignInForm: React.FC = () => {
-    const dispatch = useDispatch<AppDispatch>();
-    const authStatus = useSelector((state: RootState) => state.auth.status);
-    const error = useSelector((state: RootState) => state.auth.error);
-    const navigate = useNavigate();
 
-    const [credentials, setCredentials] = React.useState({
-        email: '',
-        password: ''
-    });
+const SignInForm: React.FC = () => {
+    const [credentials, setCredentials] = useState({ email: '', password: '' });
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState<string | null>(null);
+    const navigate = useNavigate();
+    const [userFirstName, setUserFirstName] = useState("");
+
+    const { isAuthenticated, setIsAuthenticated } = useAuth();
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setCredentials({
-            ...credentials,
-            [e.target.name]: e.target.value
-        });
+        setCredentials({ ...credentials, [e.target.name]: e.target.value });
     };
 
-    const handleSubmit = (e: React.FormEvent) => {
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        dispatch(signInUser(credentials));
-    };
+        setLoading(true);
+        setError(null);
 
-    React.useEffect(() => {
-        if (authStatus === 'succeeded') {
-            navigate('/'); // Rediriger vers la page d'accueil
+        try {
+            const response = await apiClient.post(
+                '/api/user/sign', credentials
+            );
+            console.log('Réponse API :', response.data);
+
+            const { user, token } = response.data;
+
+            // Stocker les informations utilisateur si nécessaire
+            localStorage.setItem('user', JSON.stringify(response.data.user));
+            localStorage.setItem('token', token);
+            setIsAuthenticated(true);
+            setUserFirstName(response.data.firstName);
+            console.log("Requête Axios avec cookies :", document.cookie);
+
+
+            // Rediriger après une connexion réussie
+            navigate('/');
+        } catch (err: any) {
+            console.error('Erreur lors de la connexion :', err);
+            setError(err.response?.data?.error || 'Une erreur est survenue.');
+        } finally {
+            setLoading(false);
         }
-    }, [authStatus, navigate]);
+    };
 
     return (
         <ThemeProvider theme={defaultTheme}>
@@ -68,56 +84,30 @@ const SignInForm: React.FC = () => {
                         Connexion
                     </Typography>
                     <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
-                    <TextField
-                                margin="normal"
-                                required
-                                fullWidth
-                                id="email"
-                                label="Adresse e-mail"
-                                name="email"
-                                autoComplete="email"
-                                autoFocus
-                                onChange={handleChange}
-                                sx={{
-                                    '& .MuiOutlinedInput-root': {
-                                        '& fieldset': {
-                                            borderColor: '#311C52', // Couleur du cadre par défaut
-                                        },
-                                        '&:hover fieldset': {
-                                            borderColor: '#311C52', // Couleur au survol
-                                        },
-                                        '&.Mui-focused fieldset': {
-                                            borderColor: '#311C52', // Couleur lorsqu'en focus
-                                        },
-                                    },
-                                }}
-                            />
-
-                           <TextField
-                                margin="normal"
-                                required
-                                fullWidth
-                                 name="password"
-                                label="Mot de passe"
-                                type="password"
-                                id="password"
-                                autoComplete="current-password"
-                                onChange={handleChange}
-                                sx={{
-                                    '& .MuiOutlinedInput-root': {
-                                        '& fieldset': {
-                                            borderColor: '#311C52', // Couleur du cadre par défaut
-                                        },
-                                        '&:hover fieldset': {
-                                            borderColor: '#311C52', // Couleur au survol
-                                        },
-                                        '&.Mui-focused fieldset': {
-                                            borderColor: '#311C52', // Couleur lorsqu'en focus
-                                        },
-                                    },
-                                }}
-                            />
-
+                        <TextField
+                            margin="normal"
+                            required
+                            fullWidth
+                            id="email"
+                            label="Adresse e-mail"
+                            name="email"
+                            autoComplete="email"
+                            autoFocus
+                            value={credentials.email}
+                            onChange={handleChange}
+                        />
+                        <TextField
+                            margin="normal"
+                            required
+                            fullWidth
+                            name="password"
+                            label="Mot de passe"
+                            type="password"
+                            id="password"
+                            autoComplete="current-password"
+                            value={credentials.password}
+                            onChange={handleChange}
+                        />
                         <FormControlLabel
                             control={<Checkbox value="remember" color="primary" />}
                             label="Se souvenir de moi"
@@ -129,31 +119,44 @@ const SignInForm: React.FC = () => {
                             sx={{
                                 mt: 3,
                                 mb: 2,
-                                backgroundColor: '#311C52',  // Applique la couleur #311C52
+                                backgroundColor: '#311C52',
                                 ':hover': {
-                                    backgroundColor: '#251040'  // Optionnel : couleur plus foncée au survol
-                                }
+                                    backgroundColor: '#251040',
+                                },
                             }}
+                            disabled={loading}
                         >
-                            Se connecter
+                            {loading ? 'Chargement...' : 'Se connecter'}
                         </Button>
-
-                    <Grid container>
-                        <Grid item xs>
-                            <Link href="/forgot-password" variant="body2" sx={{ color: 'rgba(49, 28, 82, 0.5)' }}>
+                        {error && (
+                            <Typography variant="body2" color="error" align="center">
+                                {error}
+                            </Typography>
+                        )}
+                       <Grid container>
+                            <Grid item xs>
+                                <Typography
+                                variant="body2"
+                                color="primary"
+                                sx={{ cursor: "pointer" }}
+                                onClick={() => navigate("/forgot-password")}
+                                >
                                 Mot de passe oublié ?
-                            </Link>
-                        </Grid>
-                    <Grid item>
-                        <Link href="register" variant="body2" sx={{ color: 'rgba(49, 28, 82, 0.5)' }}>
-                            {"Vous n'avez pas de compte ? Inscrivez-vous"}
-                        </Link>
-                    </Grid>
-                </Grid>
+                                </Typography>
+                            </Grid>
+                            <Grid item>
+                                <Typography
+                                variant="body2"
+                                color="primary"
+                                sx={{ cursor: "pointer" }}
+                                onClick={() => navigate("/register")}
+                                >
+                                {"Vous n'avez pas de compte ? Inscrivez-vous"}
+                                </Typography>
+                            </Grid>
+                            </Grid>
+
                     </Box>
-                    {authStatus === 'loading' && <Typography variant="body2" color="text.secondary">Chargement...</Typography>}
-                    {authStatus === 'succeeded' && <Typography variant="body2" color="success.main">Connexion réussie !</Typography>}
-                    {authStatus === 'failed' && error && <Typography variant="body2" color="error.main">{error}</Typography>}
                 </Box>
                 <Box sx={{ mt: 8, mb: 4 }} component="footer">
                     <Typography variant="body2" color="text.secondary" align="center">

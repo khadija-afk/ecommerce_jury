@@ -54,46 +54,35 @@ import TwoFactorAuthPage from './pages/A2F/GenerateA2F';
 import Verify2FAPage from './pages/A2F/VerefieA2F';
 import Disable2FAPage from './pages/A2F/DesactiveA2F';
 
+//NOTFOUND
+import NotFound from './components/NotFound/NotFound';
+
 const App = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [showCookieSettings, setShowCookieSettings] = useState(false);
 
-  // Vérification de l'authentification
-  useEffect(() => {
-    const checkAuthStatus = async () => {
-      try {
-        const response = await fetch('/api/api/user/check_auth', {
-          method: 'GET',
-          credentials: 'include',
-        });
-        setIsLoggedIn(response.ok);
-      } catch (error) {
-        console.error('Erreur lors de la vérification de l\'authentification :', error);
-      }
-    };
-
-    checkAuthStatus();
-  }, []);
 
   // Ouverture du modal pour les réglages des cookies
-  const openCookieSettings = () => setShowCookieSettings(true);
+  // const openCookieSettings = () => setShowCookieSettings(true);
 
   return (
     <Router>
       {/* Modal de consentement */}
-      <CookieConsentModal onOpenSettings={openCookieSettings} />
+      {/* <CookieConsentModal onOpenSettings={openCookieSettings} /> */}
 
       {/* Modal de réglages des cookies */}
-      {showCookieSettings && (
+      {/* {showCookieSettings && (
         <CookieSettingsModal onClose={() => setShowCookieSettings(false)} />
-      )}
+      )} */}
 
       <Routes>
         {/* Routes principales */}
         <Route path="/" element={<Layout />}>
           <Route index element={<HomePage />} />
+          {/* Route de fallback pour les URL non correspondantes */}
+          <Route path="*" element={<NotFound />} />
           <Route path="article" element={<ArticleList />} />
-          <Route path="api/article/:id" element={<Detail />} />
+          <Route path="detailArticle/:id" element={<Detail />} />
           <Route path="panier" element={<Panier />} />
           <Route path="checkout/:orderId" element={<Checkout />} />
           <Route path="success" element={<PaymentSuccessPage />} />
@@ -123,8 +112,6 @@ const App = () => {
           <Route path="cookie-settings" element={<CookieSettings />} />
           <Route path="terms-conditions" element={<TermsAndConditions />} />
         </Route>
-
-        {/* Authentification */}
         <Route path="register" element={<RegisterForm />} />
         <Route path="sign" element={<SignInForm />} />
 

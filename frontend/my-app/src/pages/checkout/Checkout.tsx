@@ -4,33 +4,65 @@ import { useNavigate, useParams, useLocation } from 'react-router-dom';
 import apiClient from '../../utils/axiosConfig';
 import './Checkout.css';
 
-const Checkout = () => {
+// Typages des adresses et du composant
+interface Address {
+  id: number;
+  address_line1: string;
+  address_line2?: string;
+  city: string;
+  postal_code: string;
+  country: string;
+  email?: string; // Ajouté pour Stripe si nécessaire
+}
+
+interface NewAddress {
+  address_line1: string;
+  address_line2: string;
+  city: string;
+  postal_code: string;
+  country: string;
+}
+
+interface LocationState {
+  total: number;
+}
+
+const Checkout: React.FC = () => {
   const stripe = useStripe();
   const elements = useElements();
-  const { orderId } = useParams();
-  const { state } = useLocation();
-  const [total, setTotal] = useState(state?.total || 0);
-  const [addresses, setAddresses] = useState([]);
-  const [selectedAddressId, setSelectedAddressId] = useState(null);
-  const [selectedAddressDetails, setSelectedAddressDetails] = useState(null);
-  const [newAddress, setNewAddress] = useState({
+  const { orderId } = useParams<{ orderId: string }>();
+  const location = useLocation();
+  const state = location.state as LocationState; // Conversion explicite
+  const navigate = useNavigate();
+
+  const [total, setTotal] = useState<number>(state?.total || 0);
+  const [addresses, setAddresses] = useState<Address[]>([]);
+  const [selectedAddressId, setSelectedAddressId] = useState<number | null>(null);
+  const [selectedAddressDetails, setSelectedAddressDetails] = useState<Address | null>(null);
+  const [newAddress, setNewAddress] = useState<NewAddress>({
     address_line1: '',
     address_line2: '',
     city: '',
     postal_code: '',
     country: 'France',
   });
-  const [showNewAddressForm, setShowNewAddressForm] = useState(false);
-  const [paymentMethod, setPaymentMethod] = useState('');
-  const [loading, setLoading] = useState(false);
-  const navigate = useNavigate();
+  const [showNewAddressForm, setShowNewAddressForm] = useState<boolean>(false);
+  const [paymentMethod, setPaymentMethod] = useState<string>('');
+  const [loading, setLoading] = useState<boolean>(false);
+
+  const token = localStorage.getItem("token");
 
   // Charger les adresses utilisateur
   useEffect(() => {
     const fetchAddresses = async () => {
       try {
-        const response = await apiClient.get('/api/api/adresse/addresses', {
-          withCredentials: true,
+        const response = await apiClient.get<Address[]>('/api/adresse/addresses', {
+          
+            headers: {
+              Authorization: `Bearer ${token}`, // Ajout du Bearer Token
+            },
+            withCredentials: true, // Inclure les cookies si nécessaire
+          
         });
         setAddresses(response.data);
 
@@ -46,11 +78,16 @@ const Checkout = () => {
     fetchAddresses();
   }, []);
 
-  // Récupérer le total si non fourni
+  // Récupérer le total si non fourni dans `state`
   useEffect(() => {
-    if (!state?.total) {
+    if (!state?.total && orderId) {
       apiClient
-        .get(`/api/api/order/orders/${orderId}`, { withCredentials: true })
+        .get<{ total: number }>(`/api/order/orders/${orderId}`,  {
+          headers: {
+            Authorization: `Bearer ${token}`, // Ajout du Bearer Token
+          },
+          withCredentials: true, // Inclure les cookies si nécessaire
+        })
         .then((response) => setTotal(response.data.total))
         .catch((err) =>
           console.error('Erreur lors de la récupération des détails de la commande :', err)
@@ -58,16 +95,21 @@ const Checkout = () => {
     }
   }, [orderId, state]);
 
-  const handleAddressSelection = (addressId) => {
+  const handleAddressSelection = (addressId: number) => {
     setSelectedAddressId(addressId);
     const address = addresses.find((addr) => addr.id === addressId);
-    setSelectedAddressDetails(address);
+    setSelectedAddressDetails(address || null);
   };
 
   const handleAddNewAddress = async () => {
     try {
-      const response = await apiClient.post('/api/api/adresse/addresses', newAddress, {
-        withCredentials: true,
+      const response = await apiClient.post<Address>('/api/adresse/addresses', newAddress, {
+        
+          headers: {
+            Authorization: `Bearer ${token}`, // Ajout du Bearer Token
+          },
+          withCredentials: true, // Inclure les cookies si nécessaire
+        
       });
       setAddresses([...addresses, response.data]); // Ajouter la nouvelle adresse à la liste
       setShowNewAddressForm(false); // Masquer le formulaire après ajout
@@ -85,7 +127,7 @@ const Checkout = () => {
     }
   };
 
-  const handleCheckout = async (e) => {
+  const handleCheckout = async (e: React.FormEvent) => {
     e.preventDefault();
 
     if (!selectedAddressId || !paymentMethod) {
@@ -96,8 +138,8 @@ const Checkout = () => {
     setLoading(true);
 
     try {
-      const paymentDetailResponse = await apiClient.post(
-        '/api/api/payment/payment-details',
+      const paymentDetailResponse = await apiClient.post<{ id: number }>(
+        '/api/payment/payment-details',
         {
           order_fk: orderId,
           amount: total,
@@ -105,13 +147,18 @@ const Checkout = () => {
           status: 'Pending',
           fk_addr_fk: selectedAddressId,
         },
-        { withCredentials: true }
+        {
+          headers: {
+            Authorization: `Bearer ${token}`, // Ajout du Bearer Token
+          },
+          withCredentials: true, // Inclure les cookies si nécessaire
+        }
       );
 
       const paymentDetailId = paymentDetailResponse.data.id;
 
-      localStorage.setItem('orderId', orderId);
-      localStorage.setItem('paymentDetailId', paymentDetailId);
+      localStorage.setItem('orderId', orderId || '');
+      localStorage.setItem('paymentDetailId', paymentDetailId.toString());
 
       if (paymentMethod === 'stripe') {
         if (!stripe || !elements) {
@@ -121,33 +168,33 @@ const Checkout = () => {
         }
 
         const response = await apiClient.post(
-          '/api/api/stripe/create-checkout-session',
+          "/api/stripe/create-checkout-session",
           {
-            paymentMethod: 'stripe',
+            paymentMethod: "stripe",
             line_items: [],
-            customer_email: selectedAddressDetails.email || '',
+            customer_email: selectedAddressDetails?.email || "",
             address: {
-              line1: selectedAddressDetails.address_line1,
-              city: selectedAddressDetails.city,
-              postal_code: selectedAddressDetails.postal_code,
-              country: selectedAddressDetails.country,
+              line1: selectedAddressDetails?.address_line1 || "",
+              city: selectedAddressDetails?.city || "",
+              postal_code: selectedAddressDetails?.postal_code || "",
+              country: selectedAddressDetails?.country || "",
             },
           },
-          { withCredentials: true }
+          {
+            headers: {
+              Authorization: `Bearer ${token}`, // Ajout du Bearer Token
+            },
+            withCredentials: true, // Inclure les cookies si nécessaire
+          }
         );
-
-        const { sessionId, error } = response.data;
-
-        if (error) {
-          console.error('Erreur API :', error);
-          setLoading(false);
-          return;
-        }
+        const { sessionId } = response.data;
 
         await stripe.redirectToCheckout({ sessionId });
       } else if (paymentMethod === 'cheque') {
         alert('Merci pour votre commande. Veuillez envoyer votre chèque à l\'adresse indiquée.');
-        navigate(`/success`);
+
+        const fakeSessionId = `cheque_${orderId}`;
+        navigate(`/success?session_id=${fakeSessionId}&amount=${total}`);
       }
     } catch (error) {
       console.error('Erreur lors de la création du paiement :', error);

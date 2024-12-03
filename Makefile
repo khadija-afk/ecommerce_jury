@@ -25,13 +25,19 @@ start-nginx: down-all build-backend-base
 	
 	docker-compose up --build -d nginx
 
+start-db: clean_node_modules build-backend-base
+	docker-compose down backend pgadmin db
+	docker-compose up --build  backend pgadmin db
+
 pull:
 	git pull
 
 deploy-prod: pull start-nginx
 
 start-front:
-	docker-compose up --build -d frontend
+	@echo "URL_BACKEND is $(URL_BACKEND)"
+	docker-compose down frontend
+	docker-compose up --build frontend
 
 sz:
 	docker-compose up --build zap

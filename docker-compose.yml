@@ -15,8 +15,13 @@ services:
     environment:
       - NODE_ENV=${NODE_ENV}
       - DB_HOST=${DB_HOST}
+      - DB_TYPE=${DB_TYPE}
+      - SYNC_TABLES=${SYNC_TABLES}
       - DB_PORT=${DB_PORT}
       - DB_USER=${DB_USER}
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_DB=${POSTGRES_DB}
       - DIALECT=${DIALECT}
       - BACKEND_PORT=${BACKEND_PORT}
       - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
@@ -43,6 +48,7 @@ services:
       - NODE_ENV=${NODE_ENV}
       - VITE_PUBLIC_KEY_STRIPE=${VITE_PUBLIC_KEY_STRIPE}
       - VITE_CORS_URL=${VITE_CORS_URL}
+      - URL_BACKEND=${URL_BACKEND}
     networks:
       - jenkins_net  # Ajouter au même réseau
 
@@ -59,34 +65,61 @@ services:
     environment:
       - ZAP_LOG_LEVEL=INFO  # Optionnel, pour ajuster le niveau de log
 
-  db:
-    image: mysql:5.7
-    container_name: mysql
-    ports:
-      - "3307:3306"
-    environment:
-      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
-      MYSQL_DATABASE: ${MYSQL_DATABASE}
-      # MYSQL_USER: ${MYSQL_USER}
-      # DB_PORT: ${DB_PORT}
-      # MYSQL_PASSWORD: ${MYSQL_PASSWORD}
-    volumes:
-      - mysql-data:/var/lib/mysql
-    depends_on:
-      - phpmyadmin
-    networks:
-      - jenkins_net  
+  # db:
+  #   image: mysql:5.7
+  #   container_name: mysql
+  #   ports:
+  #     - "3307:3306"
+  #   environment:
+  #     MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+  #     MYSQL_DATABASE: ${MYSQL_DATABASE}
+  #     MYSQL_USER: ${MYSQL_USER}
+  #     DB_PORT: ${DB_PORT}
+  #     MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+  #     DB_HOST: ${DB_HOST}
+  #   volumes:
+  #     - mysql-data:/var/lib/mysql
+  #   depends_on:
+  #     - phpmyadmin
+  #   networks:
+  #     - jenkins_net  
 
-  phpmyadmin:
-    image: phpmyadmin/phpmyadmin
-    container_name: phpmyadmin
-    environment:
-      PMA_HOST: db
-      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+  db:
+    image: postgres:16
+    container_name: postgres
     ports:
-      - "8085:80"
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
     networks:
-      - jenkins_net  
+      - jenkins_net
+
+  pgadmin:
+    image: dpage/pgadmin4
+    container_name: pgadmin
+    environment:
+      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL} # Email pour la connexion à pgAdmin
+      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD} # Mot de passe pour la connexion à pgAdmin
+    ports:
+      - "8888:80" # Port exposé pour accéder à pgAdmin
+    volumes:
+      - pgadmin-data:/var/lib/pgadmin
+    networks:
+      - jenkins_net
+
+  # phpmyadmin:
+  #   image: phpmyadmin/phpmyadmin
+  #   container_name: phpmyadmin
+  #   environment:
+  #     PMA_HOST: db
+  #     MYSQL_ROOT_PASSWORD: ${POSTGRES_PASSWORD}
+  #   ports:
+  #     - "8085:80"
+  #   networks:
+  #     - jenkins_net  
 
   nginx:
     image: nginx:latest
@@ -154,21 +187,23 @@ services:
     networks:
       - jenkins_net  # Ajouter au même réseau
 
-  vault:
-    image: hashicorp/vault:1.18
-    container_name: vault
-    restart: always
-    environment:
-      VAULT_DEV_ROOT_TOKEN_ID: "root"  # Token de root pour le mode développement (ne pas utiliser en production)
-      VAULT_ADDR: "http://0.0.0.0:8200"
-    ports:
-      - "8200:8200"  # Expose le port 8200 pour accéder à Vault
-    command: "server -dev"  # Démarre Vault en mode développement
-    volumes:
-      - vault_data:/vault/file  # Utiliser le volume nommé pour stocker les données Vault
+  # vault:
+  #   image: hashicorp/vault:1.18
+  #   container_name: vault
+  #   restart: always
+  #   environment:
+  #     VAULT_DEV_ROOT_TOKEN_ID: "root"  # Token de root pour le mode développement (ne pas utiliser en production)
+  #     VAULT_ADDR: "http://0.0.0.0:8200"
+  #   ports:
+  #     - "8200:8200"  # Expose le port 8200 pour accéder à Vault
+  #   command: "server -dev"  # Démarre Vault en mode développement
+  #   volumes:
+  #     - vault_data:/vault/file  # Utiliser le volume nommé pour stocker les données Vault
 
 volumes:
   mysql-data:
+  postgres-data:
+  pgadmin-data:
   node_modules:
   sonarqube_data:
   sonarqube_temp:

@@ -22,7 +22,7 @@ interface Article {
     stock: number;
     user_fk: number;
     categorie_fk: number;
-    photo: string;
+    photo: string[];
     createdAt: string;
     updatedAt: string;
 }
@@ -39,88 +39,79 @@ const initialState: ArticleState = {
     error: null,
 };
 
-// Get token from local storage
+// Instance Axios centralisée
+const instance = axios.create({
+    baseURL: import.meta.env.VITE_CORS_URL,
+    withCredentials: true,
+});
+
+// Token récupéré et vérifié
 const token = localStorage.getItem('token');
-console.log(token)
+if (token) {
+    instance.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+} else {
+    console.warn('Aucun token disponible dans le localStorage.');
+}
 
-export const fetchArticles = createAsyncThunk('articles/fetchArticles', async () => {
-    const response = await axios.get('/api/api/article/', {
-        headers: {
-            'Authorization': `Bearer ${token}`
+// Thunks
+export const fetchArticles = createAsyncThunk<Article[]>(
+    'articles/fetchArticles',
+    async (_, { rejectWithValue }) => {
+        try {
+            console.log(import.meta.env.VITE_CORS_URL)
+            const response = await instance.get('/api/article/');  /*   /api/article/*/ 
+            return response.data as 
+            [];
+        } catch (error: any) {
+            return rejectWithValue(error.response?.data || 'Erreur lors du chargement des articles.');
         }
-    });
-    return response.data as Article[];
-});
+    }
+);
 
-export const addArticle = createAsyncThunk('articles/addArticle', async (article: NewArticleData) => {
-    const instance = axios.create({
-        withCredentials: true
-    });
-
-    const token = localStorage.getItem('token');
-    const response = await instance.post('/api/api/article/', article, {
-        headers: {
-            'Authorization': `Bearer ${token}`
+export const addArticle = createAsyncThunk<Article, NewArticleData>(
+    'articles/addArticle',
+    async (article, { rejectWithValue }) => {
+        try {
+            const response = await instance.post('/', article);
+            return response.data as Article;
+        } catch (error: any) {
+            return rejectWithValue(error.response?.data || 'Erreur lors de l\'ajout de l\'article.');
         }
-    });
+    }
+);
 
-    return response.data as Article;
-});
+export const updateArticle = createAsyncThunk<Article, Article>(
+    'articles/updateArticle',
+    async (article, { rejectWithValue }) => {
+        try {
+            const response = await instance.put(`/${article.id}`, article);
+            return response.data as Article;
+        } catch (error: any) {
+            return rejectWithValue(error.response?.data || 'Erreur lors de la mise à jour de l\'article.');
+        }
+    }
+);
 
-export const updateArticle = createAsyncThunk('articles/updateArticle', async (article: Article) => {
-    const instance = axios.create({
-      withCredentials: true
-    });
-  
-    const token = localStorage.getItem('token');
-    const response = await instance.put(`api/api/article/${article.id}`, article, {
-      headers: {
-        'Authorization': `Bearer ${token}`
-      }
-    });
+export const deleteArticle = createAsyncThunk<number, number>(
+    'articles/deleteArticle',
+    async (id, { rejectWithValue }) => {
+        try {
+            await instance.delete(`/${id}`);
+            return id;
+        } catch (error: any) {
+            return rejectWithValue(error.response?.data || 'Erreur lors de la suppression de l\'article.');
+        }
+    }
+);
 
-    return response.data as Article;
-});
-
-export const deleteArticle = createAsyncThunk('articles/deleteArticle', async (id: number) => {
-    const instance = axios.create({
-        withCredentials: true
-      });
-    const token = localStorage.getItem('token');
-    const response = await instance.delete(`api/api/article/${id}`, {
-        headers: {
-            'Authorization': `Bearer ${token}`
-          }
-
-    });
-
-    return id;
-});
-
-
-
-
+// Slice
 const articleSlice = createSlice({
     name: 'articles',
     initialState,
-    reducers: {
-        FETCH_ARTICLE_START(state) {
-            state.status = 'loading';
-        },
-        FETCH_ARTICLE_SUCCEEDED(state, action) {
-            state.status = 'succeeded';
-            state.articles.push(action.payload);
-        },
-        FETCH_ARTICLE_FAILED(state, action) {
-            state.status = 'failed';
-            state.error = action.payload;
-        },
-        addToPanier: (state, action) => {
-            state.panier.push(action.payload);
-          },
-    },
+    reducers: {},
     extraReducers: (builder) => {
         builder
+            // Fetch Articles
             .addCase(fetchArticles.pending, (state) => {
                 state.status = 'loading';
             })
@@ -130,8 +121,9 @@ const articleSlice = createSlice({
             })
             .addCase(fetchArticles.rejected, (state, action) => {
                 state.status = 'failed';
-                state.error = action.error.message || null;
+                state.error = action.payload as string;
             })
+            // Add Article
             .addCase(addArticle.pending, (state) => {
                 state.status = 'loading';
             })
@@ -141,34 +133,36 @@ const articleSlice = createSlice({
             })
             .addCase(addArticle.rejected, (state, action) => {
                 state.status = 'failed';
-                state.error = action.error.message || null;
+                state.error = action.payload as string;
             })
+            // Update Article
             .addCase(updateArticle.pending, (state) => {
                 state.status = 'loading';
             })
             .addCase(updateArticle.fulfilled, (state, action) => {
                 state.status = 'succeeded';
-                state.articles.push(action.payload);
+                const index = state.articles.findIndex((article) => article.id === action.payload.id);
+                if (index !== -1) {
+                    state.articles[index] = action.payload;
+                }
             })
             .addCase(updateArticle.rejected, (state, action) => {
                 state.status = 'failed';
-                state.error = action.error.message || null;
+                state.error = action.payload as string;
             })
-
+            // Delete Article
             .addCase(deleteArticle.pending, (state) => {
                 state.status = 'loading';
             })
             .addCase(deleteArticle.fulfilled, (state, action) => {
                 state.status = 'succeeded';
-                // Supprime l'article de l'état par son ID
-                state.articles = state.articles.filter(article => article.id !== action.payload);
+                state.articles = state.articles.filter((article) => article.id !== action.payload);
             })
             .addCase(deleteArticle.rejected, (state, action) => {
                 state.status = 'failed';
-                state.error = action.error.message || null;
+                state.error = action.payload as string;
             });
     },
 });
 
-export const { FETCH_ARTICLE_START, FETCH_ARTICLE_SUCCEEDED, FETCH_ARTICLE_FAILED } = articleSlice.actions;
 export default articleSlice.reducer;

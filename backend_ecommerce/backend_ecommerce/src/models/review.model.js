@@ -8,7 +8,7 @@ export default (connection, DataTypes) => {
                 type: DataTypes.INTEGER,
                 allowNull: false,
                 references: {
-                    model: "users", // Nom du modèle cible (optionnel, à activer si vous utilisez les associations Sequelize)
+                    model: "Users", // Nom du modèle cible (optionnel, à activer si vous utilisez les associations Sequelize)
                     key: "id", // Clé de référence dans le modèle cible
                 },
             },
@@ -16,7 +16,7 @@ export default (connection, DataTypes) => {
                 type: DataTypes.INTEGER,
                 allowNull: false,
                 references: {
-                    model: "articles", // Nom du modèle cible (optionnel, à activer si vous utilisez les associations Sequelize)
+                    model: "Articles", // Nom du modèle cible (optionnel, à activer si vous utilisez les associations Sequelize)
                     key: "id", // Clé de référence dans le modèle cible
                 },
             },

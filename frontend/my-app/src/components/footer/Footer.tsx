@@ -24,7 +24,7 @@ const Footer = () => {
     setResponseType(null);
 
     try {
-      const response = await apiClient.post('/api/api/cantact/contact', formData);
+      const response = await apiClient.post('/api/cantact/contact', formData);
       setResponseMessage('Votre message a été envoyé avec succès !');
       setResponseType('success');
       setFormData({ name: '', email: '', message: '' });

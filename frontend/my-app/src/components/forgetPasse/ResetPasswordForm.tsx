@@ -37,7 +37,7 @@ const ResetPasswordPage = () => {
     setShowPassword(!showPassword);
   };
 
-  const handlePasswordSubmit = async (e) => {
+  const handlePasswordSubmit = async (e: any) => {
     e.preventDefault();
     if (!token) {
       setError('Token invalide.');
@@ -49,11 +49,11 @@ const ResetPasswordPage = () => {
     }
 
     try {
-      await apiClient.post('api/api/forget/reset-password', { token, newPassword });
+      await apiClient.post('/api/forget/reset-password', { token, newPassword });
       setMessage('Mot de passe réinitialisé avec succès.');
       setError('');
       navigate('/reset-password-success');
-    } catch (err) {
+    } catch (err: any) {
       if (err.response && err.response.data && err.response.data.error) {
         // Affiche le message d'erreur du backend si disponible
         setError(err.response.data.error);

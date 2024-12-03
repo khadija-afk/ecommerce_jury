@@ -6,6 +6,7 @@ interface Article {
   id: number;
   name: string;
   price: number;
+  content: string;
   quantity?: number; // La quantité est optionnelle dans un article
   photo: string[];
 }
@@ -18,7 +19,7 @@ interface CartItem {
   article: Article;
 }
 
-interface PanierContextType {
+export interface PanierContextType {
   panier: CartItem[];
   totalPrice: number;
   totalArticle: number;
@@ -29,6 +30,7 @@ interface PanierContextType {
   setPanier: React.Dispatch<React.SetStateAction<CartItem[]>>;
   recalculateTotals: (updatedPanier: CartItem[]) => void; // Ajoutez cette ligne
 }
+
 
 export const PanierContext = createContext<PanierContextType | undefined>(undefined);
 
@@ -68,7 +70,7 @@ export const PanierProvider: React.FC<{ children: ReactNode }> = ({ children }) 
 
     const loadPanier = async () => {
       try {
-        const response = await apiClient.get('/api/api/cart/cart', { withCredentials: true });
+        const response = await apiClient.get('/api/cart/cart', { withCredentials: true });
         const cartItems = response.data.cartItems || [];
         setPanier(cartItems);
         recalculateTotals(cartItems);
@@ -103,7 +105,7 @@ export const PanierProvider: React.FC<{ children: ReactNode }> = ({ children }) 
   
         // Mettre à jour côté serveur
         await apiClient.put(
-          `/api/api/cartItem/cart-items/${updatedItem.id}`,
+          `/api/cartItem/cart-items/${updatedItem.id}`,
           { quantity: updatedItem.quantity },
           { withCredentials: true }
         );
@@ -113,7 +115,7 @@ export const PanierProvider: React.FC<{ children: ReactNode }> = ({ children }) 
       } else {
         // Ajouter un nouvel article
         const response = await apiClient.post(
-          '/api/api/cartItem/cart-items',
+          '/api/cartItem/cart-items',
           { product_fk: product.id, quantity: 1 },
           { withCredentials: true }
         );
@@ -143,7 +145,7 @@ export const PanierProvider: React.FC<{ children: ReactNode }> = ({ children }) 
       const item = panier.find((item) => item.product_fk === productId);
       if (item) {
         await apiClient.put(
-          `/api/api/cartItem/cart-items/${item.id}`,
+          `/api/cartItem/cart-items/${item.id}`,
           { quantity: item.quantity + 1 },
           { withCredentials: true }
         );
@@ -170,12 +172,12 @@ export const PanierProvider: React.FC<{ children: ReactNode }> = ({ children }) 
       const item = panier.find((item) => item.product_fk === productId);
       if (item && item.quantity > 1) {
         await apiClient.put(
-          `/api/api/cartItem/cart-items/${item.id}`,
+          `/api/cartItem/cart-items/${item.id}`,
           { quantity: item.quantity - 1 },
           { withCredentials: true }
         );
       } else if (item && item.quantity === 1) {
-        await apiClient.delete(`/api/api/cartItem/cart-items/${item.id}`, {
+        await apiClient.delete(`/api/cartItem/cart-items/${item.id}`, {
           withCredentials: true,
         });
       }
@@ -193,7 +195,7 @@ export const PanierProvider: React.FC<{ children: ReactNode }> = ({ children }) 
     try {
       const item = panier.find((item) => item.product_fk === productId);
       if (item) {
-        await apiClient.delete(`/api/api/cartItem/cart-items/${item.id}`, {
+        await apiClient.delete(`/api/cartItem/cart-items/${item.id}`, {
           withCredentials: true,
         });
       }

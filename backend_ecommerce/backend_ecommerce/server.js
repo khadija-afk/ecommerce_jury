@@ -3,9 +3,7 @@ import { env } from './src/config.js'
 import swaggerUi from 'swagger-ui-express'
 import swaggerDocs from './swagger.js'
 import cookieParser from 'cookie-parser'
-
 import cors from 'cors'
-import Stripe from 'stripe'
 
 
 import './src/models/index.js';
@@ -35,24 +33,28 @@ import routerA2F from  './src/routes/auth2FA.js'
 
 
 
-const app = express()
+const app = express();
+
+app.use(cookieParser()); // Parse les cookies dans req.cookies
+app.use(cors({
+  origin: env.cors_url,
+  credentials: true // Autorise l'envoi et la réception des cookies
+}));
+console.log(`CORS_URL in use: ${env.cors_url}`);
+app.use(express.json())
+ 
+app.use((req, res, next) => {
+  console.log("Cookies reçus dans la requête :", req.cookies);
+  next();
+});
 
 
 // PORT
-const PORT = env.port
+const PORT = env.port     || 9090 ;
+// api-docs
 
-
-
-// Swagger
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocs));
-// MIDDLEWARE
-app.use(express.json())
-app.use(cookieParser())
-// Configurer CORS pour autoriser toutes les requêtes
-app.use(cors({
-  origin: process.env.CORS_URL, // Votre frontend
-  credentials: true
-}));
+
 
 // Utiliser le routeur AdminJS
 if (process.env.NODE_ENV != 'test') {
@@ -79,15 +81,10 @@ app.use("/api/cookie", routerUserPrefernec);
 app.use("/api/adresse", routerAdresse);
 app.use("/api/cantact", routerCantacte);
 app.use("/api/A2F", routerA2F);
-
-
-//stripe
 app.use('/api/webhook', stripeWebhookRoute);
 
 
 
-
-// Exporter l'application pour les tests
 export { app }
 
 

@@ -8,16 +8,18 @@ const apiClient = axios.create({
 
 });
 
-apiClient.interceptors.response.use(
-    (response) => response,
-    (error) => {
-      // Gérer les erreurs globales ici (par exemple, redirection en cas d'erreur 401)
-      if (error.response && error.response.status === 401) {
-        // Rediriger vers la page de connexion si non autorisé
-        window.location.href = '/sign';
-      }
-      return Promise.reject(error);
+apiClient.interceptors.request.use(
+  (config) => {
+    const token = localStorage.getItem('token');
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`;
     }
-  );
+    return config;
+  },
+  (error) => {
+    return Promise.reject(error);
+  }
+);
+
 
 export default apiClient;

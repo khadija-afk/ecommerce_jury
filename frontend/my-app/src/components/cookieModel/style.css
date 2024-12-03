@@ -1,0 +1,67 @@
+.custom-cookie-modal .modal-dialog {
+    max-width: 600px; /* Largeur maximale */
+    margin: 1.75rem auto; /* Centrage vertical */
+    border-radius: 10px; /* Coins arrondis */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Ombre */
+  }
+  
+  .custom-cookie-modal .modal-content {
+    border-radius: 10px; /* Coins arrondis */
+    padding: 20px;
+    background-color: #fff; /* Couleur blanche pour le fond */
+    text-align: left; /* Alignement du texte */
+  }
+  
+  .custom-cookie-modal .modal-header {
+    border-bottom: none; /* Supprime la bordure */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+  }
+  
+  .custom-cookie-modal .modal-title {
+    font-weight: bold;
+    font-size: 1.5rem;
+  }
+  
+  .custom-cookie-modal .modal-body {
+    padding: 10px 20px;
+    font-size: 1rem;
+    line-height: 1.5;
+    color: #333;
+  }
+  
+  .custom-cookie-modal .modal-footer {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 20px;
+  }
+  
+  .custom-cookie-modal .btn {
+    padding: 10px 20px;
+    font-size: 1rem;
+    border-radius: 5px;
+  }
+  
+  .custom-cookie-modal .btn-primary {
+    background-color: #311c52;
+    border-color: #311c52;
+  }
+  
+  .custom-cookie-modal .btn-primary:hover {
+    background-color: #432f6d;
+    border-color: #432f6d;
+  }
+  
+  .custom-cookie-modal .btn-secondary {
+    background-color: transparent;
+    border: 1px solid #311c52;
+    color: #311c52;
+  }
+  
+  .custom-cookie-modal .btn-secondary:hover {
+    background-color: #311c52;
+    color: #fff;
+  }
+  

@@ -7,37 +7,72 @@ import { env } from "../config.js";
 import * as Service from "../services/service.js";
 
 export const login = async (req, res) => {
-  let user;
-  let email = req.body.email;
+  const { email, password } = req.body;
 
-  // step 1 : get user
-  try {
-    user = await User.findOne({ where: { email: email } });
-  } catch (err) {
-    return res
-      .status(501)
-      .json({ error: "Erreur lors de la recherche de user" });
+  // Vérification des champs requis
+  if (!email || !password) {
+    return res.status(400).json({ error: "Email et mot de passe sont requis." });
   }
-  if (!user) return res.status(404).json("User n'est pas trouvé!");
 
-  // step 2: validate password
-  const comparePassword = await bcrypt.compare(
-    req.body.password,
-    user.password,
-  );
-  if (!comparePassword) {
-    return res.status(400).json({ 
-        error: "Wrong Credentials!",
-        details: "Invalid password."
+  let user;
+
+  // Étape 1 : Recherche de l'utilisateur
+  try {
+    user = await User.findOne({ where: { email } });
+  } catch (err) {
+    console.error("Erreur lors de la recherche de l'utilisateur :", err);
+    return res.status(500).json({ error: "Erreur interne du serveur." });
+  }
+
+  if (!user) {
+    return res.status(404).json({ error: "Utilisateur introuvable." });
+  }
+
+  // Étape 2 : Validation du mot de passe
+  const isPasswordValid = await bcrypt.compare(password, user.password);
+  if (!isPasswordValid) {
+    return res.status(400).json({
+      error: "Identifiants incorrects.",
+      details: "Le mot de passe est invalide.",
     });
-}
+  }
 
-  const token = jwt.sign({ id: user.id, role: user.role }, env.token, { expiresIn: "24h" });
-  const { password, ...other } = user.dataValues;
+  // Étape 3 : Génération du token JWT
+  const token = jwt.sign({ id: user.id, role: user.role }, env.token, {
+    expiresIn: "24h", // Le token est valide pendant 24 heures
+  });
 
-  res.cookie("access_token", token, { httpOnly: true }).status(200).json(other);
+  console.log("Token généré :", token);
+
+  // Suppression du mot de passe des données utilisateur avant de les retourner
+  const { password: _, ...otherData } = user.dataValues;
+
+  // Étape 4 : Envoi de la réponse avec le cookie
+  console.log("Cookie configuré pour l'envoi :", {
+  token,
+  httpOnly: true,
+  secure: process.env.NODE_ENV === "production",
+  sameSite: process.env.NODE_ENV === "production" ? "strict" : "lax",
+});
+res.cookie("access_token", token, {
+  httpOnly: true,
+  secure: process.env.NODE_ENV === "production", // Actif uniquement en HTTPS
+  sameSite: process.env.NODE_ENV === "production" ? "strict" : "lax", // "strict" en prod, "lax" en dev
+})
+
+  
+// otherData['token']=token
+    
+    .status(200)
+    .json({
+      message: "Connexion réussie.",
+      user: otherData,
+      token: token
+    });
+
+    console.log("Cookie envoyé : ", req.cookies);
+
 };
-
 // Fonction pour vérifier le format de l'email
 const isValidEmail = (email) => {
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;

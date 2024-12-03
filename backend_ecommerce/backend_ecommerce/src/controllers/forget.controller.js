@@ -15,8 +15,10 @@ const sendEmail = ({ recipient_email, OTP }) => {
         pass: env.pass,
       },
     });
+    const url = env.cors_url;
+    console.log('email envoye a  ladresse', url)
 
-    const frontendUrl = `https://localhost/reset-password?token=${OTP}`; // Lien pointant vers le frontend sécurisé
+    const frontendUrl = `${url}/reset-password?token=${OTP}`; // Lien pointant vers le frontend sécurisé
 
     const mailOptions = {
       from: env.user,
