@@ -63,17 +63,17 @@ const App = () => {
 
 
   // Ouverture du modal pour les réglages des cookies
-  const openCookieSettings = () => setShowCookieSettings(true);
+  // const openCookieSettings = () => setShowCookieSettings(true);
 
   return (
     <Router>
       {/* Modal de consentement */}
-      <CookieConsentModal onOpenSettings={openCookieSettings} />
+      {/* <CookieConsentModal onOpenSettings={openCookieSettings} /> */}
 
       {/* Modal de réglages des cookies */}
-      {showCookieSettings && (
+      {/* {showCookieSettings && (
         <CookieSettingsModal onClose={() => setShowCookieSettings(false)} />
-      )}
+      )} */}
 
       <Routes>
         {/* Routes principales */}

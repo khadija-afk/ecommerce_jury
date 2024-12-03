@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { Modal, Button, Form, Row, Col } from "react-bootstrap";
+import React, { useState } from 'react';
+import { Modal, Button, Form, Row, Col } from 'react-bootstrap';
 
 interface CookiePreferences {
   publicites: boolean;
@@ -26,7 +26,7 @@ const CookieSettingsModal: React.FC<CookieSettingsModalProps> = ({ onClose }) =>
   });
 
   const handleTogglePreference = (category: keyof CookiePreferences) => {
-    if (category === "fonctionnels") return; // Ne pas permettre la modification des cookies fonctionnels
+    if (category === 'fonctionnels') return;
     setCookiePreferences((prev) => ({
       ...prev,
       [category]: !prev[category],
@@ -34,67 +34,64 @@ const CookieSettingsModal: React.FC<CookieSettingsModalProps> = ({ onClose }) =>
   };
 
   const handleAcceptAll = () => {
-    setCookiePreferences({
+    const allAccepted = {
       publicites: true,
       performance: true,
       relationClient: true,
       reseauxSociaux: true,
       personnalisation: true,
       fonctionnels: true,
-    });
-    setShowModal(false);
-    onClose();
-    savePreferences();
+    };
+    setCookiePreferences(allAccepted);
+    savePreferences(allAccepted);
+    closeAndSave();
   };
 
   const handleDeclineAll = () => {
-    setCookiePreferences({
+    const noneAccepted = {
       publicites: false,
       performance: false,
       relationClient: false,
       reseauxSociaux: false,
       personnalisation: false,
       fonctionnels: true,
-    });
+    };
+    setCookiePreferences(noneAccepted);
+    savePreferences(noneAccepted);
+    closeAndSave();
+  };
+
+  const savePreferences = (preferences: CookiePreferences) => {
+    localStorage.setItem('userCookiePreferences', JSON.stringify(preferences));
+  };
+
+  const closeAndSave = () => {
     setShowModal(false);
     onClose();
-    savePreferences();
   };
-
-  const handleValidate = () => {
-    setShowModal(false);
-    onClose();
-    savePreferences();
-  };
-
-  const savePreferences = () => {
-    localStorage.setItem(
-      "userCookiePreferences",
-      JSON.stringify(cookiePreferences)
-    );
-  };
-
-  const preferencesList = [
-    {
-      label: "Publicités personnalisées",
-      key: "publicites",
-      description: "Afficher des publicités personnalisées selon votre navigation.",
-    },
-    {
-      label: "Performance",
-      key: "performance",
-      description: "Suivre la navigation pour améliorer l'expérience utilisateur.",
-    },
-    // ... autres préférences
-  ] as const;
 
   return (
-    <Modal show={showModal} onHide={() => { setShowModal(false); onClose(); }} centered size="lg">
+    <Modal show={showModal} onHide={closeAndSave} centered size="lg">
       <Modal.Header closeButton>
-        <Modal.Title>Votre choix relatif aux cookies</Modal.Title>
+        <Modal.Title>Vos préférences relatives aux cookies</Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        {/* Contenu ici */}
+        <Form>
+          {Object.keys(cookiePreferences).map((key) => {
+            if (key === 'fonctionnels') return null; // Les cookies fonctionnels sont toujours actifs
+
+            return (
+              <Form.Check
+                key={key}
+                type="checkbox"
+                id={`cookie-${key}`}
+                label={key}
+                checked={cookiePreferences[key as keyof CookiePreferences]}
+                onChange={() => handleTogglePreference(key as keyof CookiePreferences)}
+              />
+            );
+          })}
+        </Form>
       </Modal.Body>
       <Modal.Footer>
         <Button variant="secondary" onClick={handleDeclineAll}>
@@ -103,7 +100,7 @@ const CookieSettingsModal: React.FC<CookieSettingsModalProps> = ({ onClose }) =>
         <Button variant="primary" onClick={handleAcceptAll}>
           Tous accepter
         </Button>
-        <Button variant="success" onClick={handleValidate}>
+        <Button variant="success" onClick={closeAndSave}>
           Valider
         </Button>
       </Modal.Footer>
