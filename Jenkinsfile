@@ -95,11 +95,11 @@ pipeline {
             steps {
                 script {
                      echo "Deploying to Preprod..."
-                    def serviceIdFrontend-preprod = 'srv-ct54efpopnds73d5oqsg' 
-                    def apiKeyFrontend-preprod = 'gpVNlvqLgGo' 
+                    def serviceIdFrontendpreprod = 'srv-ct54efpopnds73d5oqsg' 
+                    def apiKeyFrontendpreprod = 'gpVNlvqLgGo' 
 
-                    def serviceIdBackend-preprod = 'srv-ct4pfp23esus73fgpdmg' 
-                    def apiKeyBackend-preprod = 'eU_epRTerfc' 
+                    def serviceIdBackendpreprod = 'srv-ct4pfp23esus73fgpdmg' 
+                    def apiKeyBackendpreprod = 'eU_epRTerfc' 
 
                     // Effectuer une requête CURL pour déployer
                     sh """
