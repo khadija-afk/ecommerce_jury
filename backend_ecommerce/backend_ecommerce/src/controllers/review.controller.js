@@ -79,52 +79,58 @@ export const getReviewById = async (req, res) => {
 export const createReview = async (req, res) => {
   try {
     const { product_fk, rating, comment } = req.body;
-    const user_fk = req.user.id; // Utiliser l'ID de l'utilisateur connecté
+    const userEmail = req.user.email;
+    const userId = req.user.id; 
 
-    // Vérifie si l'utilisateur a acheté le produit dans une commande validée
+    console.log("Demande d'avis reçue pour : ", { userEmail, product_fk, rating, comment });
     const hasPurchased = await OrderDetails.findOne({
       where: { 
-        user_fk,
-        status: 'validé' // Vérifie que la commande est validée
+        user_fk: userId, 
+        status: 'Validé', 
       },
       include: [
         {
           model: OrderItems,
           where: { product_fk },
-          attributes: [], // On ne récupère que les commandes contenant ce produit
+          attributes: [], 
         },
       ],
     });
 
+    console.log("Résultat de la vérification d'achat : ", hasPurchased);
+
     if (!hasPurchased) {
       console.error("Erreur : Avis refusé. L'utilisateur n'a pas acheté ce produit ou la commande n'est pas validée.");
       return res.status(403).json({ error: "Vous ne pouvez pas laisser un avis pour un produit non acheté ou commande non validée." });
-  }
+    }
 
-    // Vérifie si un avis existe déjà pour cet utilisateur et ce produit
     const existingReview = await Review.findOne({
       where: {
-        user_fk,
-        product_fk
-      }
+        user_fk: userId, 
+        product_fk,
+      },
     });
+
+    console.log("Résultat de la vérification d'avis existant : ", existingReview);
 
     if (existingReview) {
       console.error("Erreur : Avis refusé. L'utilisateur a déjà laissé un avis pour ce produit.");
       return res.status(403).json({ error: "Vous avez déjà laissé un avis pour ce produit." });
-  }
-    // Crée un nouvel avis si l'utilisateur a acheté le produit et n'a pas encore laissé d'avis
+    }
+
     const newReview = await Review.create({
-      user_fk,
+      user_fk: userId, 
       product_fk,
       rating,
       comment,
-      status: 'pending' // Définit le statut par défaut comme "en attente"
+      status: 'pending', 
     });
+
+    console.log("Avis créé avec succès : ", newReview);
 
     res.status(201).json(newReview);
   } catch (error) {
-    console.error("Error creating review:", error);
+    console.error("Erreur lors de la création de l'avis :", error);
     res.status(500).json({
       error: "Erreur serveur lors de la création de l'avis.",
       detail: error.message,
@@ -133,24 +139,20 @@ export const createReview = async (req, res) => {
 };
 
 
-// Update a review
 export const updateReview = async (req, res) => {
   let review;
 
   try {
-    // Récupérer l'ID de l'avis
     const reviewId = req.params.id;
     if (!reviewId) {
       return res.status(400).json({ error: "ID de l'avis manquant." });
     }
 
-    // Trouver l'avis
     review = await Service.get(Review, reviewId);
     if (!review) {
       return res.status(404).json({ error: "Avis introuvable." });
     }
 
-    // Vérifier si l'utilisateur connecté est le créateur de l'avis
     if (review.user_fk !== req.user.id) {
       return res.status(403).json({ error: "Vous n'êtes pas autorisé à modifier cet avis." });
     }
@@ -160,18 +162,15 @@ export const updateReview = async (req, res) => {
   }
 
   try {
-    // Mettre à jour l'avis
     const { product_fk, rating, comment } = req.body;
     if (!rating || !comment) {
       return res.status(400).json({ error: "Les champs rating et comment sont requis." });
     }
-
-    // Mettre à jour l'avis et redéfinir le statut sur 'pending'
     const updatedReview = await review.update({
       product_fk,
       rating,
       comment,
-      status: "pending", // Réinitialise le statut après modification
+      status: "pending",
     });
 
     res.status(200).json(updatedReview);
@@ -181,29 +180,24 @@ export const updateReview = async (req, res) => {
   }
 };
 
-
-// Delete a review
 export const deleteReview = async (req, res) => {
   const reviewId = req.params.id;
   let review;
 
   try {
-    // Récupérer l'avis
     review = await Service.get(Review, reviewId);
 
     if (!review) {
       return res.status(404).json({ error: "Avis introuvable." });
     }
 
-    // Vérifier si l'utilisateur connecté est autorisé à supprimer l'avis
-    const isAdmin = req.user.role === 'admin'; // Vérifie si l'utilisateur est un administrateur
-    const isOwner = review.user_fk === req.user.id; // Vérifie si l'utilisateur est le créateur de l'avis
+    const isAdmin = req.user.role === 'admin';
+    const isOwner = review.user_fk === req.user.id; 
 
     if (!isAdmin && !isOwner) {
       return res.status(403).json({ error: "Vous n'êtes pas autorisé à supprimer cet avis." });
     }
 
-    // Supprimer l'avis
     await Service.destroy(review);
     return res.status(200).json({ message: "Avis supprimé avec succès." });
 
@@ -214,8 +208,6 @@ export const deleteReview = async (req, res) => {
 };
 
 
-// Calculate average rating for a product
-// Calculate average rating for a product
 export const getAverageRating = async (req, res) => {
   try {
     const productId = req.params.productId;
