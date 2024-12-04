@@ -88,6 +88,57 @@ pipeline {
             }
         }
 
+        stage('Deploy to Render preProd dev') { 
+             when {
+                branch 'dev' // Exécuter ce stage uniquement sur la branche 'dev'
+            }
+            steps {
+                script {
+                     echo "Deploying to Preprod..."
+                    def serviceIdFrontend-preprod = 'srv-ct54efpopnds73d5oqsg' 
+                    def apiKeyFrontend-preprod = 'gpVNlvqLgGo' 
+
+                    def serviceIdBackend-preprod = 'srv-ct4pfp23esus73fgpdmg' 
+                    def apiKeyBackend-preprod = 'eU_epRTerfc' 
+
+                    // Effectuer une requête CURL pour déployer
+                    sh """
+                    curl -X POST "https://api.render.com/deploy/${serviceIdFrontend-preprod}}?key=${apiKeyFrontend-preprod}" \
+                        -H "Content-Type: application/json"
+                    """
+                    sh """
+                    curl -X POST "https://api.render.com/deploy/${serviceIdBackend-preprod}?key=${apiKeyBackend-preprod}" \
+                        -H "Content-Type: application/json"
+                    """
+                }
+            }
+        }
+        stage('Deploy to Render Prod main') { 
+             when {
+                branch 'main' // Exécuter ce stage uniquement sur la branche 'main'
+            }
+            steps { 
+                script {
+                    echo "Deploying to Production..."
+                    def serviceIdFrontend = 'srv-ct7n8m23esus73b7lh40' 
+                    def apiKeyFrontend = 'jKqDAwH78m4' 
+
+                    def serviceIdBackend = 'srv-ct7nhfg8fa8c738v2qv0' 
+                    def apiKeyBackend = 'woqKrYV55VU' 
+
+                    // Effectuer une requête CURL pour déployer
+                    sh """
+                    curl -X POST "https://api.render.com/deploy/${serviceIdFrontend}?key=${apiKeyFrontend}" \
+                        -H "Content-Type: application/json"
+                    """
+                    sh """
+                    curl -X POST "https://api.render.com/deploy/${serviceIdBackend}?key=${apiKeyBackend}" \
+                        -H "Content-Type: application/json"
+                    """
+                }
+            }
+        }
+
         //  stage('Run Security Tests') {
         //     agent { 
         //         docker { 
@@ -117,7 +168,6 @@ pipeline {
         //     }
         // }
 
-        
     }
     
     post {
