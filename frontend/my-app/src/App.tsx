@@ -101,9 +101,9 @@ const App = () => {
             <Route path="orders" element={<UserOrders />} />
             <Route path="security" element={<UserProfile />} />
             <Route path="adresse" element={<UserAddresses />} />
-            <Route path="A2FGenerat" element={< TwoFactorAuthPage/>} />
+            {/* <Route path="A2FGenerat" element={< TwoFactorAuthPage/>} />
             <Route path="A2FVerefiy" element={<Verify2FAPage />} />
-            <Route path="A2FDesactive" element={<Disable2FAPage />} />
+            <Route path="A2FDesactive" element={<Disable2FAPage />} /> */}
             
           </Route>
 

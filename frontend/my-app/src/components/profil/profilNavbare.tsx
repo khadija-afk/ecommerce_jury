@@ -37,7 +37,7 @@ const ProfileNavBar: React.FC<ProfileNavBarProps> = ({ handleNavLinkClick }) => 
             Adresse et Livraison
           </Link>
         </li>
-        <li className="profile-navbar-item">
+        {/* <li className="profile-navbar-item">
           <Link
             to="/profil/A2FGenerat"
             onClick={() => handleNavLinkClick("/profil/A2FGenerat")}
@@ -45,8 +45,8 @@ const ProfileNavBar: React.FC<ProfileNavBarProps> = ({ handleNavLinkClick }) => 
           >
             Activer A2F
           </Link>
-        </li>
-        <li className="profile-navbar-item">
+        </li> */}
+        {/* <li className="profile-navbar-item">
           <Link
             to="/profil/A2FVerefiy"
             onClick={() => handleNavLinkClick("/profil/A2FVerefiy")}
@@ -54,8 +54,8 @@ const ProfileNavBar: React.FC<ProfileNavBarProps> = ({ handleNavLinkClick }) => 
           >
             Vérifier A2F
           </Link>
-        </li>
-        <li className="profile-navbar-item">
+        </li> */}
+        {/* <li className="profile-navbar-item">
           <Link
             to="/profil/A2FDesactive"
             onClick={() => handleNavLinkClick("/profil/A2FDesactive")}
@@ -63,7 +63,7 @@ const ProfileNavBar: React.FC<ProfileNavBarProps> = ({ handleNavLinkClick }) => 
           >
             Désactiver A2F
           </Link>
-        </li>
+        </li> */}
       </ul>
     </nav>
   );
