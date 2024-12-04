@@ -87,37 +87,27 @@ pipeline {
                         -Dsonar.junit.reportPaths=./reports/junit.xml"
             }
         }
+        stage('Deploy to Render') { 
+            steps {
+                script {
+                def serviceIdFrontend = 'srv-ct7n8m23esus73b7lh40' 
+                def apiKeyFrontend = 'jKqDAwH78m4' 
 
-        //  stage('Run Security Tests') {
-        //     agent { 
-        //         docker { 
-        //             image 'ghcr.io/zaproxy/zaproxy:stable'
-        //             args '-v $WORKSPACE/zap-output:/zap/wrk'
-        //         }
-        //     }
-        //     steps {
-        //         script {
-        //             // Assurez-vous que l'URL cible est accessible pour le conteneur ZAP
-        //             dir('backend_ecommerce/backend_ecommerce') {
-        //                 sh 'zap-baseline.py -t http://nginx -r /zap/wrk/testreport.html'
-        //             }
-        //         }
-        //     }
-        //     post {
-        //         always {
-        //             // Archive le rapport généré pour consultation dans Jenkins
-        //             archiveArtifacts artifacts: 'zap-output/testreport.html', allowEmptyArchive: true
-        //         }
-        //         success {
-        //             echo 'ZAP scan completed successfully.'
-        //         }
-        //         failure {
-        //             echo 'ZAP scan failed. Check the test report for details.'
-        //         }
-        //     }
-        // }
+                def serviceIdBackend = 'srv-ct7nhfg8fa8c738v2qv0' 
+                def apiKeyBackend = 'woqKrYV55VU' 
 
-        
+                // Effectuer une requête CURL pour déployer
+                sh """
+                curl -X POST "https://api.render.com/deploy/${serviceIdFrontend}?key=${apiKeyFrontend}" \
+                    -H "Content-Type: application/json"
+                """
+                 sh """
+                curl -X POST "https://api.render.com/deploy/${serviceIdBackend}?key=${apiKeyBackend}" \
+                    -H "Content-Type: application/json"
+                """
+                }
+            }
+        }
     }
     
     post {
