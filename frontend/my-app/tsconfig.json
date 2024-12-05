@@ -20,7 +20,7 @@
       "@/*": ["src/*"]
     },
     "typeRoots": ["./node_modules/@types", "./src/types"], // Ajoute les types personnalisés
-    "types": ["js-cookie"] // Assure la prise en charge des types pour js-cookie
+ 
   },
   "include": ["src/**/*", "react-dom-client.d.ts"],
   "exclude": ["node_modules", "dist"]
