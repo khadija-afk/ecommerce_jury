@@ -52,7 +52,7 @@ const Checkout: React.FC = () => {
   const [paymentMethod, setPaymentMethod] = useState<string>('');
   const [loading, setLoading] = useState<boolean>(false);
 
-  const token = localStorage.getItem("token");
+  
 
   // Charger les adresses utilisateur
   useEffect(() => {
@@ -60,9 +60,7 @@ const Checkout: React.FC = () => {
       try {
         const response = await apiClient.get<Address[]>('/api/adresse/addresses', {
           
-            headers: {
-              Authorization: `Bearer ${token}`, // Ajout du Bearer Token
-            },
+           
             withCredentials: true, // Inclure les cookies si nécessaire
           
         });
@@ -85,9 +83,7 @@ const Checkout: React.FC = () => {
     if (!state?.total && orderId) {
       apiClient
         .get<{ total: number }>(`/api/order/orders/${orderId}`,  {
-          headers: {
-            Authorization: `Bearer ${token}`, // Ajout du Bearer Token
-          },
+         
           withCredentials: true, // Inclure les cookies si nécessaire
         })
         .then((response) => setTotal(response.data.total))
@@ -107,9 +103,7 @@ const Checkout: React.FC = () => {
     try {
       const response = await apiClient.post<Address>('/api/adresse/addresses', newAddress, {
         
-          headers: {
-            Authorization: `Bearer ${token}`, // Ajout du Bearer Token
-          },
+         
           withCredentials: true, // Inclure les cookies si nécessaire
         
       });
@@ -150,9 +144,7 @@ const Checkout: React.FC = () => {
           fk_addr_fk: selectedAddressId,
         },
         {
-          headers: {
-            Authorization: `Bearer ${token}`, // Ajout du Bearer Token
-          },
+          
           withCredentials: true, // Inclure les cookies si nécessaire
         }
       );
@@ -171,6 +163,7 @@ const Checkout: React.FC = () => {
 
         const response = await apiClient.post(
           "/api/stripe/create-checkout-session",
+         
           {
             paymentMethod: "stripe",
             line_items: [],
@@ -181,13 +174,12 @@ const Checkout: React.FC = () => {
               postal_code: selectedAddressDetails?.postal_code || "",
               country: selectedAddressDetails?.country || "",
             },
+            
           },
           {
-            headers: {
-              Authorization: `Bearer ${token}`, // Ajout du Bearer Token
-            },
             withCredentials: true, // Inclure les cookies si nécessaire
           }
+         
         );
         const { sessionId } = response.data;
 
