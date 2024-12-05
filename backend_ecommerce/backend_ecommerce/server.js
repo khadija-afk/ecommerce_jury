@@ -34,8 +34,8 @@ import routerA2F from  './src/routes/auth2FA.js'
 
 
 const app = express();
-
 app.use(cookieParser()); // Parse les cookies dans req.cookies
+
 app.use(cors({
   origin: env.cors_url,
   credentials: true // Autorise l'envoi et la réception des cookies

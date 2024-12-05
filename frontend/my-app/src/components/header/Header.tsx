@@ -14,6 +14,7 @@ import { useNavigate } from "react-router-dom";
 import { usePanier } from "../../utils/PanierContext";
 import { useFavoris } from "../../utils/FavorieContext";
 import { useAuth } from "../../utils/AuthCantext";
+import Cookies from "js-cookie";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faBars,
@@ -41,16 +42,35 @@ const Header: React.FC = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const checkAuthStatus = () => {
+    const checkAuthStatus = async () => {
       try {
-        const user = localStorage.getItem("user");
-        if (user) {
-          const parsedUser = JSON.parse(user);
+        // Récupérer le token depuis les cookies
+        const token = Cookies.get("access_token");
+    
+        if (!token) {
+          setIsAuthenticated(false);
+          setUserFirstName("");
+          console.warn("Token non trouvé dans les cookies.");
+          return;
+        }
+    
+        // Faire une requête au backend pour vérifier l'authentification
+        const response = await apiClient.get("/api/user/check_auth", {
+          headers: {
+            Authorization: `Bearer ${token}`, // Envoyer le token dans l'en-tête Authorization
+          },
+          withCredentials: true, // Assurez-vous que les cookies sont inclus
+        });
+    
+        // Si la requête réussit, extraire les informations utilisateur
+        if (response.status === 200) {
+          const userData = response.data;
           setIsAuthenticated(true);
-          setUserFirstName(parsedUser.firstName || "");
+          setUserFirstName(userData.firstName || "");
         } else {
           setIsAuthenticated(false);
           setUserFirstName("");
+          console.warn("Échec de la vérification d'authentification : ", response.statusText);
         }
       } catch (error) {
         console.error("Erreur lors de la vérification de l'authentification :", error);
@@ -58,7 +78,8 @@ const Header: React.FC = () => {
         setUserFirstName("");
       }
     };
-
+    
+    // Appeler la fonction pour vérifier l'état d'authentification
     checkAuthStatus();
   }, [setIsAuthenticated]);
 
@@ -72,31 +93,36 @@ const Header: React.FC = () => {
 
   const handleLogout = async () => {
     try {
-      const token = localStorage.getItem("token");
+      // Récupérer le token depuis les cookies
+      const token = Cookies.get("access_token");
   
       if (!token) {
-        console.warn("Token non trouvé dans le localStorage.");
+        console.warn("Aucun token trouvé dans les cookies.");
         return;
       }
   
+      // Appeler l'API de déconnexion
       const response = await apiClient.post(
         "/api/Log/logout",
-        {},
+        {}, // Corps vide
         {
           headers: {
-            Authorization: `Bearer ${token}`, // Ajout du token Bearer
-            "Content-Type": "application/json", // Définir le type de contenu
+            Authorization: `Bearer ${token}`, // Envoyer le token dans l'en-tête Authorization
+            "Content-Type": "application/json",
           },
+          withCredentials: true, // Inclure les cookies dans la requête
         }
       );
   
       if (response.status === 200) {
-        // Suppression des informations utilisateur et du token local
+        // Suppression des informations utilisateur
         setIsAuthenticated(false);
         setUserFirstName("");
         setShowOffcanvas(false);
-        localStorage.removeItem("user");
-        localStorage.removeItem("token");
+  
+        // Supprimer le cookie contenant le token
+        Cookies.remove("access_token");
+  
         console.log("Déconnexion réussie.");
       } else {
         console.warn("La déconnexion n'a pas été effectuée correctement.");
@@ -105,7 +131,6 @@ const Header: React.FC = () => {
       console.error("Erreur lors de la déconnexion :", error);
     }
   };
-  
 
   const handleNavLinkClick = (path: string) => {
     navigate(path);
