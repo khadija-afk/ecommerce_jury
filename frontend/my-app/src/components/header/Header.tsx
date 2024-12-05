@@ -44,17 +44,13 @@ const Header: React.FC = () => {
   useEffect(() => {
     const checkAuthStatus = async () => {
       try {
-        // Récupérer le token depuis les cookies
-     
-    
-    
-        // Faire une requête au backend pour vérifier l'authentification
+        
         const response = await apiClient.get("/api/user/check_auth", {
          
-          withCredentials: true, // Assurez-vous que les cookies sont inclus
+          withCredentials: true,
         });
     
-        // Si la requête réussit, extraire les informations utilisateur
+        
         if (response.status === 200) {
           const userData = response.data;
           setIsAuthenticated(true);
@@ -71,7 +67,7 @@ const Header: React.FC = () => {
       }
     };
     
-    // Appeler la fonction pour vérifier l'état d'authentification
+  
     checkAuthStatus();
   }, [setIsAuthenticated]);
 
@@ -85,14 +81,10 @@ const Header: React.FC = () => {
 
   const handleLogout = async () => {
     try {
-      // Récupérer le token depuis les cookies
-     
-  
-  
-      // Appeler l'API de déconnexion
+      
       const response = await apiClient.post(
         "/api/Log/logout",
-        {}, // Corps vide
+        {}, 
         {
          
           withCredentials: true, // Inclure les cookies dans la requête
@@ -100,12 +92,12 @@ const Header: React.FC = () => {
       );
   
       if (response.status === 200) {
-        // Suppression des informations utilisateur
+        
         setIsAuthenticated(false);
         setUserFirstName("");
         setShowOffcanvas(false);
   
-        // Supprimer le cookie contenant le token
+        
         
   
         console.log("Déconnexion réussie.");
