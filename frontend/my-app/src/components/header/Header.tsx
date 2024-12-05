@@ -14,7 +14,7 @@ import { useNavigate } from "react-router-dom";
 import { usePanier } from "../../utils/PanierContext";
 import { useFavoris } from "../../utils/FavorieContext";
 import { useAuth } from "../../utils/AuthCantext";
-import Cookies from "js-cookie";
+
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faBars,
@@ -45,20 +45,12 @@ const Header: React.FC = () => {
     const checkAuthStatus = async () => {
       try {
         // Récupérer le token depuis les cookies
-        const token = Cookies.get("access_token");
+     
     
-        if (!token) {
-          setIsAuthenticated(false);
-          setUserFirstName("");
-          console.warn("Token non trouvé dans les cookies.");
-          return;
-        }
     
         // Faire une requête au backend pour vérifier l'authentification
         const response = await apiClient.get("/api/user/check_auth", {
-          headers: {
-            Authorization: `Bearer ${token}`, // Envoyer le token dans l'en-tête Authorization
-          },
+         
           withCredentials: true, // Assurez-vous que les cookies sont inclus
         });
     
@@ -94,22 +86,15 @@ const Header: React.FC = () => {
   const handleLogout = async () => {
     try {
       // Récupérer le token depuis les cookies
-      const token = Cookies.get("access_token");
+     
   
-      if (!token) {
-        console.warn("Aucun token trouvé dans les cookies.");
-        return;
-      }
   
       // Appeler l'API de déconnexion
       const response = await apiClient.post(
-        "http://localhost:9090/api/Log/logout",
+        "/api/Log/logout",
         {}, // Corps vide
         {
-          headers: {
-            Authorization: `Bearer ${token}`, // Envoyer le token dans l'en-tête Authorization
-            "Content-Type": "application/json",
-          },
+         
           withCredentials: true, // Inclure les cookies dans la requête
         }
       );
@@ -121,7 +106,7 @@ const Header: React.FC = () => {
         setShowOffcanvas(false);
   
         // Supprimer le cookie contenant le token
-        Cookies.remove("access_token");
+        
   
         console.log("Déconnexion réussie.");
       } else {
