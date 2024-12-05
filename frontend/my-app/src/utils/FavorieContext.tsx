@@ -42,16 +42,11 @@ export const FavorisProvider: React.FC<{ children: ReactNode }> = ({ children })
 
     const fetchFavorites = async () => {
       try {
-        const token = localStorage.getItem('token');
-        if (!token) {
-          console.error('Token introuvable. Vérifiez si l\'utilisateur est authentifié.');
-          return;
-        }
+       
+        
 
         const response = await apiClient.get('/api/favorie', {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
+          withCredentials: true, // Assurez-vous que les cookies sont inclus
         });
 
         if (response.data && Array.isArray(response.data)) {

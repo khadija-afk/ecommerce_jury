@@ -15,17 +15,13 @@ const Panier = () => {
     // Récupérer le panier de l'utilisateur
     const fetchCartByUser = async () => {
         try {
-            const token = localStorage.getItem('token'); // Récupérer le token stocké dans localStorage
-            if (!token) {
-                console.error('Aucun token trouvé.');
-                setErrorMessage('Vous devez être connecté pour accéder à votre panier.');
-                return;
-            }
+            
+           
+                
+         
 
             const response = await apiClient.get('/api/cart/cart', {
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                },
+                withCredentials: true, // Assurez-vous que les cookies sont inclus
             });
 
             if (response.data && response.data.cartItems) {
