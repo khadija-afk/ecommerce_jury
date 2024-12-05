@@ -103,7 +103,7 @@ const Header: React.FC = () => {
   
       // Appeler l'API de déconnexion
       const response = await apiClient.post(
-        "/api/Log/logout",
+        "http://localhost:9090/api/Log/logout",
         {}, // Corps vide
         {
           headers: {
