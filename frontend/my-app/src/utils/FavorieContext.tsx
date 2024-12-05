@@ -73,11 +73,8 @@ export const FavorisProvider: React.FC<{ children: ReactNode }> = ({ children })
       return;
     }
 
-    const token = localStorage.getItem('token');
-    if (!token) {
-      console.error('Token introuvable : impossible d\'ajouter aux favoris.');
-      return;
-    }
+    
+  
 
     if (isFavorite(article.id)) {
       console.warn(`L'article ${article.name} est déjà dans vos favoris.`);
@@ -110,11 +107,7 @@ export const FavorisProvider: React.FC<{ children: ReactNode }> = ({ children })
       return;
     }
 
-    const token = localStorage.getItem('token');
-    if (!token) {
-      console.error('Token introuvable : impossible de supprimer des favoris.');
-      return;
-    }
+    
 
     try {
       await apiClient.delete(`/api/favorie/${product_fk}`, {
