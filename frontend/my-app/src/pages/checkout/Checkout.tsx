@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useStripe, useElements } from '@stripe/react-stripe-js';
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faEdit, faTrash, faPlus, faCheck  } from "@fortawesome/free-solid-svg-icons";
 import { useNavigate, useParams, useLocation } from 'react-router-dom';
 import apiClient from '../../utils/axiosConfig';
 import './Checkout.css';
@@ -230,7 +232,7 @@ const Checkout: React.FC = () => {
             <h4>Détails de l'adresse sélectionnée</h4>
             <p><strong>Adresse :</strong> {selectedAddressDetails.address_line1}</p>
             {selectedAddressDetails.address_line2 && (
-              <p><strong>Complément :</strong> {selectedAddressDetails.address_line2}</p>
+            <p><strong>Complément :</strong> {selectedAddressDetails.address_line2}</p>
             )}
             <p><strong>Ville :</strong> {selectedAddressDetails.city}</p>
             <p><strong>Code Postal :</strong> {selectedAddressDetails.postal_code}</p>
@@ -241,40 +243,54 @@ const Checkout: React.FC = () => {
           {showNewAddressForm ? 'Annuler' : 'Ajouter une nouvelle adresse'}
         </button>
         {showNewAddressForm && (
-          <div className="new-address-form">
+          <div className="add-address-form">
+            <h3>Ajouter une nouvelle adresse</h3>
             <input
               type="text"
-              placeholder="Adresse ligne 1"
+              name="address_line1"
               value={newAddress.address_line1}
               onChange={(e) =>
                 setNewAddress({ ...newAddress, address_line1: e.target.value })
               }
+              placeholder="Ligne d'adresse 1"
             />
             <input
               type="text"
-              placeholder="Adresse ligne 2 (optionnel)"
-              value={newAddress.address_line2}
+              name="address_line2"
+              value={newAddress.address_line2 || ""}
               onChange={(e) =>
                 setNewAddress({ ...newAddress, address_line2: e.target.value })
               }
+              placeholder="Ligne d'adresse 2 (optionnel)"
             />
             <input
               type="text"
-              placeholder="Ville"
+              name="city"
               value={newAddress.city}
-              onChange={(e) => setNewAddress({ ...newAddress, city: e.target.value })}
+              onChange={(e) =>
+                setNewAddress({ ...newAddress, city: e.target.value })
+              }
+              placeholder="Ville"
             />
             <input
               type="text"
-              placeholder="Code postal"
+              name="postal_code"
               value={newAddress.postal_code}
               onChange={(e) =>
                 setNewAddress({ ...newAddress, postal_code: e.target.value })
               }
+              placeholder="Code Postal"
             />
-            <button onClick={handleAddNewAddress}>Ajouter l'adresse</button>
+            <button
+              className="address-button add"
+              onClick={handleAddNewAddress}
+              title="Ajouter l'adresse"
+            >
+              <FontAwesomeIcon icon={faPlus} />
+            </button>
           </div>
         )}
+
       </div>
 
       <div className="checkout-summary">
