@@ -65,7 +65,7 @@ const Favoris: React.FC = () => {
                         className="removeButton"
                         onClick={() => removeFavorite(favorite.id)}
                       >
-                        Supprimer
+                        
                       </button>
                     </td>
                   </tr>

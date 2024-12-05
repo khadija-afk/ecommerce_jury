@@ -1,4 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faPlus, faMinus } from "@fortawesome/free-solid-svg-icons";
 import { useNavigate } from 'react-router-dom';
 import { PanierContext, PanierContextType } from '../../utils/PanierContext';
 import apiClient from '../../utils/axiosConfig';
@@ -115,23 +117,25 @@ const Panier = () => {
                                                 : "Non disponible"}
                                         </td>
                                         <td>
-                                            <div className="quantity-container">
-                                                <button
-                                                    className="quantity-button"
+                                            <div className="quantity-control" >
+                                                <button className='button'
+                                                    
                                                     onClick={() =>
                                                         decremente(cartItem.product_fk)
                                                     }
+                                                    title="Diminuer la quantité"
                                                 >
-                                                    -
+                                                <FontAwesomeIcon icon={faMinus} />
                                                 </button>
-                                                <span>{cartItem.quantity}</span>
-                                                <button
-                                                    className="quantity-button"
+                                                <span className="quantity">{cartItem.quantity}</span>
+                                                <button  className='button'
+                                                    
                                                     onClick={() =>
                                                         incremente(cartItem.product_fk)
                                                     }
+                                                     title="Augmenter la quantité"
                                                 >
-                                                    +
+                                                <FontAwesomeIcon icon={faPlus} />
                                                 </button>
                                             </div>
                                         </td>
@@ -142,12 +146,11 @@ const Panier = () => {
                                             ).toFixed(2)}{' '}
                                             €
                                         </td>
-                                        <td>
+                                        <td data-label="Supprimer">
                                             <button
-                                                className="remove-button"
+                                                className="removeButton"
                                                 onClick={() => removeArticle(cartItem.product_fk)}
                                             >
-                                                Supprimer
                                             </button>
                                         </td>
                                     </tr>

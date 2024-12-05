@@ -18,7 +18,7 @@
 }
 
 .table-responsive th, .table-responsive td {
-  padding: 10px;
+  padding: 10px 60px;
   text-align: center; /* Centre le contenu horizontalement dans les cellules */
   vertical-align: middle; /* Centre le contenu verticalement dans les cellules */
   border-bottom: 1px solid #ddd;
@@ -46,6 +46,10 @@
   text-align: center; /* Centre le texte à l'intérieur du bouton */
 }
 
+.table-responsive .button:hover {
+  background-color: #E6D5F3;
+}
+
 .table-responsive .removeButton {
   width: 20px;
   height: 20px;
@@ -63,7 +67,7 @@
 }
 
 .table-responsive .removeButton:hover {
-  background-color: #ff6666;
+  background-color: #b01b1b;
 }
 
 .table-responsive.removeButton:focus {
