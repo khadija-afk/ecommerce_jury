@@ -46,7 +46,7 @@ export const FavorisProvider: React.FC<{ children: ReactNode }> = ({ children })
         
 
         const response = await apiClient.get('/api/favorie', {
-          withCredentials: true, // Assurez-vous que les cookies sont inclus
+          withCredentials: true, 
         });
 
         if (response.data && Array.isArray(response.data)) {
@@ -89,9 +89,7 @@ export const FavorisProvider: React.FC<{ children: ReactNode }> = ({ children })
         '/api/favorie',
         { product_fk: article.id },
         {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
+          withCredentials: true, 
         }
       );
 
@@ -120,9 +118,7 @@ export const FavorisProvider: React.FC<{ children: ReactNode }> = ({ children })
 
     try {
       await apiClient.delete(`/api/favorie/${product_fk}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
+        withCredentials: true,
       });
 
       setFavorites((prev) => prev.filter((fav) => fav.id !== product_fk));
