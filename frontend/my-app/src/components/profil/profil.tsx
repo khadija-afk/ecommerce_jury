@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from "react";
 import apiClient from "../../utils/axiosConfig";
 import "./profil.css";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faEdit, faSave } from "@fortawesome/free-solid-svg-icons";
 
 interface User {
   firstName: string;
   lastName: string;
   email: string;
-  [key: string]: any; // Si d'autres propriétés utilisateur existent
+  [key: string]: any;
 }
 
 const UserProfile: React.FC = () => {
@@ -85,18 +87,26 @@ const UserProfile: React.FC = () => {
             onChange={handleInputChange}
             placeholder="Email"
           />
-          <button onClick={handleSave}>Enregistrer</button>
+          <button className="profile-button save" onClick={handleSave} title="Enregistrer">
+            <FontAwesomeIcon icon={faSave} />
+          </button>
         </div>
       ) : (
-        <>
+        <div className="profile-details">
           <p>
             <strong>Nom :</strong> {user?.firstName} {user?.lastName}
           </p>
           <p>
             <strong>Email :</strong> {user?.email}
           </p>
-          <button onClick={() => setIsEditing(true)}>Modifier</button>
-        </>
+          <button
+            className="profile-button edit"
+            onClick={() => setIsEditing(true)}
+            title="Modifier"
+          >
+            <FontAwesomeIcon icon={faEdit} />
+          </button>
+        </div>
       )}
     </div>
   );

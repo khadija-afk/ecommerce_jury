@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faDownload, faCreditCard } from "@fortawesome/free-solid-svg-icons";
 import { useNavigate } from "react-router-dom";
 import apiClient from "../../utils/axiosConfig";
 import "./UserOrders.css";
@@ -131,15 +133,17 @@ const UserOrders: React.FC = () => {
               <button
                 className="action-button"
                 onClick={() => handleDownloadInvoice(order.id)}
+                title="Télécharger la facture"
               >
-                Télécharger la facture
+                <FontAwesomeIcon icon={faDownload} />
               </button>
             ) : (
               <button
                 className="action-button"
                 onClick={() => handleProceedToPayment(order.id, order.total)}
+                title="Procéder au paiement"
               >
-                Procéder au paiement
+                <FontAwesomeIcon icon={faCreditCard} />
               </button>
             )}
           </div>

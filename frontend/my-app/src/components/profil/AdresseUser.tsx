@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faEdit, faTrash, faPlus, faCheck  } from "@fortawesome/free-solid-svg-icons";
 import apiClient from "../../utils/axiosConfig";
 import "./AdresseUser.css";
 
@@ -130,8 +132,20 @@ const UserAddresses: React.FC = () => {
           <p>
             <strong>Téléphone :</strong> {address.phone}
           </p>
-          <button onClick={() => handleEditAddress(address)}>Modifier</button>
-          <button onClick={() => handleDeleteAddress(address.id!)}>Supprimer</button>
+      <div className="address-buttons">
+      <button
+        className="address-button edit"
+        onClick={() => handleEditAddress(address)}
+      >
+      <FontAwesomeIcon icon={faEdit} />
+      </button>
+      <button
+        className="address-button delete"
+        onClick={() => handleDeleteAddress(address.id!)}
+      >
+         <FontAwesomeIcon icon={faTrash} />
+      </button>
+    </div>
         </div>
       ))}
 
@@ -178,7 +192,11 @@ const UserAddresses: React.FC = () => {
             }
             placeholder="Code Postal"
           />
-          <button onClick={handleUpdateAddress}>Mettre à jour</button>
+          
+          <button className= "address-button edit " onClick={handleUpdateAddress}>
+          <FontAwesomeIcon icon={faCheck} />
+          </button>
+        
         </div>
       )}
 
@@ -208,8 +226,12 @@ const UserAddresses: React.FC = () => {
           onChange={handleInputChange}
           placeholder="Code Postal"
         />
-        <button onClick={handleAddAddress}>Ajouter l'adresse</button>
-      </div>
+      
+        <button className= "address-button edit " onClick={handleAddAddress}>
+        <FontAwesomeIcon icon={faPlus} />
+        </button>
+        </div>
+     
     </div>
   );
 };

@@ -21,15 +21,6 @@ const ProfileNavBar: React.FC<ProfileNavBarProps> = ({ handleNavLinkClick }) => 
         </li>
         <li className="profile-navbar-item">
           <Link
-            to="/profil/security"
-            onClick={() => handleNavLinkClick("/profil/security")}
-            className="profile-navbar-link"
-          >
-            Connexion et Sécurité
-          </Link>
-        </li>
-        <li className="profile-navbar-item">
-          <Link
             to="/profil/adresse"
             onClick={() => handleNavLinkClick("/profil/adresse")}
             className="profile-navbar-link"
@@ -37,6 +28,16 @@ const ProfileNavBar: React.FC<ProfileNavBarProps> = ({ handleNavLinkClick }) => 
             Adresse et Livraison
           </Link>
         </li>
+        <li className="profile-navbar-item">
+          <Link
+            to="/profil/security"
+            onClick={() => handleNavLinkClick("/profil/security")}
+            className="profile-navbar-link"
+          >
+            Connexion et Sécurité
+          </Link>
+        </li>
+       
         {/* <li className="profile-navbar-item">
           <Link
             to="/profil/A2FGenerat"
