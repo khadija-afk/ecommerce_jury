@@ -1,5 +1,6 @@
 import express from 'express'
 import { env } from './src/config.js'
+import path from 'path';
 import swaggerUi from 'swagger-ui-express'
 import swaggerDocs from './swagger.js'
 import cookieParser from 'cookie-parser'
@@ -29,10 +30,6 @@ import routerUserPrefernec from './src/routes/userPreference.js'
 import routerAdresse from './src/routes/adresse.js'
 import routerCantacte from'./src/routes/cantacte.js'
 import routerA2F from  './src/routes/auth2FA.js'
-
-
-
-
 const app = express();
 app.use(cookieParser()); // Parse les cookies dans req.cookies
 
@@ -50,7 +47,11 @@ app.use((req, res, next) => {
 
 
 //Multer
-app.use('/uploads', express.static('uploads'));
+if (process.env.NODE_ENV === 'production') {
+  app.use('/uploads', express.static('/var/uploads'));
+} else {
+  app.use('/uploads', express.static(path.join(process.cwd(), 'uploads')));
+}
 
 
 // PORT
@@ -86,12 +87,7 @@ app.use("/api/adresse", routerAdresse);
 app.use("/api/cantact", routerCantacte);
 app.use("/api/A2F", routerA2F);
 app.use('/api/webhook', stripeWebhookRoute);
-
-
-
 export { app }
-
-
 // LISTEN
 if (process.env.NODE_ENV !== 'test') {
   app.listen(PORT, () => {

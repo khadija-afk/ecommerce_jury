@@ -1,4 +1,5 @@
 import { Article, User, Categorie, OrderItems } from "../models/index.js";
+import { env } from "../config.js";
 import * as Service from "../services/service.js";
 // import logger from "../../../logger.js";
 
@@ -11,6 +12,8 @@ export const add = async (req, res) => {
   try {
     const user = await Service.get(User, user_fk);
     const categorie = await Service.get(Categorie, categorie_fk);
+    // Ajouter un nouvel article
+    const FILE_BASE_URL = env.base_url || 'http://localhost:9090';
     const newArticle = await Service.create(Article, {
       name,
       content,
@@ -19,9 +22,8 @@ export const add = async (req, res) => {
       stock,
       user_fk,
       categorie_fk,
-      photo: req.file ? `/uploads/articles/${req.file.filename}` : null,
+      photo: req.file ? `${FILE_BASE_URL}/uploads/articles/${req.file.filename}` : null,
     });
-
     res.status(201).json(newArticle);
   } catch (error) {
     res.status(error.status || 500).json({ error: error.message });
