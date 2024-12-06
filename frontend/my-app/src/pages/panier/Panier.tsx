@@ -97,9 +97,9 @@ const Panier = () => {
                                 {panier.map((cartItem) => (
                                     <tr key={cartItem.product_fk}>
                                         <td>
-                                            {cartItem.article?.photo?.[0] ? (
+                                            {cartItem.article?.photo ? (
                                                 <img
-                                                    src={cartItem.article.photo[0]}
+                                                    src={cartItem.article.photo}
                                                     alt={cartItem.article.name}
                                                 />
                                             ) : (
