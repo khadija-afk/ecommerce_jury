@@ -10,7 +10,7 @@ interface Article {
   name: string;
   content: string;
   price: number;
-  photo: string[];
+  photo: string;
 }
 
 interface CartItem {
