@@ -11,7 +11,7 @@ import { useFavoris } from "../../utils/FavorieContext";
 export interface Article {
   id: number; // ID unique de l'article
   name: string;
-  photo: string[];
+  photo: string;
   price: number;
   content: string; // Description obligatoire
   createdAt?: string; // Optionnel si ce champ n'est pas toujours présent
@@ -95,11 +95,11 @@ const ArticleList: React.FC = () => {
                   <span className={isFavorite(article.id) ? "red" : ""}>♥</span>
                 </div>
                 <Card.Img
-                    variant="top"
-                    src={article.photo ? `${BASE_URL}${article.photo}` : "default-image.jpg"} // Image par défaut si aucune photo
-                    alt={`Photo de ${article.name}`}
-                    className="custom-card-img"
-                  />
+                  variant="top"
+                  src={article.photo} // Utilise directement l'URL complète depuis `photo`
+                  alt={`Photo de ${article.name}`}
+                  className="custom-card-img"
+                />
                 <Card.Body className="custom-card-body">
                   <h5>{article.name}</h5>
                   <p className="article-price">Prix : {article.price} €</p>

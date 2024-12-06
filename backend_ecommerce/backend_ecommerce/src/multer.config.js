@@ -3,10 +3,9 @@ import path from 'path';
 import fs from 'fs';
 
 // Chemin du dossier de stockage
-const uploadsDir = process.env.NODE_ENV === 'production' 
-  ? '/var/uploads/articles' // Chemin monté pour Render ou autre service
-  : path.join(process.cwd(), 'uploads/articles'); // Chemin local pour dev
-
+const uploadsDir = process.env.NODE_ENV === 'production'
+  ? '/var/uploads/articles'
+  : path.join(process.cwd(), 'uploads/articles');
 // Vérifier et créer le dossier si nécessaire
 if (!fs.existsSync(uploadsDir)) {
   fs.mkdirSync(uploadsDir, { recursive: true });

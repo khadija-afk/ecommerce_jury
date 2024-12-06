@@ -309,6 +309,8 @@ if (process.env.SYNC_TABLES === 'yes') {
   synchronizeAllTables();
 }
 
+// syncArticleTable(); 
+
 
 
 export {

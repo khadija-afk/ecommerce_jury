@@ -7,7 +7,7 @@ import "./UserOrders.css";
 
 interface Article {
   name: string;
-  photo: string[];
+  photo: string;
 }
 
 interface OrderItem {
@@ -113,7 +113,7 @@ const UserOrders: React.FC = () => {
             {order.OrderItems.map((item) => (
               <div className="order-item" key={item.id}>
                 <img
-                  src={item.Article.photo[0]}
+                  src={item.Article.photo}  
                   alt={item.Article.name}
                   className="product-photo"
                 />

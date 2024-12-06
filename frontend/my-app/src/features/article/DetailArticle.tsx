@@ -16,7 +16,7 @@ interface Article {
   name: string;
   content: string;
   price: number;
-  photo: string[];
+  photo: string;
 }
 
 const DetailArticle: React.FC = () => {

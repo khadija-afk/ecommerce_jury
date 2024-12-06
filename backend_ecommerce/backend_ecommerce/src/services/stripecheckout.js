@@ -54,7 +54,7 @@ export const createStripeSession = async (req, res) => {
                         name: item.article.name,
                         description: item.article.content || 'Description non disponible',
                         images: item.article.photo
-                        ? [`${env.base_url}${item.article.photo}`] // URL complète
+                        ? [`${item.article.photo}`] // URL complète
                         : [], // Aucun image si photo manquante
                     },
                     unit_amount: Math.round(item.article.price * 100),

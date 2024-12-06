@@ -5,7 +5,7 @@ import { useAuth } from './AuthCantext';
 export interface Article {
   id: number;
   name: string;
-  photo: string[];
+  photo: string;
   price: number;
   content: string;
   createdAt?: string;
