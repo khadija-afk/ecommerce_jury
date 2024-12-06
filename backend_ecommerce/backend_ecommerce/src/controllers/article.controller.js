@@ -1,29 +1,16 @@
-import { Article, User, Categorie } from "../models/index.js";
+import { Article, User, Categorie, OrderItems } from "../models/index.js";
 import * as Service from "../services/service.js";
 // import logger from "../../../logger.js";
 
+// Ajouter un article avec upload d'image
 export const add = async (req, res) => {
-  // logger.debug("Controller Add Article start");
-
-  const { categorie_fk, name, content, brand, price, stock, photo } = req.body;
+  const { categorie_fk, name, content, brand, price, stock } = req.body;
 
   const user_fk = req.user.id;
-  let user;
-  try {
-    user = await Service.get(User, user_fk);
-  } catch (error) {
-    return res.status(error.status).json({ error: error.error });
-  }
-
-  let categorie;
-  try {
-    categorie = await Service.get(Categorie, categorie_fk);
-  } catch (error) {
-    return res.status(error.status).json({ error: error.error });
-  }
 
   try {
-    // Créer un nouvel article avec les informations reçues dans le corps de la requête
+    const user = await Service.get(User, user_fk);
+    const categorie = await Service.get(Categorie, categorie_fk);
     const newArticle = await Service.create(Article, {
       name,
       content,
@@ -32,11 +19,12 @@ export const add = async (req, res) => {
       stock,
       user_fk,
       categorie_fk,
-      photo,
+      photo: req.file ? `/uploads/articles/${req.file.filename}` : null,
     });
+
     res.status(201).json(newArticle);
   } catch (error) {
-    return res.status(error.status).json({error: error.error})
+    res.status(error.status || 500).json({ error: error.message });
   }
 };
 export const getAll = async (req, res) => {
@@ -101,7 +89,7 @@ export const deleteById = async (req, res) => {
       }
 
       // Supprimer les références dans OrderItems
-      const { OrderItems } = require('../models/index.js');
+      
       await OrderItems.destroy({ where: { product_fk: articleId } });
 
       // Supprimer l'article

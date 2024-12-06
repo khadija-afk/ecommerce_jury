@@ -28,6 +28,10 @@ const ArticleList: React.FC = () => {
 
   const [ratings, setRatings] = useState<{ [key: number]: number }>({});
   const [reviews, setReviews] = useState<{ [key: number]: Review[] }>({});
+  
+
+  //URL BACKEND
+  const BASE_URL= import.meta.env.VITE_BASE_URL
 
   const isFavorite = (articleId: number): boolean => {
     return favorites.some((fav) => fav.id === articleId);
@@ -92,9 +96,7 @@ const ArticleList: React.FC = () => {
                 </div>
                 <Card.Img
                     variant="top"
-                    src={
-                      article?.photo?.[0]
-                    }
+                    src={article.photo ? `${BASE_URL}${article.photo}` : "default-image.jpg"} // Image par défaut si aucune photo
                     alt={`Photo de ${article.name}`}
                     className="custom-card-img"
                   />

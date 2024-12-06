@@ -49,6 +49,10 @@ app.use((req, res, next) => {
 });
 
 
+//Multer
+app.use('/uploads', express.static('uploads'));
+
+
 // PORT
 const PORT = env.port     || 9090 ;
 // api-docs

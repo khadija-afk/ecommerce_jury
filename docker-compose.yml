@@ -32,6 +32,7 @@ services:
       - VITE_PUBLIC_KEY_STRIPE=${VITE_PUBLIC_KEY_STRIPE}
       - MY_EMAIL=${MY_EMAIL}
       - MY_PASSWORD=${MY_PASSWORD}
+      - VITE_BASE_URL=${VITE_BASE_URL}
     networks:
       - jenkins_net  # Ajouter au même réseau
 
@@ -49,6 +50,7 @@ services:
       - VITE_PUBLIC_KEY_STRIPE=${VITE_PUBLIC_KEY_STRIPE}
       - VITE_CORS_URL=${VITE_CORS_URL}
       - URL_BACKEND=${URL_BACKEND}
+      - VITE_BASE_URL=${VITE_BASE_URL}
     networks:
       - jenkins_net  # Ajouter au même réseau
 
