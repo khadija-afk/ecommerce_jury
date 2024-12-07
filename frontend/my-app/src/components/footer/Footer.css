@@ -96,7 +96,7 @@
 
 .footer-form button {
   padding: 10px;
-  background-color: #311C52; /* Couleur violette */
+  background-color: #311C52; 
   color: white;
   border: none;
   border-radius: 5px;
@@ -106,7 +106,7 @@
 }
 
 .footer-form button:hover {
-  background-color: #5F4B8B; /* Violet clair */
+  background-color: #5F4B8B; 
 }
 
 /* Bas de page */

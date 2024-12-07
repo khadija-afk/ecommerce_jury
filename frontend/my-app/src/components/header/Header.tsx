@@ -122,11 +122,11 @@ const Header: React.FC = () => {
   return (
     <header>
       <Container fluid className="d-lg-none d-flex align-items-center justify-content-between py-2">
-        <Button variant="link" className="search-icon" onClick={() => setShowSearchOffcanvas(true)}>
-          <FontAwesomeIcon icon={faSearch} />
-        </Button>
+      <Button variant="link" className="search-icon" onClick= {() => setShowSearchOffcanvas(true)}>
+        <FontAwesomeIcon icon={faSearch} className="custom-search-icon" />
+      </Button>
         <Navbar.Brand href="/" className="mx-auto text-center">
-          KenziShop
+          ELLE&STYLE
         </Navbar.Brand>
         <Button variant="link" className="menu-icon" onClick={() => setShowOffcanvas(true)}>
           <FontAwesomeIcon icon={faBars} />
@@ -135,7 +135,7 @@ const Header: React.FC = () => {
 
       <Navbar expand="lg" bg="white" variant="light" className="navbar-custom py-3">
         <Container fluid>
-          <Navbar.Brand href="/" className="d-none d-lg-inline">KenziShop</Navbar.Brand>
+          <Navbar.Brand href="/" className="d-none d-lg-inline">ELLE&STYLE</Navbar.Brand>
           <Form className="d-none d-lg-flex mx-auto search-center" onSubmit={handleSearch}>
             <FormControl
               type="search"

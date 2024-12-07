@@ -84,59 +84,57 @@ const ArticleList: React.FC = () => {
   } else if (articleStatus === "succeeded") {
     content = (
       <Container className="mt-4">
-        <Row className="custom-row">
-          {articles.map((article) => (
-            <Col key={article.id} sm={12} md={6} lg={4} className="mb-4">
-              <Card className="custom-card">
-                <div
-                  className="favorite-icon"
-                  onClick={() => handleFavoriteClick(article)}
+  <Row className="custom-row">
+    {articles.map((article) => (
+      <Col key={article.id} sm={12} md={6} lg={4} className="mb-4">
+        {/* Card contenant uniquement l'image */}
+        <Card className="custom-card">
+          <Card.Img
+            variant="top"
+            src={article.photo} // Utilise directement l'URL complète depuis `photo`
+            alt={`Photo de ${article.name}`}
+            className="custom-card-img"
+          />
+          <div
+            className="favorite-icon"
+            onClick={() => handleFavoriteClick(article)}
+          >
+            <span className={isFavorite(article.id) ? "red" : ""}>♥</span>
+          </div>
+        </Card>
+
+        {/* Section en dehors de la carte pour les détails */}
+        <div className="article-details text-center">
+          <div className="article-rating">
+            {Array(5)
+              .fill(null)
+              .map((_, i) => (
+                <span
+                  key={i}
+                  className={i < (ratings[article.id] || 0) ? "star filled" : "star"}
                 >
-                  <span className={isFavorite(article.id) ? "red" : ""}>♥</span>
-                </div>
-                <Card.Img
-                  variant="top"
-                  src={article.photo} // Utilise directement l'URL complète depuis `photo`
-                  alt={`Photo de ${article.name}`}
-                  className="custom-card-img"
-                />
-                <Card.Body className="custom-card-body">
-                  <h5>{article.name}</h5>
-                  <p className="article-price">Prix : {article.price} €</p>
-                  <button
+                  ★
+                </span>
+              ))}
+            <span className="rating-count"> {reviews[article.id]?.length || 0}</span>
+          </div>
+          <h5 className="article-title">{article.name}</h5>
+          <p className="article-price">{article.price} €</p>
+                <button
                     onClick={() => handleNavigation(article)}
-                    className="btn btn-primary"
+                    className="btn custom-button"
                   >
                     Voir les détails
                   </button>
-                </Card.Body>
-                <div className="article-info">
-                  <div className="article-rating">
-                    {Array(5)
-                      .fill(null)
-                      .map((_, i) => (
-                        <span
-                          key={i}
-                          className={i < (ratings[article.id] || 0) ? "star filled" : "star"}
-                        >
-                          ★
-                        </span>
-                      ))}
-                  </div>
-                  <div className="article-reviews">
-                    {reviews[article.id]?.map((review) => (
-                      <div key={review.id}>
-                        <strong>Note: {review.rating}</strong>
-                        <p>{review.comment}</p>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              </Card>
-            </Col>
-          ))}
-        </Row>
-      </Container>
+        </div>
+      </Col>
+    ))}
+  </Row>
+</Container>
+
+    
+
+
     );
   } else if (articleStatus === "failed") {
     content = <p>{error}</p>;

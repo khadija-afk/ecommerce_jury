@@ -41,7 +41,7 @@ const CookieConsentModal: React.FC<CookieConsentModalProps> = ({ onOpenSettings 
       </Modal.Header>
       <Modal.Body>
         <p>
-          Kiabi et ses partenaires utilisent des cookies pour adapter le contenu
+          ELLE&STYLE et ses partenaires utilisent des cookies pour adapter le contenu
           de notre site à vos préférences, vous donner accès à des solutions de
           la relation client (chat et avis client), vous proposer des offres et
           publicités personnalisées ou encore pour réaliser des mesures de
