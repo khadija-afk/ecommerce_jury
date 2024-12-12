@@ -29,3 +29,9 @@ format:
 	
 .PHONY: test lint bdd
 
+migration-name:
+	npx sequelize-cli migration:generate --name <nom_de_la_migration>
+migrate:
+	npx sequelize-cli db:migrate
+
+

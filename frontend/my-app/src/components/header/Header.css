@@ -53,9 +53,9 @@
 /* Offcanvas Styles for Small Screens */
 @media (max-width: 767.98px) {
   .navbar-custom {
-    margin-left: 0; /* Supprime les marges sur les petits écrans */
-    margin-right: 0; /* Supprime les marges sur les petits écrans */
-    padding: 0 10px; /* Ajoute un padding intérieur pour un alignement visuel */
+    margin-left: 0; 
+    margin-right: 0; 
+    padding: 0 10px;
   }
 
   .d-lg-none {
@@ -67,7 +67,7 @@
   }
 }
 
-/* Styles pour l'Offcanvas */
+
 .offcanvas {
   width: 300px;
 }

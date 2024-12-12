@@ -49,9 +49,9 @@ export const login = async (req, res) => {
 
   // Étape 4 : Envoi de la réponse avec le cookie
   res.cookie("access_token", token, {
-    httpOnly: true, // Empêche l'accès via JavaScript (sécurité XSS)
+    httpOnly: true, 
     secure: true, // Nécessaire pour HTTPS
-    sameSite: 'None', // Permet l'envoi entre les domaines (cross-site)
+    sameSite: 'None', 
     maxAge: 24 * 60 * 60 * 1000, // Expiration du cookie (24 heures)
   });
 

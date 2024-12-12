@@ -26,7 +26,7 @@ export const add = async (req, res) => {
     });
     res.status(201).json(newArticle);
   } catch (error) {
-    res.status(error.status || 500).json({ error: error.message });
+    res.status(500).json({ error: 'Server error while creating Article' });
   }
 };
 export const getAll = async (req, res) => {

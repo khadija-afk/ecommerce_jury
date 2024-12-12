@@ -7,7 +7,7 @@ interface Article {
   name: string;
   price: number;
   content: string;
-  quantity?: number; // La quantité est optionnelle dans un article
+  quantity?: number; 
   photo: string;
 }
 

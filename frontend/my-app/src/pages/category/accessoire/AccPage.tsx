@@ -84,7 +84,7 @@ const AccessoiresPage = () => {
                 <Link to={`/article/${article.id}`}>
                   <Card.Img
                     variant="top"
-                    src={article.photo[0]}
+                    src={article.photo}
                     alt={`Photo de ${article.name}`}
                     className="custom-card-img"
                   />

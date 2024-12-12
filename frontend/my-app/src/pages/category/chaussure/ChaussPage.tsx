@@ -19,7 +19,7 @@ const ChaussuresPage = () => {
   useEffect(() => {
     const fetchArticles = async () => {
       try {
-        const response = await apiClient.get('api/api/article/category/3');
+        const response = await apiClient.get('/api/article/category/3');
         if (response.headers['content-type'] && response.headers['content-type'].includes('application/json')) {
           setChaussures(response.data);  // Met à jour l'état avec les articles
         } else {
@@ -80,7 +80,7 @@ const ChaussuresPage = () => {
                 <Link to={`/article/${article.id}`}>
                   <Card.Img
                     variant="top"
-                    src={article.photo[0]}
+                    src={article.photo}
                     alt={`Photo de ${article.name}`}
                     className="custom-card-img"
                   />

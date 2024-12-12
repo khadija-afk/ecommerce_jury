@@ -89,9 +89,6 @@ pipeline {
         }
 
         stage('Deploy to Render preProd dev') { 
-            //  when {
-            //     branch 'dev' // Exécuter ce stage uniquement sur la branche 'dev'
-            // }
             steps {
                 script {
                      echo "Deploying to Preprod..."
@@ -101,7 +98,6 @@ pipeline {
                     def serviceIdBackendpreprod = 'srv-ct4pfp23esus73fgpdmg' 
                     def apiKeyBackendpreprod = 'eU_epRTerfc' 
 
-                    // Effectuer une requête CURL pour déployer
                     sh """
                     curl -X POST "https://api.render.com/deploy/${serviceIdFrontend-preprod}}?key=${apiKeyFrontend-preprod}" \
                         -H "Content-Type: application/json"
