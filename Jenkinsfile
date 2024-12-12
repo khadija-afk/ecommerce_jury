@@ -92,11 +92,11 @@ pipeline {
             steps {
                 script {
                      echo "Deploying to Preprod..."
-                    def serviceIdFrontendpreprod = 'srv-ct54efpopnds73d5oqsg' 
-                    def apiKeyFrontendpreprod = 'gpVNlvqLgGo' 
+                    def serviceIdFrontend-preprod = 'srv-ct54efpopnds73d5oqsg' 
+                    def apiKeyFrontend-preprod = 'gpVNlvqLgGo' 
 
-                    def serviceIdBackendpreprod = 'srv-ct4pfp23esus73fgpdmg' 
-                    def apiKeyBackendpreprod = 'eU_epRTerfc' 
+                    def serviceIdBackend-preprod = 'srv-ct4pfp23esus73fgpdmg' 
+                    def apiKeyBackend-preprod = 'eU_epRTerfc' 
 
                     sh """
                     curl -X POST "https://api.render.com/deploy/${serviceIdFrontend-preprod}}?key=${apiKeyFrontend-preprod}" \
