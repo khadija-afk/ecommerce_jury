@@ -99,7 +99,7 @@ pipeline {
                     def apiKeyBackendpreprod = 'eU_epRTerfc' 
 
                     sh """
-                    curl -X POST "https://api.render.com/deploy/${serviceIdFrontendpreprod}}?key=${apiKeyFrontendpreprod}" \
+                    curl -X POST "https://api.render.com/deploy/${serviceIdFrontendpreprod}?key=${apiKeyFrontendpreprod}" \
                         -H "Content-Type: application/json"
                     """
                     sh """
