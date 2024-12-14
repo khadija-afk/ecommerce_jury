@@ -133,7 +133,7 @@ router.get('/:id', getById);
  *   put:
  *     summary: Récupérer un élément par ID
  */
-router.put('/:id', verifieToken, verifyRole(['admin']),upload.single('photo'), updateById);
+router.put('/:id',  verifyRole(['admin']),upload.single('photo'), updateById);
 
 /**
  * @swagger

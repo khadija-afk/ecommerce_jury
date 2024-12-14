@@ -53,6 +53,7 @@ export const getById = async (req, res) => {
 export const updateById = async (req, res) => {
   const id = req.params.id;
   let article;
+  
 
   try {
     article = await Service.get(Article, id);
@@ -60,8 +61,7 @@ export const updateById = async (req, res) => {
     return res.status(error.status).json({ error: error.error });
   }
 
-  if (article.user_fk != req.user.id)
-    return res.status(403).json({ error: "Seul le créateur peut modifier !" });
+ 
 
   try {
     await article.update(req.body);

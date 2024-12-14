@@ -80,7 +80,7 @@ const AccessoiresPage = () => {
               <div className="favorite-icon" onClick={() => handleFavoriteClick(article)}>
                 <span className={favorites.some(fav => fav.id === article.id) ? 'red' : ''}>♥</span>
               </div>
-              {Array.isArray(article.photo) && article.photo.length > 0 ? (
+              
                 <Link to={`/article/${article.id}`}>
                   <Card.Img
                     variant="top"
@@ -89,9 +89,7 @@ const AccessoiresPage = () => {
                     className="custom-card-img"
                   />
                 </Link>
-              ) : (
-                <Card.Img variant="top" src="default-image-url.jpg" alt="Default Image" />
-              )}
+
               <Card.Body className="custom-card-body">
                 <Card.Text className="custom-card-text">
                   Voir les détails
