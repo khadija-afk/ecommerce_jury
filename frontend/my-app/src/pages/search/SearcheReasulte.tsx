@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
-import axios from 'axios';
+import { useLocation, useNavigate } from 'react-router-dom';
 import apiClient from '../../utils/axiosConfig';
 
 interface SearchResult {
@@ -16,6 +15,12 @@ const SearchResults: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
   const location = useLocation();
+  const navigate = useNavigate(); // Ajout de `useNavigate`
+
+  // Fonction pour naviguer vers les détails de l'article
+  const handleNavigation = (id: number) => {
+    navigate(`/detailArticle/${id}`);
+  };
 
   // Extraire le terme de recherche depuis l'URL
   const query = new URLSearchParams(location.search).get('query');
@@ -28,7 +33,7 @@ const SearchResults: React.FC = () => {
 
         // Requête API
         const response = await apiClient.get(`/api/search/search?query=${query}`);
-        
+
         // Vérifier si la réponse est un tableau
         if (Array.isArray(response.data)) {
           setResults(response.data);
@@ -79,6 +84,12 @@ const SearchResults: React.FC = () => {
               />
               <p>{item.content}</p>
               <p>Prix : {item.price} €</p>
+              <button
+                onClick={() => handleNavigation(item.id)} // Passez `item.id`
+                className="btn custom-button"
+              >
+                Voir les détails
+              </button>
             </li>
           ))}
         </ul>
