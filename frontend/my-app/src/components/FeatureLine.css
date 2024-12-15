@@ -3,27 +3,43 @@
 /* Container pour le bouton toggle */
 .feature-line-container {
   width: 100%;
+  overflow-x: hidden; /* Empêche le débordement horizontal */
 }
 
 /* Style de la ligne de fonctionnalités */
 .feature-line {
   display: flex;
-  justify-content: space-around;
   align-items: center;
   background-color: white;
   padding: 10px 0;
   margin-top: 20px;
   gap: 20px;
-  transition: max-height 0.3s ease-out; /* Animation pour l'ouverture/fermeture */
-  overflow: hidden; /* Cache le contenu si la hauteur est 0 */
+  overflow-x: auto; /* Permet le défilement horizontal */
+  scrollbar-width: thin; /* Réduction de la largeur de la scrollbar */
+  scrollbar-color: #ddd transparent; /* Style de la scrollbar */
+}
+
+.feature-line::-webkit-scrollbar {
+  height: 8px; /* Hauteur de la scrollbar */
+}
+
+.feature-line::-webkit-scrollbar-thumb {
+  background: #bbb; /* Couleur de la barre de défilement */
+  border-radius: 4px;
+}
+
+.feature-line::-webkit-scrollbar-track {
+  background: transparent; /* Couleur de l'arrière-plan de la scrollbar */
 }
 
 .feature-item {
+  flex: 0 0 auto; /* Assure que chaque élément reste à la taille naturelle */
   display: flex;
   align-items: center;
   gap: 10px;
   font-size: 14px;
   color: black;
+  white-space: nowrap; /* Empêche le retour à la ligne */
 }
 
 .feature-icon {

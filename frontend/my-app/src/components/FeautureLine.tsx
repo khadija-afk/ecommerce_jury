@@ -1,6 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCreditCard, faStore, faTruck, faCheckCircle, faChevronDown, faChevronUp } from '@fortawesome/free-solid-svg-icons';
+import {
+  faCreditCard,
+  faStore,
+  faTruck,
+  faCheckCircle,
+  faChevronDown,
+  faChevronUp,
+} from '@fortawesome/free-solid-svg-icons';
 import './FeatureLine.css';
 
 const FeatureLine: React.FC = () => {
@@ -33,12 +40,15 @@ const FeatureLine: React.FC = () => {
   return (
     <div className="feature-line-container">
       {/* Bouton pour basculer l'affichage des fonctionnalités sur petits écrans */}
-      {isMobile && (
+      {/* {isMobile && (
         <div className="feature-line-toggle" onClick={toggleFeatureLine}>
           <span>Features</span>
-          <FontAwesomeIcon icon={isOpen ? faChevronUp : faChevronDown} className="toggle-icon" />
+          <FontAwesomeIcon
+            icon={isOpen ? faChevronUp : faChevronDown}
+            className="toggle-icon"
+          />
         </div>
-      )}
+      )} */}
 
       {/* Affichage des fonctionnalités */}
       <div className={`feature-line ${isOpen ? 'open' : 'closed'}`}>
