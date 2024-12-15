@@ -123,19 +123,30 @@ const Header: React.FC = () => {
     <header>
       <Container fluid className="d-lg-none d-flex align-items-center justify-content-between py-2">
       <Button variant="link" className="search-icon" onClick= {() => setShowSearchOffcanvas(true)}>
-        <FontAwesomeIcon icon={faSearch} className="custom-search-icon" />
+      <FontAwesomeIcon 
+        icon={faSearch} 
+        className="custom-search-icon" 
+        style={{ color: '#311C52'}} 
+      />
+
       </Button>
-        <Navbar.Brand href="/" className="mx-auto text-center">
-          ELLE&STYLE
-        </Navbar.Brand>
+      <Navbar.Brand 
+        href="/" 
+        className="mx-auto text-center" 
+        style={{ fontWeight: 'bold' }}
+      >
+        ELLE&STYLE
+      </Navbar.Brand>
         <Button variant="link" className="menu-icon" onClick={() => setShowOffcanvas(true)}>
-          <FontAwesomeIcon icon={faBars} />
+          <FontAwesomeIcon
+           icon={faBars} 
+           style={{ color: '#311C52'}}/>
         </Button>
       </Container>
 
       <Navbar expand="lg" bg="white" variant="light" className="navbar-custom py-3">
         <Container fluid>
-          <Navbar.Brand href="/" className="d-none d-lg-inline">ELLE&STYLE</Navbar.Brand>
+          <Navbar.Brand href="/" className="d-none d-lg-inline" style={{ fontWeight: 'bold' }}>ELLE&STYLE</Navbar.Brand>
           <Form className="d-none d-lg-flex mx-auto search-center" onSubmit={handleSearch}>
             <FormControl
               type="search"
