@@ -1,7 +1,8 @@
 /* Slider.css */
-.carousel-item {
-  height: 400px; /* Hauteur fixe pour le carousel */
 
+/* Style par défaut pour le carousel */
+.carousel-item {
+  height: 400px; /* Hauteur fixe par défaut */
 }
 
 .carousel-item img {
@@ -14,4 +15,33 @@
 .carousel-container {
   margin-left: 100px;
   margin-right: 100px;
+}
+
+/* Styles pour les écrans mobiles */
+@media (max-width: 768px) {
+  .carousel-item {
+    height: 300px; /* Hauteur ajustée pour être plus proche d'un carré */
+  }
+
+  .carousel-item img {
+    object-fit: cover;
+    height: 100%;
+  }
+
+  .carousel-container {
+    margin-left: 10px; /* Réduction des marges */
+    margin-right: 10px;
+  }
+}
+
+@media (max-width: 480px) {
+  .carousel-item {
+    height: 300px; /* Hauteur et largeur carrées pour mobile */
+    width: 300px; /* Largeur ajustée */
+  }
+
+  .carousel-container {
+    margin-left: 0; /* Suppression des marges pour petits écrans */
+    margin-right: 0;
+  }
 }
