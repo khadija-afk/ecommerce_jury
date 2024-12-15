@@ -56,7 +56,12 @@
     margin-left: 0; 
     margin-right: 0; 
     padding: 0 10px;
+    border-bottom: 1px solid #ddd; /* Ligne séparatrice */
   }
+
+ 
+
+  
 
   .d-lg-none {
     display: block;
