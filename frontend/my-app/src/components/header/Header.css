@@ -57,6 +57,34 @@
     margin-right: 0; 
     padding: 0 10px;
     border-bottom: 1px solid #ddd; /* Ligne séparatrice */
+    
+  }
+  .navbar-custom .nav-link .fa-heart,
+  .navbar-custom .nav-link .fa-shopping-cart,
+  .navbar-custom .nav-link .fa-user,
+  .navbar-custom .nav-link .fa-user-circle,
+  .navbar-custom .menu-icon .fa-bars,
+  .navbar-custom .search-icon .fa-search,
+  .offcanvas .fa-heart,
+  .offcanvas .fa-shopping-cart,
+  .offcanvas .fa-user,
+  .offcanvas .fa-user-circle {
+    color: gray; /* Change la couleur des icônes en gris */
+  }
+
+  .navbar-custom .nav-link,
+  .offcanvas .nav-link {
+    color: gray; /* Change aussi la couleur des liens en gris */
+  }
+
+  .navbar-custom .icon-badge {
+    background-color: #bbb; /* Change la couleur des badges en gris */
+    color: white;
+  }
+
+  .offcanvas-header,
+  .offcanvas-body {
+    border-color: #ddd; /* Rendre les bordures du Offcanvas cohérentes avec le style */
   }
 
  
