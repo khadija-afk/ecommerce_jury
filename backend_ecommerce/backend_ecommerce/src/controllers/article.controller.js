@@ -22,8 +22,8 @@ export const add = async (req, res) => {
       stock,
       user_fk,
       categorie_fk,
-      photo: req.file ? `${FILE_BASE_URL}/uploads/articles/${req.file.filename}` : null,
-    });
+      photo: req.file ? `${FILE_BASE_URL}${req.file.filename}` : null,  /**photo: req.file ? `${FILE_BASE_URL}/uploads/articles/${req.file.filename}` : null, */
+  });
     res.status(201).json(newArticle);
   } catch (error) {
     res.status(500).json({ error: 'Server error while creating Article' });

@@ -47,11 +47,11 @@ app.use((req, res, next) => {
 
 
 //Multer
-if (process.env.NODE_ENV === 'production') {
-  app.use('/uploads', express.static('/var/uploads'));
-} else {
-  app.use('/uploads', express.static(path.join(process.cwd(), 'uploads')));
-}
+// if (process.env.NODE_ENV === 'production') {
+//   app.use('/uploads', express.static('/var/uploads'));
+// } else {
+//   app.use('/uploads', express.static(path.join(process.cwd(), 'uploads')));
+// }
 
 
 // PORT
