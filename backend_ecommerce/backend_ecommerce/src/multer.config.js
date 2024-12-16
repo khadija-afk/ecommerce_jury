@@ -3,7 +3,7 @@ import path from 'path';
 import fs from 'fs';
 
 // Chemin du dossier de stockage
-// const uploadsDir = process.env.NODE_ENV === 'production'
+const uploadsDir = process.env.NODE_ENV === 'production'
 //   ? '/var/uploads/articles'
 //   : path.join(process.cwd(), 'uploads/articles');
 // Vérifier et créer le dossier si nécessaire
