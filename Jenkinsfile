@@ -109,31 +109,28 @@ pipeline {
                 }
             }
         }
-        // stage('Deploy to Render Prod main') { 
-        //      when {
-        //         branch 'main' // Exécuter ce stage uniquement sur la branche 'main'
-        //     }
-        //     steps { 
-        //         script {
-        //             echo "Deploying to Production..."
-        //             def serviceIdFrontend = 'srv-ct7n8m23esus73b7lh40' 
-        //             def apiKeyFrontend = 'jKqDAwH78m4' 
+        stage('Deploy to Render Prod main') { 
+            steps {
+                script {
+                     echo "Deploying to Preprod..."
+                    def serviceIdFrontendProd = 'srv-ct7n8m23esus73b7lh40' 
+                    def apiKeyFrontendProd = 'jKqDAwH78m4' 
 
-        //             def serviceIdBackend = 'srv-ct7nhfg8fa8c738v2qv0' 
-        //             def apiKeyBackend = 'woqKrYV55VU' 
+                    def serviceIdBackendProd = 'srv-ct7nhfg8fa8c738v2qv0' 
+                    def apiKeyBackendProd = 'woqKrYV55VU' 
 
-        //             // Effectuer une requête CURL pour déployer
-        //             sh """
-        //             curl -X POST "https://api.render.com/deploy/${serviceIdFrontend}?key=${apiKeyFrontend}" \
-        //                 -H "Content-Type: application/json"
-        //             """
-        //             sh """
-        //             curl -X POST "https://api.render.com/deploy/${serviceIdBackend}?key=${apiKeyBackend}" \
-        //                 -H "Content-Type: application/json"
-        //             """
-        //         }
-        //     }
-        // }
+                    sh """
+                    curl -X POST "https://api.render.com/deploy/${serviceIdFrontendProd}?key=${apiKeyFrontendProd}" \
+                        -H "Content-Type: application/json"
+                    """
+                    sh """
+                    curl -X POST "https://api.render.com/deploy/${serviceIdBackendProd}?key=${apiKeyBackendProd}" \
+                        -H "Content-Type: application/json"
+                    """
+                }
+            }
+        }
+       
 
          stage('Run Security Tests') {
             agent { 
