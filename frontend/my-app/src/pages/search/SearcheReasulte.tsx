@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import apiClient from '../../utils/axiosConfig';
+import NoResults from './NoResult'; // Import du composant NoResults
 
 interface SearchResult {
   id: number;
@@ -30,24 +31,28 @@ const SearchResults: React.FC = () => {
       try {
         setLoading(true);
         setError(null);
-
+  
         // Requête API
         const response = await apiClient.get(`/api/search/search?query=${query}`);
-
+  
         // Vérifier si la réponse est un tableau
         if (Array.isArray(response.data)) {
           setResults(response.data);
         } else {
           throw new Error("Les données reçues ne sont pas valides.");
         }
-      } catch (err) {
-        setError("Une erreur s'est produite lors de la recherche.");
+      } catch (err: any) {
+        if (err.response && err.response.status === 404) {
+          setError("Aucun résultat trouvé pour votre recherche.");
+        } else {
+          setError("Une erreur s'est produite lors de la recherche.");
+        }
         console.error('Erreur lors de la recherche :', err);
       } finally {
         setLoading(false);
       }
     };
-
+  
     if (query) {
       fetchResults();
     }
@@ -61,9 +66,8 @@ const SearchResults: React.FC = () => {
 
       {error && <p style={{ color: 'red' }}>{error}</p>}
 
-      {!loading && !error && results.length === 0 && (
-        <p>Aucun résultat trouvé pour votre recherche.</p>
-      )}
+      {/* Afficher le composant NoResults si aucun résultat n'est trouvé */}
+      {!loading && !error && results.length === 0 && <NoResults />}
 
       {!loading && !error && results.length > 0 && (
         <ul style={{ listStyle: 'none', padding: 0 }}>
