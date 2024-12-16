@@ -19,7 +19,7 @@
   list-style-type: none;
   margin: 0;
   padding: 0;
-  flex-wrap: wrap; /* Permet à la liste de passer à la ligne sur petits écrans */
+  flex-wrap: wrap;
 }
 
 /* Style des éléments */
@@ -32,13 +32,14 @@
   color: #311C52;
   padding: 8px 16px;
   transition: color 0.3s ease;
+  font-weight: bold; /* Met en gras le texte */
 }
 
 .mini-navbar-item a:hover {
-  color: #432f6d;
+  color: #908b9c;
 }
 
-/* Styles pour les petits écrans */
+
 
 
 /* MiniNavbar pour les grands écrans */
@@ -66,14 +67,14 @@
 }
 
 .offcanvas .mini-navbar-item a {
-  padding: 10px 20px; /* Ajoute plus d'espace autour des liens */
-  font-size: 16px; /* Taille standard des textes */
-  text-align: left; /* Alignement à gauche des liens */
-  display: block; /* Les liens occupent toute la largeur */
+  padding: 10px 20px;  
+  font-size: 16px; 
+  text-align: left; 
+  display: block;
 }
 
 .offcanvas .mini-navbar-item a:hover {
-  background-color: #f7f7f7; /* Ajoute un effet de survol */
-  color: #432f6d; /* Change la couleur lors du survol */
-  border-radius: 5px; /* Ajoute des bords arrondis */
+  background-color: #f7f7f7; 
+  color: #432f6d; 
+  border-radius: 5px; 
 }

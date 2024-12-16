@@ -22,14 +22,14 @@ let sequelize;
 
 
 if (process.env.NODE_ENV === 'test') {
-  // Utiliser SQLite en mémoire pour les tests
+  
   sequelize = new Sequelize({
       dialect: 'sqlite',
-      storage: ':memory:' // Base de données en mémoire pour les tests
+      storage: ':memory:' 
   });
 } else {
-  // Détecter la base de données à utiliser
-  const dbType = process.env.DB_TYPE || 'mysql'; // Par défaut, utiliser MySQL
+  
+  const dbType = process.env.DB_TYPE || 'mysql';
 
   if (dbType === 'mysql') {
       sequelize = new Sequelize(
@@ -44,7 +44,9 @@ if (process.env.NODE_ENV === 'test') {
       );
   } else if (dbType === 'postgres') {
 
-      console.log('postgres:', process.env.POSTGRES_DB, process.env.POSTGRES_USER, process.env.POSTGRES_PASSWORD, process.env.DB_HOST)
+      console.log('postgres:', process.env.POSTGRES_DB, 
+        process.env.POSTGRES_USER, 
+        process.env.POSTGRES_PASSWORD, process.env.DB_HOST)
       sequelize = new Sequelize(
           process.env.POSTGRES_DB,          // Nom de la base de données
           process.env.POSTGRES_USER,        // Nom d'utilisateur
@@ -308,6 +310,8 @@ const synchronizeAllTables = async () => {
 if (process.env.SYNC_TABLES === 'yes') {
   synchronizeAllTables();
 }
+
+// syncArticleTable(); 
 
 
 

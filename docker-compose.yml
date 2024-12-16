@@ -32,6 +32,7 @@ services:
       - VITE_PUBLIC_KEY_STRIPE=${VITE_PUBLIC_KEY_STRIPE}
       - MY_EMAIL=${MY_EMAIL}
       - MY_PASSWORD=${MY_PASSWORD}
+      - VITE_BASE_URL=${VITE_BASE_URL}
     networks:
       - jenkins_net  # Ajouter au même réseau
 
@@ -49,6 +50,7 @@ services:
       - VITE_PUBLIC_KEY_STRIPE=${VITE_PUBLIC_KEY_STRIPE}
       - VITE_CORS_URL=${VITE_CORS_URL}
       - URL_BACKEND=${URL_BACKEND}
+      - VITE_BASE_URL=${VITE_BASE_URL}
     networks:
       - jenkins_net  # Ajouter au même réseau
 
@@ -65,25 +67,7 @@ services:
     environment:
       - ZAP_LOG_LEVEL=INFO  # Optionnel, pour ajuster le niveau de log
 
-  # db:
-  #   image: mysql:5.7
-  #   container_name: mysql
-  #   ports:
-  #     - "3307:3306"
-  #   environment:
-  #     MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
-  #     MYSQL_DATABASE: ${MYSQL_DATABASE}
-  #     MYSQL_USER: ${MYSQL_USER}
-  #     DB_PORT: ${DB_PORT}
-  #     MYSQL_PASSWORD: ${MYSQL_PASSWORD}
-  #     DB_HOST: ${DB_HOST}
-  #   volumes:
-  #     - mysql-data:/var/lib/mysql
-  #   depends_on:
-  #     - phpmyadmin
-  #   networks:
-  #     - jenkins_net  
-
+ 
   db:
     image: postgres:16
     container_name: postgres
@@ -110,16 +94,7 @@ services:
     networks:
       - jenkins_net
 
-  # phpmyadmin:
-  #   image: phpmyadmin/phpmyadmin
-  #   container_name: phpmyadmin
-  #   environment:
-  #     PMA_HOST: db
-  #     MYSQL_ROOT_PASSWORD: ${POSTGRES_PASSWORD}
-  #   ports:
-  #     - "8085:80"
-  #   networks:
-  #     - jenkins_net  
+ 
 
   nginx:
     image: nginx:latest
@@ -187,18 +162,7 @@ services:
     networks:
       - jenkins_net  # Ajouter au même réseau
 
-  # vault:
-  #   image: hashicorp/vault:1.18
-  #   container_name: vault
-  #   restart: always
-  #   environment:
-  #     VAULT_DEV_ROOT_TOKEN_ID: "root"  # Token de root pour le mode développement (ne pas utiliser en production)
-  #     VAULT_ADDR: "http://0.0.0.0:8200"
-  #   ports:
-  #     - "8200:8200"  # Expose le port 8200 pour accéder à Vault
-  #   command: "server -dev"  # Démarre Vault en mode développement
-  #   volumes:
-  #     - vault_data:/vault/file  # Utiliser le volume nommé pour stocker les données Vault
+  
 
 volumes:
   mysql-data:

@@ -7,15 +7,10 @@ export const createStripeSession = async (req, res) => {
     const url = env.cors_url
     try {
         // Récupérer le token depuis le header Authorization
-        const authHeader = req.headers["authorization"];
-        if (!authHeader) {
-            return res.status(403).json({ error: 'Token non fourni' });
-        }
+        const token = req.cookies?.access_token || req.headers["authorization"]?.split(" ")[1];
 
-        // Extraire le token du header Authorization
-        const token = authHeader.split(" ")[1];
         if (!token) {
-            return res.status(403).json({ error: 'Token non valide ou manquant' });
+            return res.status(403).json({ error: 'Token non fourni ou manquant' });
         }
 
         // Vérifier et décoder le token
@@ -57,8 +52,10 @@ export const createStripeSession = async (req, res) => {
                     currency: 'usd',
                     product_data: {
                         name: item.article.name,
-                        description: item.article.description || 'Description non disponible',
-                        images: [item.article.photo[0]],
+                        description: item.article.content || 'Description non disponible',
+                        images: item.article.photo
+                        ? [`${item.article.photo}`] // URL complète
+                        : [], // Aucun image si photo manquante
                     },
                     unit_amount: Math.round(item.article.price * 100),
                 },

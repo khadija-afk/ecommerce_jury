@@ -89,9 +89,6 @@ pipeline {
         }
 
         stage('Deploy to Render preProd dev') { 
-            //  when {
-            //     branch 'dev' // Exécuter ce stage uniquement sur la branche 'dev'
-            // }
             steps {
                 script {
                      echo "Deploying to Preprod..."
@@ -101,13 +98,12 @@ pipeline {
                     def serviceIdBackendpreprod = 'srv-ct4pfp23esus73fgpdmg' 
                     def apiKeyBackendpreprod = 'eU_epRTerfc' 
 
-                    // Effectuer une requête CURL pour déployer
                     sh """
-                    curl -X POST "https://api.render.com/deploy/${serviceIdFrontend-preprod}}?key=${apiKeyFrontend-preprod}" \
+                    curl -X POST "https://api.render.com/deploy/${serviceIdFrontendpreprod}?key=${apiKeyFrontendpreprod}" \
                         -H "Content-Type: application/json"
                     """
                     sh """
-                    curl -X POST "https://api.render.com/deploy/${serviceIdBackend-preprod}?key=${apiKeyBackend-preprod}" \
+                    curl -X POST "https://api.render.com/deploy/${serviceIdBackendpreprod}?key=${apiKeyBackendpreprod}" \
                         -H "Content-Type: application/json"
                     """
                 }
@@ -139,34 +135,34 @@ pipeline {
         //     }
         // }
 
-        //  stage('Run Security Tests') {
-        //     agent { 
-        //         docker { 
-        //             image 'ghcr.io/zaproxy/zaproxy:stable'
-        //             args '-v $WORKSPACE/zap-output:/zap/wrk'
-        //         }
-        //     }
-        //     steps {
-        //         script {
-        //             // Assurez-vous que l'URL cible est accessible pour le conteneur ZAP
-        //             dir('backend_ecommerce/backend_ecommerce') {
-        //                 sh 'zap-baseline.py -t http://nginx -r /zap/wrk/testreport.html'
-        //             }
-        //         }
-        //     }
-        //     post {
-        //         always {
-        //             // Archive le rapport généré pour consultation dans Jenkins
-        //             archiveArtifacts artifacts: 'zap-output/testreport.html', allowEmptyArchive: true
-        //         }
-        //         success {
-        //             echo 'ZAP scan completed successfully.'
-        //         }
-        //         failure {
-        //             echo 'ZAP scan failed. Check the test report for details.'
-        //         }
-        //     }
-        // }
+         stage('Run Security Tests') {
+            agent { 
+                docker { 
+                    image 'ghcr.io/zaproxy/zaproxy:stable'
+                    args '-v $WORKSPACE/zap-output:/zap/wrk'
+                }
+            }
+            steps {
+                script {
+                    // Assurez-vous que l'URL cible est accessible pour le conteneur ZAP
+                    dir('backend_ecommerce/backend_ecommerce') {
+                        sh 'zap-baseline.py -t http://nginx -r /zap/wrk/testreport.html'
+                    }
+                }
+            }
+            post {
+                always {
+                    // Archive le rapport généré pour consultation dans Jenkins
+                    archiveArtifacts artifacts: 'zap-output/testreport.html', allowEmptyArchive: true
+                }
+                success {
+                    echo 'ZAP scan completed successfully.'
+                }
+                failure {
+                    echo 'ZAP scan failed. Check the test report for details.'
+                }
+            }
+        }
 
     }
     

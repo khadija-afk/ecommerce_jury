@@ -7,7 +7,7 @@
 }
 
 .table-responsive th, .table td {
-  padding: 10px;
+  padding: 10px 60px;
   text-align: center;
   vertical-align: middle;
   border-bottom: 1px solid #ddd;
@@ -24,7 +24,7 @@
   border-radius: 4px;
 }
 
-.table-responsive .button {
+/* .table-responsive .button {
   margin-right: 10px;
   padding: 5px 10px;
   background-color: rgb(248, 245, 245);
@@ -32,7 +32,7 @@
   border: none;
   border-radius: 4px;
   cursor: pointer;
-}
+} */
 
 .table-responsive .removeButton {
   width: 20px;
@@ -51,7 +51,7 @@
 }
 
 .table-responsive .removeButton:hover {
-  background-color: #ff6666;
+  background-color: #b01b1b;
 }
 
 .table-responsive .removeButton:focus {
@@ -62,6 +62,22 @@
   content: "×";
   font-family: Arial, sans-serif;
   font-weight: bold;
+}
+.table-responsive .button{
+  background-color: rgb(248, 245, 245);
+}
+
+.quantity-control {
+  display: flex; /* Active Flexbox */
+  align-items: center; /* Centre verticalement */
+  justify-content: center; /* Centre horizontalement */
+  gap: 10px; /* Espace entre les éléments */
+}
+
+.quantity {
+  font-size: 18px; /* Taille légèrement plus grande pour la visibilité */
+  text-align: center; /* Centre le texte si nécessaire */
+  min-width: 30px; /* Assure une largeur fixe pour une meilleure stabilité visuelle */
 }
 
 .cart-summary {
@@ -80,11 +96,14 @@
   font-size: 16px; /* Taille de texte */
   transition: background-color 0.3s ease;
   width: auto; /* S'adapte au contenu */
+  display: flex; /* Active Flexbox */
+  justify-content: center; /* Centre horizontalement */
 }
 
 .checkoutButton:hover {
-  background-color: #ff6666; /* Rouge clair au survol */
+  background-color: #b01b1b; /* Rouge clair au survol */
 }
+
 
 .empty-cart {
   display: flex;
@@ -97,26 +116,6 @@
 .empty-cart p {
   font-size: 1.5rem;
   color: #555; /* Couleur du texte */
-}
-
-.table-responsive .removeButton {
-  width: 20px;
-  height: 20px;
-  background-color: red;
-  color: white;
-  border: none;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 14px;
-  cursor: pointer;
-  padding: 0;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-}
-
-.table-responsive .removeButton:hover {
-  background-color: #ff6666;
 }
 
 .table-responsive .removeButton:focus {

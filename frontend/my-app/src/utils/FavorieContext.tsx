@@ -5,7 +5,7 @@ import { useAuth } from './AuthCantext';
 export interface Article {
   id: number;
   name: string;
-  photo: string[];
+  photo: string;
   price: number;
   content: string;
   createdAt?: string;
@@ -42,16 +42,11 @@ export const FavorisProvider: React.FC<{ children: ReactNode }> = ({ children })
 
     const fetchFavorites = async () => {
       try {
-        const token = localStorage.getItem('token');
-        if (!token) {
-          console.error('Token introuvable. Vérifiez si l\'utilisateur est authentifié.');
-          return;
-        }
+       
+        
 
         const response = await apiClient.get('/api/favorie', {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
+          withCredentials: true, 
         });
 
         if (response.data && Array.isArray(response.data)) {
@@ -78,11 +73,8 @@ export const FavorisProvider: React.FC<{ children: ReactNode }> = ({ children })
       return;
     }
 
-    const token = localStorage.getItem('token');
-    if (!token) {
-      console.error('Token introuvable : impossible d\'ajouter aux favoris.');
-      return;
-    }
+    
+  
 
     if (isFavorite(article.id)) {
       console.warn(`L'article ${article.name} est déjà dans vos favoris.`);
@@ -94,9 +86,7 @@ export const FavorisProvider: React.FC<{ children: ReactNode }> = ({ children })
         '/api/favorie',
         { product_fk: article.id },
         {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
+          withCredentials: true, 
         }
       );
 
@@ -117,17 +107,11 @@ export const FavorisProvider: React.FC<{ children: ReactNode }> = ({ children })
       return;
     }
 
-    const token = localStorage.getItem('token');
-    if (!token) {
-      console.error('Token introuvable : impossible de supprimer des favoris.');
-      return;
-    }
+    
 
     try {
       await apiClient.delete(`/api/favorie/${product_fk}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
+        withCredentials: true,
       });
 
       setFavorites((prev) => prev.filter((fav) => fav.id !== product_fk));

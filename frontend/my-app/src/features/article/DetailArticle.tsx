@@ -16,7 +16,7 @@ interface Article {
   name: string;
   content: string;
   price: number;
-  photo: string[];
+  photo: string;
 }
 
 const DetailArticle: React.FC = () => {
@@ -89,9 +89,13 @@ const DetailArticle: React.FC = () => {
         <section className="bloc__detail">
           <div className="photo-container">
             <div className="main-photo-container">
-              <img src={mainPhoto} alt={article.name} className="main-photo" />
+            <img
+                src={article.photo || "default-image.jpg"} // Image par défaut si aucune photo n'est disponible
+                alt={article.name}
+                className="main-photo"
+              />
             </div>
-            <div className="thumbnails-container">
+            {/* <div className="thumbnails-container">
               {Array.isArray(article.photo) && article.photo.length > 0 ? (
                 article.photo.map((img, index) => (
                   <img
@@ -105,7 +109,7 @@ const DetailArticle: React.FC = () => {
               ) : (
                 <p>Aucune photo disponible</p>
               )}
-            </div>
+            </div> */}
           </div>
           <div className="details-container">
             <h2>{article.name}</h2>

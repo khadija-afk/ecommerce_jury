@@ -35,9 +35,11 @@ const Favoris: React.FC = () => {
                 }
 
                 const photoUrl =
-                  Array.isArray(favorite.photo) && favorite.photo.length > 0
-                    ? favorite.photo[0]
-                    : 'default-image-url.jpg';
+                typeof favorite.photo === 'string'
+                  ? favorite.photo
+                  : Array.isArray(favorite.photo) && favorite.photo > 0
+                  ? favorite.photo[0]
+                  : 'default-image-url.jpg'; // Image par défaut
 
                 return (
                   <tr key={index}>
@@ -65,7 +67,7 @@ const Favoris: React.FC = () => {
                         className="removeButton"
                         onClick={() => removeFavorite(favorite.id)}
                       >
-                        Supprimer
+                        
                       </button>
                     </td>
                   </tr>

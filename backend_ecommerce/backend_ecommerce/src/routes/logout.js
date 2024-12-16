@@ -26,9 +26,13 @@ const router = Router();
  */
 router.post('/logout', (req, res) => {
   // Supprimer le cookie d'accès (ou autres cookies de session si vous en avez)
-  res.clearCookie('access_token', { httpOnly: true, path: '/' });
+  res.clearCookie('access_token', { httpOnly: true,
+    httpOnly: true, 
+    secure: true,
+    sameSite: 'None', 
+     path: '/' });
 
-  // Répondre avec une confirmation de déconnexion
+  
   res.status(200).json({ message: 'Logout successful' });
 });
 

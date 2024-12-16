@@ -53,10 +53,61 @@
 /* Offcanvas Styles for Small Screens */
 @media (max-width: 767.98px) {
   .navbar-custom {
-    margin-left: 0; /* Supprime les marges sur les petits écrans */
-    margin-right: 0; /* Supprime les marges sur les petits écrans */
-    padding: 0 10px; /* Ajoute un padding intérieur pour un alignement visuel */
+    margin-left: 0; 
+    margin-right: 0; 
+    padding: 0 10px;
+    border-bottom: 1px solid #ddd; /* Ligne séparatrice */
+    
   }
+  .navbar-custom .nav-link .fa-heart,
+  .navbar-custom .nav-link .fa-shopping-cart,
+  .navbar-custom .nav-link .fa-user,
+  .navbar-custom .nav-link .fa-user-circle,
+  /* .navbar-custom .menu-icon .fa-bars, */
+  .offcanvas .fa-heart,
+  .offcanvas .fa-shopping-cart,
+  .offcanvas .fa-user,
+  .offcanvas .fa-user-circle {
+    color: gray; /* Change la couleur des icônes en gris */
+  }
+
+  .navbar-custom .nav-link,
+  .offcanvas .nav-link {
+    color: gray; /* Change aussi la couleur des liens en gris */
+  }
+
+  .navbar-custom .icon-badge {
+    background-color: #bbb; /* Change la couleur des badges en gris */
+    color: white;
+  }
+
+  .offcanvas-header,
+  .offcanvas-body {
+    border-color: #ddd; /* Rendre les bordures du Offcanvas cohérentes avec le style */
+  }
+
+ 
+  
+  /* Barre de recherche dans le Offcanvas */
+  .offcanvas .form-control,
+  .offcanvas button {
+    border-color: #ccc; /* Bordure grise */
+    color: gray; /* Texte en gris */
+  }
+
+  .offcanvas button {
+    background-color: #f8f9fa; /* Fond légèrement gris pour le bouton */
+    border: 1px solid #ccc;
+  }
+
+  /* Placeholder dans la barre de recherche */
+  .offcanvas .form-control::placeholder {
+    color: #aaa; /* Couleur grise plus claire pour le placeholder */
+  }
+
+ 
+
+  
 
   .d-lg-none {
     display: block;
@@ -67,7 +118,7 @@
   }
 }
 
-/* Styles pour l'Offcanvas */
+
 .offcanvas {
   width: 300px;
 }

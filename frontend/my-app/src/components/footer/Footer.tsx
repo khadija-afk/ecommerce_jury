@@ -99,7 +99,7 @@ const Footer = () => {
       </div>
 
       <div className="footer-bottom">
-        <p>&copy; 2024 KenziShop. Tous droits réservés.</p>
+        <p>&copy; 2024 ELLE&STYLE. Tous droits réservés.</p>
         <div className="social-icons">
           <a href="https://facebook.com" aria-label="Facebook" target="_blank" rel="noopener noreferrer">Facebook</a>
           <a href="https://twitter.com" aria-label="Twitter" target="_blank" rel="noopener noreferrer">Twitter</a>

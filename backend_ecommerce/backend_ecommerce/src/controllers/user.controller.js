@@ -48,30 +48,17 @@ export const login = async (req, res) => {
   const { password: _, ...otherData } = user.dataValues;
 
   // Étape 4 : Envoi de la réponse avec le cookie
-  console.log("Cookie configuré pour l'envoi :", {
-  token,
-  httpOnly: true,
-  secure: process.env.NODE_ENV === "production",
-  sameSite: process.env.NODE_ENV === "production" ? "strict" : "lax",
-});
-res.cookie("access_token", token, {
-  httpOnly: true,
-  secure: process.env.NODE_ENV === "production", // Actif uniquement en HTTPS
-  sameSite: process.env.NODE_ENV === "production" ? "strict" : "lax", // "strict" en prod, "lax" en dev
-})
+  res.cookie("access_token", token, {
+    httpOnly: true, 
+    secure: true, // Nécessaire pour HTTPS
+    sameSite: 'None', 
+    maxAge: 24 * 60 * 60 * 1000, // Expiration du cookie (24 heures)
+  });
 
-  
-// otherData['token']=token
-    
-    .status(200)
-    .json({
-      message: "Connexion réussie.",
-      user: otherData,
-      token: token
-    });
-
-    console.log("Cookie envoyé : ", req.cookies);
-
+  return res.status(200).json({
+    message: "Connexion réussie.",
+    user: otherData, // Données utilisateur sans le mot de passe
+  });
 };
 // Fonction pour vérifier le format de l'email
 const isValidEmail = (email) => {

@@ -14,6 +14,7 @@ import { useNavigate } from "react-router-dom";
 import { usePanier } from "../../utils/PanierContext";
 import { useFavoris } from "../../utils/FavorieContext";
 import { useAuth } from "../../utils/AuthCantext";
+
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faBars,
@@ -41,16 +42,23 @@ const Header: React.FC = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const checkAuthStatus = () => {
+    const checkAuthStatus = async () => {
       try {
-        const user = localStorage.getItem("user");
-        if (user) {
-          const parsedUser = JSON.parse(user);
+        
+        const response = await apiClient.get("/api/user/check_auth", {
+         
+          withCredentials: true,
+        });
+    
+        
+        if (response.status === 200) {
+          const userData = response.data;
           setIsAuthenticated(true);
-          setUserFirstName(parsedUser.firstName || "");
+          setUserFirstName(userData.firstName || "");
         } else {
           setIsAuthenticated(false);
           setUserFirstName("");
+          console.warn("Échec de la vérification d'authentification : ", response.statusText);
         }
       } catch (error) {
         console.error("Erreur lors de la vérification de l'authentification :", error);
@@ -58,7 +66,8 @@ const Header: React.FC = () => {
         setUserFirstName("");
       }
     };
-
+    
+  
     checkAuthStatus();
   }, [setIsAuthenticated]);
 
@@ -72,31 +81,25 @@ const Header: React.FC = () => {
 
   const handleLogout = async () => {
     try {
-      const token = localStorage.getItem("token");
-  
-      if (!token) {
-        console.warn("Token non trouvé dans le localStorage.");
-        return;
-      }
-  
+      
       const response = await apiClient.post(
         "/api/Log/logout",
-        {},
+        {}, 
         {
-          headers: {
-            Authorization: `Bearer ${token}`, // Ajout du token Bearer
-            "Content-Type": "application/json", // Définir le type de contenu
-          },
+         
+          withCredentials: true, // Inclure les cookies dans la requête
         }
       );
   
       if (response.status === 200) {
-        // Suppression des informations utilisateur et du token local
+        
         setIsAuthenticated(false);
         setUserFirstName("");
         setShowOffcanvas(false);
-        localStorage.removeItem("user");
-        localStorage.removeItem("token");
+  
+        
+        
+  
         console.log("Déconnexion réussie.");
       } else {
         console.warn("La déconnexion n'a pas été effectuée correctement.");
@@ -105,7 +108,6 @@ const Header: React.FC = () => {
       console.error("Erreur lors de la déconnexion :", error);
     }
   };
-  
 
   const handleNavLinkClick = (path: string) => {
     navigate(path);
@@ -120,20 +122,31 @@ const Header: React.FC = () => {
   return (
     <header>
       <Container fluid className="d-lg-none d-flex align-items-center justify-content-between py-2">
-        <Button variant="link" className="search-icon" onClick={() => setShowSearchOffcanvas(true)}>
-          <FontAwesomeIcon icon={faSearch} />
-        </Button>
-        <Navbar.Brand href="/" className="mx-auto text-center">
-          KenziShop
-        </Navbar.Brand>
+      <Button variant="link" className="search-icon" onClick= {() => setShowSearchOffcanvas(true)}>
+      <FontAwesomeIcon 
+        icon={faSearch} 
+        className="custom-search-icon" 
+        style={{ color: '#311C52'}} 
+      />
+
+      </Button>
+      <Navbar.Brand 
+        href="/" 
+        className="mx-auto text-center" 
+        style={{ fontWeight: 'bold' }}
+      >
+        ELLE&STYLE
+      </Navbar.Brand>
         <Button variant="link" className="menu-icon" onClick={() => setShowOffcanvas(true)}>
-          <FontAwesomeIcon icon={faBars} />
+          <FontAwesomeIcon
+           icon={faBars} 
+           style={{ color: '#311C52'}}/>
         </Button>
       </Container>
 
       <Navbar expand="lg" bg="white" variant="light" className="navbar-custom py-3">
         <Container fluid>
-          <Navbar.Brand href="/" className="d-none d-lg-inline">KenziShop</Navbar.Brand>
+          <Navbar.Brand href="/" className="d-none d-lg-inline" style={{ fontWeight: 'bold' }}>ELLE&STYLE</Navbar.Brand>
           <Form className="d-none d-lg-flex mx-auto search-center" onSubmit={handleSearch}>
             <FormControl
               type="search"

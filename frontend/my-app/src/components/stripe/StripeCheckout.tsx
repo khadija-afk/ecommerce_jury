@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { useStripe } from "@stripe/react-stripe-js";
 import { PanierContextType, PanierContext } from "../../utils/PanierContext";
 import axios from "axios";
+import apiClient from "@/utils/axiosConfig";
 
 // Définition des types pour un article dans le panier
 interface Article {
@@ -9,7 +10,7 @@ interface Article {
   name: string;
   content: string;
   price: number;
-  photo: string[];
+  photo: string;
 }
 
 interface CartItem {
@@ -31,7 +32,7 @@ const StripeCheckout: React.FC<StripeCheckoutProps> = ({ orderId }) => {
   useEffect(() => {
     const fetchUserEmail = async () => {
       try {
-        const response = await axios.get("/api/user/check_auth", {
+        const response = await apiClient.get("/api/user/check_auth", {
           withCredentials: true,
         });
         setEmail(response.data.email);
@@ -73,37 +74,23 @@ const StripeCheckout: React.FC<StripeCheckoutProps> = ({ orderId }) => {
     });
 
     try {
-      // Récupérer le token d'authentification
-      const token = localStorage.getItem("authToken");
-      if (!token) {
-        throw new Error("Utilisateur non authentifié.");
-      }
-
-      // Envoyer les données au backend
-      const response = await fetch("/api/stripe/create-checkout-session", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "Authorization": `Bearer ${token}`,
-        },
-        body: JSON.stringify({ line_items, customer_email: email, orderId }),
-        credentials: "include",
-      });
-
-      if (!response.ok) {
-        throw new Error(`Erreur API : ${response.statusText}`);
-      }
-
-      const { sessionId, error } = await response.json();
-
-      if (error) {
-        console.error("Erreur de l'API Stripe :", error);
+      // Effectuer la requête pour créer une session de paiement
+      const { data } = await apiClient.post(
+        "/api/stripe/create-checkout-session",
+        {}, // Pas de données supplémentaires dans le corps
+        { withCredentials: true } // Option pour inclure les cookies
+      );
+    
+      // Vérification de la réponse
+      if (!data.sessionId) {
+        console.error("Erreur API Stripe : Session ID manquant", data.error || "Erreur inconnue");
         return;
       }
-
+    
       // Redirection vers Stripe Checkout
-      const result = await stripe?.redirectToCheckout({ sessionId });
-
+      const result = await stripe?.redirectToCheckout({ sessionId: data.sessionId });
+    
+      // Vérification du résultat de la redirection
       if (result?.error) {
         console.error("Erreur de redirection Stripe :", result.error.message);
       } else {
@@ -112,7 +99,12 @@ const StripeCheckout: React.FC<StripeCheckoutProps> = ({ orderId }) => {
         console.log("Commande passée avec succès, panier vidé !");
       }
     } catch (error) {
-      console.error("Erreur pendant le paiement :", error);
+      // Gestion des erreurs Axios
+      if (axios.isAxiosError(error)) {
+        console.error("Erreur API Axios :", error.response?.data || error.message);
+      } else {
+        console.error("Erreur pendant le paiement :", error);
+      }
     } finally {
       setLoading(false);
     }

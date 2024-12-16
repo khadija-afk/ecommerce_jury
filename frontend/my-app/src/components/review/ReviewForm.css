@@ -11,6 +11,22 @@
     margin-bottom: 10px;
 }
 
+.custom-footer-button {
+    padding: 10px;
+    background-color: #311C52; /* Couleur de fond */
+    color: white; /* Couleur du texte */
+    border: none; /* Pas de bordure */
+    border-radius: 5px; /* Coins arrondis */
+    cursor: pointer; /* Pointeur */
+    font-weight: bold; /* Texte en gras */
+    transition: background-color 0.3s ease; /* Transition douce */
+  }
+ 
+  .custom-footer-button:hover {
+    background-color: #5F4B8B; /* Couleur au survol */
+  }
+  
+
 .error {
     color: red;
     font-size: 0.9rem;
@@ -93,4 +109,6 @@ button:hover {
   .modal button:hover {
     background-color: #432f6d;
   }
+
+  
   

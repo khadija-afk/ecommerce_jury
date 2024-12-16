@@ -7,8 +7,8 @@ interface Article {
   name: string;
   price: number;
   content: string;
-  quantity?: number; // La quantité est optionnelle dans un article
-  photo: string[];
+  quantity?: number; 
+  photo: string;
 }
 
 interface CartItem {

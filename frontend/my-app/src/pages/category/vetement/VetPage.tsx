@@ -20,7 +20,7 @@ const VetementsPage = () => {
   useEffect(() => {
     const fetchArticles = async () => {
       try {
-        const response = await apiClient.get('api/api/article/category/1');
+        const response = await apiClient.get('/api/article/category/1');
 
         if (response.headers['content-type'] && response.headers['content-type'].includes('application/json')) {
           setVetements(response.data);  // Met à jour l'état avec les articles
@@ -81,18 +81,17 @@ const VetementsPage = () => {
               <div className="favorite-icon" onClick={() => handleFavoriteClick(article)}>
                 <span className={favorites.some(fav => fav.id === article.id) ? 'red' : ''}>♥</span>
               </div>
-              {Array.isArray(article.photo) && article.photo.length > 0 ? (
+             
                 <Link to={`/article/${article.id}`}>
                   <Card.Img
                     variant="top"
-                    src={article.photo[0]}
+                    src={article.photo}
                     alt={`Photo de ${article.name}`}
                     className="custom-card-img"
                   />
                 </Link>
-              ) : (
-                <Card.Img variant="top" src="default-image-url.jpg" alt="Default Image" />
-              )}
+              
+                
               <Card.Body className="custom-card-body">
                 <Card.Text className="custom-card-text">
                   Voir les détails

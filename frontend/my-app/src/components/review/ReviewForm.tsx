@@ -127,9 +127,14 @@ const ReviewForm: React.FC<ReviewFormProps> = ({ productId, onReviewAdded }) => 
               helperText={fieldErrors.comment}
             />
           </Box>
-          <Button type="submit" variant="contained" color="primary">
+          <Button
+            type="submit"
+            variant="contained"
+            className="custom-footer-button"
+          >
             Envoyer l'avis
           </Button>
+
         </form>
       ) : (
         <Typography variant="body2" color="textSecondary">

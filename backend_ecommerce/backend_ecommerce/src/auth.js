@@ -5,13 +5,10 @@ import { User } from './models/index.js'; // Modèle utilisateur
 import { verifyTOTP } from './utils/totp.js'; // Fonction pour vérifier l'OTP
 
 export const verifieToken = async (req, res, next) => {
-    // Récupérer le token depuis différents emplacements
-    const authHeader = req.headers['authorization'];
-    const token = authHeader?.startsWith('Bearer ')
-        ? authHeader.split(' ')[1] // Token à partir de l'en-tête Authorization
-        : req.cookies.access_token || req.body.token; // Token dans les cookies ou le corps de la requête
+    // Récupérer le token depuis les cookies
+    const token = req.cookies.access_token;
 
-    console.log("___verifieToken: Received token:", token);
+    console.log("___verifieToken: Received token from cookies:", token);
 
     if (!token) {
         console.error("___verifieToken: No token provided");
