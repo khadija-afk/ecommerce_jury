@@ -1,7 +1,7 @@
 // routes/article.js
 import express from 'express';
 import { verifieToken } from '../auth.js';
-// import upload from '../multer.config.js'; // Importer la config Multer
+import upload from '../multer.config.js'; // Importer la config Multer
 import { verifyRole } from '../authMidlleware.js';
 import {
   add,
@@ -109,7 +109,7 @@ const router = express.Router();
  *   get:
  *     summary: Récupérer un élément par ID
  */
-router.post('/', verifieToken, verifyRole(['admin']), add);  /**router.post('/', verifieToken, upload.single('photo'), verifyRole(['admin']), add); */
+router.post('/', verifieToken, upload.single('photo'), verifyRole(['admin']), add);  /**router.post('/', verifieToken, upload.single('photo'), verifyRole(['admin']), add); */
 
 /**
  * @swagger
@@ -133,7 +133,7 @@ router.get('/:id', getById);
  *   put:
  *     summary: Récupérer un élément par ID
  */
-router.put('/:id',  verifyRole(['admin']), updateById);
+router.put('/:id',  verifyRole(['admin']), upload.single('photo'), updateById);
 
 /**
  * @swagger
