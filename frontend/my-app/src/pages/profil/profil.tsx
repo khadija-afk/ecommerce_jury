@@ -7,11 +7,12 @@ const UserProfilePage: React.FC = () => {
   const handleNavLinkClick = (navItem: string) => {
     console.log(`Navigation vers : ${navItem}`);
     // Implémentez une logique supplémentaire si nécessaire, par ex. changer d'onglet
+    //  salut
   };
 
   return (
     <div className="user-profile-container">
-      <ProfileNavBar handleNavLinkClick={handleNavLinkClick} />
+      <ProfileNavBar handleNavLinkClick={handleNavLinkClick} /> 
       <div className="user-profile-content">
         <Outlet />
       </div>
